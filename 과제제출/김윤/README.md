@@ -19,7 +19,8 @@
 > 버전1
 > 
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/4f8ecbe2-d851-4880-b924-94c4d506f206/image.png)
+<img src = "과제제출/김윤/asset/2.png" width="100%" height="100%">
+
 
 - 문제점
     - Namenode가 단일 장애지점(SPOF,single point of failure)
@@ -33,7 +34,7 @@
 > 버전2
 > 
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/40f80a38-8897-4653-a2fc-da9776269328/image.png)
+<img src = "과제제출/김윤/asset/3.png" width="100%" height="100%">
 
 - 개선점
     - 고가용성 지원 : namenode active-standby (이중화)
@@ -59,7 +60,7 @@
 
 # 2. why Hadoop?
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/5275e35c-1c6d-4e34-bb8b-a885b53689df/image.png)
+<img src = "과제제출/김윤/asset/4.png" width="100%" height="100%">
 
 - 확장성
 - 비정형 데이터 처리도 잘한다
@@ -74,7 +75,7 @@
 
 ### Hadoop의 근원 : Google
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/02c621c8-827e-4d62-b25a-bfe4f15e21a5/image.png)
+<img src = "과제제출/김윤/asset/5.png" width="100%" height="100%">
 
 - GFS 개념을 도입하여 개발한 분산 파일 시스템이 HDFS
 - 구글이 데이터 작업을 병렬처리 하기 위해 개발한 프로그래밍 모델이 Map Reduce
@@ -85,8 +86,7 @@
 
 ### Hadoop의 역사
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/4a84ca8d-765c-40d5-8758-9981acb48ffa/image.png)
-
+<img src = "과제제출/김윤/asset/6.png" width="100%" height="100%">
 - 2002년 Apache Nutch : 웹사이트를 크롤링,색인화하는 검색엔진을 구축하는 프로젝트
     - 너무 비쌌다.
 - 2003년 구글이 GFS 논문 발표
@@ -124,7 +124,7 @@
 
 ### HDFS 모태 : GFS (google file system)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/4cc38571-5cc6-4d1b-b0b1-e9d2658d000d/image.png)
+<img src = "과제제출/김윤/asset/7.png" width="100%" height="100%">
 
 - 마스터 : GFS 마스터
 - 워커 : chunk server
@@ -149,7 +149,7 @@
 
 ### HDFS 의 목표
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/648909f8-1ffc-43a3-89c5-b633498607d3/image.png)
+<img src = "과제제출/김윤/asset/8.png" width="100%" height="100%">
 
 - (1) 한 대의 고가의 서버보다 여러 대의 저가형 서버가 낫다
     - 확장성, 저렴, 분산처리(효율성)
@@ -159,7 +159,7 @@
 
 ### 분산 파일 시스템
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/37d6274c-83a1-4535-bea9-72d13b7ca167/image.png)
+<img src = "과제제출/김윤/asset/9.png" width="100%" height="100%">
 
 - 대용량 데이터를 한 번만 기록하고, 반복적으로 읽는 데이터 처리에 적합하다
 - 블록은 독립적으로 존재하고, 여러 데이터노드에 복제된다.
@@ -169,7 +169,7 @@
 
 ### ⭐HDFS Architecture
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/bd3cda5e-7f13-4b1f-b971-5309a44e47c2/image.png)
+<img src = "과제제출/김윤/asset/10.png" width="100%" height="100%">
 
 - 마스터-슬레이브 구조로 하나의 네임노드와 여러 개의 데이터 노드로 구성
     - 장점 : 확장성이 좋다
@@ -184,7 +184,7 @@
     - 클라이언트가 슬레이브 노드와 데이터를 주고 받는다
     - 실제로 마스터노드는 메타데이터정보, 명령만 이루어진다
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/b21f98ca-0907-467d-ae42-7e45ed4454ff/image.png)
+<img src = "과제제출/김윤/asset/11.png" width="100%" height="100%">
 
 - NameNode : 마스터
 - DataNode : 슬레이브
@@ -207,7 +207,7 @@
 
 ### HDFS Block
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/03e583b2-3ba6-40a9-8244-ec7356322839/image.png)
+<img src = "과제제출/김윤/asset/12.png" width="100%" height="100%">
 
 - 하나의 파일을 여러 개의 블록으로 저장 ⇒ 블록 사이즈만큼 쪼개진다
 - hadoop2부터 default 블록 사이즈가 128MB
@@ -238,7 +238,7 @@
 
 ### NameNode 기능
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/e6518e2a-c316-4c11-8381-63d797faf7e2/image.png)
+<img src = "과제제출/김윤/asset/13.png" width="100%" height="100%">
 
 - (1) 전체 HDFS에 대한 네임스페이스(메타데이터) 를 관리
     - 파일이 어느 블록에 저장되어 있는지, 어느 블록에 복제 되어 있는지 등 정보를 포함한다
@@ -281,7 +281,7 @@
 > 체크포인트 과정
 > 
 
-![체크포인트](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/20dddf80-51da-411d-b931-06c4a8adb057/image.png)
+<img src = "과제제출/김윤/asset/14.png" width="100%" height="100%">
 
 체크포인트
 
@@ -317,9 +317,9 @@
 
 ### HDFS 읽기 연산
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/9efe560c-aeb2-4ec4-b09e-f7f6ea270847/image.png)
+<img src = "과제제출/김윤/asset/15.png" width="100%" height="100%">
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/886c4538-3d0c-41dd-ab31-28e3a42e6f9d/image.png)
+<img src = "과제제출/김윤/asset/16.png" width="100%" height="100%">
 
 - 클라이언트는 파일이 보관된 블록의 위치를 네임노드에게 요청
 - 네임노드는 해당 블록의 모든 위치를 클라이언트에게 반환
@@ -328,9 +328,9 @@
 
 ### HDFS 쓰기 연산
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/5da7bb20-c0ac-4666-902c-73d1531a810d/image.png)
+<img src = "과제제출/김윤/asset/17.png" width="100%" height="100%">
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f1eae27a-84f4-4085-9b8a-9f3cbc9c9e01/d50e3de8-b918-454e-97ed-e4f682abdac0/image.png)
+<img src = "과제제출/김윤/asset/18.png" width="100%" height="100%">
 
 - 네임노드에게 파일 정보를 전송하고 파일 블록을 써야 할 노드의 목록을 요청
 - 네임노드에서 데이터를 쓸 데이터노드 리스트를 클라이언트에게 전달
