@@ -37,7 +37,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOriginPattern("*"); // 모든 origin 허용 (개발용)
         config.addAllowedHeader("*");        // 모든 헤더 허용
-        config.addAllowedMethod("*");        // GET, POST, PUT 등 모든 메서드 허용
+        config.addAllowedMethod("GET");      // GET 허용  
+        config.addAllowedMethod("POST");     // POST 허용
         config.setAllowCredentials(true);    // 자격 증명 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
