@@ -239,3 +239,7 @@ $RECYCLE.BIN/
 
 .idea
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,intellij,java
+
+../.env
+.env.local
+.env.*.local
