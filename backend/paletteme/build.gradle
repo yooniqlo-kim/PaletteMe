@@ -38,7 +38,10 @@ dependencies {
 	implementation 'mysql:mysql-connector-java:8.0.33'
 
 	// Swagger♥
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
 	// JWT를 생성하고 관리하기 위한 라이브러리
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'

@@ -16,10 +16,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Component
 public class S3Util {
-    @Value("${default-profile-image-url}")
+    @Value("${default.profile.image.url}")
     private String defaultProfileImageUrl;
 
-    @Value("${cloud.aws.s3.mypage-bucket}")
+    @Value("${cloud.aws.s3.mypage.bucket}")
     private String bucket;
 
     private final S3Config s3Config;
