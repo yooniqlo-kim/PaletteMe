@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class UsersFavoriteColorId {
-    private Integer user;
+    private Integer users;
     private Integer color;
 }

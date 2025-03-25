@@ -19,7 +19,7 @@ public class UsersFavoriteColor {
             updatable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
     )
-    private User user;
+    private Users users;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,4 +30,13 @@ public class UsersFavoriteColor {
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
     )
     private Color color;
+
+    private UsersFavoriteColor(Users users, Color color) {
+        this.users = users;
+        this.color = color;
+    }
+
+    public static UsersFavoriteColor of(Users users, Color color) {
+        return new UsersFavoriteColor(users, color);
+    }
 }
