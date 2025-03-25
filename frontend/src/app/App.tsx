@@ -7,6 +7,9 @@ function App() {
     <>
       <Layout>
         <div className="text-primary">App</div>
+        <div className="font-extralight text-xs text-secondary">
+          글꼴 적용 예시
+        </div>
         <ArtworkImage imageUrl="https://upload.wikimedia.org/wikipedia/commons/a/a7/Inwangjesaekdo.jpg" />
       </Layout>
     </>
