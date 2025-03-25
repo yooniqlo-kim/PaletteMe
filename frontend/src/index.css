@@ -18,6 +18,9 @@
   --color-netural-6: #b0b0b0;
   --color-netural-7: #717171;
   --color-netural-8: #5e5e5e;
+
+  --radius-s: 0.5rem;
+  --radius-m: 0.75rem;
 }
 
 :root {
