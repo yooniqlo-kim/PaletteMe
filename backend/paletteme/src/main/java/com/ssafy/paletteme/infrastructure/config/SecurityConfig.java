@@ -1,19 +1,28 @@
 package com.ssafy.paletteme.infrastructure.config;
 
+import com.ssafy.paletteme.common.security.filter.LoginFilter;
+import com.ssafy.paletteme.common.security.jwt.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtUtil jwtUtil;
 
     // 비밀번호 암호화
     @Bean
@@ -35,6 +44,15 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 모든 요청 허용 (초기 개발용 설정)
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+
+
+        /* "/api/users/login" 요청에만 해당 필터가 적용됨.
+            AuthenticationManager: 인증 처리를 위해 UserDetailsService, suceess()등의 여러 컴포넌트를 호출.
+         */
+        LoginFilter loginFilter = new LoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil);
+        loginFilter.setFilterProcessesUrl("/api/users/login");
+        http.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
