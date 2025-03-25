@@ -16,7 +16,11 @@ public class ApiResponse<T> {
     private T data;
 
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true,null,null,data);
+        return new ApiResponse<>(true,null,null, data);
+    }
+
+    public static <T> ApiResponse<T> success() {
+        return new ApiResponse<>(true, null, null, null);
     }
 
     public static <T> ApiResponse<T> error(String errorCode, String errorMsg) {
