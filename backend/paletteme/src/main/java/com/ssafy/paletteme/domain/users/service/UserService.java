@@ -28,20 +28,13 @@ public class UserService {
     private final S3Util s3Util;
     private final UsersFavoriteColorRepository usersFavoriteColorRepository;
 
+    // 최대 허용 크기(이미지 저장) (예: 10MB)
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+
     @Transactional
     public void signUp(UserSignupRequest userSignupRequest, MultipartFile file) {
         // 이미지 저장하기
-        String s3Url = s3Util.getDefaultProfileImageUrl();
-        if(file!= null && !file.isEmpty()){
-            try{
-                S3UploadResponse response = s3Util.imageUpload(file,"mypage");
-                usersImgRepository.save(UsersImg.builder().url(response.getS3Url())
-                        .fileKey(response.getS3Key()).build());
-                s3Url = response.getS3Url();
-            }catch (Exception e){
-                throw new UserException(UserError.SIGNUP_USERS_IMAGE_UPLOAD);
-            }
-        }
+        String s3Url = handleProfileImageUpload(file);
 
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(userSignupRequest.getPassword());
@@ -66,6 +59,29 @@ public class UserService {
         // 작품 좋아요 추가하기
 
     }
+
+    private String handleProfileImageUpload(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return s3Util.getDefaultProfileImageUrl();
+        }
+
+        if (file.getSize() > MAX_FILE_SIZE) {
+            throw new UserException(UserError.SIGNUP_USERS_IMAGE_UPLOAD_SIZE);
+        }
+
+        try {
+            S3UploadResponse response = s3Util.imageUpload(file, "mypage");
+            usersImgRepository.save(UsersImg.builder()
+                    .url(response.getS3Url())
+                    .fileKey(response.getS3Key())
+                    .build());
+            return response.getS3Url();
+        } catch (Exception e) {
+            throw new UserException(UserError.SIGNUP_USERS_IMAGE_UPLOAD);
+        }
+    }
+
+
 }
 // TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기.
 // TODO: 작품 좋아요 추가하기
