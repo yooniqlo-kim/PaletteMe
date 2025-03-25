@@ -7,8 +7,8 @@ export default function IconMuseum({ isActive }: { isActive: boolean }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="40"
-      height="36"
+      width="28"
+      height="28"
       viewBox="0 0 40 36"
       fill="none">
       <path
