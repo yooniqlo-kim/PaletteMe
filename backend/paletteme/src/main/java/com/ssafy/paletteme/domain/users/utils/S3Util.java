@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.paletteme.domain.users.dto.S3UploadResponse;
+import com.ssafy.paletteme.domain.users.exception.UserError;
+import com.ssafy.paletteme.domain.users.exception.UserException;
 import com.ssafy.paletteme.infrastructure.config.S3Config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -33,8 +36,14 @@ public class S3Util {
     public S3UploadResponse imageUpload(MultipartFile file, String folderName) throws IOException {
         // 파일 이름에서 확장자 추출하여 새로운 파일명 짓기.
         String fileName = file.getOriginalFilename();
-        String ext = fileName.substring(fileName.lastIndexOf("."));
-        String uuidFileName = UUID.randomUUID() + ext;
+
+
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        if(!List.of("png", "jpg", "jpeg").contains(ext)){
+            throw new UserException(UserError.SIGNUP_USERS_IMAGE_UPLOAD_EXTENSION);
+        }
+
+        String uuidFileName = UUID.randomUUID() + "." +ext;
 
         // InputStream으로 파일 내용 읽기
         InputStream inputStream = file.getInputStream();
@@ -63,8 +72,7 @@ public class S3Util {
         try{
             s3Config.amazonS3Client().deleteObject(bucket, s3Key);
         }catch (Exception e){
-            e.getMessage();
-
+            throw new UserException(UserError.MYPAGE_USERS_IMAGE_DELETE);
         }
     }
 }
