@@ -4,6 +4,24 @@
 @theme {
   --font-sans: "Pretendard", sans-serif;
 
+  /* font sizes */
+  --text-xs: 0.875rem; /* 14px */
+  --text-sm: 1rem; /* 16px */
+  --text-md: 1.25rem; /* 20px */
+  --text-lg: 1.5rem; /* 24px */
+  --text-xl: 2.5rem; /* 40px */
+
+  /* font weights */
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
   /* color variable */
   --color-primary: #ff385c;
   --color-primary-hover: #e0284a;
@@ -20,6 +38,7 @@
   --color-netural-7: #717171;
   --color-netural-8: #5e5e5e;
 
+  /* 모서리 */
   --radius-s: 0.5rem;
   --radius-m: 0.75rem;
 }
