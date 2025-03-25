@@ -1,10 +1,16 @@
 package com.ssafy.paletteme.domain.users.controller;
 
+import com.ssafy.paletteme.common.response.ApiResponse;
+import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
 import com.ssafy.paletteme.domain.users.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -12,18 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-//    @PostMapping(value="/sign-up")
-//   public ResponseEntity<Void> signUp() {
-////        System.out.println("UserController.signUp");
-//////        @RequestPart("file") MultipartFile file
-//////     ,@RequestPart("data")UserSignupRequest request
-////        System.out.println(request.toString());
-//////        System.out.println(file.toString());
-//        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-//    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "test";
+    @PostMapping(value = "/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Void> signUp(@RequestPart("data") UserSignupRequest request, @RequestPart(value = "file", required = false)  MultipartFile file) throws IOException {
+        userService.signUp(request, file);
+        return ApiResponse.success();
     }
 }
