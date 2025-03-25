@@ -7,8 +7,8 @@ export default function IconCalendar({ isActive }: { isActive: boolean }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="41"
-      height="41"
+      width="30"
+      height="30"
       viewBox="0 0 41 41"
       fill="none">
       <path
