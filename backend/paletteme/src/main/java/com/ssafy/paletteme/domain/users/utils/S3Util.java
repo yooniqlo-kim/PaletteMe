@@ -3,6 +3,7 @@ package com.ssafy.paletteme.domain.users.utils;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.paletteme.domain.users.dto.S3UploadResponse;
 import com.ssafy.paletteme.infrastructure.config.S3Config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,7 @@ public class S3Util {
     }
 
     // S3 이미지 업로드
-    public void imageUpload(MultipartFile file, String folderName) throws IOException {
+    public S3UploadResponse imageUpload(MultipartFile file, String folderName) throws IOException {
         // 파일 이름에서 확장자 추출하여 새로운 파일명 짓기.
         String fileName = file.getOriginalFilename();
         String ext = fileName.substring(fileName.lastIndexOf("."));
@@ -54,9 +55,7 @@ public class S3Util {
 
         // S3에 저장된 이미지의 Url 주소 가져오기, getUrl("버킷명", "서버에 저장한 경로 포함한 파일명")
         String s3Url = s3Config.amazonS3Client().getUrl(bucket, s3FilePathName).toString();
-        //return S3UploadResponse.of(s3Url, s3FilePathName);
-
-        return;
+        return S3UploadResponse.of(s3Url, s3FilePathName);
     }
 
     // S3 이미지 삭제
