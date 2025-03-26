@@ -10,7 +10,7 @@ export function WriterMeta({
   date,
 }: WriterMetaProps) {
   return (
-    <div className="flex items-center gap-3 px-3 py-2 max-w-xs w-fit">
+    <div className="flex items-center gap-3 px-2 py-2 max-w-xs w-fit">
       <img
         src={profileImageUrl}
         alt={`${nickname}의 프로필`}
@@ -18,7 +18,7 @@ export function WriterMeta({
       />
       <div className="flex items-center gap-2 truncate">
         <span className="text-xs font-medium">{nickname}</span>
-        <span className="text-xs text-netural-8">{date}</span>
+        <span className="text-xs">{date}</span>
       </div>
     </div>
   );
