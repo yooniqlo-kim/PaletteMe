@@ -25,16 +25,18 @@ const Navbar: React.FC = () => {
         <NavLink
           key={name}
           to={path}
-          className="flex flex-col items-center text-xs focus:outline-none">
+          className="flex flex-col items-center text-xs focus:outline-none"
+        >
           {({ isActive }) => (
             <>
               <Icon isActive={isActive} />
               <span
                 className={`mt-1 text-[10px] whitespace-nowrap ${
                   isActive
-                    ? "text-[var(--color-navbar-active)] font-semibold"
-                    : "text-[var(--color-netural-6)]"
-                }`}>
+                    ? "text-navbar-active font-semibold"
+                    : "text-neutral-6"
+                }`}
+              >
                 {name}
               </span>
             </>
