@@ -43,9 +43,15 @@
   --radius-pm: 0.75rem;
 }
 
+/* 검색창 border 색상 정의 */
+.focus-border-primary:focus-within {
+  border: 1px solid var(--color-primary);
+}
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --color-primary: #ff385c;
 }

@@ -15,6 +15,7 @@ import IconButton from "@/shared/components/buttons/IconButton";
  *   overlayTextPosition="bottomRight"
  *   borderRadius="small"
  *   hasBorder
+ *   onClick={() => navigate("/artwork/1")}
  * />
  */
 
@@ -28,6 +29,7 @@ type Props = {
   overlayTextSize?: string; // 텍스트 크기
   borderRadius?: "small" | "medium"; // 8px | 12px
   hasBorder?: boolean; // 외곽선
+  onClick?: () => void; // 클릭 이벤트
 };
 
 export const ArtworkCard = ({
@@ -40,9 +42,10 @@ export const ArtworkCard = ({
   overlayTextSize,
   borderRadius = "small",
   hasBorder = false,
+  onClick,
 }: Props) => {
   const dimension =
-    size === "small" ? "w-[180px] h-[180px]" : "w-[300px] h-[300px]";
+    size === "small" ? "w-[11.25rem] h-[11.25rem]" : "w-[18.75rem] h-[18.75rem]"; // 180px | 300px
 
   const overlayPositionClass =
     overlayTextPosition === "center"
@@ -54,7 +57,8 @@ export const ArtworkCard = ({
 
   return (
     <div
-      className={`relative ${dimension} overflow-hidden ${
+      onClick={onClick}
+      className={`relative ${dimension} overflow-hidden cursor-pointer ${
         hasBorder ? "border border-white" : ""
       }`}
       style={{ borderRadius: borderRadiusValue }}
@@ -69,17 +73,16 @@ export const ArtworkCard = ({
         <div className="absolute inset-0 bg-black opacity-40" />
       )}
 
-        {overlayText && (
+      {overlayText && (
         <div
-            className={`absolute text-white font-bold whitespace-nowrap ${overlayPositionClass}`}
-            style={{
-            fontSize: `var(${overlayTextSize || "--text-sm"})`, // ✅ 없으면 기본 16px
-            }}
+          className={`absolute text-white font-bold whitespace-nowrap ${overlayPositionClass}`}
+          style={{
+            fontSize: `var(${overlayTextSize || "--text-sm"})`,
+          }}
         >
-            {overlayText}
+          {overlayText}
         </div>
-        )}
-
+      )}
 
       {showLikeButton && (
         <div className="absolute top-2 right-2">
