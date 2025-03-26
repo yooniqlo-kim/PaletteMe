@@ -4,6 +4,8 @@ import TodayArtsPage from "@/pages/TodayArtsPage";
 import SearchPage from "@/pages/SearchPage";
 import MymuseumPage from "@/pages/MymuseumPage";
 import ProfilePage from "@/pages/ProfilePage";
+import CommentPage from "@/pages/CommentPage";
+import WrappedPage from "@/pages/WrappedPage";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +19,8 @@ const router = createBrowserRouter([
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/profile", element: <ProfilePage /> },
+      { path: "/comment", element: <CommentPage /> },
+      { path: "/wrapped", element: <WrappedPage />},
     ],
   },
 ]);
