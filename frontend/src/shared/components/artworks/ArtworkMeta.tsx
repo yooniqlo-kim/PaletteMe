@@ -1,4 +1,5 @@
 type ArtworkMetaProps = {
+  artworkId?: string;
   title: string;
   artist: string;
   year?: string;
