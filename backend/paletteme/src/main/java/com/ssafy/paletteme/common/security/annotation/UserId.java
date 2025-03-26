@@ -6,4 +6,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)  // 런타임에도 유지됨
 @Documented
 public @interface UserId {
+
 }
