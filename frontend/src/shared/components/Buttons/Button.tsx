@@ -22,7 +22,7 @@ export default function Button({ size, children, ...props }: ButtonProps) {
 
   return (
     <button
-      className={`${width} bg-primary hover:bg-primary-hover h-12 font-semibold text-sm rounded-sm text-white text-sm py-1 box-border cursor-pointer`}
+      className={`${width} bg-primary hover:bg-primary-hover h-12 font-semibold py-1 box-border cursor-pointer`}
       {...props}>
       {children}
     </button>
