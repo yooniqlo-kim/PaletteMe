@@ -2,10 +2,10 @@ import { CommentCard } from "@shared/components/comments/CommentCard";
 import { CommentTicket } from "@shared/components/comments/CommentTicket";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
 
-export default function ReviewPage() {
+export default function CommentPage() {
   return (
     <>
-      <div>ReviewPage</div>
+      <div>CommentPage</div>
       <CommentCard
         profileImageUrl="https://i.namu.wiki/i/3VziV9_sgCyHf-34Nv7iKCHAC6gY5Pxs3xQ6fcqPoBTp2Gp5Tb2LnhM6yVryu8grbm6-izIBMFagq1dc7OoyeA.webp"
         nickname="미니마니모네"
