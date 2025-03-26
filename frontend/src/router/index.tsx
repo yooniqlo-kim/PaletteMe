@@ -7,6 +7,7 @@ import ProfilePage from "@/pages/ProfilePage";
 import CommentPage from "@/pages/CommentPage";
 import RegisterPage from "@/pages/RegisterPage";
 import LoginPage from "@/pages/LoginPage";
+import WrappedPage from "@/pages/WrappedPage";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/wrapped",
+    element: <WrappedPage />,
   },
 ]);
 
