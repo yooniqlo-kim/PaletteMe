@@ -29,18 +29,18 @@
   --color-secondary: #f2a0f4;
   --color-secondary-hover: #e58ce5;
   --color-inactive: #c2c2c2;
-  --color-netural-1: #f7f7f7;
-  --color-netural-2: #ebebeb;
-  --color-netural-3: #dddddd;
-  --color-netural-4: #d3d3d3;
-  --color-netural-5: #c2c2c2;
-  --color-netural-6: #b0b0b0;
-  --color-netural-7: #717171;
-  --color-netural-8: #5e5e5e;
+  --color-neutral-1: #f7f7f7;
+  --color-neutral-2: #ebebeb;
+  --color-neutral-3: #dddddd;
+  --color-neutral-4: #d3d3d3;
+  --color-neutral-5: #c2c2c2;
+  --color-neutral-6: #b0b0b0;
+  --color-neutral-7: #717171;
+  --color-neutral-8: #5e5e5e;
 
   /* 모서리 */
-  --radius-s: 0.5rem;
-  --radius-m: 0.75rem;
+  --radius-ps: 0.5rem;
+  --radius-pm: 0.75rem;
 }
 
 :root {
