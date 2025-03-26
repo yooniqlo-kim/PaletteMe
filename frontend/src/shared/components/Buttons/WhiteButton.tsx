@@ -1,34 +1,28 @@
 import { ComponentPropsWithoutRef } from "react";
 
-type IdentifierType = "heart" | "bookmark" | "review_card" | "review_detail";
-
 type WhiteButtonProps = ComponentPropsWithoutRef<"button"> & {
-  identifier: IdentifierType;
+  isClicked: boolean;
+  text: string;
 };
 
+// 마이뮤지엄 용 버튼
 export default function WhiteButton({
-  identifier,
-  children,
+  isClicked,
+  text,
   ...props
 }: WhiteButtonProps) {
-  let restProperties;
+  let style = isClicked
+    ? "bg-black text-white"
+    : "bg-white text-black border border-netural-3";
 
-  if (identifier === "heart")
-    restProperties = "bg-netural-2 text-black w-[60px] p-1 box-border";
-  else if (identifier === "bookmark")
-    restProperties = "bg-netural-2 p-1 box-border";
-  else if (identifier === "review_card")
-    restProperties =
-      "text-white bg-netural-2 opacity-50 w-[60px] p-1 box-border";
-  else if (identifier === "review_detail")
-    restProperties =
-      "text-netural-8 border border-netural-4 bg-white w-[60px] flex justify-center p-1 box-border gap-1";
+  if (text.length === 2) style += " w-15";
+  else if (text.length === 4) style += " w-24";
 
   return (
     <button
-      className={`${restProperties} rounded-sm cursor-pointer`}
+      className={`rounded-sm ${style} h-10 text-xs font-semibold cursor-pointer`}
       {...props}>
-      {children}
+      {text}
     </button>
   );
 }
