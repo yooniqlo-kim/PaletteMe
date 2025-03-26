@@ -3,18 +3,21 @@ package com.ssafy.paletteme.domain.users.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // 지연 로딩 시, Security에서 사용 불가.. 추후 개선하기
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "grade_id",
             nullable = false,
@@ -43,6 +46,7 @@ public class Users {
     @Column(name = "nickname", nullable = false, length = 50)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "active", nullable = false)
     private AccountStatus isActive;
 
