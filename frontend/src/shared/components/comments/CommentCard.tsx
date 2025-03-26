@@ -7,7 +7,7 @@ type CommentCardProps = {
   date: string;
   content: string;
   likeCount: number;
-  backgroundImageUrl?: string;
+  artworkImageUrl?: string;
 };
 
 export function CommentCard({
@@ -16,19 +16,19 @@ export function CommentCard({
   date,
   content,
   likeCount,
-  backgroundImageUrl,
+  artworkImageUrl,
 }: CommentCardProps) {
   return (
     <div
       className="relative max-w-[23.75rem] rounded-m overflow-hidden text-white shadow-md"
       style={{
-        backgroundImage: `url(${backgroundImageUrl})`,
+        backgroundImage: `url(${artworkImageUrl})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundColor: "rgba(0, 0, 0, 0.2)",
       }}
     >
-      <div className="backdrop-blur-xs bg-black/50 p-4 flex flex-col gap-1">
+      <div className="backdrop-blur-xs bg-black/15 p-4 flex flex-col ">
         <div className="flex justify-between items-center">
           <WriterMeta
             profileImageUrl={profileImageUrl}

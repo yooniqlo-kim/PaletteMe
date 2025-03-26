@@ -8,6 +8,7 @@
     "types": ["node"],
     "baseUrl": "src",
     "paths": {
+      "@/*": ["*"],
       "@assets/*": ["assets/*"],
       "@features/*": ["features/*"],
       "@shared/*": ["shared/*"]
