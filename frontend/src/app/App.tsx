@@ -3,7 +3,7 @@ import Layout from "../shared/components/layout/Layout";
 import { ArtworkImage } from "../shared/components/artworks/ArtworkImage";
 import { WriterMeta } from "../shared/components/comments/WriterMeta";
 import { BrowserRouter } from "react-router";
-import NavBar from "../shared/components/navbar/Navbar";
+import NavBar from "../shared/components/navbar/NavBar";
 
 function App() {
   return (
