@@ -1,3 +1,5 @@
-export default function loginpage() {
-  return <div>loginpage</div>;
+import Container from "@/shared/components/layout/Container";
+
+export default function LoginPage() {
+  return <Container>Login</Container>;
 }

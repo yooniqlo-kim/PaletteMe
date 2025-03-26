@@ -5,6 +5,8 @@ import SearchPage from "@/pages/SearchPage";
 import MymuseumPage from "@/pages/MymuseumPage";
 import ProfilePage from "@/pages/ProfilePage";
 import CommentPage from "@/pages/CommentPage";
+import RegisterPage from "@/pages/RegisterPage";
+import LoginPage from "@/pages/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +22,14 @@ const router = createBrowserRouter([
       { path: "/profile", element: <ProfilePage /> },
       { path: "/comment", element: <CommentPage /> },
     ],
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
 ]);
 
