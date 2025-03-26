@@ -1,12 +1,12 @@
 package com.ssafy.paletteme.domain.users.controller;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
+import com.ssafy.paletteme.common.security.annotation.UserId;
 import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
 import com.ssafy.paletteme.domain.users.service.UserService;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,4 +23,10 @@ public class UserController {
         userService.signUp(request, file);
         return ApiResponse.success();
     }
+
+    @GetMapping(value = "/token-test")
+    public ApiResponse<Integer> tokenTest(@Parameter(hidden = true) @UserId int userId){
+        return ApiResponse.success(userId);
+    }
+
 }
