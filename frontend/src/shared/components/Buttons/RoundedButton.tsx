@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef } from "react";
 
-type IdentifierType = "wrapped" | "arkwork";
+type IdentifierType = "wrapped" | "arkwork" | "user";
 
 type RoundedButtonProps = ComponentPropsWithoutRef<"button"> & {
   identifier: IdentifierType;

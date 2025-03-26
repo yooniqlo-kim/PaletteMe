@@ -1,3 +1,9 @@
+import UserImage from "@/shared/components/user/UserImage";
+
 export default function ProfilePage() {
-  return <div>ProfilePage</div>;
+  return (
+    <div>
+      <UserImage />
+    </div>
+  );
 }
