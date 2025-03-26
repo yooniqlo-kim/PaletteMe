@@ -1,31 +1,41 @@
 package com.ssafy.paletteme.common.security.provider;
 
+import com.ssafy.paletteme.domain.users.exception.UserError;
+import com.ssafy.paletteme.domain.users.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-/*
-* 궁금한 점: 이거는 또 @Component로 등록하네??? Security는 가급적 무슨 순서 때문에 가급적 수동 bean으로 등록하라지 않았나????
-* SecurityContext가 뭐지??
-* DetailService의 빈 등록 어노테이션으로 @Component, @Service 중 뭐가 더 적절할까???
-* */
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider{
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
+    // 비밀번호 일치 여부만 확인하기
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        return null;
+        String id = authentication.getName();
+        String password = authentication.getCredentials().toString();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(id);
+
+        if (!passwordEncoder.matches(password, userDetails.getPassword())){
+            throw new UserException(UserError.SECURITY_USERS_PASSWORD_NOT_MATCH);
+        }
+
+        return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
     }
 
+
+    // Provider가 인증 처리 할 수 있는 지를 묻는 자리. false로 둘 시, Provider 사용하지 않음
     @Override
     public boolean supports(Class<?> authentication) {
-        return false;
+        return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
     }
 }

@@ -3,6 +3,8 @@ package com.ssafy.paletteme.common.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.paletteme.common.response.ApiResponse;
 import com.ssafy.paletteme.common.security.jwt.JwtUtil;
+import com.ssafy.paletteme.common.security.provider.CustomUserDetails;
+import com.ssafy.paletteme.domain.users.dto.UserLoginResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,10 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /*
   [1] LoginFilter.attemptAuthentication() -> 사용자 인증의 시작점
@@ -43,9 +43,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         //클라이언트 요청에서 id, password 추출(form-data 형식)
         String id = request.getParameter("id");
         String password = request.getParameter("password");
-        System.out.println(id +"," + password);
 
-        //스프링 시큐리티에서 email과 password를 검증하기 위해서는 token에 담아야 함, 세번째 인자는 ROLE.
+        // id, password를 token에 담고, 세번째 인자는 ROLE.
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(id, password, null);
 
         //사용자 정보를 담은 token을 AuthenticationManager에 전달
@@ -55,38 +54,26 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
-        System.out.println("-----LoginFilter.successfulAuthentication-----");
+        // jwt 생성
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String role = "ROLE_USER";
+        String accessToken = jwtUtil.createJwt("access", userDetails.getUserId(), userDetails.getId(),role);
+        String refreshToken = jwtUtil.createJwt("refresh", userDetails.getUserId(), userDetails.getId(),role); ;
 
-        Map<String, Object> responseData = new HashMap<>();
-        responseData.put("success", true);
-        responseData.put("message", "로그인 성공 :)");
-
-        String accessToken = jwtUtil.createJwt("access", userDetails.getUserId(), userDetails.getEmail(),"ROLE_USER",600000000L);
-        String refreshToken = jwtUtil.createJwt("refresh", userDetails.getUserId(), userDetails.getEmail(),"ROLE_USER",600000000L); ;
-        userService.updateRefreshToken(userDetails.getUserId(), refreshToken);
-
-        UserLoginResponse userLoginResponse = UserLoginResponse.builder()
-                .userId(userDetails.getUserId())
-                .email(userDetails.getEmail())
+        // 로그인 후, 필요한 데이터 담기
+        UserLoginResponse data = UserLoginResponse.builder()
+                .id(userDetails.getId())
                 .nickname(userDetails.getNickname())
-                .profileUrl(userDetails.getProfileUrl())
+                .s3Url(userDetails.getS3Url())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
-//        Map<String, Object> results = new HashMap<>();
-//        results.put("userId", userDetails.getUserId());
-//        results.put("email", userDetails.getEmail());
-//        results.put("nickname", userDetails.getNickname());
-//        results.put("accessToken", accessToken);
-//        results.put("refreshToken", refreshToken);
-        responseData.put("results", userLoginResponse);
+        ApiResponse<UserLoginResponse> apiResponse = ApiResponse.success(data);
 
-        // JSON 문자열로 변환
+        // JSON 문자열로 응답
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(responseData); //예외처리 좀 더 생각해보기
+        String jsonResponse = objectMapper.writeValueAsString(apiResponse);
 
-        // 응답 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
@@ -97,8 +84,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 실패시 실행되는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("-----LoginFilter.unsuccessfulAuthentication-----");
-
         ApiResponse<Void> result = ApiResponse.error("0003", "비밀번호가 올바르지 않습니다.");
         String jsonResponse = new ObjectMapper().writeValueAsString(result);
 
