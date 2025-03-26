@@ -12,17 +12,17 @@ type ButtonProps = ComponentPropsWithoutRef<"button"> & {
 };
 
 export default function Button({ size, children, ...props }: ButtonProps) {
-  let width;
+  let style;
 
-  if (size === "XL") width = "w-[95%]";
-  else if (size === "X") width = "w-[336px]";
-  else if (size === "M") width = "w-[286px]";
-  else if (size === "S") width = "w-[107px]";
-  else if (size === "XS") width = "w-[68px]";
+  if (size === "XL") style = "w-[380px]";
+  else if (size === "X") style = "w-[336px]";
+  else if (size === "M") style = "w-[286px]";
+  else if (size === "S") style = "w-[107px]";
+  else if (size === "XS") style = "w-[68px] h-[40px]";
 
   return (
     <button
-      className={`${width} bg-primary hover:bg-primary-hover h-12 font-semibold py-1 box-border cursor-pointer`}
+      className={`h-12 bg-primary hover:bg-primary-hover font-semibold text-white rounded-ps py-1 box-border cursor-pointer ${style}`}
       {...props}>
       {children}
     </button>
