@@ -2,7 +2,7 @@
 export default function IconCalendar({ isActive }: { isActive: boolean }) {
   let color = isActive
     ? "var(--color-navbar-active)"
-    : "var(--color-netural-6)";
+    : "var(--color-neutral-6)";
 
   return (
     <svg
