@@ -12,7 +12,7 @@ export default function MymuseumPage() {
   const myCommentsImages = shuffled.slice(2, 4);
 
   return (
-    <div className="px-4">
+    <div className="px-4 pb-[3.75rem]">
       <div className="max-w-[420px] mx-auto w-full">
         <div className="text-lg font-bold mb-4">마이뮤지엄</div>
         <div className="mb-6">

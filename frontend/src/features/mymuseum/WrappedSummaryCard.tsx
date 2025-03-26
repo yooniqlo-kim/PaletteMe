@@ -11,7 +11,7 @@ export default function WrappedSummaryCard() {
     return (
       <div
         onClick={handleClick}
-        className="relative w-full max-w-[380px] h-[220px] rounded-lg overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+        className="relative w-full max-w-[23.75rem] h-[13.75rem] rounded-lg overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
       >
         <img
           src={wrappedThumbnail}
