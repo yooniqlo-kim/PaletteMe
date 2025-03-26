@@ -1,10 +1,10 @@
 import "./App.css";
-import Layout from "../shared/components/Layout/Layout";
-import { ArtworkImage } from "../shared/components/artworks/ArtworkImage";
-import { WriterMeta } from "../shared/components/comments/WriterMeta";
+import Layout from "@shared/components/layout/Layout";
+import { ArtworkImage } from "@shared/components/artworks/ArtworkImage";
+import { WriterMeta } from "@shared/components/comments/WriterMeta";
 import { BrowserRouter } from "react-router";
-import NavBar from "../shared/components/navbar/NavBar";
-import { CommentCard } from "../shared/components/comments/CommentCard";
+import NavBar from "@shared/components/navbar/NavBar";
+import { CommentCard } from "@shared/components/comments/CommentCard";
 
 function App() {
   return (
