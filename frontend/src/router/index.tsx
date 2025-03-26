@@ -21,7 +21,20 @@ const router = createBrowserRouter([
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/profile", element: <ProfilePage /> },
+      { path: "/comment", element: <CommentPage /> },
     ],
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/wrapped",
+    element: <WrappedPage />,
   },
 ]);
 
