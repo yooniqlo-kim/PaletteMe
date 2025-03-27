@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { SearchBar } from "@/shared/components/search/SearchBar";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import masterpieces from "@/assets/masterpieces/index";
+import placeholderArt from "@/assets/images/placeholder-art-dark-180x180.jpg";
 import { useNavigate } from "react-router-dom";
 
-// 이미지 없을 경우, 대체 이미지 (masterpieces의 img1 사용)
-const fallbackImage = masterpieces[0].image;
+// 대체 이미지
+const fallbackImage = placeholderArt;
 
 const dummyData = [
   { id: 1, imageUrl: "", overlayText: "국립중앙박물관" },

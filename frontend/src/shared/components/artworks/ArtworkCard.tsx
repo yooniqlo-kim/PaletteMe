@@ -1,28 +1,16 @@
-import IconButton from "@/shared/components/buttons/IconButton";
+import IconRedHeart from "@/shared/components/icons/IconRedHeart";
+import IconRedHeartLarge from "@/shared/components/icons/IconRedHeartLarge";
 
-/**
- * [공통 컴포넌트] ArtworkCard
- *
- * 180x180 또는 300x300 크기의 정사각형 이미지 카드 컴포넌트.
- *
- * ✅ 사용 예시:
- * <ArtworkCard
- *   imageUrl="/images/example.jpg"
- *   size="large"
- *   showLikeButton
- *   isDimmed
- *   overlayText="인상주의"
- *   overlayTextPosition="bottomRight"
- *   borderRadius="small"
- *   hasBorder
- *   onClick={() => navigate("/artwork/1")}
- * />
- */
+// placeholder 이미지 import
+import placeholderLight180 from "@/assets/images/placeholder-art-light-180x180.jpg";
+import placeholderLight300 from "@/assets/images/placeholder-art-light-300x300.jpg";
+import placeholderDark180 from "@/assets/images/placeholder-art-dark-180x180.jpg";
+import placeholderDark300 from "@/assets/images/placeholder-art-dark-300x300.jpg";
 
 type Props = {
   imageUrl: string; // 이미지 URL
   size?: "small" | "large"; // 180x180 | 300x300
-  showLikeButton?: boolean; // 좋아요 버튼
+  theme?: "light" | "dark"; // placeholder 선택용
   isDimmed?: boolean; // 반투명 필터
   overlayText?: string; // 텍스트
   overlayTextPosition?: "center" | "bottomRight"; // 텍스트 위치
@@ -30,12 +18,14 @@ type Props = {
   borderRadius?: "small" | "medium"; // 8px | 12px
   hasBorder?: boolean; // 외곽선
   onClick?: () => void; // 클릭 이벤트
+  isLiked?: boolean; // 좋아요
+  onClickLike?: () => void; // 좋아요 클릭 이벤트
 };
 
 export const ArtworkCard = ({
   imageUrl,
   size = "small",
-  showLikeButton = false,
+  theme = "light",
   isDimmed = false,
   overlayText,
   overlayTextPosition = "center",
@@ -43,9 +33,22 @@ export const ArtworkCard = ({
   borderRadius = "small",
   hasBorder = false,
   onClick,
+  isLiked = false,
+  onClickLike,
 }: Props) => {
   const dimension =
-    size === "small" ? "w-[11.25rem] h-[11.25rem]" : "w-[18.75rem] h-[18.75rem]"; // 180px | 300px
+    size === "small" ? "w-[11.25rem] h-[11.25rem]" : "w-[18.75rem] h-[18.75rem]";
+
+  const getPlaceholder = () => {
+    if (theme === "dark") {
+      return size === "small" ? placeholderDark180 : placeholderDark300;
+    } else {
+      return size === "small" ? placeholderLight180 : placeholderLight300;
+    }
+  };
+
+  const placeholderImage = getPlaceholder();
+  const safeImageUrl = imageUrl?.trim() ? imageUrl : placeholderImage;
 
   const overlayPositionClass =
     overlayTextPosition === "center"
@@ -64,14 +67,18 @@ export const ArtworkCard = ({
       style={{ borderRadius: borderRadiusValue }}
     >
       <img
-        src={imageUrl}
+        src={safeImageUrl}
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          if (target.src !== placeholderImage) {
+            target.src = placeholderImage;
+          }
+        }}
         alt="Artwork"
         className="w-full h-full object-cover"
       />
 
-      {isDimmed && (
-        <div className="absolute inset-0 bg-black opacity-40" />
-      )}
+      {isDimmed && <div className="absolute inset-0 bg-black opacity-40" />}
 
       {overlayText && (
         <div
@@ -84,10 +91,20 @@ export const ArtworkCard = ({
         </div>
       )}
 
-      {showLikeButton && (
-        <div className="absolute top-2 right-2">
-          <IconButton identifier="heart" />
-        </div>
+      {onClickLike && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickLike();
+          }}
+          className="absolute bottom-2 right-2 z-10"
+        >
+          {size === "small" ? (
+            <IconRedHeart isClicked={isLiked} />
+          ) : (
+            <IconRedHeartLarge isClicked={isLiked} />
+          )}
+        </button>
       )}
     </div>
   );

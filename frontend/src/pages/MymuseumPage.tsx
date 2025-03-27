@@ -1,10 +1,21 @@
-import MyCollection from "@/features/mymuseum/mycollection/MyCollection";
-import MyComments from "@/features/mymuseum/mycomments/MyComments";
+import MyCollectionContainer from "@/features/mymuseum/mycollection/MyCollectionContainer";
+import MyCommentsContainer from "@/features/mymuseum/mycomments/MyCommentsContainer";
 import masterpieces from "@/assets/masterpieces";
 import shuffle from "@/shared/utils/shuffle";
+import WeeklyCalendar from "@/features/mymuseum/calendar/WeeklyCalendar";
 import WrappedSummaryCard from "@/features/mymuseum/WrappedSummaryCard";
-import CalendarPreviewCard from "@/features/mymuseum/calendar/CalendarPreviewCard";
+import RecommendationContainer from "@/features/mymuseum/recommendation/RecommendationContainer";
 
+// 더미 데이터
+const weeklySampleData = [
+  { day: '월', hasDiary: false },
+  { day: '화', hasDiary: true, imageUrl: '/images/art1.jpg' },
+  { day: '수', hasDiary: false },
+  { day: '목', hasDiary: true, imageUrl: '/images/art2.jpg' },
+  { day: '금', hasDiary: false },
+  { day: '토', hasDiary: false },
+  { day: '일', hasDiary: false },
+];
 
 export default function MymuseumPage() {
   const shuffled = shuffle(masterpieces).slice(0, 4);
@@ -13,16 +24,16 @@ export default function MymuseumPage() {
 
   return (
     <div className="px-4 pb-[3.75rem]">
-      <div className="max-w-[420px] mx-auto w-full">
+      <div className="max-w-[26.25rem] mx-auto w-full">
         <div className="text-lg font-bold mb-4">마이뮤지엄</div>
         <div className="mb-6">
-          <CalendarPreviewCard />
+          <WeeklyCalendar data={weeklySampleData} />
         </div>
 
         <div className="mb-6">
           <div className="text-base font-semibold mb-2">추천 작품</div>
           <div>oo 님을 위한 추천 작품이에요.</div>
-          {/* 추천 작품 카드들 자리 */}
+          <RecommendationContainer />
         </div>
 
         <div className="mb-6">
@@ -32,12 +43,12 @@ export default function MymuseumPage() {
 
         <div className="mb-6">
           <div className="text-base font-semibold mb-2">나의 컬렉션</div>
-          <MyCollection images={myCollectionImages} />
+          <MyCollectionContainer images={myCollectionImages} />
         </div>
 
         <div className="mb-6">
           <div className="text-base font-semibold mb-2">감상문</div>
-          <MyComments images={myCommentsImages} />
+          <MyCommentsContainer images={myCommentsImages} />
         </div>
       </div>
     </div>
