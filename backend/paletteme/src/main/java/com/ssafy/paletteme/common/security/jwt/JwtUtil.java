@@ -2,6 +2,7 @@ package com.ssafy.paletteme.common.security.jwt;
 
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -11,7 +12,9 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private String secret = "mySuperSecureJwtSecretKey1234567890!";;
+    @Value("${jwt.secret}")
+    private String secret;
+
     private SecretKey secretKey;
 
     private final long TOKEN_EXPIRATION_MS = 864000000L; // 10일
