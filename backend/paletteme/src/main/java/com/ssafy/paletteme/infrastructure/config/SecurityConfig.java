@@ -1,5 +1,7 @@
 package com.ssafy.paletteme.infrastructure.config;
 
+import com.ssafy.paletteme.common.security.exception.CustomDeniedHandler;
+import com.ssafy.paletteme.common.security.exception.CustomEntryPoint;
 import com.ssafy.paletteme.common.security.filter.JWTFilter;
 import com.ssafy.paletteme.common.security.filter.LoginFilter;
 import com.ssafy.paletteme.common.security.jwt.JwtUtil;
@@ -29,6 +31,10 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
+    // 공통 예외 처리
+    private final CustomDeniedHandler customDeniedHandler;
+    private final CustomEntryPoint  customEntryPoint;
+
     // 비밀번호 암호화
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -53,6 +59,10 @@ public class SecurityConfig {
                                 .requestMatchers("/users/sign-up", "api/users/login").permitAll()
                                 .anyRequest().authenticated());
 
+        http.exceptionHandling( ex -> ex
+                .authenticationEntryPoint(customEntryPoint)
+                .accessDeniedHandler(customDeniedHandler)
+        );
 
         /* 인증 필터 추가, /api/users/login에서만 해당 필터 작동 */
         LoginFilter loginFilter = new LoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil);

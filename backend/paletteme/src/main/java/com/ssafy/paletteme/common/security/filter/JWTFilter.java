@@ -1,5 +1,7 @@
 package com.ssafy.paletteme.common.security.filter;
 
+import com.ssafy.paletteme.common.response.ApiResponse;
+import com.ssafy.paletteme.common.security.exception.SecurityResponseUtil;
 import com.ssafy.paletteme.common.security.jwt.JwtUtil;
 import com.ssafy.paletteme.common.security.provider.CustomUserDetails;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -16,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
@@ -46,9 +47,9 @@ public class JWTFilter extends OncePerRequestFilter {
         try {
             jwtUtil.isExpired(token);
         } catch (ExpiredJwtException e) {
-            PrintWriter writer = response.getWriter();
-            writer.print("token이 만료 되었습니다.");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            System.out.println("JWT Token Expired");
+            ApiResponse apiResponse = new ApiResponse(false,"400", "JWT 토큰 만료", null);
+            SecurityResponseUtil.writeJsonResponse(response, apiResponse);
             return;
         }
 
@@ -69,3 +70,5 @@ public class JWTFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
+// BadCredentialsException: EntryPoint에서 예외 처리하기 위함, 다른 예외로 던지면 EntryPoint에서 처리 불가
+// TODO: JWT 토큰 만료되었을 경우 처리, RefreshToken 관리 로직 추가(Redis 사용 예정)

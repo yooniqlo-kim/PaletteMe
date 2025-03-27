@@ -15,7 +15,9 @@ public enum UserError {
     MYPAGE_USERS_IMAGE_DELETE("500", "1008", "아 s3 이미지 왜 삭제 안돼ㅠㅠ"),
     SECURITY_USERS_PASSWORD_NOT_MATCH("400", "1009", "비밀번호가 올바르지 않습니다."),
     SECURITY_USERS_ACCOUNT_SUSPENDED("400", "1010", "일시정지된 회원입니다."),
-    SECURITY_USERS_ID_NOT_MATCH("400", "1009", "ID가 올바르지 않습니다."),
+    SECURITY_USERS_ID_NOT_MATCH("400", "1011", "ID가 올바르지 않습니다."),
+    SECURITY_USERS_FORBIDDEN("400", "1012", "요청하신 리소스에 접근할 권한이 없습니다."),
+    SECURITY_USERS_UNAUTHENTICATED("500","1013","하 Security 인증쪽 에러" );
     ;
 
 

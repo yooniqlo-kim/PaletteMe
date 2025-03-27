@@ -4,6 +4,7 @@ import com.ssafy.paletteme.domain.users.exception.UserError;
 import com.ssafy.paletteme.domain.users.exception.UserException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -26,7 +27,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
         UserDetails userDetails = userDetailsService.loadUserByUsername(id);
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())){
-            throw new UserException(UserError.SECURITY_USERS_PASSWORD_NOT_MATCH);
+            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());

@@ -2,6 +2,7 @@ package com.ssafy.paletteme.common.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.paletteme.common.response.ApiResponse;
+import com.ssafy.paletteme.common.security.exception.SecurityResponseUtil;
 import com.ssafy.paletteme.common.security.jwt.JwtUtil;
 import com.ssafy.paletteme.common.security.provider.CustomUserDetails;
 import com.ssafy.paletteme.domain.users.dto.UserLoginResponse;
@@ -27,6 +28,11 @@ import java.io.IOException;
   [3] Authentication 반환
         ** SecurityContext 에 저장..?
         결과에 따라 LoginFilter의 success, unsucess가 호출됨.
+*/
+/*
+    BadCredentialsException을 포함한 AuthenticationException은
+    인증 시도 과정에서는 AuthenticationEntryPoint가 아니라
+    LoginFilter의 unsuccessfulAuthentication()에서 처리됨.
 */
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -84,13 +90,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 실패시 실행되는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException failed) throws IOException, ServletException {
-        ApiResponse<Void> result = ApiResponse.error("0003", "비밀번호가 올바르지 않습니다.");
-        String jsonResponse = new ObjectMapper().writeValueAsString(result);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(jsonResponse);
-        response.getWriter().flush();
+        ApiResponse apiResponse = new ApiResponse(false,"400", failed.getMessage(), null);
+        SecurityResponseUtil.writeJsonResponse(response, apiResponse);
 
     }
 }
