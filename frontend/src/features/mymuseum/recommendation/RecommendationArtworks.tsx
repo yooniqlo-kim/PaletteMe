@@ -11,12 +11,14 @@ type Props = {
 
 export default function RecommendationArtworks({ artworks, onReachEnd }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [likedArtworks, setLikedArtworks] = useState<number[]>([]);
 
   useEffect(() => {
     setCurrentIndex(0);
   }, [artworks]);
-  
+
   const currentArtwork = artworks[currentIndex];
+  const isLast = currentIndex === artworks.length - 1;
 
   const showPrev = () => {
     if (currentIndex > 0) {
@@ -25,15 +27,18 @@ export default function RecommendationArtworks({ artworks, onReachEnd }: Props) 
   };
 
   const showNext = () => {
-    const isLast = currentIndex === artworks.length - 1;
-
     if (!isLast) {
       setCurrentIndex((prev) => prev + 1);
     }
-
     if (isLast && onReachEnd) {
-      onReachEnd(); // 마지막 작품일 때, 콜백 실행
+      onReachEnd();
     }
+  };
+
+  const toggleLike = (id: number) => {
+    setLikedArtworks((prev) =>
+      prev.includes(id) ? prev.filter((artId) => artId !== id) : [...prev, id]
+    );
   };
 
   return (
@@ -55,6 +60,8 @@ export default function RecommendationArtworks({ artworks, onReachEnd }: Props) 
           size="large"
           borderRadius="small"
           theme="light"
+          isLiked={likedArtworks.includes(currentArtwork.id)}
+          onClickLike={() => toggleLike(currentArtwork.id)}  
           onClick={() => console.log(`작품 ${currentArtwork.id} 클릭됨`)}
         />
       )}

@@ -12,13 +12,15 @@ export default function RecommendedFilterChips({ selected, onSelect }: Props) {
     <div className="flex justify-evenly items-center py-[0.75rem] overflow-x-auto w-full">
       {filters.map((filter) => (
         <Chip
-          key={filter}
-          text={filter}
-          onClick={() => onSelect(filter)}
-          className={`
-            rounded-[0.5rem] border border-black px-[0.75rem] h-[2rem] text-sm whitespace-nowrap
-            ${selected === filter ? 'bg-black text-white' : 'bg-white text-black'}
-          `}
+            key={filter}
+            text={filter}
+            onClick={() => onSelect(filter)}
+            className={`
+                rounded-[0.5rem] px-[0.75rem] h-[2rem] text-sm whitespace-nowrap
+                ${selected === filter 
+                ? 'bg-black text-white border-black' 
+                : 'bg-white text-black border-[var(--color-neutral-3)]'}
+            `}
         />
       ))}
     </div>
