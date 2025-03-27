@@ -28,7 +28,7 @@ public class Users {
     @Column(name = "s3_url", nullable = false, length = 255)
     private String s3Url;
 
-    @Column(name = "id", nullable = false, length = 255)
+    @Column(name = "id", nullable = false, length = 255, unique = true)
     private String loginId;
 
     @Column(name = "password", length = 500)
