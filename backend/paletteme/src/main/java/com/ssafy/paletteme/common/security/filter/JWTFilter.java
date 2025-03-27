@@ -48,7 +48,7 @@ public class JWTFilter extends OncePerRequestFilter {
             jwtUtil.isExpired(token);
         } catch (ExpiredJwtException e) {
             System.out.println("JWT Token Expired");
-            ApiResponse apiResponse = new ApiResponse(false,"400", "JWT 토큰 만료", null);
+            ApiResponse apiResponse = new ApiResponse(false,"400", "로그인이 필요합니다. 먼저 로그인해주세요", null);
             SecurityResponseUtil.writeJsonResponse(response, apiResponse);
             return;
         }
