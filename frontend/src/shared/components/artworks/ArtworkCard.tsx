@@ -19,9 +19,16 @@ import IconButton from "@/shared/components/buttons/IconButton";
  * />
  */
 
+// placeholder 이미지 import
+import placeholderLight180 from "@/assets/images/placeholder-art-light-180x180.jpg";
+import placeholderLight300 from "@/assets/images/placeholder-art-light-300x300.jpg";
+import placeholderDark180 from "@/assets/images/placeholder-art-dark-180x180.jpg";
+import placeholderDark300 from "@/assets/images/placeholder-art-dark-300x300.jpg";
+
 type Props = {
   imageUrl: string; // 이미지 URL
   size?: "small" | "large"; // 180x180 | 300x300
+  theme?: "light" | "dark"; // placeholder 선택용
   showLikeButton?: boolean; // 좋아요 버튼
   isDimmed?: boolean; // 반투명 필터
   overlayText?: string; // 텍스트
@@ -35,6 +42,7 @@ type Props = {
 export const ArtworkCard = ({
   imageUrl,
   size = "small",
+  theme = "light",
   showLikeButton = false,
   isDimmed = false,
   overlayText,
@@ -45,7 +53,19 @@ export const ArtworkCard = ({
   onClick,
 }: Props) => {
   const dimension =
-    size === "small" ? "w-[11.25rem] h-[11.25rem]" : "w-[18.75rem] h-[18.75rem]"; // 180px | 300px
+    size === "small" ? "w-[11.25rem] h-[11.25rem]" : "w-[18.75rem] h-[18.75rem]";
+
+  const getPlaceholder = () => {
+    if (theme === "dark") {
+      return size === "small" ? placeholderDark180 : placeholderDark300;
+    } else {
+      return size === "small" ? placeholderLight180 : placeholderLight300;
+    }
+  };
+
+  const placeholderImage = getPlaceholder();
+
+  const safeImageUrl = imageUrl?.trim() ? imageUrl : placeholderImage;
 
   const overlayPositionClass =
     overlayTextPosition === "center"
@@ -64,14 +84,18 @@ export const ArtworkCard = ({
       style={{ borderRadius: borderRadiusValue }}
     >
       <img
-        src={imageUrl}
+        src={safeImageUrl}
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          if (target.src !== placeholderImage) {
+            target.src = placeholderImage;
+          }
+        }}
         alt="Artwork"
         className="w-full h-full object-cover"
       />
 
-      {isDimmed && (
-        <div className="absolute inset-0 bg-black opacity-40" />
-      )}
+      {isDimmed && <div className="absolute inset-0 bg-black opacity-40" />}
 
       {overlayText && (
         <div
