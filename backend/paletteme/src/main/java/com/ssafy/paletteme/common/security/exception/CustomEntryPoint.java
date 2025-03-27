@@ -17,7 +17,7 @@ import java.io.IOException;
 public class CustomEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        String message = "먼저 로그인을 해주세요.";
+        String message = "로그인이 필요합니다. 먼저 로그인해주세요.";
         if (authException instanceof BadCredentialsException) {
             message = authException.getMessage();
         }
