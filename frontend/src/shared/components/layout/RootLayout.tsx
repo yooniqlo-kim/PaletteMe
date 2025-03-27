@@ -6,15 +6,18 @@ import ScrollToTop from "@/shared/components/scroll/ScrollToTop";
 
 export default function RootLayout() {
   return (
-    <>
-      <Container id="scrollable-container">
-        <Header />
-        <main>
-          <ScrollToTop />
-          <Outlet />
-        </main>
-        <NavBar />
+    <div className="relative h-screen w-screen bg-red-200 flex justify-center items-center">
+      {/* 고정된 Header */}
+      <Header />
+
+      {/* 스크롤 가능한 콘텐츠만 Container 안에 */}
+      <Container>
+        <ScrollToTop />
+        <Outlet />
       </Container>
-    </>
+
+      {/* 고정된 하단 Nav */}
+      <NavBar />
+    </div>
   );
 }
