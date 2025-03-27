@@ -17,7 +17,8 @@ public enum UserError {
     SECURITY_USERS_ACCOUNT_SUSPENDED("400", "1010", "일시정지된 회원입니다."),
     SECURITY_USERS_ID_NOT_MATCH("400", "1011", "ID가 올바르지 않습니다."),
     SECURITY_USERS_FORBIDDEN("400", "1012", "요청하신 리소스에 접근할 권한이 없습니다."),
-    SECURITY_USERS_UNAUTHENTICATED("500","1013","하 Security 인증쪽 에러" );
+    SECURITY_USERS_UNAUTHENTICATED("500","1013","하 Security 인증쪽 에러" ),
+    SIGNUP_USERS_DUPLICATE_ID("400", "1014", "이미 저장된 아이디 입니다.");
     ;
 
 

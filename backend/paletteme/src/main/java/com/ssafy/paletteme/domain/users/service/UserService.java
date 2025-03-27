@@ -33,6 +33,12 @@ public class UserService {
 
     @Transactional
     public void signUp(UserSignupRequest userSignupRequest, MultipartFile file) {
+        // 아이디 UNIQUE 확인
+
+        if (usersRepository.existsByLoginId(userSignupRequest.getId())) {
+            throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_ID);
+        }
+
         // 이미지 저장하기
         String s3Url = handleProfileImageUpload(file);
 
