@@ -1,4 +1,4 @@
-import defaultImg from "../../../assets/images/MainLogo.png";
+import defaultImg from "../../../assets/images/profile.jpg";
 
 export default function UserImage({ userImg = defaultImg }) {
   return (
