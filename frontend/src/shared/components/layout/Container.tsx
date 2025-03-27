@@ -5,7 +5,7 @@ interface ContainerProps {
   id?: string;
 }
 
-export default function Container({ children, id }: ContainerProps) {
+export default function Container({ children, id = "scrollable-container" }: ContainerProps) {
   return (
     <div
       id={id}
