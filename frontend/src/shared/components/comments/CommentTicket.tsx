@@ -31,7 +31,7 @@ export function CommentTicket({
   return (
     <div
       onClick={() => commentId && onClick?.(commentId)}
-      className="w-full max-w-[17rem] h-[35rem] rounded-m bg-white overflow-hidden flex flex-col cursor-pointer shadow-[0_4px_20px_8px_rgba(34,34,34,0.25)]"
+      className="w-full max-w-[17rem] h-[35rem] rounded-pm bg-white overflow-hidden flex flex-col cursor-pointer shadow-[0_4px_20px_8px_rgba(34,34,34,0.25)]"
     >
       <div className="relative">
         <ArtworkImage artworkImageUrl={artworkImageUrl} />

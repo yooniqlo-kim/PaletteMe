@@ -20,7 +20,7 @@ export function CommentCard({
 }: CommentCardProps) {
   return (
     <div
-      className="relative max-w-[23.75rem] rounded-m overflow-hidden text-white shadow-md"
+      className="relative max-w-[23.75rem] rounded-pm overflow-hidden text-white shadow-md"
       style={{
         backgroundImage: `url(${artworkImageUrl})`,
         backgroundSize: "cover",
