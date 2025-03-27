@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.http.HttpResponse;
 
 @Tag(name = "Users", description = "회원 관련 API")
 @RestController
@@ -26,6 +27,7 @@ public class UserController {
     public ApiResponse<Void> signUp(@RequestPart("data") UserSignupRequest request, @RequestPart(value = "file", required = false)  MultipartFile file) throws IOException {
         userService.signUp(request, file);
         return ApiResponse.success();
+
     }
 
     @Operation(summary = "토큰 유효성 확인", description = "Access Token이 유효한지 확인하는 테스트용 API입니다.")
