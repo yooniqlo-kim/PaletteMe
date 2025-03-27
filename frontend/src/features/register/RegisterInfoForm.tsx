@@ -10,13 +10,12 @@ export default function RegisterInfoForm() {
       <div className="flex flex-col gap-[33px]">
         <InputContainer>
           <Label htmlFor="id">아이디</Label>
-          <span className="flex flex-row gap-6">
+          <span className="flex justify-between w-full gap-4">
             <Input
               id="id"
               name="id"
               type="text"
               placeholder="아이디를 입력해주세요"
-              className="w-[246px]"
             />
             <Button size="XS">중복 확인</Button>
           </span>
@@ -49,26 +48,24 @@ export default function RegisterInfoForm() {
         </InputContainer>
         <InputContainer>
           <Label htmlFor="id">전화번호</Label>
-          <span className="flex flex-row gap-6">
+          <span className="flex justify-between w-full gap-4">
             <Input
               id="id"
               name="id"
               type="number"
               placeholder="전화번호 입력 ( - 제외)"
-              className="w-[246px]"
             />
             <Button size="XS">번호 전송</Button>
           </span>
         </InputContainer>
         <InputContainer>
           <Label htmlFor="id">인증번호 입력</Label>
-          <span className="flex flex-row gap-6">
+          <span className="flex justify-between w-full gap-4">
             <Input
               id="id"
               name="id"
               type="number"
               placeholder="인증번호 6자리 입력"
-              className="w-[246px]"
             />
             <Button size="XS">확인</Button>
           </span>
