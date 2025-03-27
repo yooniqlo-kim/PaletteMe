@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import wrappedThumbnail from "@/assets/images/wrapped_thumbnail.jpg";
+import wrappedThumbnail from "@/assets/images/wrapped-thumbnail.jpg";
 
 export default function WrappedSummaryCard() {
     const navigate = useNavigate();

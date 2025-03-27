@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SearchBar } from "@/shared/components/search/SearchBar";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import placeholderArt from "@/assets/images/placeholder-art-dark-180_180.jpg";
+import placeholderArt from "@/assets/images/placeholder-art-dark-180x180.jpg";
 import { useNavigate } from "react-router-dom";
 
 // 대체 이미지
