@@ -9,8 +9,10 @@ export default function RootLayout() {
     <>
       <Container id="scrollable-container">
         <Header />
-        <ScrollToTop />
-        <Outlet />
+        <main>
+          <ScrollToTop />
+          <Outlet />
+        </main>
         <NavBar />
       </Container>
     </>
