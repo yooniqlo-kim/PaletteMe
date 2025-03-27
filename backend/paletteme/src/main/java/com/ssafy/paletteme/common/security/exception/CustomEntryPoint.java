@@ -22,7 +22,7 @@ public class CustomEntryPoint implements AuthenticationEntryPoint {
             message = authException.getMessage();
         }
 
-        ApiResponse apiResponse = new ApiResponse(false,"500", message, null);
+        ApiResponse apiResponse = ApiResponse.error("500", message);
         SecurityResponseUtil.writeJsonResponse(response, apiResponse);
 
     }
