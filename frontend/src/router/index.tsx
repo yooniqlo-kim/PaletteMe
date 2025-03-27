@@ -8,6 +8,7 @@ import CommentPage from "@/pages/CommentPage";
 import RegisterPage from "@/pages/RegisterPage";
 import LoginPage from "@/pages/LoginPage";
 import WrappedPage from "@/pages/WrappedPage";
+import ArtworkPage from "@/pages/ArtworkPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 const router = createBrowserRouter([
@@ -24,6 +25,8 @@ const router = createBrowserRouter([
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/profile", element: <ProfilePage /> },
       { path: "/comment", element: <CommentPage /> },
+      // {path: "/artwork/:id", element: <ArtworkPage />},
+      { path: "/artwork", element: <ArtworkPage /> },
     ],
   },
   {

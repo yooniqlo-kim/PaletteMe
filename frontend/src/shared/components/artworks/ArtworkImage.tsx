@@ -11,7 +11,7 @@ export function ArtworkImage({ artworkImageUrl }: ArtworkImageProps) {
       className="block w-full max-w-[380px] mx-auto"
     >
       <div
-        className="aspect-[23.75/22.375] rounded-m bg-cover bg-no-repeat bg-center"
+        className="aspect-[23.75/22.375] rounded-pm bg-cover bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${artworkImageUrl})` }}
       />
     </a>
