@@ -27,7 +27,6 @@ const router = createBrowserRouter([
       { path: "/profile/level", element: <LevelInfoPage /> },
       { path: "profile/confirm", element: <ConfirmPasswordPage /> },
       { path: "profile/update", element: <UpdateUserInfoPage /> },
-      { path: "/comment", element: <CommentPage /> },
       { path: "/artwork", element: <ArtworkPage /> },
       { path: "/write", element: <WritePage /> },
       { path: "/login", element: <LoginPage /> },
