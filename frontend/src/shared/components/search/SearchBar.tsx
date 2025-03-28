@@ -4,11 +4,22 @@ import { ChangeEvent, KeyboardEvent } from "react";
 interface SearchBarProps {
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown?: (e: KeyboardEvent) => void; // 옵셔널로 변경
+  onKeyDown?: (e: KeyboardEvent) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  inputRef?: React.RefObject<HTMLInputElement | null>; 
   placeholder?: string;
 }
 
-export const SearchBar = ({ value, onChange, onKeyDown, placeholder }: SearchBarProps) => {
+export const SearchBar = ({
+  value,
+  onChange,
+  onKeyDown,
+  onFocus,
+  onBlur,
+  inputRef, 
+  placeholder,
+}: SearchBarProps) => {
   return (
     <div
       className="w-[23.75rem] h-[3.25rem] flex items-center px-4 border border-transparent focus-border-primary transition-colors duration-150"
@@ -21,10 +32,13 @@ export const SearchBar = ({ value, onChange, onKeyDown, placeholder }: SearchBar
         <IconSearch isActive={false} />
       </div>
       <input
+        ref={inputRef}
         type="text"
         value={value}
         onChange={onChange}
-        onKeyDown={onKeyDown} // onKeyDown을 전달
+        onKeyDown={onKeyDown}
+        onFocus={onFocus}
+        onBlur={onBlur}
         placeholder={placeholder || "작품, 화가 등 검색하기"}
         className="flex-1 bg-transparent outline-none text-base text-gray-800 placeholder:text-[var(--color-neutral-6)]"
       />

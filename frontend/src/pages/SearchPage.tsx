@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { SearchBar } from "@/shared/components/search/SearchBar";
+import SearchContainer from "@/features/search/SearchContainer";
 import SearchResultList from "@/features/search/SearchResultList";
 import SearchRecommendationList from "@/features/search/SearchRecommendationList";
 import { searchDummy } from "@/shared/dummy/seachThumbnailDummy";
@@ -48,10 +48,11 @@ export default function SearchPage() {
 
   return (
     <div className="px-4 py-6 pb-[5rem]">
-      <SearchBar
+      <SearchContainer
         value={searchValue}
         onChange={handleSearchChange}
         onKeyDown={handleSearchKeyDown}
+        setValue={setSearchValue}
       />
 
       <div className="mt-6">
