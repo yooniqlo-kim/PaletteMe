@@ -3,6 +3,8 @@ import { BaseComment } from "@/shared/types/comment";
 export const commentDummy: BaseComment[] = [
   {
     commentId: "c1",
+    artworkId: "a1",
+
     user: {
       userId: "u1",
       profileImageUrl:
@@ -16,6 +18,7 @@ export const commentDummy: BaseComment[] = [
   },
   {
     commentId: "c2",
+    artworkId: "a1",
     user: {
       userId: "u2",
       profileImageUrl:
@@ -29,6 +32,7 @@ export const commentDummy: BaseComment[] = [
   },
   {
     commentId: "c3",
+    artworkId: "a1",
     user: {
       userId: "u3",
       profileImageUrl:

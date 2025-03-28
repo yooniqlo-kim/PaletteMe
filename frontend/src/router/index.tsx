@@ -4,7 +4,6 @@ import TodayArtsPage from "@/pages/TodayArtsPage";
 import SearchPage from "@/pages/SearchPage";
 import MymuseumPage from "@/pages/MymuseumPage";
 import ProfilePage from "@/pages/ProfilePage";
-import CommentPage from "@/pages/CommentPage";
 import RegisterPage from "@/pages/RegisterPage";
 import LoginPage from "@/pages/LoginPage";
 import WrappedPage from "@/pages/WrappedPage";
@@ -12,6 +11,7 @@ import ArtworkPage from "@/pages/ArtworkPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import WritePage from "@/pages/WritePage";
 import LevelInfoPage from "@/pages/LevelInfoPage";
+import CommentCollectionPage from "@/pages/CommentCollectionPage";
 import ConfirmPasswordPage from "@/pages/ConfirmPasswordPage";
 import UpdateUserInfoPage from "@/pages/UpdateUserInfoPage";
 
@@ -34,6 +34,7 @@ const router = createBrowserRouter([
       { path: "/signup", element: <RegisterPage /> },
       { path: "/wrapped", element: <WrappedPage /> },
       { path: "*", element: <NotFoundPage /> },
+      { path: "/commentcollection", element: <CommentCollectionPage /> },
     ],
   },
 ]);
