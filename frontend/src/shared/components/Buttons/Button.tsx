@@ -20,13 +20,14 @@ export default function Button({
 }: ButtonProps) {
   let style;
 
-  if (size === "S") style = "w-[107px] h-[2.375rem]";
+  if (size === "S") style = "!w-[107px] h-[2.375rem]";
   else if (size === "XS") style = "!w-[68px] h-[40px]";
 
   return (
     <button
       className={`w-full h-12 bg-primary hover:bg-primary-hover font-semibold text-white rounded-ps py-1 box-border cursor-pointer ${style} ${className}`}
-      {...props}>
+      {...props}
+    >
       {children}
     </button>
   );
