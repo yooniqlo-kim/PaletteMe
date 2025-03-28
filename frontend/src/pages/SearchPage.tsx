@@ -1,29 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { SearchBar } from "@/shared/components/search/SearchBar";
-import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import placeholderArt from "@/assets/images/placeholder-art-dark-180x180.jpg";
-import { useNavigate } from "react-router-dom";
-
-// 대체 이미지
-const fallbackImage = placeholderArt;
-
-const dummyData = [
-  { id: 1, imageUrl: "", overlayText: "국립중앙박물관" },
-  { id: 2, imageUrl: "", overlayText: "인상주의" },
-  { id: 3, imageUrl: "", overlayText: "MOMA" },
-  { id: 4, imageUrl: "", overlayText: "모네" },
-  { id: 5, imageUrl: "", overlayText: "르누아르" },
-  { id: 6, imageUrl: "", overlayText: "르네상스" },
-  { id: 7, imageUrl: "", overlayText: "초현실주의" },
-  { id: 8, imageUrl: "", overlayText: "현대미술" },
-];
+import SearchResultList from "@/features/search/SearchResultList";
+import SearchRecommendationList from "@/features/search/SearchRecommendationList";
+import { searchDummy } from "@/shared/dummy/seachThumbnailDummy";
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState("");
+  const [likedArtworks, setLikedArtworks] = useState<number[]>([]);
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get("query") || "";
+
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setSearchValue(query);
+  }, [query]);
+
   const handleCardClick = (id: number) => {
-    // 페이지 이동
     navigate(`/artwork/${id}`);
   };
 
@@ -31,34 +25,49 @@ export default function SearchPage() {
     setSearchValue(e.target.value);
   };
 
-  // 엔터 키 이벤트
   const handleSearchKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      console.log("검색어:", searchValue);
-      // 검색어를 활용한 추가적인 로직 처리 가능
+      navigate(`/search?query=${encodeURIComponent(searchValue.trim())}`);
     }
   };
+
+  const toggleLike = (id: number) => {
+    setLikedArtworks((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const filteredData = searchDummy.filter((artwork) =>
+    artwork.overlayText.toLowerCase().includes(query.toLowerCase())
+  );
+
+  const enrichedData = filteredData.map((artwork) => ({
+    ...artwork,
+    isLiked: likedArtworks.includes(artwork.id),
+  }));
 
   return (
     <div className="px-4 py-6 pb-[5rem]">
       <SearchBar
         value={searchValue}
         onChange={handleSearchChange}
-        onKeyDown={handleSearchKeyDown} // 엔터키
+        onKeyDown={handleSearchKeyDown}
       />
 
-      <div className="mt-6 grid grid-cols-2 gap-4">
-        {dummyData.map((artwork) => (
-          <ArtworkCard
-            key={artwork.id}
-            imageUrl={artwork.imageUrl || fallbackImage}
-            overlayText={artwork.overlayText}
-            overlayTextPosition="bottomRight"
-            size="small"
-            borderRadius="small"
-            onClick={() => handleCardClick(artwork.id)}
+      <div className="mt-6">
+        {query ? (
+          <SearchResultList
+            data={enrichedData}
+            onCardClick={handleCardClick}
+            onCardLike={toggleLike}
+            query={query}
           />
-        ))}
+        ) : (
+          <SearchRecommendationList
+            data={searchDummy}
+            onCardClick={handleCardClick}
+          />
+        )}
       </div>
     </div>
   );
