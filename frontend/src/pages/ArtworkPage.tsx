@@ -19,7 +19,6 @@ export default function ArtworkPage() {
         <ArtworkMeta artwork={artworkDummy} showYear showLocation />
         <DescriptionBox description={artworkDummy.description} />
       </WhiteContainer>
-
       <WhiteContainer className="mt-2">
         <AIDocentBox
           onFetchExplanation={() =>
@@ -29,7 +28,6 @@ export default function ArtworkPage() {
           }
         />
       </WhiteContainer>
-
       <WhiteContainer className="mt-2 pb-28">
         <CommentBox comments={commentDummy} />
       </WhiteContainer>
