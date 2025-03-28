@@ -1,6 +1,6 @@
 import { BaseComment } from "@/shared/types/comment";
 import { Artwork } from "@/shared/types/artwork";
-import { ArtworkImage } from "../artworks/ArtworkImage";
+import { ArtworkImage } from "../../../features/detail/ArtworkImage";
 import { ArtworkMeta } from "../artworks/ArtworkMeta";
 import { WriterMeta } from "./WriterMeta";
 import { ThumbsUp } from "lucide-react";
