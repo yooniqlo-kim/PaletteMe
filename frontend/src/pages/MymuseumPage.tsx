@@ -5,9 +5,12 @@ import shuffle from "@/shared/utils/shuffle";
 import WeeklyCalendar from "@/features/mymuseum/calendar/WeeklyCalendar";
 import WrappedSummaryCard from "@/features/mymuseum/WrappedSummaryCard";
 import RecommendationContainer from "@/features/mymuseum/recommendation/RecommendationContainer";
+import { useNavigate } from 'react-router-dom'; 
 import { weeklyDummy } from "@/shared/dummy/weeklyDummy "; 
 
+
 export default function MymuseumPage() {
+  const navigate = useNavigate();
   const shuffled = shuffle(masterpieces).slice(0, 4);
   const myCollectionImages = shuffled.slice(0, 2);
   const myCommentsImages = shuffled.slice(2, 4);
@@ -18,7 +21,10 @@ export default function MymuseumPage() {
         <div className="text-lg font-bold mb-4">마이뮤지엄</div>
 
         <div className="mb-6">
-          <WeeklyCalendar data={weeklyDummy } />
+          <WeeklyCalendar 
+          data={weeklyDummy } 
+          onClick={() => navigate('/mymuseum/calendar')} 
+          />
         </div>
 
         <div className="mb-6">
