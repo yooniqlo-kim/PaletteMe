@@ -1,9 +1,10 @@
 import { ArtworkImage } from "@/shared/components/artworks/ArtworkImage";
 import { ArtworkMeta } from "@/shared/components/artworks/ArtworkMeta";
-import { KeywordSuggester } from "@/shared/components/textboxes/KeywordSuggester";
-import { TextArea } from "@/shared/components/textboxes/TextArea";
+import { KeywordSuggester } from "@/features/write/KeywordSuggester";
+import { TextArea } from "@/features/write/TextArea";
+import { VisibilityToggle } from "@/features/write/VisibilityToggle";
 import { WhiteContainer } from "@/shared/components/textboxes/WhiteRoundedContainer";
-
+import Button from "@/shared/components/Buttons/Button";
 import { artworkDummy } from "@/shared/dummy/artworkDummy";
 
 export default function WritePage() {
@@ -13,9 +14,13 @@ export default function WritePage() {
         <ArtworkImage artwork={artworkDummy} />
       </div>
       <WhiteContainer withTopRound withMarginTop>
-        <ArtworkMeta artwork={artworkDummy} showYear showLocation />
-        <KeywordSuggester />
-        <TextArea />
+        <div className="flex flex-col gap-4">
+          <ArtworkMeta artwork={artworkDummy} showYear showLocation />
+          <KeywordSuggester />
+          <TextArea />
+          <VisibilityToggle />
+          <Button size="XL">등 록</Button>
+        </div>
       </WhiteContainer>
     </div>
   );
