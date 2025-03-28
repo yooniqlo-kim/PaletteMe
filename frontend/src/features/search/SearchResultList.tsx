@@ -28,12 +28,12 @@ export default function SearchResultList({
 
   return (
     <>
-      {query && (
-        <p className="text-sm text-gray-700 mb-2">
-          <span className="text-[var(--color-primary)]">‘{query}’</span>
-          에 대한 검색 결과
+        {query && (
+        <p className="text-[var(--color-neutral-8)] text-[var(--text-lg)] font-semibold font-pretendard mb-2">
+            <span className="text-[var(--color-primary)]">‘{query}’</span>
+            에 대한 검색 결과
         </p>
-      )}
+        )}
       <div className="grid grid-cols-2 gap-4">
         {data.map((artwork) => (
           <SearchResultCard
