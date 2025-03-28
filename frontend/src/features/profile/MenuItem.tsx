@@ -1,11 +1,15 @@
 import IconSmallRigthArrow from "@/shared/components/icons/IconSmallRigthArrow";
+import { ComponentPropsWithoutRef } from "react";
 
-type MenuItemProps = {
+type MenuItemProps = ComponentPropsWithoutRef<"li"> & {
   name: string;
 };
-export default function MenuItem({ name }: MenuItemProps) {
+
+export default function MenuItem({ name, onClick }: MenuItemProps) {
   return (
-    <li className="flex justify-between px-2 py-4 box-border items-center rounded-ps border border-neutral-6 text-neutral-6 cursor-pointer">
+    <li
+      onClick={onClick}
+      className="flex justify-between px-2 py-4 box-border items-center rounded-ps border border-neutral-6 text-neutral-6 cursor-pointer">
       <p>{name}</p>
       <IconSmallRigthArrow />
     </li>
