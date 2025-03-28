@@ -14,6 +14,7 @@ public class ArtworksService {
     private final ArtworksRepository artworksRepository;
     private final UsersArtworksLikeCntRepository usersArtworksLikeCntRepository;
 
+    // TODO: BOOKMARK, REVIEW 엔티티가 추가되면 2개의 값도 추가하여 던져주기
     public ArtworkDetailResponse getArtworkDetail(String artworkId) {
         // 작품 정보 불러오기
         ArtworkDetailResponse artworkDetailResponse = artworksRepository.findArtworkDetail(artworkId);
@@ -26,6 +27,7 @@ public class ArtworksService {
         return artworkDetailResponse;
     }
 
+    // TODO: 추후에 AI 프롬프팅
     public ArtworkDescriptionResponse getArtworkDescription(String artworkId) {
         // GPT 프롬프팅 통해서 정형화된 형태의 데이터 얻어오기
 
