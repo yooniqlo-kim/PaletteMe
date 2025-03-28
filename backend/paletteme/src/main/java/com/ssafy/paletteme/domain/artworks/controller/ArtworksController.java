@@ -1,6 +1,7 @@
 package com.ssafy.paletteme.domain.artworks.controller;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
+import com.ssafy.paletteme.domain.artworks.dto.ArtworkDescriptionResponse;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDetailResponse;
 import com.ssafy.paletteme.domain.artworks.service.ArtworksService;
 import lombok.RequiredArgsConstructor;
@@ -21,4 +22,9 @@ public class ArtworksController {
         return ApiResponse.success(response);
     }
 
+    @GetMapping("/{artworkId}/description")
+    public ApiResponse<ArtworkDescriptionResponse> getArtworkDescription(@PathVariable String artworkId) {
+        ArtworkDescriptionResponse response = artworkService.getArtworkDescription(artworkId);
+        return ApiResponse.success(response);
+    }
 }

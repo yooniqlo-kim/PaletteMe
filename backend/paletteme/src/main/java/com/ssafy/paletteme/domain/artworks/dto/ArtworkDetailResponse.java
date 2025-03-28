@@ -29,4 +29,8 @@ public class ArtworkDetailResponse {
         this.description = description;
     }
 
+    public void updateLike(int like) {
+        this.like = like;
+    }
+
 }
