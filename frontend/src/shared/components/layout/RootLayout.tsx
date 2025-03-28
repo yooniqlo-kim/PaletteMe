@@ -13,7 +13,7 @@ export default function RootLayout() {
   return (
     <div className="relative h-screen w-screen bg-red-200 flex justify-center items-center">
       {!shouldHideLayout && <Header />}
-      <Container id="scrollable-container">
+      <Container id="scrollable-container" hidePadding={shouldHideLayout}>
         <ScrollToTop />
         <Outlet />
       </Container>
