@@ -58,6 +58,7 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/users/sign-up", "api/users/login").permitAll()
 //                                .requestMatchers("/artworks/**").permitAll()
+                                .requestMatchers("/search/artworks").permitAll()
                                 .anyRequest().authenticated());
 
         http.exceptionHandling( ex -> ex
