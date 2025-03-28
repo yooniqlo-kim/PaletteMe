@@ -5,7 +5,7 @@ import Pallette from "@/shared/components/user/Pallette";
 
 export default function ProfilePage() {
   return (
-    <section className="px-3 py-3 pb-[3.75rem] flex flex-col gap-6 box-border">
+    <section className="px-3 py-3 flex flex-col gap-6 box-border">
       <UserProfile />
       <UserMeta review={0} like={0} loggedIn={0} />
       <Pallette level="주황" />
