@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-// @QueryProjection 적용이 안됨.
+
 @Getter
 @NoArgsConstructor
 @ToString

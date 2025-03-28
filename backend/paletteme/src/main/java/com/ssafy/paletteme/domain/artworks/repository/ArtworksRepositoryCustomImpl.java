@@ -1,11 +1,12 @@
 package com.ssafy.paletteme.domain.artworks.repository;
 
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDetailResponse;
 import com.ssafy.paletteme.domain.artworks.dto.QArtworkDetailResponse;
-import com.ssafy.paletteme.domain.artworks.entity.*;
+import com.ssafy.paletteme.domain.artworks.entity.QArtists;
+import com.ssafy.paletteme.domain.artworks.entity.QArtworks;
+import com.ssafy.paletteme.domain.artworks.entity.QMuseums;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,10 +19,9 @@ public class ArtworksRepositoryCustomImpl implements ArtworksRepositoryCustom{
     QArtworks artwork = QArtworks.artworks;
     QMuseums museum = QMuseums.museums;
     QArtists artist = QArtists.artists;
-    QArtworkDetailResponse s;
     public ArtworkDetailResponse findArtworkDetail(String artworkId) {
         return queryFactory
-                .select(Projections.constructor(ArtworkDetailResponse.class,
+                .select(new QArtworkDetailResponse(
                         artwork.imageUrl,
                         museum.museumName,
                         artwork.enTitle,
@@ -35,5 +35,4 @@ public class ArtworksRepositoryCustomImpl implements ArtworksRepositoryCustom{
                 .where(artwork.artworkId.eq(artworkId))
                 .fetchOne();
     }
-
 }
