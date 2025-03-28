@@ -55,11 +55,11 @@ export default function WrappedStep({
   };
 
   return (
-    <div className="h-full aspect-[412/917] mx-auto relative overflow-hidden">
+    <div className="w-full h-full mx-auto relative overflow-hidden">
       <img
         src={wrappedImages[currentStep]}
         alt={`Wrapped step ${currentStep + 1}`}
-        className="w-full h-full object-cover z-0"
+        className="w-full h-full object-cover absolute inset-0 z-0"
       />
 
       <div className="absolute top-[1.5rem] w-full flex justify-center z-10">
