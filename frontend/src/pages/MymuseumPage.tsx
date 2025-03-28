@@ -2,11 +2,20 @@ import MyCollectionContainer from "@/features/mymuseum/mycollection/MyCollection
 import MyCommentsContainer from "@/features/mymuseum/mycomments/MyCommentsContainer";
 import masterpieces from "@/assets/masterpieces";
 import shuffle from "@/shared/utils/shuffle";
-import CalendarPreviewCard from "@/features/mymuseum/calendar/CalendarPreviewCard";
+import WeeklyCalendar from "@/features/mymuseum/calendar/WeeklyCalendar";
 import WrappedSummaryCard from "@/features/mymuseum/WrappedSummaryCard";
 import RecommendationContainer from "@/features/mymuseum/recommendation/RecommendationContainer";
 
-
+// 더미 데이터
+const weeklySampleData = [
+  { day: '월', hasDiary: false },
+  { day: '화', hasDiary: true, imageUrl: '/images/art1.jpg' },
+  { day: '수', hasDiary: false },
+  { day: '목', hasDiary: true, imageUrl: '/images/art2.jpg' },
+  { day: '금', hasDiary: false },
+  { day: '토', hasDiary: false },
+  { day: '일', hasDiary: false },
+];
 
 export default function MymuseumPage() {
   const shuffled = shuffle(masterpieces).slice(0, 4);
@@ -18,7 +27,7 @@ export default function MymuseumPage() {
       <div className="max-w-[26.25rem] mx-auto w-full">
         <div className="text-lg font-bold mb-4">마이뮤지엄</div>
         <div className="mb-6">
-          <CalendarPreviewCard />
+          <WeeklyCalendar data={weeklySampleData} />
         </div>
 
         <div className="mb-6">
