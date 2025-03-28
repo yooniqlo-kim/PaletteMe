@@ -1,7 +1,7 @@
 import { Artwork } from "@/shared/types/artwork";
 
 export const artworkDummy: Artwork = {
-  artworkId: "1",
+  artworkId: "a1",
   title: "파라솔을 든 여인 - 모네부인과 그녀의 아들",
   artist: "클로드 모네",
   year: "1875",
