@@ -1,4 +1,4 @@
-package com.ssafy.paletteme.domain.search.entity;
+package com.ssafy.paletteme.domain.artworks.entity;
 
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "eras")
-public class Era {
+public class Eras {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
