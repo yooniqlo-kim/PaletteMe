@@ -19,7 +19,7 @@ public class ArtworkSearchResponse {
     private Double score;
 
     @Builder
-    public ArtworkSearchResponse(String artworkId, String korTitle, String enTitle,
+    private ArtworkSearchResponse(String artworkId, String korTitle, String enTitle,
                                  String korArtist, String enArtist, String imageUrl, Double score) {
         this.artworkId = artworkId;
         this.korTitle = korTitle;
