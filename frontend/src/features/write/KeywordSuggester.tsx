@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Button from "../Buttons/Button";
-import Chip from "../buttons/Chip";
+import Button from "../../shared/components/Buttons/Button";
+import Chip from "../../shared/components/buttons/Chip";
 
 const KEYWORD_DATA = {
   형태: [
@@ -256,30 +256,27 @@ export function KeywordSuggester() {
   };
 
   return (
-    <div className="mt-3">
-      <hr className="border-t border-neutral-300 mb-3" />
-      <div className="space-y-1">
-        <Button size="S" onClick={handleClick} className="text-xs font-medium">
-          {loading ? "추천 중..." : "키워드 추천"}
-        </Button>
+    <div className="space-y-1">
+      <Button size="S" onClick={handleClick} className="text-xs font-medium">
+        {loading ? "추천 중..." : "키워드 추천"}
+      </Button>
 
-        <div className="flex flex-wrap gap-2 mt-2 min-h-[2rem]">
-          {keywords.length === 0 ? (
-            <div className="flex items-center min-h-[2rem]">
-              <p className="text-xs text-neutral-600 font-medium">
-                Tip. 감상문 쓰기 막막하다면 키워드 추천을 받아보세요!
-              </p>
-            </div>
-          ) : (
-            keywords.map((keyword) => (
-              <Chip
-                key={keyword}
-                text={keyword}
-                className="px-3 py-1 rounded-4xl border-neutral-300 text-xs pointer-events-none"
-              />
-            ))
-          )}
-        </div>
+      <div className="flex flex-wrap gap-2 mt-2 min-h-[2rem]">
+        {keywords.length === 0 ? (
+          <div className="flex items-center min-h-[2rem]">
+            <p className="text-xs text-neutral-600 font-medium">
+              Tip. 감상문 쓰기 막막하다면 키워드 추천을 받아보세요!
+            </p>
+          </div>
+        ) : (
+          keywords.map((keyword) => (
+            <Chip
+              key={keyword}
+              text={keyword}
+              className="px-3 py-1 rounded-4xl border-neutral-300 text-xs pointer-events-none"
+            />
+          ))
+        )}
       </div>
     </div>
   );
