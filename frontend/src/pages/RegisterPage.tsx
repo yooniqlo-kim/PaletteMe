@@ -4,7 +4,7 @@ import Container from "@/shared/components/layout/Container";
 export default function RegisterPage() {
   return (
     <Container>
-      <div className="flex p-8">
+      <div className="flex p-10">
         <RegisterInfoForm />
       </div>
     </Container>

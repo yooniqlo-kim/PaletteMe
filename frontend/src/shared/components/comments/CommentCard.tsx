@@ -33,7 +33,7 @@ export function CommentCard({
 
   const wrapperClassNames = `
     relative max-w-[23.75rem] rounded-pm overflow-hidden
-    shadow-md transition-all
+    shadow-comment transition-all
     ${!isDetailMode ? "cursor-pointer" : ""}
   `;
 
@@ -90,13 +90,21 @@ type DetailContentProps = {
 
 // 상세모드 더보기 및 간략히 토글
 function DetailContent({ content, expanded, onToggle }: DetailContentProps) {
+  const MAX_LENGTH = 120;
+  const isLong = content.length > MAX_LENGTH;
+
   return (
     <div className="text-xs font-normal leading-5 text-black">
       <p className={expanded ? "" : "line-clamp-3"}>{content}</p>
 
-      <button onClick={onToggle} className="mt-1 underline text-neutral-500">
-        {expanded ? "간략히" : "더보기"}
-      </button>
+      {isLong && (
+        <button
+          onClick={onToggle}
+          className="mt-1 underline text-neutral-500 cursor-pointer"
+        >
+          {expanded ? "간략히" : "더보기"}
+        </button>
+      )}
     </div>
   );
 }

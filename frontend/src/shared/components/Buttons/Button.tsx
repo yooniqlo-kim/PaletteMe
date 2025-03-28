@@ -5,7 +5,7 @@ import { ComponentPropsWithoutRef } from "react";
 // M : 로그인 용
 // S : 키워드 추천 버튼
 // XS : 회원 가입 페이지 작은 버튼
-type SizeType = "XL" | "X" | "M" | "S" | "XS";
+type SizeType = "XL" | "L" | "M" | "S" | "XS";
 
 type ButtonProps = ComponentPropsWithoutRef<"button"> & {
   size: SizeType;
@@ -20,15 +20,12 @@ export default function Button({
 }: ButtonProps) {
   let style;
 
-  if (size === "XL") style = "w-[380px]";
-  else if (size === "X") style = "w-[336px]";
-  else if (size === "M") style = "w-[286px]";
-  else if (size === "S") style = "w-[107px] h-[2.375rem]";
-  else if (size === "XS") style = "w-[68px] h-[40px]";
+  if (size === "S") style = "w-[107px] h-[2.375rem]";
+  else if (size === "XS") style = "!w-[68px] h-[40px]";
 
   return (
     <button
-      className={`h-12 bg-primary hover:bg-primary-hover font-semibold text-white rounded-ps py-1 box-border cursor-pointer ${style} ${className}`}
+      className={`w-full h-12 bg-primary hover:bg-primary-hover font-semibold text-white rounded-ps py-1 box-border cursor-pointer ${style} ${className}`}
       {...props}>
       {children}
     </button>
