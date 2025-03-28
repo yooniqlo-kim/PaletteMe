@@ -10,6 +10,7 @@ import LoginPage from "@/pages/LoginPage";
 import WrappedPage from "@/pages/WrappedPage";
 import ArtworkPage from "@/pages/ArtworkPage";
 import NotFoundPage from "@/pages/NotFoundPage";
+import WritePage from "@/pages/WritePage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: "/comment", element: <CommentPage /> },
       // {path: "/artwork/:id", element: <ArtworkPage />},
       { path: "/artwork", element: <ArtworkPage /> },
+      { path: "/write", element: <WritePage /> },
     ],
   },
   {
