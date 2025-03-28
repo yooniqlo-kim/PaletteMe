@@ -11,16 +11,18 @@ import WrappedPage from "@/pages/WrappedPage";
 import ArtworkPage from "@/pages/ArtworkPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import WritePage from "@/pages/WritePage";
+import LevelInfoPage from "@/pages/LevelInfoPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
     children: [
-      { path: "/", element: <TodayArtsPage /> },
+      { index: true, element: <TodayArtsPage /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/profile", element: <ProfilePage /> },
+      { path: "/profile/level", element: <LevelInfoPage /> },
       { path: "/comment", element: <CommentPage /> },
       { path: "/artwork", element: <ArtworkPage /> },
       { path: "/write", element: <WritePage /> },

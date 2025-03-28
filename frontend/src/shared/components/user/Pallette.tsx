@@ -1,12 +1,4 @@
-const color = {
-  빨강: "#FF0000",
-  주황: "#FF8C00",
-  노랑: "#FFFF00",
-  초록: "#008000",
-  파랑: "#0000FF",
-  남색: "#4B0082",
-  보라: "#8E1C8E",
-};
+import { color } from "@/shared/utils/color";
 
 type PalletteProps = {
   level: keyof typeof color; // level의 타입을 color 객체의 key 중 하나로 제한
