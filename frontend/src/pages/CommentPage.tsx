@@ -2,7 +2,7 @@ import { CommentCard } from "@shared/components/comments/CommentCard";
 import { CommentTicket } from "@shared/components/comments/CommentTicket";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
 import { ArtworkMeta } from "@/shared/components/artworks/ArtworkMeta";
-import { ArtworkImage } from "@/shared/components/artworks/ArtworkImage";
+import { ArtworkImage } from "@/features/detail/ArtworkImage";
 
 import { BaseComment } from "@/shared/types/comment";
 import { Artwork } from "@/shared/types/artwork";
