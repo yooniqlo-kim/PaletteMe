@@ -16,32 +16,19 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    errorElement: <NotFoundPage />,
     children: [
-      {
-        path: "/",
-        element: <TodayArtsPage />,
-      },
+      { path: "/", element: <TodayArtsPage /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/profile", element: <ProfilePage /> },
       { path: "/comment", element: <CommentPage /> },
-      // {path: "/artwork/:id", element: <ArtworkPage />},
       { path: "/artwork", element: <ArtworkPage /> },
       { path: "/write", element: <WritePage /> },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/signup", element: <RegisterPage /> },
+      { path: "/wrapped", element: <WrappedPage /> },
+      { path: "*", element: <NotFoundPage /> },
     ],
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/wrapped",
-    element: <WrappedPage />,
   },
 ]);
 
