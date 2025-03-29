@@ -2,6 +2,7 @@ import Menu from "@/features/profile/Menu";
 import UserMeta from "@/features/profile/UserMeta";
 import UserProfile from "@/features/profile/UserProfile";
 import Pallette from "@/shared/components/user/Pallette";
+import { Link } from "react-router";
 
 export default function ProfilePage() {
   return (
@@ -13,7 +14,7 @@ export default function ProfilePage() {
       <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center">
         <a href="/">로그아웃</a>
         <span>|</span>
-        <a href="/">회원 탈퇴</a>
+        <Link to="delete">회원 탈퇴</Link>
       </div>
     </section>
   );
