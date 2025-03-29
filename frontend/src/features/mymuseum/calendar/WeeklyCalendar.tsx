@@ -8,11 +8,13 @@ type CalendarDay = {
 
 interface WeeklyCalendarProps {
   data: CalendarDay[];
+  onClick: () => void;
 }
 
-export default function WeeklyCalendar({ data }: WeeklyCalendarProps) {
+export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
   return (
     <div
+      onClick={onClick}
       className="w-full max-w-[23.75rem] h-[10.75rem] rounded-xl px-4 py-3"
       style={{ backgroundColor: '#FFEFEF' }}
     >

@@ -3,6 +3,7 @@ import RootLayout from "@/shared/components/layout/RootLayout";
 import TodayArtsPage from "@/pages/TodayArtsPage";
 import SearchPage from "@/pages/SearchPage";
 import MymuseumPage from "@/pages/MymuseumPage";
+import CalenderPage from "@/pages/CalenderPage";
 import ProfilePage from "@/pages/ProfilePage";
 import RegisterPage from "@/pages/RegisterPage";
 import LoginPage from "@/pages/LoginPage";
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       { index: true, element: <TodayArtsPage /> },
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
+      { path: "/mymuseum/calendar", element: <CalenderPage /> },
       { path: "/profile", element: <ProfilePage /> },
       { path: "/profile/level", element: <LevelInfoPage /> },
       { path: "profile/confirm", element: <ConfirmPasswordPage /> },
