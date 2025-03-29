@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import SearchContainer from "@/features/search/SearchContainer";
 import SearchResultList from "@/features/search/SearchResultList";
 import SearchRecommendationList from "@/features/search/SearchRecommendationList";
+import SearchRecommendationResult from "@/features/search/SearchRecommendationResult";
 import { searchDummy } from "@/shared/dummy/seachThumbnailDummy";
 
 export default function SearchPage() {
@@ -10,6 +11,7 @@ export default function SearchPage() {
   const [likedArtworks, setLikedArtworks] = useState<number[]>([]);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
+  const from = searchParams.get("from");
 
   const navigate = useNavigate();
 
@@ -46,28 +48,36 @@ export default function SearchPage() {
     isLiked: likedArtworks.includes(artwork.id),
   }));
 
+  const isFromRecommendation = from === "recommendation";
+
   return (
     <div className="px-4 py-6 pb-[5rem]">
-      <SearchContainer
-        value={searchValue}
-        onChange={handleSearchChange}
-        onKeyDown={handleSearchKeyDown}
-        setValue={setSearchValue}
-      />
+      {/* 일반 검색일 때만 SearchContainer 표시 */}
+      {!isFromRecommendation && (
+        <SearchContainer
+          value={searchValue}
+          onChange={handleSearchChange}
+          onKeyDown={handleSearchKeyDown}
+          setValue={setSearchValue}
+        />
+      )}
 
       <div className="mt-6">
         {query ? (
-          <SearchResultList
-            data={enrichedData}
-            onCardClick={handleCardClick}
-            onCardLike={toggleLike}
-            query={query}
-          />
+          isFromRecommendation ? (
+            // 일반 검색
+            <SearchRecommendationResult query={query} data={enrichedData} />
+          ) : (
+            <SearchResultList
+              data={enrichedData}
+              onCardClick={handleCardClick}
+              onCardLike={toggleLike}
+              query={query}
+            />
+          )
         ) : (
-          <SearchRecommendationList
-            data={searchDummy}
-            onCardClick={handleCardClick}
-          />
+          // 추천 검색
+          <SearchRecommendationList data={searchDummy} />
         )}
       </div>
     </div>

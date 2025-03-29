@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 interface Props {
   imageUrl: string;
   artworkId: string;
+  onClick: () => void; 
   onClickLike?: () => void;
   isLiked?: boolean;
 }
