@@ -15,6 +15,9 @@ import LevelInfoPage from "@/pages/LevelInfoPage";
 import CommentCollectionPage from "@/pages/CommentCollectionPage";
 import ConfirmPasswordPage from "@/pages/ConfirmPasswordPage";
 import UpdateUserInfoPage from "@/pages/UpdateUserInfoPage";
+import ConfirmDeleteAccountPage from "@/pages/ConfirmDeleteAccountPage";
+import CompleteDeleteAccountPage from "@/pages/CompleteDeleteAccountPage";
+import UpdateProfilePage from "@/pages/UpdateProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -25,10 +28,16 @@ const router = createBrowserRouter([
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/mymuseum/calendar", element: <CalenderPage /> },
-      { path: "/profile", element: <ProfilePage /> },
-      { path: "/profile/level", element: <LevelInfoPage /> },
+      { path: "profile", element: <ProfilePage /> },
+      { path: "profile/level", element: <LevelInfoPage /> },
       { path: "profile/confirm", element: <ConfirmPasswordPage /> },
       { path: "profile/update", element: <UpdateUserInfoPage /> },
+      { path: "profile/update-profile", element: <UpdateProfilePage /> },
+      { path: "profile/delete", element: <ConfirmDeleteAccountPage /> },
+      {
+        path: "profile/delete/complete",
+        element: <CompleteDeleteAccountPage />,
+      },
       { path: "/artwork", element: <ArtworkPage /> },
       { path: "/write", element: <WritePage /> },
       { path: "/login", element: <LoginPage /> },
