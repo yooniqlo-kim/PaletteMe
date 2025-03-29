@@ -19,7 +19,7 @@ export default function MyCollections({ images }: Props) {
   const navigate = useNavigate();
 
   const overlayTexts = ["좋아요 컬렉션", "북마크 컬렉션"];
-  const paths = ["/mymuseum/collections/liked", "/mymuseum/collections/bookmark"];
+  const paths = ["/mymuseum/liked", "/mymuseum/bookmark"];
 
   const handleNavigateToCollection = (idx: number) => {
     navigate(paths[idx]);

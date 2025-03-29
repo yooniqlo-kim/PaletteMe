@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { PageIntro } from "@shared/components/collection/PageIntro";
 import ArtworkListSection from "@shared/components/collection/ArtworkListSection";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
@@ -6,8 +7,14 @@ import { commentDummy } from "@/shared/dummy/commentDummy";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
 
 export default function BookmarkCollectionPage() {
+  const navigate = useNavigate();
+
   const firstImageUrl = collectionDummy[0]?.imageUrl || "/images/fallback.jpg";
   const firstUser = commentDummy[0].user;
+
+  const handleClickArtwork = (id: number) => {
+    navigate(`/artworks/${id}`);
+  };
 
   return (
     <div className="bg-neutral-1 min-h-screen">
@@ -32,7 +39,7 @@ export default function BookmarkCollectionPage() {
               size="small"
               theme="light"
               borderRadius="small"
-              onClick={() => console.log("작품 클릭:", artwork.id)}
+              onClick={() => handleClickArtwork(artwork.id)}
             />
           ))}
         </div>
