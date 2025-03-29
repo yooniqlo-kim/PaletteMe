@@ -1,7 +1,7 @@
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, ReactNode } from "react";
 
 type LabelProps = ComponentPropsWithoutRef<"label"> & {
-  children: string;
+  children: ReactNode;
 };
 
 export default function Label({ children, ...props }: LabelProps) {
