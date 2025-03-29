@@ -1,6 +1,6 @@
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import Button from "@/shared/components/Buttons/Button";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 
 const DUMMY = [
   {
@@ -55,7 +55,13 @@ const DUMMY = [
   },
 ];
 
-export default function RegisterArtworkForm() {
+type RegisterArtworkFormProps = {
+  setStage: (stageNum: number) => void;
+};
+
+export default function RegisterArtworkForm({
+  setStage,
+}: RegisterArtworkFormProps) {
   const [selectedImages, setSelectedImages] = useState<number[]>([]);
 
   function handleClick(id: number) {
@@ -65,8 +71,17 @@ export default function RegisterArtworkForm() {
         : [...prev, id]
     );
   }
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setStage(4);
+  }
+  
   return (
-    <form className="flex flex-col items-center gap-8 w-full">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center gap-8 w-full"
+    >
       <h2 className="text-lg font-semibold">
         좋아하는 작품을 3개 선택해주세요
       </h2>

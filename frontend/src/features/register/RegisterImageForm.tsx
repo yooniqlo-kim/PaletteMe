@@ -8,7 +8,13 @@ import RoundedButton from "@/shared/components/Buttons/RoundedButton";
 import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
 
-export default function RegisterImageForm() {
+type RegisterImageFormProps = {
+  setStage: (stageNum: number) => void;
+};
+
+export default function RegisterImageForm({
+  setStage,
+}: RegisterImageFormProps) {
   const [image, setImage] = useState<string>(defaultImg);
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
@@ -28,6 +34,7 @@ export default function RegisterImageForm() {
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    setStage(3);
   }
   return (
     <form

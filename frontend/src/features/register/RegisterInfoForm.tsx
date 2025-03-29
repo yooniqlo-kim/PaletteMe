@@ -2,10 +2,22 @@ import Button from "@/shared/components/Buttons/Button";
 import Input from "@/shared/components/Form/Input";
 import InputContainer from "@/shared/components/Form/InputContainer";
 import Label from "@/shared/components/Form/Label";
+import { FormEvent } from "react";
 
-export default function RegisterInfoForm() {
+type RegisterInfoFormProps = {
+  setStage: (stageNum: number) => void;
+};
+
+export default function RegisterInfoForm({ setStage }: RegisterInfoFormProps) {
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setStage(2);
+  }
   return (
-    <form className="flex flex-col items-center gap-8 w-full">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col items-center gap-8 w-full"
+    >
       <h2 className="text-lg font-semibold">회원가입</h2>
       <div className="flex flex-col w-full gap-[33px]">
         <InputContainer>
