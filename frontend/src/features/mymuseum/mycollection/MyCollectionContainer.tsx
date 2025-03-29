@@ -1,18 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
-
-// 작품 정보 타입 정의
-type Artwork = {
-  id: number;
-  image: string;
-  title: string;
-  artist: string;
-  year: string;
-  country: string;
-};
+import type { RecommendedArtwork } from "@/shared/types/artwork";
 
 type Props = {
-  images: Artwork[];
+  images: RecommendedArtwork[];
 };
 
 export default function MyCollections({ images }: Props) {
@@ -30,12 +21,18 @@ export default function MyCollections({ images }: Props) {
       <div className="grid grid-cols-2 gap-4 w-full max-w-[23.75rem] mx-auto">
         {images.map((item, idx) => (
           <div
-            key={item.id}
+            key={item.artworkId}
             className="cursor-pointer"
             onClick={() => handleNavigateToCollection(idx)}
           >
             <ArtworkCard
-              imageUrl={item.image}
+              artwork={{
+                artworkId: item.artworkId,
+                artworkImageUrl: item.imgUrl,
+                title: item.title,
+                artist: item.artist,
+                liked: item.liked,
+              }}
               size="small"
               isDimmed
               overlayText={overlayTexts[idx]}

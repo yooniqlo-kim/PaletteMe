@@ -1,5 +1,5 @@
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import Button from "@/shared/components/Buttons/Button";
+import Button from "@/shared/components/buttons/Button";
 import { FormEvent, useState } from "react";
 
 const DUMMY = [
@@ -76,7 +76,7 @@ export default function RegisterArtworkForm({
     event.preventDefault();
     setStage(4);
   }
-  
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -89,11 +89,16 @@ export default function RegisterArtworkForm({
         {DUMMY.map((artwork) => (
           <ArtworkCard
             key={artwork.id}
-            imageUrl={artwork.imageUrl}
+            artwork={{
+              artworkImageUrl: artwork.imageUrl,
+              title: "",
+              liked: selectedImages.includes(artwork.id), 
+              artist: "",
+            }}
             size="small"
             theme="light"
-            isLiked={selectedImages.includes(artwork.id)}
-            onClickLike={() => handleClick(artwork.id)}
+            // `onClickLike`로는 `handleClick`을 래핑하여 사용
+            onClickLike={() => handleClick(artwork.id)} 
           />
         ))}
       </ul>

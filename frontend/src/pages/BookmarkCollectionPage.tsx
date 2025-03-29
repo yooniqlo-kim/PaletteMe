@@ -9,11 +9,13 @@ import { WriterMeta } from "@shared/components/comments/WriterMeta";
 export default function BookmarkCollectionPage() {
   const navigate = useNavigate();
 
-  const firstImageUrl = collectionDummy[0]?.imageUrl || "/images/fallback.jpg";
+  const artworks = collectionDummy.data.liked_artworks;
+
+  const firstImageUrl = artworks[0]?.imgUrl || "/images/fallback.jpg";
   const firstUser = commentDummy[0].user;
 
-  const handleClickArtwork = (id: number) => {
-    navigate(`/artworks/${id}`);
+  const handleClickArtwork = (artworkId: string): void => {
+    navigate(`/artworks/${artworkId}`);
   };
 
   return (
@@ -32,16 +34,26 @@ export default function BookmarkCollectionPage() {
 
       <ArtworkListSection>
         <div className="grid grid-cols-2 gap-4">
-          {collectionDummy.map((artwork) => (
-            <ArtworkCard
-              key={artwork.id}
-              imageUrl={artwork.imageUrl}
-              size="small"
-              theme="light"
-              borderRadius="small"
-              onClick={() => handleClickArtwork(artwork.id)}
-            />
-          ))}
+          {artworks.map((artwork) => {
+            const [title, artist] = artwork.artworkId.split("_");
+
+            return (
+              <ArtworkCard
+                key={artwork.artworkId}
+                artwork={{
+                  artworkId: artwork.artworkId,
+                  title,
+                  artist,
+                  artworkImageUrl: artwork.imgUrl,
+                  liked: true,
+                }}
+                size="small"
+                theme="light"
+                borderRadius="small"
+                onClick={() => handleClickArtwork(artwork.artworkId)}
+              />
+            );
+          })}
         </div>
       </ArtworkListSection>
     </div>

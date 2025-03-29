@@ -1,8 +1,8 @@
+import { useState, useEffect } from "react";
 import IconLeftArrow from "@/shared/components/icons/IconLeftArrow";
 import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import type { Artwork } from "./RecommendationContainer";
-import { useState, useEffect } from "react";
+import type { Artwork } from "@shared/types/artwork";
 
 type Props = {
   artworks: Artwork[];
@@ -11,7 +11,7 @@ type Props = {
 
 export default function RecommendationArtworks({ artworks, onReachEnd }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [likedArtworks, setLikedArtworks] = useState<number[]>([]);
+  const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -35,7 +35,7 @@ export default function RecommendationArtworks({ artworks, onReachEnd }: Props) 
     }
   };
 
-  const toggleLike = (id: number) => {
+  const toggleLike = (id: string) => {
     setLikedArtworks((prev) =>
       prev.includes(id) ? prev.filter((artId) => artId !== id) : [...prev, id]
     );
@@ -55,14 +55,20 @@ export default function RecommendationArtworks({ artworks, onReachEnd }: Props) 
       {/* 작품 카드 */}
       {currentArtwork && (
         <ArtworkCard
-          key={currentArtwork.id}
-          imageUrl={currentArtwork.imageUrl}
+          key={currentArtwork.artworkId}
+          artwork={{
+            ...currentArtwork,
+            liked: likedArtworks.includes(currentArtwork.artworkId ?? ""),
+          }}
           size="large"
           borderRadius="small"
           theme="light"
-          isLiked={likedArtworks.includes(currentArtwork.id)}
-          onClickLike={() => toggleLike(currentArtwork.id)}  
-          onClick={() => console.log(`작품 ${currentArtwork.id} 클릭됨`)}
+          onClickLike={() =>
+            currentArtwork.artworkId && toggleLike(currentArtwork.artworkId)
+          }
+          onClick={() =>
+            console.log(`작품 ${currentArtwork.artworkId} 클릭됨`)
+          }
         />
       )}
 

@@ -1,18 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
 
-// 작품 정보 타입 정의
-type Artwork = {
-  id: number;
-  image: string;
-  title: string;
-  artist: string;
-  year: string;
-  country: string;
+type CommentPreview = {
+  id: string;
+  imageUrl: string;
+  title?: string;
+  artist?: string;
 };
 
 type Props = {
-  images: Artwork[];
+  images: CommentPreview[];
 };
 
 export default function MyComments({ images }: Props) {
@@ -25,15 +22,17 @@ export default function MyComments({ images }: Props) {
   };
 
   return (
-    <div
-      onClick={handleNavigateToComments}
-      className="w-full cursor-pointer"
-    >
+    <div onClick={handleNavigateToComments} className="w-full cursor-pointer">
       <div className="grid grid-cols-2 gap-4 w-full max-w-[23.75rem] mx-auto">
         {images.map((item, idx) => (
           <ArtworkCard
             key={item.id}
-            imageUrl={item.image}
+            artwork={{
+              artworkId: item.id,
+              artworkImageUrl: item.imageUrl,
+              title: item.title || "",
+              artist: item.artist || "",
+            }}
             size="small"
             isDimmed
             overlayText={overlayTexts[idx]}

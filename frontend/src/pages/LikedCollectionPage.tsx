@@ -7,14 +7,16 @@ import { commentDummy } from "@/shared/dummy/commentDummy";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
 
 export default function LikedCollectionPage() {
-  const firstImageUrl = collectionDummy[1]?.imageUrl || "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg";
+  const navigate = useNavigate();
+
+  const artworks = collectionDummy.data.liked_artworks;
+
+  const firstImageUrl = artworks[0]?.imgUrl || "/images/fallback.jpg";
   const firstUser = commentDummy[0].user;
 
-  const navigate = useNavigate();
-  const handleClickArtwork = (id: number) => {
-    navigate(`/artworks/${id}`);
+  const handleClickArtwork = (artworkId: string): void => {
+    navigate(`/artworks/${artworkId}`);
   };
-  
 
   return (
     <div className="bg-neutral-1 min-h-screen">
@@ -32,16 +34,26 @@ export default function LikedCollectionPage() {
 
       <ArtworkListSection>
         <div className="grid grid-cols-2 gap-4">
-          {collectionDummy.map((artwork) => (
-            <ArtworkCard
-              key={artwork.id}
-              imageUrl={artwork.imageUrl}
-              size="small"
-              theme="light"
-              borderRadius="small"
-              onClick={() => handleClickArtwork(artwork.id)}
-            />
-          ))}
+          {artworks.map((artwork) => {
+            const [title, artist] = artwork.artworkId.split("_");
+
+            return (
+              <ArtworkCard
+                key={artwork.artworkId}
+                artwork={{
+                  artworkId: artwork.artworkId,
+                  title,
+                  artist,
+                  artworkImageUrl: artwork.imgUrl,
+                  liked: true
+                }}
+                size="small"
+                theme="light"
+                borderRadius="small"
+                onClick={() => handleClickArtwork(artwork.artworkId)}
+              />
+            );
+          })}
         </div>
       </ArtworkListSection>
     </div>
