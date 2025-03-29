@@ -19,12 +19,12 @@ export default function LoginForm() {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-4 text-sm font-semibold">
+      <div className="flex flex-col justify-center items-center gap-4 text-sm font-semibold">
         <Link to="/register" className="text-primary">
           회원 가입
         </Link>
-        <Link to="../" className="text-neutral-6">
-          뒤로 가기
+        <Link to="/" className="text-neutral-6">
+          홈으로 가기
         </Link>
       </div>
     </form>
