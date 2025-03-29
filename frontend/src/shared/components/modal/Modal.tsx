@@ -2,12 +2,14 @@ import modalImg from "@/assets/images/modal.png";
 import Button from "../Buttons/Button";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router";
 
 type ModalProps = {
   open: boolean;
   msg: string;
   confirmMsg: string;
   onClose: () => void;
+  route?: string;
 };
 
 //  Modal 컴포넌트 사용하는 곳에서 아래와 같이 사용
@@ -21,11 +23,20 @@ type ModalProps = {
     />
 )}
 */
-export default function Modal({ open, msg, confirmMsg, onClose }: ModalProps) {
+export default function Modal({
+  open,
+  msg,
+  confirmMsg,
+  onClose,
+  route,
+}: ModalProps) {
   const dialog = useRef<HTMLDialogElement | null>(null);
+
+  const navigate = useNavigate();
 
   function handleClick() {
     onClose();
+    if (route) navigate(route);
   }
 
   function handleBackdropClick(event: React.MouseEvent<HTMLDialogElement>) {
@@ -50,7 +61,8 @@ export default function Modal({ open, msg, confirmMsg, onClose }: ModalProps) {
       ref={dialog}
       onClick={handleBackdropClick} // 모달 바깥 클릭 감지
       onClose={onClose}
-      className="rounded-ps bg-white p-[2.7rem] max-w-[320px] w-[40%] h-[45%] flex flex-col m-auto items-center justify-between backdrop:fixed backdrop:top-0 backdrop:max-w-[25.75rem] backdrop:left-0 backdrop:bg-[rgba(34,34,34,0.50)] backdrop-blur-sm backdrop:m-auto backdrop:h-dvh">
+      className="rounded-ps bg-white p-[2.7rem] max-w-[320px] w-[40%] h-[45%] flex flex-col m-auto items-center justify-between backdrop:fixed backdrop:top-0 backdrop:max-w-[25.75rem] backdrop:left-0 backdrop:bg-[rgba(34,34,34,0.50)] backdrop-blur-sm backdrop:m-auto backdrop:h-dvh"
+    >
       <img
         src={modalImg}
         alt="modal img"
@@ -69,7 +81,8 @@ export default function Modal({ open, msg, confirmMsg, onClose }: ModalProps) {
         <Button
           size="S"
           onClick={handleClick}
-          className="bg-white border border-primary !text-primary hover:bg-white">
+          className="bg-white border border-primary !text-primary hover:bg-white"
+        >
           네
         </Button>
       </div>
