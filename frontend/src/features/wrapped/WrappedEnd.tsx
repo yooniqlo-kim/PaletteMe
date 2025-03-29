@@ -26,64 +26,71 @@ export default function WrappedEnd({
   };
 
   return (
-<div className="relative w-full h-screen overflow-hidden bg-gray-200">
-  {/* wrapped06 이미지 (고정 412x412) */}
-  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[412px] h-[412px] z-0">
-    <img
-      src={wrapped06}
-      alt="Wrapped Background"
-      className="w-full h-full object-cover"
-    />
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-      <ArtworkCard
-        imageUrl={favoriteImg}
-        size="small"
-        theme="light"
-        hasBorder
-      />
-    </div>
-  </div>
-
-  {/* 하단 카드: 어떤 화면에서도 517px 고정으로 보이게 (하단 고정) */}
-  <div
-    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[412px] h-[517px] bg-white px-6 py-4 flex flex-col justify-between text-left text-gray-800 shadow-lg z-20"
-    onClick={handleClick}
-  >
-    <div className="space-y-4">
-      <div>
-        <p className="text-sm mb-1 text-gray-600">감상평 수</p>
-        <p className="text-lg font-bold text-primary">
-          N개 <span className="text-black font-medium">감상평 상위 {reviewPercentage}%</span>
-        </p>
-      </div>
-
-      <div>
-        <p className="text-sm text-gray-600 mb-1">추천 작품</p>
-        <p className="text-base font-bold text-primary">{recommendedArtwork[0]}</p>
-        <p className="text-sm text-gray-700">{recommendedArtist[0]}</p>
-        <p className="mt-2 text-base font-bold text-primary">{recommendedArtwork[1]}</p>
-        <p className="text-sm text-gray-700">{recommendedArtist[1]}</p>
-      </div>
-
-      <div>
-        <p className="text-sm text-gray-600 mb-1">최애 화가</p>
-        <p className="text-xl font-bold text-primary">{artistName}</p>
+    <div className="w-full h-screen bg-gray-200 flex items-center justify-center overflow-hidden">
+  <div className="flex flex-col w-full h-full max-w-[500px] mx-auto overflow-hidden">
+    
+    {/* 상단 이미지 (비율 기준 상단 45%) */}
+    <div
+      className="flex-grow basis-[45%] relative bg-cover bg-center"
+      style={{ backgroundImage: `url(${wrapped06})` }}
+    >
+      <div className="absolute inset-0 flex items-center justify-center z-10">
+        <ArtworkCard
+          imageUrl={favoriteImg}
+          size="small"
+          theme="light"
+          hasBorder
+        />
       </div>
     </div>
 
-    <div>
-      <div className="pt-4 border-t border-gray-200 flex justify-between items-center text-gray-500 text-sm">
-        <span className="font-bold text-lg">PaletteMe</span>
-        <span>2025 03 Wrapped</span>
+    {/* 하단 카드 (나머지 영역 55%) */}
+    <div
+      className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left text-gray-800 shadow-lg z-20"
+      style={{
+        borderTopLeftRadius: 'var(--radius-ps)',
+        borderTopRightRadius: 'var(--radius-ps)',
+      }}
+      onClick={handleClick}
+    >
+      <div className="space-y-4 overflow-y-auto">
+        <div>
+          <p className="text-sm mb-1 text-gray-600">감상평 수</p>
+          <p className="text-lg font-bold text-primary">
+            N개 <span className="text-black font-medium">감상평 상위 {reviewPercentage}%</span>
+          </p>
+        </div>
+
+        <div>
+          <p className="text-sm text-gray-600 mb-1">추천 작품</p>
+          <p className="text-base font-bold text-primary">{recommendedArtwork[0]}</p>
+          <p className="text-sm text-gray-700">{recommendedArtist[0]}</p>
+          <p className="mt-2 text-base font-bold text-primary">{recommendedArtwork[1]}</p>
+          <p className="text-sm text-gray-700">{recommendedArtist[1]}</p>
+        </div>
+
+        <div>
+          <p className="text-sm text-gray-600 mb-1">최애 화가</p>
+          <p className="text-xl font-bold text-primary">{artistName}</p>
+        </div>
       </div>
 
-      <div className="pt-3 flex items-center justify-center gap-2">
-        <DownloadIcon size={18} />
-        <span className="text-sm text-black font-medium">Share this wrapped</span>
+      <div>
+        <div className="pt-4 border-t border-gray-200 flex justify-between items-center text-gray-500 text-sm">
+          <span className="font-bold text-lg">PaletteMe</span>
+          <span>2025 03 Wrapped</span>
+        </div>
+
+        <div className="pt-3 flex items-center justify-center gap-2">
+          <DownloadIcon size={18} />
+          <span className="text-sm text-black font-medium">Share this wrapped</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+
 
 
 
