@@ -11,20 +11,15 @@ interface Props {
     imageUrl: string;
     isLiked: boolean;
   }[];
+  onCardLike: (id: number) => void; // ✅ 상위에서 받아온 좋아요 함수
 }
 
-export default function SearchRecommendationResult({ query, data }: Props) {
+export default function SearchRecommendationResult({ query, data, onCardLike }: Props) {
   const navigate = useNavigate();
-
   const firstImageUrl = data[0]?.imageUrl || "/images/fallback.jpg";
 
   const handleClickArtwork = (artworkId: number): void => {
     navigate(`/artwork/${artworkId}`);
-  };
-
-  const handleClickLike = (id: number) => {
-    // TODO: 실제 좋아요 토글 기능 연결
-    console.log(`Toggle like for artwork id: ${id}`);
   };
 
   return (
@@ -38,7 +33,7 @@ export default function SearchRecommendationResult({ query, data }: Props) {
       </PageIntro>
 
       <ArtworkListSection>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 pb-[5rem]">
           {data.map((artwork) => (
             <ArtworkCard
               key={artwork.id}
@@ -53,7 +48,7 @@ export default function SearchRecommendationResult({ query, data }: Props) {
               theme="light"
               borderRadius="small"
               onClick={() => handleClickArtwork(artwork.id)}
-              onClickLike={() => handleClickLike(artwork.id)}
+              onClickLike={() => onCardLike(artwork.id)} // ✅ 상위에서 받은 함수로 연결
             />
           ))}
         </div>

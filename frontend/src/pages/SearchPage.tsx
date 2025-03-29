@@ -13,6 +13,7 @@ export default function SearchPage() {
   const query = searchParams.get("query") || "";
   const from = searchParams.get("from");
 
+  const isFromRecommendation = from === "recommendation";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,35 +49,36 @@ export default function SearchPage() {
     isLiked: likedArtworks.includes(artwork.id),
   }));
 
-  const isFromRecommendation = from === "recommendation";
+  // ✅ 추천 검색 결과일 경우 별도 레이아웃
+  if (isFromRecommendation && query) {
+    return (
+      <SearchRecommendationResult
+        query={query}
+        data={enrichedData}
+        onCardLike={toggleLike}
+      />
+    );
+  }
 
+  // ✅ 일반 검색 페이지 (검색창 포함)
   return (
     <div className="px-4 py-6 pb-[5rem]">
-      {/* 일반 검색일 때만 SearchContainer 표시 */}
-      {!isFromRecommendation && (
-        <SearchContainer
-          value={searchValue}
-          onChange={handleSearchChange}
-          onKeyDown={handleSearchKeyDown}
-          setValue={setSearchValue}
-        />
-      )}
+      <SearchContainer
+        value={searchValue}
+        onChange={handleSearchChange}
+        onKeyDown={handleSearchKeyDown}
+        setValue={setSearchValue}
+      />
 
       <div className="mt-6">
         {query ? (
-          isFromRecommendation ? (
-            // 일반 검색
-            <SearchRecommendationResult query={query} data={enrichedData} />
-          ) : (
-            <SearchResultList
-              data={enrichedData}
-              onCardClick={handleCardClick}
-              onCardLike={toggleLike}
-              query={query}
-            />
-          )
+          <SearchResultList
+            data={enrichedData}
+            onCardClick={handleCardClick}
+            onCardLike={toggleLike}
+            query={query}
+          />
         ) : (
-          // 추천 검색
           <SearchRecommendationList data={searchDummy} />
         )}
       </div>
