@@ -37,7 +37,9 @@ export const ArtworkCard = ({
   onClickLike,
 }: Props) => {
   const dimension =
-    size === "small" ? "w-[11.25rem] h-[11.25rem]" : "w-[18.75rem] h-[18.75rem]";
+    size === "small"
+      ? "w-[11.25rem] h-[11.25rem]"
+      : "w-[18.75rem] h-[18.75rem]";
 
   const getPlaceholder = () => {
     if (theme === "dark") {
@@ -95,6 +97,7 @@ export const ArtworkCard = ({
         <button
           onClick={(e) => {
             e.stopPropagation();
+            e.preventDefault();
             onClickLike();
           }}
           className="absolute bottom-2 right-2 z-10"
