@@ -19,29 +19,32 @@ export default function MyCollections({ images }: Props) {
   const navigate = useNavigate();
 
   const overlayTexts = ["좋아요 컬렉션", "북마크 컬렉션"];
+  const paths = ["/mymuseum/collections/liked", "/mymuseum/collections/bookmark"];
 
-  const handleNavigateToCollection = () => {
-    navigate("/mymuseum/collections");
+  const handleNavigateToCollection = (idx: number) => {
+    navigate(paths[idx]);
   };
 
   return (
-    <div
-      onClick={handleNavigateToCollection}
-      className="w-full cursor-pointer"
-    >
+    <div className="w-full">
       <div className="grid grid-cols-2 gap-4 w-full max-w-[23.75rem] mx-auto">
         {images.map((item, idx) => (
-          <ArtworkCard
+          <div
             key={item.id}
-            imageUrl={item.image}
-            size="small"
-            isDimmed
-            overlayText={overlayTexts[idx]}
-            overlayTextPosition="center"
-            overlayTextSize="--text-md"
-            borderRadius="small"
-            hasBorder
-          />
+            className="cursor-pointer"
+            onClick={() => handleNavigateToCollection(idx)}
+          >
+            <ArtworkCard
+              imageUrl={item.image}
+              size="small"
+              isDimmed
+              overlayText={overlayTexts[idx]}
+              overlayTextPosition="center"
+              overlayTextSize="--text-md"
+              borderRadius="small"
+              hasBorder
+            />
+          </div>
         ))}
       </div>
     </div>

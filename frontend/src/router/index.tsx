@@ -3,6 +3,8 @@ import RootLayout from "@/shared/components/layout/RootLayout";
 import TodayArtsPage from "@/pages/TodayArtsPage";
 import SearchPage from "@/pages/SearchPage";
 import MymuseumPage from "@/pages/MymuseumPage";
+import LikedCollectionPage from "@/pages/LikedCollectionPage";
+import BookmarkCollectionPage from "@/pages/BookmarkCollectionPage";
 import CalenderPage from "@/pages/CalenderPage";
 import ProfilePage from "@/pages/ProfilePage";
 import RegisterPage from "@/pages/RegisterPage";
@@ -28,6 +30,8 @@ const router = createBrowserRouter([
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/mymuseum/calendar", element: <CalenderPage /> },
+      { path: "/mymuseum/collections/liked", element: <LikedCollectionPage /> },
+      { path: "/mymuseum/collections/bookmark", element: <BookmarkCollectionPage /> },
       { path: "profile", element: <ProfilePage /> },
       { path: "profile/level", element: <LevelInfoPage /> },
       { path: "profile/confirm", element: <ConfirmPasswordPage /> },
