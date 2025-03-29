@@ -21,7 +21,7 @@ export default function Button({
   let style;
 
   if (size === "S") style = "!w-[107px] h-[2.375rem]";
-  else if (size === "XS") style = "!w-[68px] h-[40px]";
+  else if (size === "XS") style = "!w-[70px] h-[40px] text-xs";
 
   return (
     <button
