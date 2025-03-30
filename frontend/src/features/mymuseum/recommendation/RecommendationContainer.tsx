@@ -1,12 +1,13 @@
-// features/recommendation/components/RecommendationContainer.tsx
-
 import { useState, useEffect } from "react";
-import RecommendedFilterChips from './RecommendedFilterChips';
-import RecommendationArtworks from './RecommendationArtworks';
-import { mockArtworks, Artwork } from '@/shared/dummy/mymuseumDummy';
+import RecommendedFilterChips from "./RecommendedFilterChips";
+import RecommendationArtworks from "./RecommendationArtworks";
+
+import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
+import { mapRecommendedToArtwork } from "@/shared/types/recommendation";
+import type { Artwork } from "@/shared/types/artwork";
 
 export default function RecommendationContainer() {
-  const [selectedFilter, setSelectedFilter] = useState<string>("연령");
+  const [selectedFilter, setSelectedFilter] = useState<string>("age");
   const [artworks, setArtworks] = useState<Artwork[]>([]);
 
   useEffect(() => {
@@ -15,9 +16,10 @@ export default function RecommendationContainer() {
       return;
     }
 
-    // 나중에 API 연동 시 여기만 교체하면 됨
-    const filtered = mockArtworks[selectedFilter] || [];
-    setArtworks(filtered);
+    // ✅ 추천 작품 메타 → artwork 타입으로 변환
+    const raw = recommendationDummy[selectedFilter] || [];
+    const mapped = raw.map(mapRecommendedToArtwork);
+    setArtworks(mapped);
   }, [selectedFilter]);
 
   return (
@@ -26,7 +28,10 @@ export default function RecommendationContainer() {
         selected={selectedFilter}
         onSelect={setSelectedFilter}
       />
-      <RecommendationArtworks artworks={artworks} />
+      <RecommendationArtworks
+      key={selectedFilter}
+      artworks={artworks}
+      />
     </div>
   );
 }

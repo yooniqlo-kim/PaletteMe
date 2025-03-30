@@ -12,21 +12,21 @@ interface Props {
 
 export default function SearchContainer({ value, onChange, onKeyDown, setValue }: Props) {
   const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null); // ✅ ref 생성
+  const inputRef = useRef<HTMLInputElement>(null); // ref 생성
   const navigate = useNavigate();
 
   const handleKeywordClick = (keyword: string) => {
     setValue(keyword);
     navigate(`/search?query=${encodeURIComponent(keyword)}`);
-    inputRef.current?.blur();           // ✅ 포커스 해제
-    setIsFocused(false);                // ✅ 포커스 상태 해제
+    inputRef.current?.blur();           //  포커스 해제
+    setIsFocused(false);                // 포커스 상태 해제
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       navigate(`/search?query=${encodeURIComponent(value.trim())}`);
-      inputRef.current?.blur();         // ✅ 포커스 해제
-      setIsFocused(false);              // ✅ 포커스 상태 해제
+      inputRef.current?.blur();         // 포커스 해제
+      setIsFocused(false);              // 포커스 상태 해제
     }
     onKeyDown?.(e); // 부모 핸들러도 실행
   };
@@ -36,10 +36,10 @@ export default function SearchContainer({ value, onChange, onKeyDown, setValue }
       <SearchBar
         value={value}
         onChange={onChange}
-        onKeyDown={handleKeyDown} // ✅ 우리가 만든 핸들러 사용
+        onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setTimeout(() => setIsFocused(false), 100)}
-        inputRef={inputRef}       // ✅ input에 ref 연결
+        inputRef={inputRef}       // input에 ref 연결
       />
 
       {isFocused && (

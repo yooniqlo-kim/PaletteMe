@@ -5,15 +5,45 @@ import shuffle from "@/shared/utils/shuffle";
 import WeeklyCalendar from "@/features/mymuseum/calendar/WeeklyCalendar";
 import WrappedSummaryCard from "@/features/mymuseum/WrappedSummaryCard";
 import RecommendationContainer from "@/features/mymuseum/recommendation/RecommendationContainer";
-import { useNavigate } from 'react-router-dom'; 
-import { weeklyDummy } from "@/shared/dummy/weeklyDummy "; 
+import { useNavigate } from "react-router-dom";
+import { weeklyDummy } from "@/shared/dummy/weeklyDummy ";
 
+// 요일 변환 함수
+const getDayName = (dateStr: string): string => {
+  const date = new Date(dateStr);
+  return ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
+};
 
 export default function MymuseumPage() {
   const navigate = useNavigate();
   const shuffled = shuffle(masterpieces).slice(0, 4);
-  const myCollectionImages = shuffled.slice(0, 2);
-  const myCommentsImages = shuffled.slice(2, 4);
+
+  // RecommendedArtwork 형태로 매핑
+  const myCollectionImages = shuffled.slice(0, 2).map((img, i) => ({
+    artworkId: `c${i}`,
+    imgUrl: img.image,
+    title: img.title,
+    artist: img.artist,
+    liked: false,
+  }));
+
+  // CommentPreview 형태로 매핑
+  const myCommentsImages = shuffled.slice(2, 4).map((img, i) => ({
+    id: `cm${i}`,
+    imageUrl: img.image,
+    title: img.title,
+    artist: img.artist,
+  }));
+
+  // ✅ WeeklyReview → CalendarDay로 변환
+  const calendarData = ['월', '화', '수', '목', '금', '토', '일'].map((day) => {
+    const matched = weeklyDummy.find((review) => getDayName(review.date) === day);
+    return {
+      day,
+      hasDiary: !!matched,
+      imageUrl: matched?.imgUrl,
+    };
+  });
 
   return (
     <div className="px-4 pb-[3.75rem]">
@@ -21,9 +51,9 @@ export default function MymuseumPage() {
         <div className="text-lg font-bold mb-4">마이뮤지엄</div>
 
         <div className="mb-6">
-          <WeeklyCalendar 
-          data={weeklyDummy } 
-          onClick={() => navigate('/mymuseum/calendar')} 
+          <WeeklyCalendar
+            data={calendarData}
+            onClick={() => navigate("/mymuseum/calendar")}
           />
         </div>
 

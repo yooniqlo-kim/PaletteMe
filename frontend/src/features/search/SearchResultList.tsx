@@ -38,6 +38,7 @@ export default function SearchResultList({
         {data.map((artwork) => (
           <SearchResultCard
             key={artwork.id}
+            artworkId={String(artwork.id)}
             imageUrl={artwork.imageUrl}
             onClick={() => onCardClick(artwork.id)}
             isLiked={artwork.isLiked}

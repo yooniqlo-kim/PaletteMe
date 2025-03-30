@@ -11,16 +11,16 @@ import { getWrappedMonthString } from '@/shared/utils/date';
 interface Props {
   currentStep: number;
   onNext: () => void;
-  artistName?: string;
-  reviewCnt?: number;
-  reviewPercentage?: number;
-  reviewRank?: number;
-  favoriteName?: string;
-  favoriteArtist?: string;
-  favoriteImg?: string;
-  recommendedArtwork?: string[];
-  recommendedArtist?: string[];
-  recommendedImg?: string[];
+  artistName: string;
+  reviewCnt: number;
+  reviewPercentage: number;
+  reviewRank: number;
+  favoriteName: string;
+  favoriteArtist: string;
+  favoriteImg: string;
+  recommendedArtwork: string[];
+  recommendedArtist: string[];
+  recommendedImg: string[];
 }
 
 export default function WrappedStep({
@@ -105,7 +105,12 @@ export default function WrappedStep({
           <>
             <h2 className="text-xl mb-4">가장 인상깊게 본 작품은</h2>
             <ArtworkCard
-              imageUrl={favoriteImg}
+              artwork={{
+                artworkImageUrl: favoriteImg,
+                title: favoriteName || '',
+                liked: false, // 기본값
+                artist: favoriteArtist || '',
+              }}
               size="large"
               theme="light"
               hasBorder
@@ -120,20 +125,30 @@ export default function WrappedStep({
             <h2 className="text-xl mb-4">당신에게 추천하는 작품이에요</h2>
             <div className="flex flex-wrap justify-center gap-4">
               <ArtworkCard
-                imageUrl={recommendedImg[0]}
+                artwork={{
+                  artworkImageUrl: recommendedImg[0],
+                  title: recommendedArtwork[0] || '',
+                  liked: false, // 기본값
+                  artist: recommendedArtist[0] || '',
+                }}
                 size="small"
                 theme="light"
                 hasBorder
               />
               <ArtworkCard
-                imageUrl={recommendedImg[1]}
+                artwork={{
+                  artworkImageUrl: recommendedImg[1],
+                  title: recommendedArtwork[1] || '',
+                  liked: false, // 기본값
+                  artist: recommendedArtist[1] || '',
+                }}
                 size="small"
                 theme="light"
                 hasBorder
               />
             </div>
             <p className="mt-2">작가: {recommendedArtist[0]}, {recommendedArtist[1]}</p>
-            <p className="mt-2">작가: {recommendedArtwork[0]}, {recommendedArtwork[1]}</p>
+            <p className="mt-2">작품이름: {recommendedArtwork[0]}, {recommendedArtwork[1]}</p>
           </>
         )}
       </div>

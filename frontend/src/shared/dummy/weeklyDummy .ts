@@ -1,10 +1,33 @@
-// 주간 감상문 샘플 데이터
-export const weeklyDummy = [
-  { day: '월', hasDiary: false },
-  { day: '화', hasDiary: true, imageUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg" },
-  { day: '수', hasDiary: false },
-  { day: '목', hasDiary: true, imageUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg" },
-  { day: '금', hasDiary: false },
-  { day: '토', hasDiary: false },
-  { day: '일', hasDiary: false },
+export interface WeeklyReview {
+  date: string;
+  artworkId: string;
+  imgUrl: string;
+}
+
+export const weeklyDummy: WeeklyReview[] = [
+  {
+    date: "2024-03-11",
+    artworkId: "The Starry Night_Vincent van Gogh",
+    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Meisje_met_de_parel.jpg",
+  },
+  {
+    date: "2024-03-12",
+    artworkId: "The Scream_Edvard Munch",
+    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f4/The_Scream.jpg",
+  },
+  {
+    date: "2024-03-13",
+    artworkId: "Mona Lisa_Leonardo da Vinci",
+    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/6/6a/Mona_Lisa.jpg",
+  },
+  {
+    date: "2024-03-14",
+    artworkId: "Girl with a Pearl Earring_Johannes Vermeer",
+    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Meisje_met_de_parel.jpg",
+  },
+  {
+    date: "2024-03-15",
+    artworkId: "The Kiss_Gustav Klimt",
+    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Meisje_met_de_parel.jpg",
+  },
 ];

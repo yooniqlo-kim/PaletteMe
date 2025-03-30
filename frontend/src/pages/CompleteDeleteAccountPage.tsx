@@ -1,4 +1,4 @@
-import CompletedForm from "@/shared/components/Form/CompletedForm";
+import CompletedForm from "@/shared/components/form/CompletedForm";
 
 export default function CompleteDeleteAccountPage() {
   return (

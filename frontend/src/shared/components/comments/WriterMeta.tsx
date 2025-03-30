@@ -2,7 +2,7 @@ import { BaseUser } from "@/shared/types/user";
 
 export type WriterMetaProps = {
   user: BaseUser;
-  date: string;
+  date?: string; // 선택
 };
 
 export function WriterMeta({ user, date }: WriterMetaProps) {
@@ -17,7 +17,8 @@ export function WriterMeta({ user, date }: WriterMetaProps) {
       />
       <div className="flex items-center gap-2 truncate">
         <span className="text-xs font-medium">{nickname}</span>
-        <span className="text-xs">{date}</span>
+        {/* date가 있을 때만 표시 */}
+        {date && <span className="text-xs">{date}</span>}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { artworkDummy } from "@/shared/dummy/artworkDummy";
 import { KeywordSuggester } from "./KeywordSuggester";
 import { TextArea } from "./TextArea";
 import { VisibilityToggle } from "./VisibilityToggle";
-import Button from "@/shared/components/Buttons/Button";
+import Button from "@/shared/components/buttons/Button";
 
 export function WriteForm() {
   const [content, setContent] = useState("");

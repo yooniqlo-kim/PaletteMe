@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../../shared/components/Buttons/Button";
+import Button from "../../shared/components/buttons/Button";
 import Chip from "../../shared/components/buttons/Chip";
 
 const KEYWORD_DATA = {

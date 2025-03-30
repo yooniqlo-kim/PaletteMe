@@ -1,5 +1,6 @@
 import IconRedHeart from "@/shared/components/icons/IconRedHeart";
 import IconRedHeartLarge from "@/shared/components/icons/IconRedHeartLarge";
+import type { Artwork } from "@/shared/types/artwork";
 
 // placeholder 이미지 import
 import placeholderLight180 from "@/assets/images/placeholder-art-light-180x180.jpg";
@@ -8,22 +9,21 @@ import placeholderDark180 from "@/assets/images/placeholder-art-dark-180x180.jpg
 import placeholderDark300 from "@/assets/images/placeholder-art-dark-300x300.jpg";
 
 type Props = {
-  imageUrl: string; // 이미지 URL
-  size?: "small" | "large"; // 180x180 | 300x300
-  theme?: "light" | "dark"; // placeholder 선택용
-  isDimmed?: boolean; // 반투명 필터
+  artwork: Artwork; // artwork 전체 객체로 받기
+  size?: "small" | "large"; // small: 180x180, large: 300x300
+  theme?: "light" | "dark"; // placeholder 이미지
+  isDimmed?: boolean; // 필터
   overlayText?: string; // 텍스트
   overlayTextPosition?: "center" | "bottomRight"; // 텍스트 위치
   overlayTextSize?: string; // 텍스트 크기
-  borderRadius?: "small" | "medium"; // 8px | 12px
-  hasBorder?: boolean; // 외곽선
-  onClick?: () => void; // 클릭 이벤트
-  isLiked?: boolean; // 좋아요
-  onClickLike?: () => void; // 좋아요 클릭 이벤트
+  borderRadius?: "small" | "medium"; // 8px, 12px
+  hasBorder?: boolean; // 외각선 유무
+  onClick?: () => void; // 클릭 시 이벤트
+  onClickLike?: () => void; // 좋아요 클릭 시 이벤트
 };
 
 export const ArtworkCard = ({
-  imageUrl,
+  artwork,
   size = "small",
   theme = "light",
   isDimmed = false,
@@ -33,9 +33,14 @@ export const ArtworkCard = ({
   borderRadius = "small",
   hasBorder = false,
   onClick,
-  isLiked = false,
   onClickLike,
 }: Props) => {
+  const {
+    artworkImageUrl,
+    title,
+    liked = false,
+  } = artwork;
+
   const dimension =
     size === "small"
       ? "w-[11.25rem] h-[11.25rem]"
@@ -50,7 +55,7 @@ export const ArtworkCard = ({
   };
 
   const placeholderImage = getPlaceholder();
-  const safeImageUrl = imageUrl?.trim() ? imageUrl : placeholderImage;
+  const safeImageUrl = artworkImageUrl?.trim() ? artworkImageUrl : placeholderImage;
 
   const overlayPositionClass =
     overlayTextPosition === "center"
@@ -70,13 +75,13 @@ export const ArtworkCard = ({
     >
       <img
         src={safeImageUrl}
+        alt={title}
         onError={(e) => {
           const target = e.target as HTMLImageElement;
           if (target.src !== placeholderImage) {
             target.src = placeholderImage;
           }
         }}
-        alt="Artwork"
         className="w-full h-full object-cover"
       />
 
@@ -103,9 +108,9 @@ export const ArtworkCard = ({
           className="absolute bottom-2 right-2 z-10"
         >
           {size === "small" ? (
-            <IconRedHeart isClicked={isLiked} />
+            <IconRedHeart isClicked={liked} />
           ) : (
-            <IconRedHeartLarge isClicked={isLiked} />
+            <IconRedHeartLarge isClicked={liked} />
           )}
         </button>
       )}

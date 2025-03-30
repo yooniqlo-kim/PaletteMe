@@ -1,47 +1,47 @@
 import { useNavigate } from "react-router-dom";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
-
-// 작품 정보 타입 정의
-type Artwork = {
-  id: number;
-  image: string;
-  title: string;
-  artist: string;
-  year: string;
-  country: string;
-};
+import type { RecommendedArtwork } from "@/shared/types/recommendation";
 
 type Props = {
-  images: Artwork[];
+  images: RecommendedArtwork[];
 };
 
 export default function MyCollections({ images }: Props) {
   const navigate = useNavigate();
 
   const overlayTexts = ["좋아요 컬렉션", "북마크 컬렉션"];
+  const paths = ["/mymuseum/liked", "/mymuseum/bookmark"];
 
-  const handleNavigateToCollection = () => {
-    navigate("/mymuseum/collections");
+  const handleNavigateToCollection = (idx: number) => {
+    navigate(paths[idx]);
   };
 
   return (
-    <div
-      onClick={handleNavigateToCollection}
-      className="w-full cursor-pointer"
-    >
+    <div className="w-full">
       <div className="grid grid-cols-2 gap-4 w-full max-w-[23.75rem] mx-auto">
         {images.map((item, idx) => (
-          <ArtworkCard
-            key={item.id}
-            imageUrl={item.image}
-            size="small"
-            isDimmed
-            overlayText={overlayTexts[idx]}
-            overlayTextPosition="center"
-            overlayTextSize="--text-md"
-            borderRadius="small"
-            hasBorder
-          />
+          <div
+            key={item.artworkId}
+            className="cursor-pointer"
+            onClick={() => handleNavigateToCollection(idx)}
+          >
+            <ArtworkCard
+              artwork={{
+                artworkId: item.artworkId,
+                artworkImageUrl: item.imgUrl,
+                title: item.title,
+                artist: item.artist,
+                liked: item.liked,
+              }}
+              size="small"
+              isDimmed
+              overlayText={overlayTexts[idx]}
+              overlayTextPosition="center"
+              overlayTextSize="--text-md"
+              borderRadius="small"
+              hasBorder
+            />
+          </div>
         ))}
       </div>
     </div>

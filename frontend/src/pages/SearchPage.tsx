@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import SearchContainer from "@/features/search/SearchContainer";
 import SearchResultList from "@/features/search/SearchResultList";
 import SearchRecommendationList from "@/features/search/SearchRecommendationList";
+import SearchRecommendationResult from "@/features/search/SearchRecommendationResult";
 import { searchDummy } from "@/shared/dummy/seachThumbnailDummy";
 
 export default function SearchPage() {
@@ -10,7 +11,9 @@ export default function SearchPage() {
   const [likedArtworks, setLikedArtworks] = useState<number[]>([]);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
+  const from = searchParams.get("from");
 
+  const isFromRecommendation = from === "recommendation";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +49,18 @@ export default function SearchPage() {
     isLiked: likedArtworks.includes(artwork.id),
   }));
 
+  // ✅ 추천 검색 결과일 경우 별도 레이아웃
+  if (isFromRecommendation && query) {
+    return (
+      <SearchRecommendationResult
+        query={query}
+        data={enrichedData}
+        onCardLike={toggleLike}
+      />
+    );
+  }
+
+  // ✅ 일반 검색 페이지 (검색창 포함)
   return (
     <div className="px-4 py-6 pb-[5rem]">
       <SearchContainer
@@ -64,10 +79,7 @@ export default function SearchPage() {
             query={query}
           />
         ) : (
-          <SearchRecommendationList
-            data={searchDummy}
-            onCardClick={handleCardClick}
-          />
+          <SearchRecommendationList data={searchDummy} />
         )}
       </div>
     </div>
