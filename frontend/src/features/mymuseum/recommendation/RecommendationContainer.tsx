@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import RecommendedFilterChips from "./RecommendedFilterChips";
 import RecommendationArtworks from "./RecommendationArtworks";
 
-import { mockArtworksMeta } from "@shared/dummy/mymuseumDummy";
-import { mapRecommendedToArtwork } from "@/shared/types/artwork";
+import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
+import { mapRecommendedToArtwork } from "@/shared/types/recommendation.ts";
 import type { Artwork } from "@/shared/types/artwork";
 
 export default function RecommendationContainer() {
@@ -17,7 +17,7 @@ export default function RecommendationContainer() {
     }
 
     // ✅ 추천 작품 메타 → artwork 타입으로 변환
-    const raw = mockArtworksMeta[selectedFilter] || [];
+    const raw = recommendationDummy[selectedFilter] || [];
     const mapped = raw.map(mapRecommendedToArtwork);
     setArtworks(mapped);
   }, [selectedFilter]);

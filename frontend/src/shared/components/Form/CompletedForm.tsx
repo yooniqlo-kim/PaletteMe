@@ -1,5 +1,5 @@
 import { FormEvent } from "react";
-import Button from "../Buttons/Button";
+import Button from "../buttons/Button";
 import { useNavigate } from "react-router";
 import mainLogo from "@/assets/images/MainLogo.png";
 

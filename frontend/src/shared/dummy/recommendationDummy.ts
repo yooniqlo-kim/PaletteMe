@@ -1,8 +1,6 @@
-// shared/dummy/mockArtworksMeta.ts
+import type { RecommendedArtwork } from "@/shared/types/recommendation.ts";
 
-import type { RecommendedArtwork } from "@/shared/types/artwork";
-
-export const mockArtworksMeta: Record<string, RecommendedArtwork[]> = {
+export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
   age: [
     {
       artworkId: "1",

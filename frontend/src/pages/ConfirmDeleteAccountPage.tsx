@@ -1,5 +1,5 @@
 import Pallette from "@/shared/components/user/Pallette";
-import Button from "../shared/components/Buttons/Button";
+import Button from "../shared/components/buttons/Button";
 import MyCollectionContainer from "@/features/mymuseum/mycollection/MyCollectionContainer";
 import MyCommentsContainer from "@/features/mymuseum/mycomments/MyCommentsContainer";
 import shuffle from "@/shared/utils/shuffle";
@@ -10,11 +10,25 @@ import { useNavigate } from "react-router";
 
 export default function ConfirmDeleteAccountPage() {
   const shuffled = shuffle(masterpieces).slice(0, 4);
-  const myCollectionImages = shuffled.slice(0, 2);
-  const myCommentsImages = shuffled.slice(2, 4);
+
+  // MyCollectionContainer용: RecommendedArtwork[]
+  const myCollectionImages = shuffled.slice(0, 2).map((item) => ({
+    artworkId: `${item.title}_${item.artist}`,
+    imgUrl: item.image,
+    title: item.title,
+    artist: item.artist,
+    liked: true,
+  }));
+
+  // MyCommentsContainer용: CommentPreview[]
+  const myCommentsImages = shuffled.slice(2, 4).map((item) => ({
+    id: String(item.id),
+    imageUrl: item.image,
+    title: item.title,
+    artist: item.artist,
+  }));
 
   const navigate = useNavigate();
-
   const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState<boolean>(false);
 
   function handleDeleteButton() {
@@ -39,18 +53,22 @@ export default function ConfirmDeleteAccountPage() {
             탈퇴 하면 다음과 같은 정보가 사라져요
           </p>
         </div>
+
         <div className="flex flex-col gap-3">
           <p className="text-sm font-normal">탈퇴하면 등급이 사라져요</p>
           <Pallette />
         </div>
+
         <div className="flex flex-col gap-3">
           <p className="text-sm font-normal">탈퇴하면 컬렉션이 사라져요!</p>
           <MyCollectionContainer images={myCollectionImages} />
         </div>
+
         <div className="flex flex-col gap-3">
           <p className="text-sm font-normal">탈퇴하면 감상문이 사라져요!</p>
           <MyCommentsContainer images={myCommentsImages} />
         </div>
+
         <div className="flex gap-2">
           <Button
             size="L"

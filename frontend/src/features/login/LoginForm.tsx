@@ -1,4 +1,4 @@
-import Button from "@/shared/components/Buttons/Button";
+import Button from "@/shared/components/buttons/Button";
 import Input from "@/shared/components/Form/Input";
 import { Link } from "react-router";
 

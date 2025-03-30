@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
-import type { RecommendedArtwork } from "@/shared/types/artwork";
+import type { RecommendedArtwork } from "@/shared/types/recommendation.ts";
 
 type Props = {
   images: RecommendedArtwork[];

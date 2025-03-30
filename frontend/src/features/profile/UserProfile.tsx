@@ -1,4 +1,4 @@
-import RoundedButton from "@/shared/components/Buttons/RoundedButton";
+import RoundedButton from "@/shared/components/buttons/RoundedButton";
 import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
 import { useNavigate } from "react-router";

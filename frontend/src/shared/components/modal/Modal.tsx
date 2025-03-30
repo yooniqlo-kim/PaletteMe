@@ -1,5 +1,5 @@
 import modalImg from "@/assets/images/modal.png";
-import Button from "../Buttons/Button";
+import Button from "../buttons/Button";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router";

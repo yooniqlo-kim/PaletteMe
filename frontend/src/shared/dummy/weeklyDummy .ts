@@ -8,7 +8,7 @@ export const weeklyDummy: WeeklyReview[] = [
   {
     date: "2024-03-11",
     artworkId: "The Starry Night_Vincent van Gogh",
-    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
+    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Meisje_met_de_parel.jpg",
   },
   {
     date: "2024-03-12",
@@ -28,6 +28,6 @@ export const weeklyDummy: WeeklyReview[] = [
   {
     date: "2024-03-15",
     artworkId: "The Kiss_Gustav Klimt",
-    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/7/70/The_Kiss_-_Gustav_Klimt_-_Google_Cultural_Institute.jpg",
+    imgUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d7/Meisje_met_de_parel.jpg",
   },
 ];

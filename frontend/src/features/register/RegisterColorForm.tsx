@@ -1,4 +1,4 @@
-import Button from "@/shared/components/Buttons/Button";
+import Button from "@/shared/components/buttons/Button";
 import ColorCardList from "./ColorCardList";
 import { FormEvent } from "react";
 

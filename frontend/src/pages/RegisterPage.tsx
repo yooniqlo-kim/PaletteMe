@@ -2,7 +2,7 @@ import RegisterArtworkForm from "@/features/register/RegisterArtworkForm";
 import RegisterColorForm from "@/features/register/RegisterColorForm";
 import RegisterImageForm from "@/features/register/RegisterImageForm";
 import RegisterInfoForm from "@/features/register/RegisterInfoForm";
-import CompletedForm from "@/shared/components/Form/CompletedForm";
+import CompletedForm from "@/shared/components/form/CompletedForm";
 import SignupProgressBar from "@/shared/components/progressbar/SignupProgressBar";
 import { useState } from "react";
 
