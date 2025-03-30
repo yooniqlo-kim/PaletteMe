@@ -1,4 +1,4 @@
-import type { RecommendedArtwork } from "@/shared/types/recommendation.ts";
+import type { RecommendedArtwork } from "@/shared/types/recommendation";
 
 export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
   age: [

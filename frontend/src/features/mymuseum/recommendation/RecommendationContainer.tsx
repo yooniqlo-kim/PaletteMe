@@ -3,7 +3,7 @@ import RecommendedFilterChips from "./RecommendedFilterChips";
 import RecommendationArtworks from "./RecommendationArtworks";
 
 import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
-import { mapRecommendedToArtwork } from "@/shared/types/recommendation.ts";
+import { mapRecommendedToArtwork } from "@/shared/types/recommendation";
 import type { Artwork } from "@/shared/types/artwork";
 
 export default function RecommendationContainer() {
