@@ -1,5 +1,5 @@
 import Pallette from "@/shared/components/user/Pallette";
-import Button from "../shared/components/buttons/Button";
+import Button from "@/shared/components/buttons/Button";
 import MyCollectionContainer from "@/features/mymuseum/mycollection/MyCollectionContainer";
 import MyCommentsContainer from "@/features/mymuseum/mycomments/MyCommentsContainer";
 import shuffle from "@/shared/utils/shuffle";
@@ -11,7 +11,6 @@ import { useNavigate } from "react-router";
 export default function ConfirmDeleteAccountPage() {
   const shuffled = shuffle(masterpieces).slice(0, 4);
 
-  // MyCollectionContainer용: RecommendedArtwork[]
   const myCollectionImages = shuffled.slice(0, 2).map((item) => ({
     artworkId: `${item.title}_${item.artist}`,
     imgUrl: item.image,
@@ -20,19 +19,18 @@ export default function ConfirmDeleteAccountPage() {
     liked: true,
   }));
 
-  // MyCommentsContainer용: CommentPreview[]
-  const myCommentsImages = shuffled.slice(2, 4).map((item) => ({
-    id: String(item.id),
+  const myCommentsImages = shuffled.slice(2, 4).map((item, i) => ({
+    id: `comment_${i}`, // ✅ id 안정적으로 생성
     imageUrl: item.image,
     title: item.title,
     artist: item.artist,
   }));
 
   const navigate = useNavigate();
-  const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState<boolean>(false);
+  const [isDeleteBtnClicked, setIsDeleteBtnClicked] = useState(false);
 
   function handleDeleteButton() {
-    setIsDeleteBtnClicked((prev) => !prev);
+    setIsDeleteBtnClicked(true);
   }
 
   return (
@@ -43,7 +41,7 @@ export default function ConfirmDeleteAccountPage() {
           msg="지금까지 작성한 감상문이 사라져요"
           confirmMsg="정말 탈퇴하시겠습니까?"
           onClose={() => setIsDeleteBtnClicked(false)}
-          route="complete"
+          route="/profile/delete/complete" // 실제 경로 맞춰주기
         />
       )}
       <section className="px-3 py-3 flex flex-col gap-6 box-border">
