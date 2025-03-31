@@ -1,21 +1,21 @@
+import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+
 import MyCollectionContainer from "@/features/mymuseum/mycollection/MyCollectionContainer";
 import MyCommentsContainer from "@/features/mymuseum/mycomments/MyCommentsContainer";
-import masterpieces from "@/assets/masterpieces";
-import shuffle from "@/shared/utils/shuffle";
 import WeeklyCalendar from "@/features/mymuseum/calendar/WeeklyCalendar";
 import WrappedSummaryCard from "@/features/mymuseum/WrappedSummaryCard";
 import RecommendationContainer from "@/features/mymuseum/recommendation/RecommendationContainer";
-import { useNavigate } from "react-router-dom";
-import { weeklyDummy } from "@/shared/dummy/weeklyDummy ";
 
-// 요일 변환 함수
-const getDayName = (dateStr: string): string => {
-  const date = new Date(dateStr);
-  return ['일', '월', '화', '수', '목', '금', '토'][date.getDay()];
-};
+import masterpieces from "@/assets/masterpieces";
+import shuffle from "@/shared/utils/shuffle";
+import { weeklyDummy } from "@shared/dummy/weeklyDummy ";
+import { mapReviewsToWeeklyCalendar } from "@/shared/utils/date";
 
 export default function MymuseumPage() {
   const navigate = useNavigate();
+
+  // 컬렉션 셔플
   const shuffled = shuffle(masterpieces).slice(0, 4);
 
   // RecommendedArtwork 형태로 매핑
@@ -35,15 +35,11 @@ export default function MymuseumPage() {
     artist: img.artist,
   }));
 
-  // ✅ WeeklyReview → CalendarDay로 변환
-  const calendarData = ['월', '화', '수', '목', '금', '토', '일'].map((day) => {
-    const matched = weeklyDummy.find((review) => getDayName(review.date) === day);
-    return {
-      day,
-      hasDiary: !!matched,
-      imageUrl: matched?.imgUrl,
-    };
-  });
+  // 오늘 기준으로 이번 주 월요일
+  const weekStart = dayjs().startOf("week").add(1, "day").toDate();
+
+  // 감상문 데이터를 CalendarDay[]로 변환
+  const calendarData = mapReviewsToWeeklyCalendar(weeklyDummy, weekStart);
 
   return (
     <div className="px-4 pb-[3.75rem]">
