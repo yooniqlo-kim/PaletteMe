@@ -20,6 +20,7 @@ import UpdateUserInfoPage from "@/pages/UpdateUserInfoPage";
 import ConfirmDeleteAccountPage from "@/pages/ConfirmDeleteAccountPage";
 import CompleteDeleteAccountPage from "@/pages/CompleteDeleteAccountPage";
 import UpdateProfilePage from "@/pages/UpdateProfilePage";
+import CommentDetailPage from "@/pages/CommentDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,8 @@ const router = createBrowserRouter([
       { path: "/wrapped", element: <WrappedPage /> },
       { path: "*", element: <NotFoundPage /> },
       { path: "/commentcollection", element: <CommentCollectionPage /> },
+      // {path: "/comment/:commentId", element: <CommentDetailPage />},
+      { path: "/commentdetail", element: <CommentDetailPage /> },
     ],
   },
 ]);

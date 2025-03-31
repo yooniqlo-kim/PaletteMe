@@ -23,7 +23,7 @@ export default function IconButton({
       "text-white bg-neutral-2/50 w-15 p-1 box-border flex items-center gap-1";
   else if (identifier === "review_detail")
     restProperties =
-      "text-neutral-8 border border-netural-4 bg-white w-15 flex justify-center p-1 box-border gap-1";
+      "text-neutral-8 border border-neutral-4 bg-white w-15 flex justify-center p-1 box-border gap-1";
 
   return (
     <button

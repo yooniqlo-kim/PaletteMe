@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { commentDummy } from "@/shared/dummy/commentDummy";
 import { artworkDummy } from "@/shared/dummy/artworkDummy";
-import { CommentListView } from "@/features/myComments/CommentListView";
-import { ViewToggleTab } from "@/features/myComments/ViewToggleTab";
-import { CommentTicketView } from "@/features/myComments/CommentTicketView";
+import { CommentListView } from "@/features/comments/CommentListView";
+import { ViewToggleTab } from "@/features/comments/ViewToggleTab";
+import { CommentTicketView } from "@/features/comments/CommentTicketView";
 
 export default function CommentCollectionPage() {
   const [view, setView] = useState<"list" | "ticket">("list");
