@@ -1,4 +1,4 @@
-package com.ssafy.paletteme.domain.search.entity;
+package com.ssafy.paletteme.domain.artworks.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Table(name = "artworks")
-public class Artwork {
+public class Artworks {
     @Id
     @Column(name = "artwork_id", nullable = false, length = 255)
     private String artworkId;
@@ -17,19 +17,19 @@ public class Artwork {
     @JoinColumn(name = "museum_id",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Museum museum;
+    private Museums museum;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "era_id",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Era era;
+    private Eras era;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Artist artist;
+    private Artists artist;
 
     @Column(name = "en_title", nullable = false, length = 255)
     private String enTitle;

@@ -56,7 +56,9 @@ public class SecurityConfig {
                 // 명시한 url만 인가 없이 허용
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/users/sign-up", "api/users/login").permitAll()
+                                .requestMatchers("/users/sign-up", "/users/login", "users/phone/send", "/users/phone/send", "/users/phone/verify", "/users/check-id").permitAll()
+//                                .requestMatchers("/artworks/**").permitAll()
+                                .requestMatchers("/search/artworks").permitAll()
                                 .anyRequest().authenticated());
 
         http.exceptionHandling( ex -> ex
@@ -66,7 +68,7 @@ public class SecurityConfig {
 
         /* 인증 필터 추가, /api/users/login에서만 해당 필터 작동 */
         LoginFilter loginFilter = new LoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil);
-        loginFilter.setFilterProcessesUrl("/api/users/login");
+        loginFilter.setFilterProcessesUrl("/users/login");
         http.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 
         /* 인가 필터 추가 */

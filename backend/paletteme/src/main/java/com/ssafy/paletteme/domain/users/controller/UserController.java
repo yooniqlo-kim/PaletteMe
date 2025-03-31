@@ -2,7 +2,10 @@ package com.ssafy.paletteme.domain.users.controller;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
 import com.ssafy.paletteme.common.security.annotation.UserId;
+import com.ssafy.paletteme.domain.users.dto.PhoneNumberRequest;
 import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
+import com.ssafy.paletteme.domain.users.dto.VerificationRequest;
+import com.ssafy.paletteme.domain.users.dto.CheckIdRequest;
 import com.ssafy.paletteme.domain.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.http.HttpResponse;
+
 
 @Tag(name = "Users", description = "회원 관련 API")
 @RestController
@@ -30,10 +33,35 @@ public class UserController {
 
     }
 
-    @Operation(summary = "토큰 유효성 확인", description = "Access Token이 유효한지 확인하는 테스트용 API입니다.")
+    @Operation(summary = "아이디 중복 확인", description = "사용자가 입력한 아이디가 이미 존재하는지 확인.")
+    @PostMapping("check-id")
+    public ApiResponse<Void> checkId(@RequestBody CheckIdRequest request){
+        userService.checkId(request);
+        return ApiResponse.success();
+    }
+
+
+
+    @Operation(summary = "휴대폰 인증번호 전송", description = "입력한 휴대폰 번호로 인증번호(SMS)를 전송.")
+    @PostMapping("/phone/send")
+    public ApiResponse<Void> sendPhone( @Parameter(description = "인증번호를 받을 사용자의 휴대폰 번호", required = true)
+                                        @RequestBody PhoneNumberRequest request) {
+        userService.sendPhone(request.getPhoneNumber());
+        return ApiResponse.success();
+    }
+
+    @Operation(summary = "휴대폰 인증번호 검증", description = "사용자가 입력한 인증번호가 저장된 값과 일치하는지 검증.")
+    @PostMapping("/phone/verify")
+    public ApiResponse<Void> verifyPhone(@RequestBody VerificationRequest request) {
+        userService.verifyPhone(request);
+        return ApiResponse.success();
+
+    }
+
+
+    @Operation(summary = "토큰 유효성 확인", description = "Access Token이 유효한지 확인하는 테스트용 API.")
     @GetMapping(value = "/token-test")
     public ApiResponse<Integer> tokenTest(@Parameter(hidden = true) @UserId int userId){
         return ApiResponse.success(userId);
     }
-
 }
