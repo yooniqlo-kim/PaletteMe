@@ -25,6 +25,7 @@
   /* color variable */
   --color-primary: #ff385c;
   --color-primary-hover: #e0284a;
+  --color-primary-inactive: #bfbfbf;
   --color-navbar-active: #d33753;
   --color-secondary: #f2a0f4;
   --color-secondary-hover: #e58ce5;
