@@ -1,7 +1,9 @@
 package com.ssafy.paletteme.domain.users.service;
 
+import com.ssafy.paletteme.domain.users.dto.CheckIdRequest;
 import com.ssafy.paletteme.domain.users.dto.S3UploadResponse;
 import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
+import com.ssafy.paletteme.domain.users.dto.VerificationRequest;
 import com.ssafy.paletteme.domain.users.entity.*;
 import com.ssafy.paletteme.domain.users.exception.UserError;
 import com.ssafy.paletteme.domain.users.exception.UserException;
@@ -9,11 +11,14 @@ import com.ssafy.paletteme.domain.users.repository.*;
 import com.ssafy.paletteme.domain.users.utils.S3Util;
 import com.ssafy.paletteme.domain.users.utils.SmsCertificationUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
@@ -28,11 +33,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
     private final SmsCertificationUtil smsCertificationUtil;
+    private final StringRedisTemplate stringRedisTemplate;
 
     private final UsersFavoriteColorRepository usersFavoriteColorRepository;
 
     // 최대 허용 크기(이미지 저장) (예: 10MB)
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+    // 휴대폰 인증 시간
+    private final Duration REDIS_EXPIRATION = Duration.ofMinutes(5);
 
     @Transactional
     public void signUp(UserSignupRequest userSignupRequest, MultipartFile file) {
@@ -69,11 +78,41 @@ public class UserService {
 
     }
 
-    public void sendPhone(String phoneNumber){
-        smsCertificationUtil.sendSMS(phoneNumber, generate6DigitCode());
+    @Transactional(readOnly = true)
+    public void checkId(CheckIdRequest checkIdRequest){
+         if(usersRepository.existsByLoginId(checkIdRequest.getId())){
+             throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_ID);
+         }
     }
 
-    private String handleProfileImageUpload(MultipartFile file) {
+
+    public void sendPhone(String phoneNumber){
+        String verificationCode = generate6DigitCode();
+        smsCertificationUtil.sendSMS(phoneNumber, verificationCode);
+
+        String key = phoneNumber;
+        String value = verificationCode;
+        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+        stringValueOperations.set(key, value, REDIS_EXPIRATION);
+    }
+
+
+    public void verifyPhone(VerificationRequest verificationRequest){
+        String key = verificationRequest.getPhoneNumber();
+        String value = verificationRequest.getVerificationCode();
+
+        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
+        String savedCode = stringValueOperations.get(key);
+
+        if( savedCode == null || !value.equals(savedCode)) {
+            throw new UserException(UserError.AUTH_PHONE_CERTIFICATION_CODE_MISMATCH);
+        }
+
+        stringRedisTemplate.delete(key);
+    }
+
+    @Transactional
+    public String handleProfileImageUpload(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             return s3Util.getDefaultProfileImageUrl();
         }
@@ -94,11 +133,12 @@ public class UserService {
         }
     }
 
+
     private String generate6DigitCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000); // 100000 ~ 999999
         return String.valueOf(code);
     }
 }
-// TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기 + rdis를 통해 인증번호 관리하기.
+// TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기
 // TODO: 작품 좋아요 추가하기
