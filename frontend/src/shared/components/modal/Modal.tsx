@@ -10,6 +10,7 @@ type ModalProps = {
   confirmMsg: string;
   onClose: () => void;
   route?: string;
+  onConfirm?: () => void;
 };
 
 //  Modal 컴포넌트 사용하는 곳에서 아래와 같이 사용
@@ -29,6 +30,7 @@ export default function Modal({
   confirmMsg,
   onClose,
   route,
+  onConfirm,
 }: ModalProps) {
   const dialog = useRef<HTMLDialogElement | null>(null);
 
@@ -80,7 +82,7 @@ export default function Modal({
         </Button>
         <Button
           size="S"
-          onClick={handleClick}
+          onClick={onConfirm ?? handleClick}
           className="bg-white border border-primary !text-primary hover:bg-white"
         >
           네
