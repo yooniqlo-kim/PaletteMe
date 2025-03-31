@@ -1,8 +1,6 @@
 package com.ssafy.paletteme.domain.reviews.exception;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
-import com.ssafy.paletteme.domain.users.exception.UserError;
-import com.ssafy.paletteme.domain.users.exception.UserException;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
