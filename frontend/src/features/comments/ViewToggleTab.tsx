@@ -1,4 +1,3 @@
-// ViewToggleTab.tsx
 import { LayoutList, GalleryHorizontal } from "lucide-react";
 
 type ViewMode = "list" | "ticket";
