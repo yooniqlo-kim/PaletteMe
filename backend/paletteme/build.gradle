@@ -60,6 +60,9 @@ dependencies {
 	// spring boot 버전과 잘 맞는 버전의 elasticsearch 라이브러리 가져오기
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebClient용
+
+	// spring batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
 }
 
 // QueryDsl 빌드 옵션
