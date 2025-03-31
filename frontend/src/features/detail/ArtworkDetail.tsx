@@ -53,7 +53,7 @@ export function ArtworkDetail() {
       <div className="flex flex-col gap-2">
         <WhiteContainer withTopRound withMarginTop>
           <div className="relative">
-            <div className="absolute -top-9 right-4 flex gap-2 z-10">
+            <div className="absolute -top-9 right-1 flex gap-2 z-10">
               <IconButton identifier="heart" onClick={handleToggleLike}>
                 <span className="inline-flex items-center">{likeCount}</span>
                 <IconBlackHeart isClicked={isLiked} />

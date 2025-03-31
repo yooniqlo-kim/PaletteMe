@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArtworkMeta } from "@/shared/components/artworks/ArtworkMeta";
 import { artworkDummy } from "@/shared/dummy/artworkDummy";
 import { KeywordSuggester } from "./KeywordSuggester";
@@ -6,9 +6,18 @@ import { TextArea } from "./TextArea";
 import { VisibilityToggle } from "./VisibilityToggle";
 import Button from "@/shared/components/buttons/Button";
 
-export function WriteForm() {
+type WriteFormProps = {
+  onDirtyChange?: (isDirty: boolean) => void;
+};
+
+export function WriteForm({ onDirtyChange }: WriteFormProps) {
   const [content, setContent] = useState("");
   const [visibility, setVisibility] = useState<"public" | "private">("private");
+
+  // 감상문 입력 상태 변경 시 dirty 상태 부모에게 전달
+  useEffect(() => {
+    onDirtyChange?.(content.trim().length > 0);
+  }, [content, onDirtyChange]);
 
   const handleSubmit = async () => {
     if (!content.trim()) {
