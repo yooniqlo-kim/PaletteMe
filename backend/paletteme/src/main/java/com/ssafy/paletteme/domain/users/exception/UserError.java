@@ -18,7 +18,8 @@ public enum UserError {
     SECURITY_USERS_ID_NOT_MATCH("400", "1011", "ID가 올바르지 않습니다."),
     SECURITY_USERS_FORBIDDEN("400", "1012", "요청하신 리소스에 접근할 권한이 없습니다."),
     SECURITY_USERS_UNAUTHENTICATED("500","1013","하 Security 인증쪽 에러" ),
-    SIGNUP_USERS_DUPLICATE_ID("400", "1014", "이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요.");
+    SIGNUP_USERS_DUPLICATE_ID("400", "1014", "이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요."),
+    AUTH_PHONE_CERTIFICATION_CODE_MISMATCH("400", "1015", "인증번호가 올바르지 않습니다.");
     ;
 
 
