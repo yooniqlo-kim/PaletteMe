@@ -26,7 +26,7 @@ INSERT INTO users (
 ) VALUES (
              1, 'url', 'lhj', '$2a$10$chU3titRWipnywR/T1qbouY7l8NRhWYLRo3prVu7TKBnYOfejeQcm', '홍길동', '1990-01-01',
              '010-1234-5678', '길동이', '1'
-);
+         );
 
 
 INSERT INTO eras (era_id, era, era_cnt) VALUES

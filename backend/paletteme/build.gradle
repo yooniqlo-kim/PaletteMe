@@ -61,6 +61,15 @@ dependencies {
 	// spring boot 버전과 잘 맞는 버전의 elasticsearch 라이브러리 가져오기
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux' // WebClient용
+
+	// ChatGPT API
+	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter:0.8.1'
+
+	// Nurigo 에서 제공하는 SMS 발송 SDK
+	implementation 'net.nurigo:sdk:4.3.0'
+
+	// spring batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
 }
 
 // QueryDsl 빌드 옵션
