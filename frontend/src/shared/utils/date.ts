@@ -58,6 +58,29 @@ export const mapReviewsToWeeklyCalendar = (
   return days;
 };
 
+// 월간 Calendar용: 감상문 데이터를 달력 날짜에 매핑
+export const mapReviewsToMonthlyCalendar = (
+  reviews: WeeklyReview[] = [],
+  calendarDates: Date[]
+): CalendarDay[] => {
+  return calendarDates.map((date) => {
+    const dateStr = date.toISOString().slice(0, 10);
+    const matched = reviews.find((r) => r.date === dateStr);
+
+    if (matched) {
+      return {
+        date: matched.date,
+        artworkId: matched.artworkId,
+        imageUrl: matched.imgUrl,
+        commentId: String(matched.reviewId),
+      };
+    } else {
+      return { date: dateStr };
+    }
+  });
+};
+
+
 // Wrapped 페이지 타이틀용 (ex. "2025년 2월")
 export const getWrappedMonthString = () => {
   return dayjs().subtract(1, "month").format("YYYY년 M월");

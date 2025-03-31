@@ -6,7 +6,7 @@ export interface WeeklyReview {
     reviewId: number;
   }
   
-  // 요일 UI에 쓰이는 데이터 형태
+  // 주간 달력 데이터 형태
   export type CalendarDay = {
     date: string;         // YYYY-MM-DD
     artworkId?: string;

@@ -9,7 +9,7 @@ import RecommendationContainer from "@/features/mymuseum/recommendation/Recommen
 
 import masterpieces from "@/assets/masterpieces";
 import shuffle from "@/shared/utils/shuffle";
-import { weeklyDummy } from "@shared/dummy/weeklyDummy ";
+import { weeklyDummy } from "@/shared/dummy/weeklyDummy";
 import { mapReviewsToWeeklyCalendar } from "@/shared/utils/date";
 
 export default function MymuseumPage() {
