@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { BaseComment } from "@/shared/types/comment";
 import { Artwork } from "@/shared/types/artwork";
 import { ArtworkImage } from "../detail/ArtworkImage";
 import { ArtworkMeta } from "../../shared/components/artworks/ArtworkMeta";
 import { WriterMeta } from "../../shared/components/comments/WriterMeta";
-import { ThumbsUp } from "lucide-react";
+import IconButton from "@/shared/components/Buttons/IconButton";
+import IconThumb from "@/shared/components/icons/IconThumb";
 
 export type CommentTicketProps = {
   comment: BaseComment;
@@ -16,7 +18,20 @@ export function CommentTicket({
   artwork,
   onClick,
 }: CommentTicketProps) {
-  const { commentId, user, date, content, likeCount } = comment;
+  const {
+    commentId,
+    user,
+    date,
+    content,
+    likeCount: initialLikeCount,
+  } = comment;
+  const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
+  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
+
+  const toggleLike = () => {
+    setIsLiked((prev) => !prev); // 좋아요 상태 토글
+    setLikeCount((prev: number) => (isLiked ? prev - 1 : prev + 1));
+  };
 
   return (
     <div
@@ -25,9 +40,11 @@ export function CommentTicket({
     >
       <div className="relative">
         <ArtworkImage artwork={artwork} />
-        <div className="absolute bottom-2 right-2 bg-white/80 rounded-full px-2 py-1 flex items-center gap-1 text-xs text-primary font-semibold">
-          {likeCount}
-          <ThumbsUp className="w-4 h-4 text-primary" />
+        <div className="absolute bottom-2 right-2 px-2 py-1 flex items-center gap-1 text-xs font-semibold">
+          <IconButton identifier="review_card" onClick={toggleLike}>
+            <span className="inline-flex items-center">{likeCount}</span>
+            <IconThumb isClicked={isLiked} />
+          </IconButton>
         </div>
       </div>
       <div className="p-4 space-y-2">

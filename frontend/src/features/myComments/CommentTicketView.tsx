@@ -2,7 +2,8 @@ import { CommentTicket } from "./CommentTicket";
 import { useState } from "react";
 import { BaseComment } from "@/shared/types/comment";
 import { Artwork } from "@/shared/types/artwork";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import IconLeftArrow from "@/shared/components/icons/IconLeftArrow";
+import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 
 type CommentTicketViewProps = {
   comments: BaseComment[];
@@ -31,11 +32,11 @@ export function CommentTicketView({
   return (
     <div className="relative w-full flex flex-col items-center">
       <button
-        className="absolute left-1 top-1/2 -translate-y-1/2 z-10"
+        className="absolute left-1 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
         onClick={goPrev}
         disabled={currentIndex === 0}
       >
-        <ChevronLeft className="w-12 h-12 text-neutral-400" />
+        <IconLeftArrow />
       </button>
 
       <CommentTicket
@@ -45,11 +46,11 @@ export function CommentTicketView({
       />
 
       <button
-        className="absolute right-1 top-1/2 -translate-y-1/2 z-10 "
+        className="absolute right-1 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
         onClick={goNext}
         disabled={currentIndex === total - 1}
       >
-        <ChevronRight className="w-12 h-12 text-neutral-400" />
+        <IconRightArrow />
       </button>
     </div>
   );
