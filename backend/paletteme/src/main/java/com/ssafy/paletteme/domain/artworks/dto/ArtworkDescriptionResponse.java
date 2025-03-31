@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ArtworkDescriptionResponse {
-    private String decription;
+    private String description;
 
-    private ArtworkDescriptionResponse(String decription){
-        this.decription = decription;
+    private ArtworkDescriptionResponse(String description){
+        this.description = description;
     }
 
     public static ArtworkDescriptionResponse of(String description) {
