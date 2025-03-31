@@ -14,26 +14,29 @@ export default function MyCollections({ images }: Props) {
   return (
     <div className="w-full">
       <div className="grid grid-cols-2 gap-4 w-full max-w-[23.75rem] mx-auto">
-        {images.map((item, idx) => (
-          <ArtworkCard
-            key={item.artworkId}
-            artwork={{
-              artworkId: item.artworkId,
-              artworkImageUrl: item.imgUrl,
-              title: item.title,
-              artist: item.artist,
-              liked: item.liked,
-            }}
-            size="small"
-            isDimmed
-            overlayText={overlayTexts[idx]}
-            overlayTextPosition="center"
-            overlayTextSize="--text-md"
-            borderRadius="small"
-            hasBorder
-            onClick={() => navigate(`/artwork/${item.artworkId}`)}
-          />
-        ))}
+      {images.map((item, idx) => (
+        <ArtworkCard
+          key={item.artworkId}
+          artwork={{
+            artworkId: item.artworkId,
+            artworkImageUrl: item.imgUrl,
+            title: item.title,
+            artist: item.artist,
+            liked: item.liked,
+          }}
+          size="small"
+          isDimmed
+          overlayText={overlayTexts[idx]}
+          overlayTextPosition="center"
+          overlayTextSize="--text-md"
+          borderRadius="small"
+          hasBorder
+          onClick={() => {
+            const path = idx === 0 ? "/mymuseum/liked" : "/mymuseum/bookmark";
+            navigate(path);
+          }}
+        />
+      ))}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { getMonthCalendarDays } from '@/shared/utils/date'; // ✅ 유틸 가져오기
+import { getMonthCalendarDays } from '@/shared/utils/date';
 
 interface MonthlyCalendarProps {
   selectedDate: Date;
