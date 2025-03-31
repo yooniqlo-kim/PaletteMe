@@ -1,5 +1,6 @@
 package com.ssafy.paletteme.domain.users.service;
 
+import com.ssafy.paletteme.common.redis.RedisService;
 import com.ssafy.paletteme.domain.users.dto.CheckIdRequest;
 import com.ssafy.paletteme.domain.users.dto.S3UploadResponse;
 import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
@@ -33,7 +34,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
     private final SmsCertificationUtil smsCertificationUtil;
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisService redisService;
 
     private final UsersFavoriteColorRepository usersFavoriteColorRepository;
 
@@ -41,6 +42,7 @@ public class UserService {
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
     // 휴대폰 인증 시간
+    private static final String PHONE_VERIFICATION_PREFIX = "auth:phone:";
     private final Duration REDIS_EXPIRATION = Duration.ofMinutes(5);
 
     @Transactional
@@ -90,25 +92,23 @@ public class UserService {
         String verificationCode = generate6DigitCode();
         smsCertificationUtil.sendSMS(phoneNumber, verificationCode);
 
-        String key = phoneNumber;
+        String key = PHONE_VERIFICATION_PREFIX + phoneNumber;
         String value = verificationCode;
-        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
-        stringValueOperations.set(key, value, REDIS_EXPIRATION);
+        redisService.set(key, value, REDIS_EXPIRATION);
     }
 
 
     public void verifyPhone(VerificationRequest verificationRequest){
-        String key = verificationRequest.getPhoneNumber();
+        String key = PHONE_VERIFICATION_PREFIX + verificationRequest.getPhoneNumber();
         String value = verificationRequest.getVerificationCode();
 
-        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
-        String savedCode = stringValueOperations.get(key);
+        String savedCode = redisService.get(key);
 
         if( savedCode == null || !value.equals(savedCode)) {
             throw new UserException(UserError.AUTH_PHONE_CERTIFICATION_CODE_MISMATCH);
         }
 
-        stringRedisTemplate.delete(key);
+        redisService.delete(key);
     }
 
     @Transactional
