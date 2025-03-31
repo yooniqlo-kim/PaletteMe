@@ -2,6 +2,7 @@ package com.ssafy.paletteme.domain.users.controller;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
 import com.ssafy.paletteme.common.security.annotation.UserId;
+import com.ssafy.paletteme.domain.users.dto.PhoneNumberRequest;
 import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
 import com.ssafy.paletteme.domain.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.http.HttpResponse;
+
 
 @Tag(name = "Users", description = "회원 관련 API")
 @RestController
@@ -36,4 +37,11 @@ public class UserController {
         return ApiResponse.success(userId);
     }
 
+    @Operation(summary = "휴대폰 인증번호 전송", description = "입력한 휴대폰 번호로 인증번호(SMS)를 전송합니다.")
+    @PostMapping("/phone/send")
+    public ApiResponse<Void> sendPhone( @Parameter(description = "인증번호를 받을 사용자의 휴대폰 번호", required = true)
+                                        @RequestBody PhoneNumberRequest request) {
+        userService.sendPhone(request.getPhoneNumber());
+        return ApiResponse.success();
+    }
 }

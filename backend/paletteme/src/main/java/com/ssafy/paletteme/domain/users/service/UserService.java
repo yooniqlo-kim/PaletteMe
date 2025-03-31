@@ -7,14 +7,15 @@ import com.ssafy.paletteme.domain.users.exception.UserError;
 import com.ssafy.paletteme.domain.users.exception.UserException;
 import com.ssafy.paletteme.domain.users.repository.*;
 import com.ssafy.paletteme.domain.users.utils.S3Util;
+import com.ssafy.paletteme.domain.users.utils.SmsCertificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,8 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
+    private final SmsCertificationUtil smsCertificationUtil;
+
     private final UsersFavoriteColorRepository usersFavoriteColorRepository;
 
     // 최대 허용 크기(이미지 저장) (예: 10MB)
@@ -66,6 +69,10 @@ public class UserService {
 
     }
 
+    public void sendPhone(String phoneNumber){
+        smsCertificationUtil.sendSMS(phoneNumber, generate6DigitCode());
+    }
+
     private String handleProfileImageUpload(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             return s3Util.getDefaultProfileImageUrl();
@@ -87,7 +94,11 @@ public class UserService {
         }
     }
 
-
+    private String generate6DigitCode() {
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000); // 100000 ~ 999999
+        return String.valueOf(code);
+    }
 }
-// TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기.
+// TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기 + rdis를 통해 인증번호 관리하기.
 // TODO: 작품 좋아요 추가하기
