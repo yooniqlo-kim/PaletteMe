@@ -26,7 +26,6 @@ export default function RegisterPage() {
 
   return (
     <div className={`flex flex-col w-full ${state === 3 ? "p-5" : "p-8"}`}>
-      {/* ✅ 단계 진행바는 완료(5단계) 제외하고 보여줌 */}
       {state < 5 && <SignupProgressBar currentStep={state} />}
       {content}
     </div>

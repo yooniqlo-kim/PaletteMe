@@ -90,15 +90,16 @@ export default function RegisterArtworkForm({
           <ArtworkCard
             key={artwork.id}
             artwork={{
+              artworkId: String(artwork.id),
               artworkImageUrl: artwork.imageUrl,
               title: "",
-              liked: selectedImages.includes(artwork.id), 
+              liked: selectedImages.includes(artwork.id),
               artist: "",
             }}
             size="small"
             theme="light"
-            // `onClickLike`로는 `handleClick`을 래핑하여 사용
-            onClickLike={() => handleClick(artwork.id)} 
+            onClickLike={() => handleClick(artwork.id)}
+            clickAction="like"
           />
         ))}
       </ul>

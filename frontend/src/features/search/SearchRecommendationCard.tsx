@@ -15,6 +15,7 @@ export default function SearchRecommendationCard({
   onClick,
 }: Props) {
   const fakeArtwork: Artwork = {
+    artworkId: "fake-id",
     artworkImageUrl: imageUrl,
     title: overlayText,
     liked: false,

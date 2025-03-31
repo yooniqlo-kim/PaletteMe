@@ -1,9 +1,9 @@
 import UpdateInfoForm from "@/features/profile/UpdateInfoForm";
 import Button from "@/shared/components/buttons/Button";
-import Form from "@/shared/components/Form/Form";
-import Input from "@/shared/components/Form/Input";
-import InputContainer from "@/shared/components/Form/InputContainer";
-import Label from "@/shared/components/Form/Label";
+import Form from "@/shared/components/form/Form";
+import Input from "@/shared/components/form/Input";
+import InputContainer from "@/shared/components/form/InputContainer";
+import Label from "@/shared/components/form/Label";
 import { useState } from "react";
 
 export default function UpdateUserInfoPage() {

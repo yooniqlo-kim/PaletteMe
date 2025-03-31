@@ -1,5 +1,5 @@
 import LevelItemList from "@/features/profile/LevelItemList";
-import Button from "@/shared/components/Buttons/Button";
+import Button from "@/shared/components/buttons/Button";
 import { useNavigate } from "react-router";
 
 export default function LevelInfoPage() {

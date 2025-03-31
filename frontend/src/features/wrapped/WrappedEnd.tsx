@@ -41,6 +41,7 @@ export default function WrappedEnd({
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <ArtworkCard
               artwork={{
+                artworkId: "fake-id",
                 artworkImageUrl: favoriteImg,  // 이미지 URL
                 title: favoriteName || "",     // 작품 이름
                 liked: false,                  // 기본값 설정
