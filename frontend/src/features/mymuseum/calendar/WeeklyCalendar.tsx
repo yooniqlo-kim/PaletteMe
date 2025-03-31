@@ -10,7 +10,7 @@ type CalendarDay = {
 
 interface WeeklyCalendarProps {
   data: CalendarDay[];
-  onClick?: () => void;
+  onClick?: () => void; // 전체 캘린더 클릭 → 월간 보기로 이동
 }
 
 export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
@@ -19,7 +19,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
 
   return (
     <div
-      onClick={onClick} // 달력 클릭 시 월간 달력 페이지로
+      onClick={onClick}
       className="w-full max-w-[23.75rem] h-[10.75rem] rounded-xl px-4 py-3 cursor-pointer"
       style={{ backgroundColor: "#FFEFEF" }}
     >
@@ -39,7 +39,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
               {hasComment ? (
                 <div
                   onClick={(e) => {
-                    e.stopPropagation(); // 감상문 상세 이동만!
+                    e.stopPropagation(); // 캘린더 전체 클릭 막고 감상문만 이동
                     navigate(`/comment/${day.commentId}`);
                   }}
                   className="w-9 h-9 rounded-full border-4 overflow-hidden cursor-pointer"
@@ -53,7 +53,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
                 </div>
               ) : (
                 <div
-                  onClick={(e) => e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()} // 클릭 막기
                   className="w-9 h-9 rounded-full bg-neutral-400 cursor-default"
                 />
               )}
