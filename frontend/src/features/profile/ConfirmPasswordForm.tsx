@@ -1,5 +1,5 @@
 import Button from "@/shared/components/buttons/Button";
-import Input from "@/shared/components/Form/Input";
+import Input from "@/shared/components/form/Input";
 import { FormEvent } from "react";
 import { useNavigate } from "react-router";
 

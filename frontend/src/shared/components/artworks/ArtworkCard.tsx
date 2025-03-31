@@ -9,17 +9,18 @@ import placeholderDark180 from "@/assets/images/placeholder-art-dark-180x180.jpg
 import placeholderDark300 from "@/assets/images/placeholder-art-dark-300x300.jpg";
 
 type Props = {
-  artwork: Artwork; // artwork 전체 객체로 받기
-  size?: "small" | "large"; // small: 180x180, large: 300x300
-  theme?: "light" | "dark"; // placeholder 이미지
-  isDimmed?: boolean; // 필터
-  overlayText?: string; // 텍스트
-  overlayTextPosition?: "center" | "bottomRight"; // 텍스트 위치
-  overlayTextSize?: string; // 텍스트 크기
-  borderRadius?: "small" | "medium"; // 8px, 12px
-  hasBorder?: boolean; // 외각선 유무
-  onClick?: () => void; // 클릭 시 이벤트
-  onClickLike?: () => void; // 좋아요 클릭 시 이벤트
+  artwork: Artwork;
+  size?: "small" | "large";
+  theme?: "light" | "dark";
+  isDimmed?: boolean;
+  overlayText?: string;
+  overlayTextPosition?: "center" | "bottomRight";
+  overlayTextSize?: string;
+  borderRadius?: "small" | "medium";
+  hasBorder?: boolean;
+  onClick?: () => void;
+  onClickLike?: () => void;
+  clickAction?: "navigate" | "like";
 };
 
 export const ArtworkCard = ({
@@ -34,6 +35,7 @@ export const ArtworkCard = ({
   hasBorder = false,
   onClick,
   onClickLike,
+  clickAction = "navigate", // 기본은 navigate
 }: Props) => {
   const {
     artworkImageUrl,
@@ -65,9 +67,17 @@ export const ArtworkCard = ({
   const borderRadiusValue =
     borderRadius === "small" ? "var(--radius-ps)" : "var(--radius-pm)";
 
+  const handleClick = () => {
+    if (clickAction === "like" && onClickLike) {
+      onClickLike();
+    } else if (clickAction === "navigate" && onClick) {
+      onClick();
+    }
+  };
+
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
       className={`relative ${dimension} overflow-hidden cursor-pointer ${
         hasBorder ? "border border-white" : ""
       }`}

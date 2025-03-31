@@ -3,6 +3,8 @@ import IconLeftArrow from "@/shared/components/icons/IconLeftArrow";
 import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import type { Artwork } from "@shared/types/artwork";
+import { useNavigate } from "react-router-dom";
+
 
 type Props = {
   artworks: Artwork[];
@@ -12,6 +14,9 @@ type Props = {
 export default function RecommendationArtworks({ artworks, onReachEnd }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -66,9 +71,11 @@ export default function RecommendationArtworks({ artworks, onReachEnd }: Props) 
           onClickLike={() =>
             currentArtwork.artworkId && toggleLike(currentArtwork.artworkId)
           }
-          onClick={() =>
-            console.log(`작품 ${currentArtwork.artworkId} 클릭됨`)
-          }
+          onClick={() => {
+            if (currentArtwork.artworkId) {
+              navigate(`/artwork/${currentArtwork.artworkId}`);
+            }
+          }}          
         />
       )}
 

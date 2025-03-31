@@ -1,7 +1,7 @@
 import Button from "@/shared/components/Buttons/Button";
-import Input from "@/shared/components/Form/Input";
-import InputContainer from "@/shared/components/Form/InputContainer";
-import Label from "@/shared/components/Form/Label";
+import Input from "@/shared/components/form/Input";
+import InputContainer from "@/shared/components/form/InputContainer";
+import Label from "@/shared/components/form/Label";
 import { FormEvent } from "react";
 
 export default function UpdateInfoForm() {

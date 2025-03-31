@@ -1,6 +1,6 @@
 import Button from "@/shared/components/buttons/Button";
-import Form from "@/shared/components/Form/Form";
-import Input from "@/shared/components/Form/Input";
+import Form from "@/shared/components/form/Form";
+import Input from "@/shared/components/form/Input";
 import { useNavigate } from "react-router";
 
 export default function ConfirmPasswordPage() {

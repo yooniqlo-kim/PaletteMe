@@ -1,10 +1,10 @@
-import Button from "@/shared/components/Buttons/Button";
-import Input from "@/shared/components/Form/Input";
-import InputContainer from "@/shared/components/Form/InputContainer";
-import Label from "@/shared/components/Form/Label";
+import Button from "@/shared/components/buttons/Button";
+import Input from "@/shared/components/form/Input";
+import InputContainer from "@/shared/components/form/InputContainer";
+import Label from "@/shared/components/form/Label";
 import defaultImg from "@/assets/images/MainLogo.png";
 import { ChangeEvent, FormEvent, useState } from "react";
-import RoundedButton from "@/shared/components/Buttons/RoundedButton";
+import RoundedButton from "@/shared/components/buttons/RoundedButton";
 import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
 

@@ -20,6 +20,7 @@ export default function SearchResultCard({
 
   // Artwork 객체 생성
   const fakeArtwork: Artwork = {
+    artworkId: "fake-id",
     artworkImageUrl: imageUrl,
     title: "", 
     liked: isLiked,
