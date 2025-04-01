@@ -19,7 +19,7 @@ public class ArtworkSearchController {
     private final ArtworkSearchService artworkSearchService;
 
     @GetMapping(value = "/artworks")
-    public ApiResponse<List<ArtworkSearchResponse>> search(@RequestParam String keyword,
+    public ApiResponse<List<ArtworkSearchResponse>> search(@RequestParam(required = false) String keyword,
                                                            @RequestParam(required = false) Double lastScore,
                                                            @RequestParam(required = false) String lastArtworkId,
                                                            @RequestParam int size) {
