@@ -11,6 +11,7 @@ export type CommentCardProps = {
   variant?: CommentCardVariant;
   artworkImageUrl?: string;
   onClick?: (commentId: string) => void;
+  onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
 export function CommentCard({
@@ -18,6 +19,7 @@ export function CommentCard({
   artworkImageUrl,
   variant = "list",
   onClick,
+  onLikeChange,
 }: CommentCardProps) {
   const {
     commentId,
@@ -25,12 +27,12 @@ export function CommentCard({
     date,
     content,
     likeCount: initialLikeCount,
+    isLiked: initialIsLiked,
   } = comment;
 
   const [expanded, setExpanded] = useState(false);
-
   const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
-  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
 
   const isDetailMode = variant === "detail";
 
@@ -50,8 +52,10 @@ export function CommentCard({
   const wrapperStyle = getBackgroundStyle(isDetailMode, artworkImageUrl);
 
   const toggleLike = async () => {
-    setIsLiked((prev) => !prev); // 좋아요 상태 토글
-    setLikeCount((prev: number) => (isLiked ? prev - 1 : prev + 1));
+    const next = !isLiked;
+    setIsLiked(next);
+    setLikeCount((prev) => (next ? prev + 1 : prev - 1));
+    onLikeChange?.(commentId, next);
   };
 
   return (

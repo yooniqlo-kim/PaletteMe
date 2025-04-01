@@ -1,7 +1,7 @@
-import { Artwork } from "@/shared/types/artwork";
+import { BaseArtwork } from "@/shared/types/artwork";
 
 export type ArtworkImageProps = {
-  artwork: Artwork;
+  artwork: BaseArtwork;
   className?: string;
   linkToFullImage?: boolean; //원본 이미지 새 탭에서 열기 여부
 };

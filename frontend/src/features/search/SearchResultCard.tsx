@@ -1,11 +1,11 @@
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import type { Artwork } from "@/shared/types/artwork";
-import { useNavigate } from "react-router-dom"; 
+import type { BaseArtwork } from "@/shared/types/artwork";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   imageUrl: string;
   artworkId: string;
-  onClick: () => void; 
+  onClick: () => void;
   onClickLike?: () => void;
   isLiked?: boolean;
 }
@@ -19,12 +19,12 @@ export default function SearchResultCard({
   const navigate = useNavigate();
 
   // Artwork 객체 생성
-  const fakeArtwork: Artwork = {
+  const fakeArtwork: BaseArtwork = {
     artworkId: "fake-id",
     artworkImageUrl: imageUrl,
-    title: "", 
+    title: "",
     liked: isLiked,
-    artist: "", 
+    artist: "",
   };
 
   // 카드 클릭 시 상세 페이지로 이동
