@@ -120,3 +120,8 @@ INSERT INTO reviews (user_id, artwork_id, content, is_public, created_at, like_c
 (1, 'WaterLilies_Monet', '연꽃과 물의 조화가 아름답다.', true, '2025-03-28', 2),
 (1, 'StarryNight_VanGogh', '밤하늘이 이렇게 감정적일 수 있다니.', true, '2025-03-28', 10),
 (1, 'HowToExplain_Beuys', '예술 퍼포먼스의 충격적 사례.', false, '2025-03-28', 1);
+
+INSERT INTO users_artworks_like (user_id, artwork_id) VALUES
+(1, 'MonaLisa_Leonardo'),
+(1, 'ImpressionSunrise_Monet'),
+(1, 'StarryNight_VanGogh');
