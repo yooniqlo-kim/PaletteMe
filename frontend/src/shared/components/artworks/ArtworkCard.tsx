@@ -39,10 +39,13 @@ export const ArtworkCard = ({
 }: Props) => {
   const { artworkImageUrl, title, isLiked = false } = artwork;
 
-  const dimension =
-    size === "small"
-      ? "w-[11.25rem] h-[11.25rem]"
-      : "w-[18.75rem] h-[18.75rem]";
+  let dimension = "";
+
+  if (size === "small") {
+    dimension = "w-full aspect-[1/1]";
+  } else if (size === "large") {
+    dimension = "w-full max-w-[260px] sm:max-w-[280px] md:max-w-[300px] aspect-[1/1]";
+  }
 
   const getPlaceholder = () => {
     if (theme === "dark") {

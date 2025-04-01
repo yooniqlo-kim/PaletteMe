@@ -49,7 +49,7 @@ export default function SearchPage() {
     isLiked: likedArtworks.includes(artwork.id),
   }));
 
-  // ✅ 추천 검색 결과일 경우 별도 레이아웃
+  // 추천 검색 결과일 경우 별도 레이아웃
   if (isFromRecommendation && query) {
     return (
       <SearchRecommendationResult
@@ -60,7 +60,7 @@ export default function SearchPage() {
     );
   }
 
-  // ✅ 일반 검색 페이지 (검색창 포함)
+  // 일반 검색 페이지 (검색창 포함)
   return (
     <div className="px-4 py-6 pb-[5rem]">
       <SearchContainer
