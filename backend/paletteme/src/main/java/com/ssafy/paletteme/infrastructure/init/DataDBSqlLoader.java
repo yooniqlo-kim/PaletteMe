@@ -1,6 +1,7 @@
 package com.ssafy.paletteme.infrastructure.init;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,16 +15,17 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 @Component
-@RequiredArgsConstructor
 public class DataDBSqlLoader implements ApplicationRunner {
-
-//    @Qualifier("dataDataSource")
-//    private final DataSource dataDataSource;
-
-    private final ApplicationContext context;
-
+    @Qualifier("dataDataSource")
+    private final DataSource dataDataSource;
     @Value("${spring.jpa.hibernate.ddl-auto}")
-    private String ddlAuto;
+    private final String ddlAuto;
+
+    DataDBSqlLoader(@Qualifier("dataDataSource") DataSource dataSource,
+                    @Value("${spring.jpa.hibernate.ddl-auto}") String ddlAuto) {
+        this.dataDataSource = dataSource;
+        this.ddlAuto = ddlAuto;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -33,10 +35,9 @@ public class DataDBSqlLoader implements ApplicationRunner {
         }
 
         Resource resource = new ClassPathResource("data-dataDB.sql");
-        DataSource dataDataSource = (DataSource) context.getBean("dataDataSource");
-
         try (Connection conn = dataDataSource.getConnection()) {
             ScriptUtils.executeSqlScript(conn, resource);
         }
+
     }
 }
