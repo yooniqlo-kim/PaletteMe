@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BaseComment } from "@/shared/types/comment";
 import { WriterMeta } from "./WriterMeta";
-import IconButton from "../Buttons/IconButton";
+import IconButton from "@/shared/components/buttons/IconButton";
 import IconThumb from "../icons/IconThumb";
 
 export type CommentCardVariant = "list" | "detail";

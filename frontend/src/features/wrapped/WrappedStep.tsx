@@ -103,12 +103,13 @@ export default function WrappedStep({
 
         {currentStep === 3 && favoriteImg && (
           <>
-            <h2 className="text-xl mb-4">가장 인상깊게 본 작품은</h2>
+            <h2 className="max-w-[300px] w-full mx-auto">가장 인상깊게 본 작품은</h2>
             <ArtworkCard
               artwork={{
+                artworkId: "wrapped-favorite",
                 artworkImageUrl: favoriteImg,
                 title: favoriteName || '',
-                liked: false, // 기본값
+                isLiked: false, // 기본값
                 artist: favoriteArtist || '',
               }}
               size="large"
@@ -124,29 +125,36 @@ export default function WrappedStep({
           <>
             <h2 className="text-xl mb-4">당신에게 추천하는 작품이에요</h2>
             <div className="flex flex-wrap justify-center gap-4">
-              <ArtworkCard
-                artwork={{
-                  artworkImageUrl: recommendedImg[0],
-                  title: recommendedArtwork[0] || '',
-                  liked: false, // 기본값
-                  artist: recommendedArtist[0] || '',
-                }}
-                size="small"
-                theme="light"
-                hasBorder
-              />
-              <ArtworkCard
-                artwork={{
-                  artworkImageUrl: recommendedImg[1],
-                  title: recommendedArtwork[1] || '',
-                  liked: false, // 기본값
-                  artist: recommendedArtist[1] || '',
-                }}
-                size="small"
-                theme="light"
-                hasBorder
-              />
+              <div className="w-full max-w-[140px]">
+                <ArtworkCard
+                  artwork={{
+                    artworkId: "wrapped-reco-0",
+                    artworkImageUrl: recommendedImg[0],
+                    title: recommendedArtwork[0] || '',
+                    isLiked: false,
+                    artist: recommendedArtist[0] || '',
+                  }}
+                  size="small"
+                  theme="light"
+                  hasBorder
+                />
+              </div>
+              <div className="w-full max-w-[140px]">
+                <ArtworkCard
+                  artwork={{
+                    artworkId: "wrapped-reco-1",
+                    artworkImageUrl: recommendedImg[1],
+                    title: recommendedArtwork[1] || '',
+                    isLiked: false,
+                    artist: recommendedArtist[1] || '',
+                  }}
+                  size="small"
+                  theme="light"
+                  hasBorder
+                />
+              </div>
             </div>
+
             <p className="mt-2">작가: {recommendedArtist[0]}, {recommendedArtist[1]}</p>
             <p className="mt-2">작품이름: {recommendedArtwork[0]}, {recommendedArtwork[1]}</p>
           </>

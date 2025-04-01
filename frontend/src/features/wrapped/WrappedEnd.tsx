@@ -39,18 +39,20 @@ export default function WrappedEnd({
           style={{ backgroundImage: `url(${wrapped06})` }}
         >
           <div className="absolute inset-0 flex items-center justify-center z-10">
-            <ArtworkCard
-              artwork={{
-                artworkId: "fake-id",
-                artworkImageUrl: favoriteImg,  // 이미지 URL
-                title: favoriteName || "",     // 작품 이름
-                liked: false,                  // 기본값 설정
-                artist: favoriteArtist || "",  // 작가 이름
-              }}
-              size="small"
-              theme="light"
-              hasBorder
-            />
+            <div className="w-full max-w-[180px]">
+              <ArtworkCard
+                artwork={{
+                  artworkId: "fake-id",
+                  artworkImageUrl: favoriteImg,
+                  title: favoriteName || "",
+                  isLiked: false,
+                  artist: favoriteArtist || "",
+                }}
+                size="small"
+                theme="light"
+                hasBorder
+              />
+            </div>
           </div>
         </div>
 
