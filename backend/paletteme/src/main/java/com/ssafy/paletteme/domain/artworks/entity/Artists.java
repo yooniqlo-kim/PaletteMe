@@ -13,10 +13,13 @@ public class Artists {
     @Column(name = "artist_id", nullable = false)
     private int artistId;
 
-    @Column(name = "kor_artist", nullable = false, length = 30)
+    @Column(name = "original_artist", nullable = false, length = 100)
+    private String originalArtist;
+
+    @Column(name = "kor_artist", length = 30)
     private String korArtist;
 
-    @Column(name = "en_artist", nullable = false, length = 100)
+    @Column(name = "en_artist", length = 100)
     private String enArtist;
 
 }

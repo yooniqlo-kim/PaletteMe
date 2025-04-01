@@ -48,6 +48,10 @@ public class ArtworkSearchServiceImpl implements ArtworkSearchService {
             shouldQueries.add(Query.of(q -> q.match(m -> m.field("description.en").query(en))));
         }
 
+        // 언어 상관 없이 original에서 검색
+        shouldQueries.add(Query.of(q -> q.match(m -> m.field("original_title").query(keyword))));
+        shouldQueries.add(Query.of(q -> q.match(m -> m.field("original_artist").query(keyword))));
+        
         try {
             SearchResponse<ArtworkDocument> response = elasticsearchClient.search(builder -> {
                 builder.index("artworks_index")
@@ -56,7 +60,8 @@ public class ArtworkSearchServiceImpl implements ArtworkSearchService {
                         .sort(s -> s.score(score -> score.order(SortOrder.Desc))) // 1차: score 정렬
                         .sort(s -> s.field(f -> f.field("artwork_id").order(SortOrder.Desc))) // 2차: ID 안정 정렬
                         .source(src -> src.filter(f -> f.includes(
-                                "artwork_id", "kor_title", "en_title", "kor_artist", "en_artist",
+                                "artwork_id", "original_title", "kor_title", "en_title",
+                                "original_artist", "kor_artist", "en_artist",
                                 "description", "image_url", "created_year"
                         )));
 

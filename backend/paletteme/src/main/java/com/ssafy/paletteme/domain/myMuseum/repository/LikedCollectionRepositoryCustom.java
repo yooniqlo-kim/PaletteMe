@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LikedCollectionRepositoryCustom {
 
-    List<LikedCollectionResponse> findLikedArtworksByUserId(int userId, int cursor, int size);
+    List<LikedCollectionResponse> findLikedArtworksByUserId(int userId, Integer cursor, int size);
 }
