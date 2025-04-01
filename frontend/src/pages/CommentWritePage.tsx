@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { ArtworkImage } from "@/features/detail/ArtworkImage";
 import { WhiteContainer } from "@/shared/components/textbox/WhiteRoundedContainer";
-import { artworkDummy } from "@/shared/dummy/artworkDummy";
+import { baseArtworkDummy } from "@/shared/dummy/artworkDummy";
 import { WriteForm } from "@/features/write/WriteForm";
 import Modal from "@/shared/components/modal/Modal";
 import { useBlocker } from "react-router";
@@ -13,6 +13,34 @@ export default function WritePage() {
   }, []);
 
   const { state, reset, proceed } = useBlocker(isDirty);
+
+  const handleSubmit = async ({
+    content,
+    visibility,
+  }: {
+    content: string;
+    visibility: "public" | "private";
+  }) => {
+    try {
+      const res = await fetch("/api/comment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          artworkId: baseArtworkDummy.artworkId,
+          content,
+          visibility,
+        }),
+      });
+
+      if (!res.ok) throw new Error("등록 실패");
+
+      alert("감상문이 등록되었습니다!");
+      // 페이지 이동 추가해야 함
+    } catch (err) {
+      console.error(err);
+      alert("오류가 발생했습니다.");
+    }
+  };
 
   return (
     <div className="bg-neutral-100 min-h-screen">
@@ -27,11 +55,11 @@ export default function WritePage() {
       )}
 
       <div className="bg-neutral-200 pt-2">
-        <ArtworkImage artwork={artworkDummy} />
+        <ArtworkImage artwork={baseArtworkDummy} />
       </div>
 
       <WhiteContainer withTopRound withMarginTop>
-        <WriteForm onDirtyChange={handleDirtyChange} />
+        <WriteForm onDirtyChange={handleDirtyChange} onSubmit={handleSubmit} />
       </WhiteContainer>
     </div>
   );

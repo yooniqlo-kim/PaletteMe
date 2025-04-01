@@ -1,11 +1,18 @@
-// 전체 작품 상세 정보
-export type Artwork = {
-  artworkId?: string;
+// 작품 정보
+export type BaseArtwork = {
+  artworkId: string;
   title: string;
   artist: string;
   artworkImageUrl: string;
   year?: string;
   location?: string;
   description?: string;
-  liked?: boolean;
+};
+
+// 작품 상세용
+export type ArtworkDetailData = BaseArtwork & {
+  likeCount: number;
+  isLiked: boolean;
+  isBookmarked: boolean;
+  hasWrittenComment: boolean;
 };

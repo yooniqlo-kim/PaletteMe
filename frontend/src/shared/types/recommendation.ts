@@ -26,9 +26,9 @@ export type RecommendationAPIResponse = {
 };
 
 // 추천 작품 요약 → Artwork 상세 타입으로 변환
-import type { Artwork } from "@/shared/types/artwork";
+import type { BaseArtwork } from "@/shared/types/artwork";
 
-export function mapRecommendedToArtwork(item: RecommendedArtwork): Artwork {
+export function mapRecommendedToArtwork(item: RecommendedArtwork): BaseArtwork {
   return {
     artworkId: item.artworkId,
     artworkImageUrl: item.imgUrl,

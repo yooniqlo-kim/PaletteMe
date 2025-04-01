@@ -7,4 +7,6 @@ export type BaseComment = {
   date: string;
   content: string;
   likeCount: number;
+  isLiked: boolean;
+  visibility: "public" | "private";
 };
