@@ -68,8 +68,8 @@ export default function Modal({
       <img
         src={modalImg}
         alt="modal img"
-        width={"80.995px"}
-        height={"86.165px"}
+        width={"80px"}
+        height={"80px"}
       />
       <div className="flex flex-col items-center gap-2">
         <p className="text-sm font-medium">{msg}</p>

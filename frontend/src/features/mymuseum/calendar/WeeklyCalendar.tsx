@@ -22,7 +22,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
     <div
       onClick={onClick}
       className="w-full max-w-[23.75rem] h-[10.75rem] rounded-xl px-4 py-3 cursor-pointer"
-      style={{ backgroundColor: "#FFEFEF" }}
+      style={{ backgroundColor: "#FDF7EB" }}
     >
       <h2 className="text-center text-base font-semibold mb-4 py-3">
         {getTodayString()}
@@ -58,7 +58,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
               ) : (
                 <div
                   onClick={(e) => e.stopPropagation()} // 클릭 막기
-                  className="w-9 h-9 rounded-full bg-neutral-400 cursor-default"
+                  className="w-9 h-9 rounded-full bg-neutral-300 cursor-default"
                 />
               )}
             </div>
