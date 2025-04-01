@@ -21,9 +21,10 @@ import java.util.HashMap;
         basePackages = {
                 "com.ssafy.paletteme.domain.artworks.repository",
                 "com.ssafy.paletteme.domain.reviews.repository",
-                "com.ssafy.paletteme.domain.search.repository",
                 "com.ssafy.paletteme.domain.users.repository",
                 "com.ssafy.paletteme.domain.myMuseum.repository",
+                "com.ssafy.paletteme.domain.wrapped.repository"
+,
         },
         entityManagerFactoryRef = "dataEntityManager",
         transactionManagerRef = "dataTransactionManager"
@@ -53,7 +54,8 @@ public class DataDataSourceConfig {
                 "com.ssafy.paletteme.domain.reviews.entity",
                 "com.ssafy.paletteme.domain.search.entity",
                 "com.ssafy.paletteme.domain.users.entity",
-                "com.ssafy.paletteme.domain.myMuseum.entity"
+                "com.ssafy.paletteme.domain.myMuseum.entity",
+                "com.ssafy.paletteme.domain.wrapped.entity"
         });
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
