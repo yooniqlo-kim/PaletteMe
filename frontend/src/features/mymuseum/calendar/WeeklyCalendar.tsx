@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { getTodayString } from "@/shared/utils/date";
+import placeholder_40x40 from "@/assets/images/placeholder-art-light-40x40.jpg";
 
 type CalendarDay = {
   date: string;
@@ -45,11 +46,14 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
                   className="w-9 h-9 rounded-full border-4 overflow-hidden cursor-pointer"
                   style={{ borderColor: "var(--color-secondary-hover)" }}
                 >
-                  <img
-                    src={day.imageUrl}
-                    alt={`${day.date} 감상문 대표 이미지`}
-                    className="w-full h-full object-cover rounded-full"
-                  />
+                <img
+                  src={day.imageUrl || placeholder_40x40}
+                  alt={`${day.date} 감상문`}
+                  className="w-full h-full object-cover rounded-full"
+                  onError={(e) => {
+                    e.currentTarget.src = placeholder_40x40;
+                  }}
+                />
                 </div>
               ) : (
                 <div
