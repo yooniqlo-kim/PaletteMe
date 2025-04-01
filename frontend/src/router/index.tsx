@@ -7,7 +7,6 @@ import LikedCollectionPage from "@/pages/LikedCollectionPage";
 import BookmarkCollectionPage from "@/pages/BookmarkCollectionPage";
 import CalenderPage from "@/pages/CalenderPage";
 import ProfilePage from "@/pages/ProfilePage";
-import RegisterPage from "@/pages/RegisterPage";
 import LoginPage from "@/pages/LoginPage";
 import WrappedPage from "@/pages/WrappedPage";
 import ArtworkPage from "@/pages/ArtworkPage";
@@ -20,6 +19,11 @@ import ConfirmDeleteAccountPage from "@/pages/ConfirmDeleteAccountPage";
 import CompleteDeleteAccountPage from "@/pages/CompleteDeleteAccountPage";
 import UpdateProfilePage from "@/pages/UpdateProfilePage";
 import CommentDetailPage from "@/pages/CommentDetailPage";
+import RegisterInfoPage from "@/pages/RegisterInfoPage";
+import RegisterImagePage from "@/pages/RegisterImagePage";
+import RegisterArtworkPage from "@/pages/RegisterArtworkPage";
+import RegisterColorPage from "@/pages/RegisterColorPage";
+import RegisterCompletePage from "@/pages/RegisterCompletePage";
 import CommentEditPage from "@/pages/CommentEditPage";
 import CommentMyPage from "@/pages/CommentMyPage";
 import CommentLikedPage from "@/pages/CommentLikedPage";
@@ -48,7 +52,11 @@ const router = createBrowserRouter([
       { path: "/artwork/:artworkId", element: <ArtworkPage /> },
       { path: "/comment/write/:artworkId", element: <WritePage /> },
       { path: "/login", element: <LoginPage /> },
-      { path: "/signup", element: <RegisterPage /> },
+      { path: "/signup", element: <RegisterInfoPage /> },
+      { path: "/signup/profile", element: <RegisterImagePage /> },
+      { path: "signup/artwork", element: <RegisterArtworkPage /> },
+      { path: "signup/color", element: <RegisterColorPage /> },
+      { path: "signup/complete", element: <RegisterCompletePage /> },
       { path: "/wrapped", element: <WrappedPage /> },
       { path: "*", element: <NotFoundPage /> },
       { path: "/comment/:commentId", element: <CommentDetailPage /> },

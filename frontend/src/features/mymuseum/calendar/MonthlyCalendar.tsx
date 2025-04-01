@@ -8,6 +8,7 @@ import type { WeeklyReview } from '@/shared/types/calendar';
 
 import IconLeftArrow from '@shared/components/icons/IconLeftArrow';  // 왼쪽 화살표 아이콘
 import IconRightArrow from '@shared/components/icons/IconRightArrow'; // 오른쪽 화살표 아이콘
+import placeholder_40x40 from "@/assets/images/placeholder-art-light-40x40.jpg";
 
 interface MonthlyCalendarProps {
   selectedDate: Date;
@@ -29,7 +30,7 @@ export default function MonthlyCalendar({
 
   const calendarData = mapReviewsToMonthlyCalendar(reviews, calendarDates);
 
-  // 🔁 이전/다음달 이동 핸들러
+  // 이전/다음달 이동 핸들러
   const handlePrevMonth = () => {
     const prevMonth = dayjs(selectedDate).subtract(1, 'month').toDate();
     onMonthChange(prevMonth);
@@ -85,11 +86,14 @@ export default function MonthlyCalendar({
                   className="w-full h-full rounded-full overflow-hidden border-4 cursor-pointer"
                   style={{ borderColor: 'var(--color-secondary-hover)' }}
                 >
-                  <img
-                    src={day.imageUrl}
-                    alt={`${day.date} 감상문`}
-                    className="w-full h-full object-cover rounded-full"
-                  />
+                <img
+                  src={day.imageUrl || placeholder_40x40}
+                  alt={`${day.date} 감상문`}
+                  className="w-full h-full object-cover rounded-full"
+                  onError={(e) => {
+                    e.currentTarget.src = placeholder_40x40;
+                  }}
+                />
                 </div>
               ) : (
                 <div

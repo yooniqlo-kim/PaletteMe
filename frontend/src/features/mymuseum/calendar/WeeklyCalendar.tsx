@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { getTodayString } from "@/shared/utils/date";
+import placeholder_40x40 from "@/assets/images/placeholder-art-light-40x40.jpg";
 
 type CalendarDay = {
   date: string;
@@ -21,7 +22,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
     <div
       onClick={onClick}
       className="w-full max-w-[23.75rem] h-[10.75rem] rounded-xl px-4 py-3 cursor-pointer"
-      style={{ backgroundColor: "#FFEFEF" }}
+      style={{ backgroundColor: "#FDF7EB" }}
     >
       <h2 className="text-center text-base font-semibold mb-4 py-3">
         {getTodayString()}
@@ -45,16 +46,19 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
                   className="w-9 h-9 rounded-full border-4 overflow-hidden cursor-pointer"
                   style={{ borderColor: "var(--color-secondary-hover)" }}
                 >
-                  <img
-                    src={day.imageUrl}
-                    alt={`${day.date} 감상문 대표 이미지`}
-                    className="w-full h-full object-cover rounded-full"
-                  />
+                <img
+                  src={day.imageUrl || placeholder_40x40}
+                  alt={`${day.date} 감상문`}
+                  className="w-full h-full object-cover rounded-full"
+                  onError={(e) => {
+                    e.currentTarget.src = placeholder_40x40;
+                  }}
+                />
                 </div>
               ) : (
                 <div
                   onClick={(e) => e.stopPropagation()} // 클릭 막기
-                  className="w-9 h-9 rounded-full bg-neutral-400 cursor-default"
+                  className="w-9 h-9 rounded-full bg-neutral-300 cursor-default"
                 />
               )}
             </div>
