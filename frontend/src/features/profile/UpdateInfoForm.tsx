@@ -1,4 +1,4 @@
-import Button from "@/shared/components/Buttons/Button";
+import Button from "@/shared/components/buttons/Button";
 import Input from "@/shared/components/form/Input";
 import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";

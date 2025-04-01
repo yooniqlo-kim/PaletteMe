@@ -23,7 +23,7 @@ export default function PopularKeywordsList({ onKeywordClick }: Props) {
 
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-2">인기 검색어</h2>
+      <h2 className="text-md font-semibold mb-4">인기 작품</h2>
       <ul className="grid grid-cols-2 gap-y-2 text-sm text-gray-800">
         {data?.map((keyword, idx) => (
           <li
