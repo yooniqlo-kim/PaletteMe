@@ -7,7 +7,15 @@ import ScrollToTop from "@/shared/components/scroll/ScrollToTop";
 export default function RootLayout() {
   const location = useLocation();
 
-  const hiddenLayoutPaths = ["/login", "/signup", "/wrapped"];
+  const hiddenLayoutPaths = [
+    "/login",
+    "/signup",
+    "/signup/profile",
+    "/signup/artwork",
+    "/signup/color",
+    "/signup/complete",
+    "/wrapped",
+  ];
   const shouldHideLayout = hiddenLayoutPaths.includes(location.pathname);
 
   return (
