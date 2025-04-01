@@ -37,6 +37,8 @@ public class Reviews extends BaseEntity {
     @Column(name = "like_cnt")
     private Integer likeCnt = 0;
 
+    @Column(name = "content_length", nullable = false)
+    private Integer contentLength;
 
     @Builder
     public Reviews(Users user, Artworks artwork, String content, Boolean isPublic) {
@@ -55,6 +57,8 @@ public class Reviews extends BaseEntity {
         if (this.likeCnt == null){
             this.likeCnt = 0;
         }
+
+        this.contentLength = this.content.length();
     }
 
     public void updateContent(String content, Boolean isPublic) {
