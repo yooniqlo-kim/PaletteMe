@@ -21,6 +21,11 @@ import ConfirmDeleteAccountPage from "@/pages/ConfirmDeleteAccountPage";
 import CompleteDeleteAccountPage from "@/pages/CompleteDeleteAccountPage";
 import UpdateProfilePage from "@/pages/UpdateProfilePage";
 import CommentDetailPage from "@/pages/CommentDetailPage";
+import RegisterInfoPage from "@/pages/RegisterInfoPage";
+import RegisterImagePage from "@/pages/RegisterImagePage";
+import RegisterArtworkPage from "@/pages/RegisterArtworkPage";
+import RegisterColorPage from "@/pages/RegisterColorPage";
+import RegisterCompletePage from "@/pages/RegisterCompletePage";
 
 const router = createBrowserRouter([
   {
@@ -46,7 +51,11 @@ const router = createBrowserRouter([
       { path: "/artwork", element: <ArtworkPage /> },
       { path: "/write", element: <WritePage /> },
       { path: "/login", element: <LoginPage /> },
-      { path: "/signup", element: <RegisterPage /> },
+      { path: "/signup", element: <RegisterInfoPage /> },
+      { path: "/signup/profile", element: <RegisterImagePage /> },
+      { path: "signup/artwork", element: <RegisterArtworkPage /> },
+      { path: "signup/color", element: <RegisterColorPage /> },
+      { path: "signup/complete", element: <RegisterCompletePage /> },
       { path: "/wrapped", element: <WrappedPage /> },
       { path: "*", element: <NotFoundPage /> },
       { path: "/commentcollection", element: <CommentCollectionPage /> },
