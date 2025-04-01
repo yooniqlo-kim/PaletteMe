@@ -29,7 +29,7 @@ public class ReviewCalendarRepositoryCustomImpl implements ReviewCalendarReposit
         return queryFactory
                 .select(new QReviewCalendarResponse(
                         reviews.reviewId,
-                        reviews.updatedAt,
+                        reviews.createdAt,
                         reviews.artwork.artworkId,
                         reviews.content
                 ))

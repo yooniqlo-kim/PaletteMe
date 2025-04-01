@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReviewCalendarResponse {
-    private int reviewId;
-    private LocalDateTime createdAt;
-    private String artworkId;
-    private String content;
+public class MyReviewsResponse {
+    int reviewId;
+    int likeCnt;
+    String content;
+    LocalDateTime createdAt;
 
     @QueryProjection
-    public ReviewCalendarResponse(int reviewId, LocalDateTime createdAt, String artworkId, String content) {
+    public MyReviewsResponse(int reviewId, int likeCnt, String content, LocalDateTime createdAt) {
         this.reviewId = reviewId;
-        this.createdAt = createdAt;
-        this.artworkId = artworkId;
+        this.likeCnt = likeCnt;
         this.content = content;
+        this.createdAt = createdAt;
     }
 }

@@ -17,7 +17,7 @@ public class LikedCollectionRepositoryCustomImpl implements LikedCollectionRepos
     QUsersArtworksLike usersArtworksLike = QUsersArtworksLike.usersArtworksLike;
     QArtworks artworks = QArtworks.artworks;
     @Override
-    public List<LikedCollectionResponse> findLikedArtworksByUserId(int userId, int cursor, int size) {
+    public List<LikedCollectionResponse> findLikedArtworksByUserId(int userId, Integer cursor, int size) {
         return queryFactory
                 .select(new QLikedCollectionResponse(
                         usersArtworksLike.userArtworkLikeId,
@@ -27,9 +27,9 @@ public class LikedCollectionRepositoryCustomImpl implements LikedCollectionRepos
                 .from(usersArtworksLike)
                 .join(usersArtworksLike.artwork, artworks)
                 .where(usersArtworksLike.user.userId.eq((userId))
-                        .and(cursor != 0
-                                ? usersArtworksLike.userArtworkLikeId.gt(cursor)
-                                : null))
+                        .and(cursor != null ? usersArtworksLike.userArtworkLikeId.lt(cursor) : null))
+                .orderBy(usersArtworksLike.userArtworkLikeId.desc())
+                .limit(size)
                 .fetch();
     }
 }

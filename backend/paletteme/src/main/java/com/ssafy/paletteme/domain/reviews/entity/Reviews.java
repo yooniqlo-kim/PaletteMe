@@ -37,7 +37,6 @@ public class Reviews extends BaseEntity {
     @Column(name = "like_cnt")
     private Integer likeCnt = 0;
 
-
     @Builder
     public Reviews(Users user, Artworks artwork, String content, Boolean isPublic) {
         this.user = user;
