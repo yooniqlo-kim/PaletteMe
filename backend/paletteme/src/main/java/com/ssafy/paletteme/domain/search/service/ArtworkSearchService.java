@@ -18,87 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
-@RequiredArgsConstructor
-public class ArtworkSearchService {
+public interface ArtworkSearchService {
 
-    private final ElasticsearchClient elasticsearchClient;
+    public List<ArtworkSearchResponse> searchByKeyword(String keyword, Double lastScore, String lastArtworkId, int size);
 
-    public List<ArtworkSearchResponse> searchByKeyword(String keyword, Double lastScore, String lastArtworkId, int size) {
-
-        if (keyword == null || keyword.trim().isEmpty()) {
-            throw new SearchException(SearchError.EMPTY_KEYWORD);
-        }
-
-        Map<String, String> langSplit = splitByLanguage(keyword);
-        String ko = langSplit.get("ko");
-        String en = langSplit.get("en");
-
-        List<Query> shouldQueries = new ArrayList<>();
-
-        if (!ko.isEmpty()) {
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("kor_title").query(ko))));
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("kor_artist").query(ko))));
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("description.ko").query(ko))));
-        }
-
-        if (!en.isEmpty()) {
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("en_title").query(en))));
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("en_artist").query(en))));
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("description.en").query(en))));
-        }
-
-        try {
-            SearchResponse<ArtworkDocument> response = elasticsearchClient.search(builder -> {
-                builder.index("artworks_index")
-                        .size(size)
-                        .query(q -> q.bool(b -> b.should(shouldQueries).minimumShouldMatch("1")))
-                        .sort(s -> s.score(score -> score.order(SortOrder.Desc))) // 1차: score 정렬
-                        .sort(s -> s.field(f -> f.field("artwork_id").order(SortOrder.Desc))) // 2차: ID 안정 정렬
-                        .source(src -> src.filter(f -> f.includes(
-                                "artwork_id", "kor_title", "en_title", "kor_artist", "en_artist",
-                                "description", "image_url", "created_year"
-                        )));
-
-                if (lastScore != null && lastArtworkId != null) {
-                    builder.searchAfter(List.of(
-                            FieldValue.of(lastScore),
-                            FieldValue.of(lastArtworkId)
-                    ));
-                }
-
-                return builder;
-            }, ArtworkDocument.class);
-
-            return response.hits().hits().stream()
-                    .map(ArtworkSearchResponse::fromHit)
-                    .toList();
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            throw new SearchException(SearchError.ELASTICSEARCH_ERROR);
-        }
-    }
-
-    public Map<String, String> splitByLanguage(String input) {
-        //검색어를 한국어와 영어로 분리
-
-        String[] words = input.split("\\s+");
-
-        StringBuilder korean = new StringBuilder();
-        StringBuilder english = new StringBuilder();
-
-        for (String word : words) {
-            if (word.matches(".*[가-힣]+.*")) {
-                korean.append(word).append(" ");
-            } else if (word.matches(".*[a-zA-Z]+.*")) {
-                english.append(word.toLowerCase()).append(" ");
-            }
-        }
-
-        Map<String, String> result = new HashMap<>();
-        result.put("ko", korean.toString().trim());
-        result.put("en", english.toString().trim());
-        return result;
-    }
+    public Map<String, String> splitByLanguage(String input);
 }
