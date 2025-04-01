@@ -19,7 +19,7 @@ export default function RootLayout() {
   const shouldHideLayout = hiddenLayoutPaths.includes(location.pathname);
 
   return (
-    <div className="relative h-screen w-screen bg-red-200 flex justify-center items-center">
+    <div className="relative h-screen w-screen bg-[var(--color-neutral-2)] flex justify-center items-center">
       {!shouldHideLayout && <Header />}
       <Container id="scrollable-container" hidePadding={shouldHideLayout}>
         {!shouldHideLayout && <ScrollToTop />}

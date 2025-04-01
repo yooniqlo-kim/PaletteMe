@@ -7,7 +7,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[25.75rem] h-[3rem] flex items-center justify-between bg-white z-50">
+    <header className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[25.75rem] h-[3.25rem] flex items-center justify-between bg-white z-50">
       <button
         onClick={() => navigate(-1)}
         className="w-[2.625rem] h-[2.625rem] flex items-center justify-center"

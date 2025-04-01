@@ -44,7 +44,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
                     navigate(`/comment/${day.commentId}`);
                   }}
                   className="w-9 h-9 rounded-full border-4 overflow-hidden cursor-pointer"
-                  style={{ borderColor: "var(--color-secondary-hover)" }}
+                  style={{ borderColor: "#FF718E" }}
                 >
                 <img
                   src={day.imageUrl || placeholder_40x40}
@@ -58,7 +58,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
               ) : (
                 <div
                   onClick={(e) => e.stopPropagation()} // 클릭 막기
-                  className="w-9 h-9 rounded-full bg-neutral-300 cursor-default"
+                  className="w-9 h-9 rounded-full bg-[var(--color-neutral-4)] cursor-default"
                 />
               )}
             </div>
