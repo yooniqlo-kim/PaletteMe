@@ -1,6 +1,10 @@
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import Button from "@/shared/components/buttons/Button";
+import FormWrapper from "@/shared/components/form/FormWrapper";
+import { updateField } from "@/store/formSlice";
 import { FormEvent, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 const DUMMY = [
   {
@@ -55,15 +59,11 @@ const DUMMY = [
   },
 ];
 
-type RegisterArtworkFormProps = {
-  setStage: (stageNum: number) => void;
-};
-
-export default function RegisterArtworkForm({
-  setStage,
-}: RegisterArtworkFormProps) {
+export default function RegisterArtworkPage() {
+  const dispatch = useDispatch();
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedImages.length >= 4) {
@@ -84,39 +84,45 @@ export default function RegisterArtworkForm({
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
     console.log(selectedImages);
-    setStage(4);
+    dispatch(
+      updateField({
+        artworkId: [...selectedImages],
+      })
+    );
+    navigate("/profile/color");
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col items-center gap-8 w-full"
-    >
-      <h2 className="text-lg font-semibold">
-        좋아하는 작품을 3개 선택해주세요
-      </h2>
-      <ul className="grid grid-cols-2 gap-x-2 gap-y-4 w-full">
-        {DUMMY.map((artwork) => (
-          <ArtworkCard
-            key={artwork.id}
-            artwork={{
-              artworkId: artwork.id,
-              artworkImageUrl: artwork.imageUrl,
-              title: "",
-              liked: selectedImages.includes(artwork.id),
-              artist: "",
-            }}
-            size="small"
-            theme="light"
-            onClickLike={() => handleClick(artwork.id)}
-            clickAction="like"
-          />
-        ))}
-      </ul>
-      <p className="text-primary">{errorMsg}</p>
-      <Button size="XL" disabled={selectedImages.length !== 3}>
-        다음으로
-      </Button>
-    </form>
+    <FormWrapper>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center gap-8 w-full">
+        <h2 className="text-lg font-semibold">
+          좋아하는 작품을 3개 선택해주세요
+        </h2>
+        <ul className="grid grid-cols-2 gap-x-2 gap-y-4 w-full">
+          {DUMMY.map((artwork) => (
+            <ArtworkCard
+              key={artwork.id}
+              artwork={{
+                artworkId: artwork.id,
+                artworkImageUrl: artwork.imageUrl,
+                title: "",
+                liked: selectedImages.includes(artwork.id),
+                artist: "",
+              }}
+              size="small"
+              theme="light"
+              onClickLike={() => handleClick(artwork.id)}
+              clickAction="like"
+            />
+          ))}
+        </ul>
+        {errorMsg && <p className="text-primary">{errorMsg}</p>}
+        <Button size="XL" disabled={selectedImages.length !== 3}>
+          다음으로
+        </Button>
+      </form>
+    </FormWrapper>
   );
 }
