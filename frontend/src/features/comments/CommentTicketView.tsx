@@ -1,20 +1,22 @@
 import { CommentTicket } from "./CommentTicket";
 import { useState } from "react";
 import { BaseComment } from "@/shared/types/comment";
-import { Artwork } from "@/shared/types/artwork";
+import { BaseArtwork } from "@/shared/types/artwork";
 import IconLeftArrow from "@/shared/components/icons/IconLeftArrow";
 import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 
 type CommentTicketViewProps = {
   comments: BaseComment[];
-  artworks: Record<string, Artwork>; // artworkId -> artwork
+  artworks: Record<string, BaseArtwork>;
   onClickComment?: (commentId: string) => void;
+  onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
 export function CommentTicketView({
   comments,
   artworks,
   onClickComment,
+  onLikeChange,
 }: CommentTicketViewProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = comments.length;
@@ -43,6 +45,7 @@ export function CommentTicketView({
         comment={comment}
         artwork={artwork}
         onClick={onClickComment}
+        onLikeChange={onLikeChange}
       />
 
       <button

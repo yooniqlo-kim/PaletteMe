@@ -1,6 +1,6 @@
 import IconRedHeart from "@/shared/components/icons/IconRedHeart";
 import IconRedHeartLarge from "@/shared/components/icons/IconRedHeartLarge";
-import type { Artwork } from "@/shared/types/artwork";
+import type { BaseArtwork } from "@/shared/types/artwork";
 
 // placeholder 이미지 import
 import placeholderLight180 from "@/assets/images/placeholder-art-light-180x180.jpg";
@@ -9,7 +9,7 @@ import placeholderDark180 from "@/assets/images/placeholder-art-dark-180x180.jpg
 import placeholderDark300 from "@/assets/images/placeholder-art-dark-300x300.jpg";
 
 type Props = {
-  artwork: Artwork;
+  artwork: BaseArtwork;
   size?: "small" | "large";
   theme?: "light" | "dark";
   isDimmed?: boolean;
@@ -37,11 +37,7 @@ export const ArtworkCard = ({
   onClickLike,
   clickAction = "navigate", // 기본은 navigate
 }: Props) => {
-  const {
-    artworkImageUrl,
-    title,
-    liked = false,
-  } = artwork;
+  const { artworkImageUrl, title, liked = false } = artwork;
 
   const dimension =
     size === "small"
@@ -57,7 +53,9 @@ export const ArtworkCard = ({
   };
 
   const placeholderImage = getPlaceholder();
-  const safeImageUrl = artworkImageUrl?.trim() ? artworkImageUrl : placeholderImage;
+  const safeImageUrl = artworkImageUrl?.trim()
+    ? artworkImageUrl
+    : placeholderImage;
 
   const overlayPositionClass =
     overlayTextPosition === "center"

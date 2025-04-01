@@ -5,6 +5,8 @@ import { DescriptionBox } from "./DescriptionBox";
 import { AIDocentBox } from "./AIDocentBox";
 import { CommentBox } from "./CommentBox";
 import { WhiteContainer } from "@/shared/components/textbox/WhiteRoundedContainer";
+import { ArtworkDetailData } from "@/shared/types/artwork";
+import { BaseComment } from "@/shared/types/comment";
 
 import IconButton from "@/shared/components/Buttons/IconButton";
 import IconBlackHeart from "@/shared/components/icons/IconBlackHeart";
@@ -12,24 +14,33 @@ import IconBookmark from "@/shared/components/icons/IconBookmark";
 
 import FloatingButton from "./FloatingButton";
 
-import { artworkDummy } from "@/shared/dummy/artworkDummy";
-import { commentDummy } from "@/shared/dummy/commentDummy";
 import { aiDocentResponses } from "@/shared/dummy/aiDocentRes";
 
-export function ArtworkDetail() {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState<number>(223);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+type Props = {
+  artwork: ArtworkDetailData;
+  comments: BaseComment[];
+};
+
+export function ArtworkDetail({ artwork, comments }: Props) {
+  const [isLiked, setIsLiked] = useState(artwork.isLiked);
+  const [likeCount, setLikeCount] = useState<number>(artwork.likeCount);
+  const [isBookmarked, setIsBookmarked] = useState(artwork.isBookmarked);
 
   const hasWrittenComment = true;
 
   const handleToggleLike = () => {
-    setIsLiked((prev) => !prev);
-    setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+    const nextLiked = !isLiked;
+    setIsLiked(nextLiked);
+    setLikeCount((count) => (nextLiked ? count + 1 : count - 1));
   };
 
   const handleToggleBookmark = () => {
     setIsBookmarked((prev) => !prev);
+  };
+
+  // 실제 api 요청이나 변경사항 추적 로직으로 교체
+  const handleLikeChange = (commentId: string, isLiked: boolean) => {
+    console.log(`감상문 ${commentId} 좋아요 상태 변경됨: ${isLiked}`);
   };
 
   return (
@@ -48,7 +59,7 @@ export function ArtworkDetail() {
       </div>
 
       <div className="bg-neutral-200 pt-2">
-        <ArtworkImage artwork={artworkDummy} />
+        <ArtworkImage artwork={artwork} />
       </div>
       <div className="flex flex-col gap-2">
         <WhiteContainer withTopRound withMarginTop>
@@ -62,22 +73,26 @@ export function ArtworkDetail() {
                 <IconBookmark isClicked={isBookmarked} />
               </IconButton>
             </div>
-
-            <ArtworkMeta artwork={artworkDummy} showYear showLocation />
-            <DescriptionBox description={artworkDummy.description} />
+            <ArtworkMeta artwork={artwork} showYear showLocation />
+            <DescriptionBox description={artwork.description} />
           </div>
         </WhiteContainer>
         <WhiteContainer>
           <AIDocentBox
             onFetchExplanation={() =>
-              new Promise((res) =>
-                setTimeout(() => res(aiDocentResponses["1"]), 1500)
+              new Promise((resolve) =>
+                setTimeout(() => {
+                  resolve(
+                    aiDocentResponses[artwork.artworkId] ??
+                      "AI 응답이 없습니다."
+                  );
+                }, 1000)
               )
             }
           />
         </WhiteContainer>
         <WhiteContainer>
-          <CommentBox comments={commentDummy} />
+          <CommentBox comments={comments} onLikeChange={handleLikeChange} />
         </WhiteContainer>
       </div>
     </div>

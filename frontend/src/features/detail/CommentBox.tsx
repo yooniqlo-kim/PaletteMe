@@ -3,11 +3,16 @@ import { CommentCard } from "../../shared/components/comments/CommentCard";
 
 type CommentBoxProps = {
   comments: BaseComment[];
+  onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
-export function CommentBox({ comments }: CommentBoxProps) {
-  if (comments.length === 0) return null;
-
+export function CommentBox({ comments, onLikeChange }: CommentBoxProps) {
+  if (!comments || comments.length === 0)
+    return (
+      <div className="text-sm text-neutral-500 text-center py-6">
+        아직 감상문이 없어요.
+      </div>
+    );
   return (
     <div className="space-y-4">
       <p className="text-md font-semibold text-neutral-700">
@@ -21,6 +26,7 @@ export function CommentBox({ comments }: CommentBoxProps) {
           key={comment.commentId}
           comment={comment}
           variant="detail"
+          onLikeChange={onLikeChange}
         />
       ))}
     </div>

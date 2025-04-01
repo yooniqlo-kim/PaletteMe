@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BaseComment } from "@/shared/types/comment";
-import { Artwork } from "@/shared/types/artwork";
+import { BaseArtwork } from "@/shared/types/artwork";
 import { ArtworkImage } from "../detail/ArtworkImage";
 import { ArtworkMeta } from "../../shared/components/artworks/ArtworkMeta";
 import { WriterMeta } from "../../shared/components/comments/WriterMeta";
@@ -9,14 +9,16 @@ import IconThumb from "@/shared/components/icons/IconThumb";
 
 export type CommentTicketProps = {
   comment: BaseComment;
-  artwork: Artwork;
+  artwork: BaseArtwork;
   onClick?: (commentId: string) => void;
+  onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
 export function CommentTicket({
   comment,
   artwork,
   onClick,
+  onLikeChange,
 }: CommentTicketProps) {
   const {
     commentId,
@@ -24,14 +26,21 @@ export function CommentTicket({
     date,
     content,
     likeCount: initialLikeCount,
+    isLiked: initialIsLiked,
   } = comment;
   const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
-  const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
 
-  const toggleLike = () => {
-    setIsLiked((prev) => !prev); // 좋아요 상태 토글
-    setLikeCount((prev: number) => (isLiked ? prev - 1 : prev + 1));
+  const toggleLike = async () => {
+    const next = !isLiked;
+    setIsLiked(next);
+    setLikeCount((prev) => (next ? prev + 1 : prev - 1));
+    onLikeChange?.(commentId, next);
   };
+  useEffect(() => {
+    setLikeCount(initialLikeCount);
+    setIsLiked(initialIsLiked);
+  }, [initialLikeCount, initialIsLiked, commentId]);
 
   return (
     <div

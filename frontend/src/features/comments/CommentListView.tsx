@@ -1,17 +1,19 @@
 import { CommentCard } from "@/shared/components/comments/CommentCard";
 import { BaseComment } from "@/shared/types/comment";
-import { Artwork } from "@/shared/types/artwork";
+import { BaseArtwork } from "@/shared/types/artwork";
 
 type CommentListViewProps = {
   comments: BaseComment[];
-  artworks: Record<string, Artwork>; // artworkId -> artwork
+  artworks: Record<string, BaseArtwork>;
   onClickComment?: (commentId: string) => void;
+  onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
 export function CommentListView({
   comments,
   artworks,
   onClickComment,
+  onLikeChange,
 }: CommentListViewProps) {
   return (
     <div className="flex flex-col gap-4 items-center">
@@ -24,6 +26,7 @@ export function CommentListView({
             artworkImageUrl={artwork?.artworkImageUrl}
             variant="list"
             onClick={onClickComment}
+            onLikeChange={onLikeChange}
           />
         );
       })}

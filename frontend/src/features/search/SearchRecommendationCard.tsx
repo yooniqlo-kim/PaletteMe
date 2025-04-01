@@ -1,5 +1,5 @@
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import type { Artwork } from "@/shared/types/artwork";
+import type { BaseArtwork } from "@/shared/types/artwork";
 
 interface Props {
   imageUrl: string;
@@ -14,7 +14,7 @@ export default function SearchRecommendationCard({
   artistName = "",
   onClick,
 }: Props) {
-  const fakeArtwork: Artwork = {
+  const fakeArtwork: BaseArtwork = {
     artworkId: "fake-id",
     artworkImageUrl: imageUrl,
     title: overlayText,

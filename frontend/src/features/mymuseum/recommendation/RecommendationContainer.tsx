@@ -4,11 +4,11 @@ import RecommendationArtworks from "./RecommendationArtworks";
 
 import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
 import { mapRecommendedToArtwork } from "@/shared/types/recommendation";
-import type { Artwork } from "@/shared/types/artwork";
+import type { BaseArtwork } from "@/shared/types/artwork";
 
 export default function RecommendationContainer() {
   const [selectedFilter, setSelectedFilter] = useState<string>("age");
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [artworks, setArtworks] = useState<BaseArtwork[]>([]);
 
   useEffect(() => {
     if (!selectedFilter) {
@@ -28,10 +28,7 @@ export default function RecommendationContainer() {
         selected={selectedFilter}
         onSelect={setSelectedFilter}
       />
-      <RecommendationArtworks
-      key={selectedFilter}
-      artworks={artworks}
-      />
+      <RecommendationArtworks key={selectedFilter} artworks={artworks} />
     </div>
   );
 }
