@@ -1,8 +1,8 @@
-import defaultImg from "@/assets/images/MainLogo.png";
+import defaultImg from "@/assets/images/defaultProfile.png";
 
 export default function UserImage({ userImg = defaultImg }) {
   return (
-    <div className="w-[132px] h-[132px] cursor-pointer">
+    <div className="w-[128px] h-[128px] cursor-pointer">
       <img
         src={userImg}
         alt="profile"
