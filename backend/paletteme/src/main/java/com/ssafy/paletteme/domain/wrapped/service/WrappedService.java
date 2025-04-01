@@ -16,21 +16,16 @@ public class WrappedService {
             int userId = t.get(0, Integer.class);
             String artistId = t.get(1, String.class);
             int reviewCount = t.get(2, Integer.class);
-
-            System.out.println("userId: " + userId +
-                    ", artistId: " + artistId +
-                    ", reviewCount: " + reviewCount);
         });
+
     }
 
     public void printUserReviewRank(LocalDateTime start, LocalDateTime end) {
         wrappedRepository.rankUsersByReviewCount(start, end).forEach(t -> {
             int userId = t.get(0, Integer.class);
             int reviewCount = t.get(1, Integer.class);
-
-            System.out.println("userId: " + userId +
-                    ", reviewCount: " + reviewCount);
         });
+
     }
 
     public void printLongestReviewPerUser(LocalDateTime start, LocalDateTime end) {
@@ -38,10 +33,7 @@ public class WrappedService {
             int userId = t.get(0, Integer.class);
             String artworkId = t.get(1, String.class);
             Integer contentLength = t.get(2, Integer.class);
-
-            System.out.println("userId: " + userId +
-                    ", artworkId: " + artworkId +
-                    ", contentLength: " + contentLength);
         });
+
     }
 }
