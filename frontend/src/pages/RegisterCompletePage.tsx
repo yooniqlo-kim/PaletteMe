@@ -1,6 +1,19 @@
+import {
+  useFormDispatch,
+  useFormSelector,
+} from "@/shared/hooks/useRegisterForm";
 import CompletedForm from "@/shared/components/form/CompletedForm";
+import { resetField } from "@/store/formSlice";
+import { useEffect } from "react";
 
 function RegisterCompletePage() {
+  const dispatch = useFormDispatch();
+  const formData = useFormSelector((state) => state.form);
+
+  useEffect(() => {
+    dispatch(resetField());
+    console.log(formData);
+  }, []);
   return (
     <div className={`flex flex-col w-full p-8`}>
       <CompletedForm

@@ -1,3 +1,4 @@
+import { useFormDispatch } from "@/shared/hooks/useRegisterForm";
 import Button from "@/shared/components/buttons/Button";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import Input from "@/shared/components/form/Input";
@@ -5,7 +6,6 @@ import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 import { updateField } from "@/store/formSlice";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
 type FormValues = {
@@ -19,15 +19,15 @@ type FormValues = {
 };
 
 export default function RegisterInfoPage() {
-  const dispatch = useDispatch();
+  const dispatch = useFormDispatch();
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     getValues,
-    formState: { errors },
-  } = useForm<FormValues>();
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<FormValues>({ mode: "onChange" });
 
   function onSubmit(data: FormValues) {
     console.log(data);
@@ -40,7 +40,7 @@ export default function RegisterInfoPage() {
         phoneNumber: data.phone.toString(),
       })
     );
-    navigate("signup/profile");
+    navigate("/signup/profile");
   }
 
   return (
@@ -153,7 +153,7 @@ export default function RegisterInfoPage() {
             </span>
           </InputContainer>
         </div>
-        <Button size="L" type="submit">
+        <Button size="L" disabled={isSubmitting || !isValid}>
           다음으로
         </Button>
       </form>

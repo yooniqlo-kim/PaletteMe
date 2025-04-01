@@ -89,7 +89,7 @@ export default function RegisterArtworkPage() {
         artworkId: [...selectedImages],
       })
     );
-    navigate("/profile/color");
+    navigate("/signup/color");
   }
 
   return (
