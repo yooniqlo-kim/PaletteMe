@@ -8,7 +8,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "빈센트 반 고흐",
       year: "1889",
       imgUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg/800px-Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg",
-      liked: true,
+      isLiked: true,
     },
     {
       artworkId: "2",
@@ -16,7 +16,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "프리다 칼로",
       year: "1937",
       imgUrl: "https://upload.wikimedia.org/wikipedia/en/d/db/Frida_Kahlo_%28self_portrait_dedicated_to_Dr_Eloesser%29.jpg",
-      liked: false,
+      isLiked: false,
     },
   ],
   favorite_artist: [
@@ -26,7 +26,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "빈센트 반 고흐",
       year: "1888",
       imgUrl: "https://upload.wikimedia.org/wikipedia/commons/4/47/Vincent_Willem_van_Gogh_128.jpg",
-      liked: false,
+      isLiked: false,
     },
     {
       artworkId: "4",
@@ -34,7 +34,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "빈센트 반 고흐",
       year: "1888",
       imgUrl: "https://upload.wikimedia.org/wikipedia/commons/5/54/Vincent_van_Gogh_-_Terrasse_des_Caf%C3%A9s_an_der_Place_du_Forum_in_Arles_am_Abend1.jpeg",
-      liked: true,
+      isLiked: true,
     },
   ],
   similar_taste: [
@@ -44,7 +44,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "구스타프 클림트",
       year: "1907",
       imgUrl: "https://upload.wikimedia.org/wikipedia/commons/4/4a/Gustav_Klimt_016.jpg",
-      liked: false,
+      isLiked: false,
     },
     {
       artworkId: "6",
@@ -52,7 +52,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "파블로 피카소",
       year: "1937",
       imgUrl: "https://upload.wikimedia.org/wikipedia/en/7/74/PicassoGuernica.jpg",
-      liked: true,
+      isLiked: true,
     },
   ],
   color: [
@@ -62,7 +62,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "마크 샤갈",
       year: "1950",
       imgUrl: "https://upload.wikimedia.org/wikipedia/commons/7/75/Marc_Chagall%2C_1917%2C_Les_Amants_en_bleu.jpg",
-      liked: true,
+      isLiked: true,
     },
     {
       artworkId: "8",
@@ -70,7 +70,7 @@ export const recommendationDummy: Record<string, RecommendedArtwork[]> = {
       artist: "앙리 마티스",
       year: "1952",
       imgUrl: "https://upload.wikimedia.org/wikipedia/en/f/f6/Matisse-Blue-Nude-II.jpg",
-      liked: false,
+      isLiked: false,
     },
   ],
 };

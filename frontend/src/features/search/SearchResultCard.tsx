@@ -19,13 +19,14 @@ export default function SearchResultCard({
   const navigate = useNavigate();
 
   // Artwork 객체 생성
-  const fakeArtwork: BaseArtwork = {
+  const fakeArtwork: BaseArtwork & { isLiked?: boolean } = {
     artworkId: "fake-id",
     artworkImageUrl: imageUrl,
     title: "",
-    liked: isLiked,
     artist: "",
+    isLiked: isLiked,
   };
+  
 
   // 카드 클릭 시 상세 페이지로 이동
   const handleCardClick = () => {

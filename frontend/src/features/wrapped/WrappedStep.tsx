@@ -106,9 +106,10 @@ export default function WrappedStep({
             <h2 className="text-xl mb-4">가장 인상깊게 본 작품은</h2>
             <ArtworkCard
               artwork={{
+                artworkId: "wrapped-favorite",
                 artworkImageUrl: favoriteImg,
                 title: favoriteName || '',
-                liked: false, // 기본값
+                isLiked: false, // 기본값
                 artist: favoriteArtist || '',
               }}
               size="large"
@@ -126,9 +127,10 @@ export default function WrappedStep({
             <div className="flex flex-wrap justify-center gap-4">
               <ArtworkCard
                 artwork={{
+                  artworkId: "wrapped-reco-0",
                   artworkImageUrl: recommendedImg[0],
                   title: recommendedArtwork[0] || '',
-                  liked: false, // 기본값
+                  isLiked: false, // 기본값
                   artist: recommendedArtist[0] || '',
                 }}
                 size="small"
@@ -137,9 +139,10 @@ export default function WrappedStep({
               />
               <ArtworkCard
                 artwork={{
+                  artworkId: "wrapped-reco-1",
                   artworkImageUrl: recommendedImg[1],
                   title: recommendedArtwork[1] || '',
-                  liked: false, // 기본값
+                  isLiked: false, // 기본값
                   artist: recommendedArtist[1] || '',
                 }}
                 size="small"

@@ -24,7 +24,7 @@ export default function MymuseumPage() {
     imgUrl: img.image,
     title: img.title,
     artist: img.artist,
-    liked: false,
+    isLiked: false,
   }));
 
   // CommentPreview 형태로 매핑

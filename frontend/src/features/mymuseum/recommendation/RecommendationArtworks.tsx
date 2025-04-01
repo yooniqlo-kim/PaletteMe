@@ -64,7 +64,7 @@ export default function RecommendationArtworks({
           key={currentArtwork.artworkId}
           artwork={{
             ...currentArtwork,
-            liked: likedArtworks.includes(currentArtwork.artworkId ?? ""),
+            isLiked: likedArtworks.includes(currentArtwork.artworkId ?? ""),
           }}
           size="large"
           borderRadius="small"
