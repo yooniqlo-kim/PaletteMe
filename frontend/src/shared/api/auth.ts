@@ -6,6 +6,7 @@ type dataType = {
   id: string;
   nickname: string;
   s3Url: string;
+  accessToken: string;
 };
 
 type ResponseType = {

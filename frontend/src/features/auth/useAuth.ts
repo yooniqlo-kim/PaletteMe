@@ -27,6 +27,7 @@ export function useAuth() {
             s3Url: data!.s3Url,
           })
         );
+        sessionStorage.setItem("token", JSON.stringify(data!.accessToken));
         navigate("/");
       }
     } catch (error) {
