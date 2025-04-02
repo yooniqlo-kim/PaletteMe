@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 public class Artists {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "artist_id", nullable = false)
     private int artistId;
 
