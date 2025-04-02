@@ -38,6 +38,7 @@ public class MyMuseumController {
         return ApiResponse.success(responses);
     }
 
+    @Operation(summary = "사용자가 좋아요한 작품 목록 조회", description = "사용자가 좋아요한 작품을 커서 기반 보여줌")
     @GetMapping("/artworks/liked")
     public ApiResponse<List<LikedCollectionResponse>> getLikedCollection(@Parameter(hidden = true) @UserId int userId,
                                                                          @RequestParam(required = false) Integer cursor,
@@ -47,6 +48,7 @@ public class MyMuseumController {
         return ApiResponse.success(responses);
     }
 
+    @Operation(summary = "사용자의 리뷰 목록 조회", description = "사용자가 작성한 리뷰를 커서 기반 보여줌")
     @GetMapping("/reviews")
     public ApiResponse<List<MyReviewsResponse>> getMyReviews(@Parameter(hidden = true) @UserId int userId,
                                                                       @RequestParam(required = false) Integer cursor,
