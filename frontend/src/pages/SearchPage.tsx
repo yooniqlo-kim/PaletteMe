@@ -4,23 +4,51 @@ import SearchContainer from "@/features/search/SearchContainer";
 import SearchResultList from "@/features/search/SearchResultList";
 import SearchRecommendationList from "@/features/search/SearchRecommendationList";
 import SearchRecommendationResult from "@/features/search/SearchRecommendationResult";
-import { searchDummy } from "@/shared/dummy/seachThumbnailDummy";
+import { getSearchArtworks, ArtworkSearchItem } from "@shared/api/search";
+import { searchDummy } from "@shared/dummy/seachThumbnailDummy";
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState("");
-  const [likedArtworks, setLikedArtworks] = useState<number[]>([]);
+  const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
+  const [searchResult, setSearchResult] = useState<ArtworkSearchItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const searchResultWithLikes = searchResult.map((item) => ({
+    ...item,
+    isLiked: likedArtworks.includes(item.artworkId),
+  }));
+  
+
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
   const from = searchParams.get("from");
-
   const isFromRecommendation = from === "recommendation";
   const navigate = useNavigate();
 
   useEffect(() => {
     setSearchValue(query);
+
+    const fetchSearchResults = async () => {
+      if (!query) return;
+
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await getSearchArtworks(query, 10);
+        setSearchResult(data);
+      } catch (err) {
+        console.error("검색 실패:", err);
+        setError("검색 중 문제가 발생했어요.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSearchResults();
   }, [query]);
 
-  const handleCardClick = (id: number) => {
+  const handleCardClick = (id: string) => {
     navigate(`/artwork/${id}`);
   };
 
@@ -34,27 +62,18 @@ export default function SearchPage() {
     }
   };
 
-  const toggleLike = (id: number) => {
+  const toggleLike = (id: string) => {
     setLikedArtworks((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
-
-  const filteredData = searchDummy.filter((artwork) =>
-    artwork.overlayText.toLowerCase().includes(query.toLowerCase())
-  );
-
-  const enrichedData = filteredData.map((artwork) => ({
-    ...artwork,
-    isLiked: likedArtworks.includes(artwork.id),
-  }));
 
   // 추천 검색 결과일 경우 별도 레이아웃
   if (isFromRecommendation && query) {
     return (
       <SearchRecommendationResult
         query={query}
-        data={enrichedData}
+        data={searchResultWithLikes}
         onCardLike={toggleLike}
       />
     );
@@ -73,10 +92,13 @@ export default function SearchPage() {
       <div className="mt-6">
         {query ? (
           <SearchResultList
-            data={enrichedData}
+            data={searchResult}
             onCardClick={handleCardClick}
             onCardLike={toggleLike}
+            likedArtworks={likedArtworks}
             query={query}
+            isLoading={isLoading}
+            error={error}
           />
         ) : (
           <SearchRecommendationList data={searchDummy} />
