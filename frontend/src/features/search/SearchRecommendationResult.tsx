@@ -42,7 +42,7 @@ export default function SearchRecommendationResult({ query, data, onCardLike }: 
                 title: artwork.overlayText,
                 artist: "작가 미상",
                 artworkImageUrl: artwork.imageUrl,
-                liked: artwork.isLiked,
+                isLiked: artwork.isLiked,
               }}
               size="small"
               theme="light"

@@ -22,19 +22,19 @@ export default function PopularKeywordsList({ onKeywordClick }: Props) {
   if (error) return <p>에러가 발생했어요</p>;
 
   return (
-    <div>
-      <h2 className="text-lg font-semibold mb-2">인기 검색어</h2>
+    <div className="w-full max-w-[28rem] mx-auto px-4">
+      <h2 className="text-md font-semibold mb-4">인기 작품</h2>
       <ul className="grid grid-cols-2 gap-y-2 text-sm text-gray-800">
         {data?.map((keyword, idx) => (
           <li
             key={keyword}
-            className="cursor-pointer hover:underline"
+            className="cursor-pointer hover:underline flex items-center"
             onClick={() => onKeywordClick(keyword)}
           >
-            <span className="text-red-500 font-semibold mr-1">
+            <span className="text-red-500 font-semibold mr-1 min-w-[1.5rem]">
               {String(idx + 1).padStart(2, '0')}
             </span>
-            {keyword}
+            <span className="truncate">{keyword}</span>
           </li>
         ))}
       </ul>

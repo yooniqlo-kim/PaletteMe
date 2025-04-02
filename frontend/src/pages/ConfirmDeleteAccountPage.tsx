@@ -16,7 +16,7 @@ export default function ConfirmDeleteAccountPage() {
     imgUrl: item.image,
     title: item.title,
     artist: item.artist,
-    liked: true,
+    isLiked: true,
   }));
 
   const myCommentsImages = shuffled.slice(2, 4).map((item, i) => ({

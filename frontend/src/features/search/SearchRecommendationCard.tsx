@@ -14,12 +14,12 @@ export default function SearchRecommendationCard({
   artistName = "",
   onClick,
 }: Props) {
-  const fakeArtwork: BaseArtwork = {
+  const fakeArtwork: BaseArtwork & { isLiked: boolean } = {
     artworkId: "fake-id",
     artworkImageUrl: imageUrl,
     title: overlayText,
-    liked: false,
     artist: artistName,
+    isLiked: false,
   };
 
   return (

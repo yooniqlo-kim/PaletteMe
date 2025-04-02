@@ -22,7 +22,7 @@ export const SearchBar = ({
 }: SearchBarProps) => {
   return (
     <div
-      className="w-[23.75rem] h-[3.25rem] flex items-center px-4 border border-transparent focus-border-primary transition-colors duration-150"
+      className="w-full max-w-[23.75rem] h-[3.25rem] flex items-center px-4 border border-transparent focus-border-primary transition-colors duration-150 mx-auto"
       style={{
         backgroundColor: "var(--color-neutral-2)",
         borderRadius: "0.5rem",

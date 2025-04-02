@@ -19,7 +19,6 @@ interface MonthlyCalendarProps {
 
 export default function MonthlyCalendar({
   selectedDate,
-  onBackToWeek,
   onMonthChange,
   reviews,
 }: MonthlyCalendarProps) {
@@ -42,70 +41,66 @@ export default function MonthlyCalendar({
   };
 
   return (
-    <div className="w-full max-w-[26.25rem] mx-auto px-4 pb-[3.75rem]">
+    <div className="w-full max-w-[26.25rem] mx-auto px-3 py-10 pb-[3.75rem]">
       {/* 이동 버튼 */}
       <div className="flex justify-between items-center py-4">
         <button onClick={handlePrevMonth} className="text-xl px-2">
           <IconLeftArrow className="w-5 h-5"/>
         </button>
-        <h2 className="text-lg font-bold">{formattedMonth}</h2>
+        <h2 className="text-md font-bold">{formattedMonth}</h2>
         <button onClick={handleNextMonth} className="text-xl px-2">
           <IconRightArrow className="w-5 h-5"/>
         </button>
       </div>
 
-      {/* 주간보기 버튼 */}
-      <div className="flex justify-end pb-2">
-        <button
-          onClick={onBackToWeek}
-          className="text-sm text-primary hover:underline"
-        >
-          주간 보기
-        </button>
-      </div>
-
       {/* 요일 헤더 */}
-      <div className="grid grid-cols-7 gap-2 text-center text-sm text-gray-600 mb-2">
+      <div className="grid grid-cols-7 gap-5 text-center text-sm text-gray-600 mb-4">
         {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
           <div key={day}>{day}</div>
         ))}
       </div>
 
       {/* 날짜 및 감상문 */}
-      <div className="grid grid-cols-7 gap-2">
-        {calendarData.map((day, idx) => {
-          const isCurrentMonth = dayjs(day.date).month() === currentMonth;
-          const dayNumber = dayjs(day.date).date();
-          const hasComment = !!day.commentId;
+      <div className="flex flex-col gap-4">
+        {Array.from({ length: Math.ceil(calendarData.length / 7) }).map((_, weekIndex) => (
+          <div key={weekIndex} className="grid grid-cols-7 gap-4">
+            {calendarData
+              .slice(weekIndex * 7, weekIndex * 7 + 7)
+              .map((day, idx) => {
+                const isCurrentMonth = dayjs(day.date).month() === currentMonth;
+                // const dayNumber = dayjs(day.date).date();
+                const hasComment = !!day.commentId;
 
-          return (
-            <div key={idx} className="w-10 h-10 mx-auto flex items-center justify-center">
-              {hasComment ? (
-                <div
-                  onClick={() => navigate(`/comment/${day.commentId}`)}
-                  className="w-full h-full rounded-full overflow-hidden border-4 cursor-pointer"
-                  style={{ borderColor: 'var(--color-secondary-hover)' }}
-                >
-                <img
-                  src={day.imageUrl || placeholder_40x40}
-                  alt={`${day.date} 감상문`}
-                  className="w-full h-full object-cover rounded-full"
-                  onError={(e) => {
-                    e.currentTarget.src = placeholder_40x40;
-                  }}
-                />
-                </div>
-              ) : (
-                <div
-                  className={`w-full h-full rounded-full flex items-center justify-center
-                    ${isCurrentMonth ? 'bg-neutral-300 text-black' : 'bg-neutral-100 text-gray-400'}`}
-                >
-                  <span className="text-sm">{dayNumber}</span>
-                </div>
-              )}
-            </div>
-          );
-        })}
+                return (
+                  <div key={idx} className="w-10 h-10 mx-auto flex items-center justify-center">
+                    {hasComment ? (
+                      <div
+                        onClick={() => navigate(`/comment/${day.commentId}`)}
+                        className="w-full h-full rounded-full overflow-hidden border-4 cursor-pointer"
+                        style={{ borderColor: "#FF718E" }}
+                      >
+                        <img
+                          src={day.imageUrl || placeholder_40x40}
+                          alt={`${day.date} 감상문`}
+                          className="w-full h-full object-cover rounded-full"
+                          onError={(e) => {
+                            e.currentTarget.src = placeholder_40x40;
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className={`w-full h-full rounded-full flex items-center justify-center
+                          ${isCurrentMonth ? 'bg-neutral-300 text-black' : 'bg-neutral-100 text-gray-400'}`}
+                      >
+                        {/* <span className="text-sm">{dayNumber}</span> */}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -7,11 +7,11 @@ import { FormEvent, useEffect, useState } from "react";
 import RoundedButton from "@/shared/components/buttons/RoundedButton";
 import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
-import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { updateField } from "@/store/formSlice";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import { useNavigate } from "react-router";
+import { useFormDispatch } from "@/shared/hooks/useRegisterForm";
 
 type FormValues = {
   imageUrl: FileList;
@@ -19,15 +19,15 @@ type FormValues = {
 };
 
 export default function RegisterImagePage() {
-  const dispatch = useDispatch();
+  const dispatch = useFormDispatch();
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
-  } = useForm<FormValues>();
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormValues>({ mode: "onChange" });
   const [imagePreview, setImagePreview] = useState<string | null>();
 
   const image = watch("imageUrl");
@@ -84,17 +84,29 @@ export default function RegisterImagePage() {
           <Label htmlFor="nickname">닉네임</Label>
           <span className="flex justify-between w-full gap-4">
             <Input
-              {...register("nickname", { required: "닉네임은 필수값입니다." })}
+              {...register("nickname", {
+                required: "닉네임은 필수값입니다.",
+                minLength: {
+                  value: 2,
+                  message: "닉네임은 두 자 이상 입력해야 합니다.",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "닉네임은 최대 20자까지 가능합니다.",
+                },
+              })}
               id="nickname"
               type="text"
-              placeholder="홍길동"
+              placeholder="2자 이상 20자 이하로 입력해주세요"
               fallback={errors.nickname && errors.nickname.message}
             />
 
             <Button size="XS">중복 확인</Button>
           </span>
         </InputContainer>
-        <Button size="L">다음으로</Button>
+        <Button size="L" disabled={!isValid || isSubmitting}>
+          다음으로
+        </Button>
       </form>
     </FormWrapper>
   );

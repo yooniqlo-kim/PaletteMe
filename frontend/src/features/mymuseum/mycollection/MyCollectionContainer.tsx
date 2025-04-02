@@ -22,7 +22,7 @@ export default function MyCollections({ images }: Props) {
             artworkImageUrl: item.imgUrl,
             title: item.title,
             artist: item.artist,
-            liked: item.liked,
+            isLiked: item.isLiked, 
           }}
           size="small"
           isDimmed

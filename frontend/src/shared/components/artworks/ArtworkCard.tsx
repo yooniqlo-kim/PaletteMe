@@ -9,7 +9,7 @@ import placeholderDark180 from "@/assets/images/placeholder-art-dark-180x180.jpg
 import placeholderDark300 from "@/assets/images/placeholder-art-dark-300x300.jpg";
 
 type Props = {
-  artwork: BaseArtwork;
+  artwork: BaseArtwork & { isLiked?: boolean };
   size?: "small" | "large";
   theme?: "light" | "dark";
   isDimmed?: boolean;
@@ -35,14 +35,17 @@ export const ArtworkCard = ({
   hasBorder = false,
   onClick,
   onClickLike,
-  clickAction = "navigate", // 기본은 navigate
+  clickAction = "navigate",
 }: Props) => {
-  const { artworkImageUrl, title, liked = false } = artwork;
+  const { artworkImageUrl, title, isLiked = false } = artwork;
 
-  const dimension =
-    size === "small"
-      ? "w-[11.25rem] h-[11.25rem]"
-      : "w-[18.75rem] h-[18.75rem]";
+  let dimension = "";
+
+  if (size === "small") {
+    dimension = "w-full aspect-[1/1]";
+  } else if (size === "large") {
+    dimension = "w-full max-w-[260px] sm:max-w-[280px] md:max-w-[300px] aspect-[1/1]";
+  }
 
   const getPlaceholder = () => {
     if (theme === "dark") {
@@ -116,9 +119,9 @@ export const ArtworkCard = ({
           className="absolute bottom-2 right-2 z-10"
         >
           {size === "small" ? (
-            <IconRedHeart isClicked={liked} />
+            <IconRedHeart isClicked={isLiked} />
           ) : (
-            <IconRedHeartLarge isClicked={liked} />
+            <IconRedHeartLarge isClicked={isLiked} />
           )}
         </button>
       )}

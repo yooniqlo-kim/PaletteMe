@@ -89,7 +89,7 @@ export default function RegisterArtworkPage() {
         artworkId: [...selectedImages],
       })
     );
-    navigate("/profile/color");
+    navigate("/signup/color");
   }
 
   return (
@@ -108,7 +108,7 @@ export default function RegisterArtworkPage() {
                 artworkId: artwork.id,
                 artworkImageUrl: artwork.imageUrl,
                 title: "",
-                liked: selectedImages.includes(artwork.id),
+                isLiked: selectedImages.includes(artwork.id),
                 artist: "",
               }}
               size="small"
