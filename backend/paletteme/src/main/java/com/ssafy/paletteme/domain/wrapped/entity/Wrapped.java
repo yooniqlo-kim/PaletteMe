@@ -21,9 +21,8 @@ public class Wrapped {
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) //db 컬럼명으로 명시, Users에는 userId로 되있음.
     private Users users;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "artist_name")
-    private Artists artist;
+    @Column(name = "artist_name")
+    private String artistName;
 
     @Column(name = "review_rank")
     private Integer reviewRank;

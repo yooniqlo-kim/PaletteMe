@@ -138,3 +138,29 @@ INSERT INTO users_review_like (review_id, user_id) VALUES
 (2, 1),
 (3, 1),
 (4, 1);
+
+INSERT INTO wrapped (
+    user_id,
+    artist_name,
+    review_rank,
+    review_percentage,
+    review_cnt,
+    favorite_name,
+    favorite_artist,
+    favorite_img,
+    recommended_artwork,
+    recommended_artist,
+    recommended_img
+) VALUES (
+             1,
+             '학준',
+             5,
+             13,
+             12,
+             '별이 빛나는 밤에',
+             '빈센트 반 고흐',
+             'https://example.com/starry-night.jpg',
+             '붉은 수련',
+             '클로드 모네',
+             'https://example.com/water-lilies.jpg'
+         );

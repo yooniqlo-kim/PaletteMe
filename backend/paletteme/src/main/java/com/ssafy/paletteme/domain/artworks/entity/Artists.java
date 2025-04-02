@@ -1,10 +1,12 @@
 package com.ssafy.paletteme.domain.artworks.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@Getter
 @Table(name = "artists")
 public class Artists {
 
