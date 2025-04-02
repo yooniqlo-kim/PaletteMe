@@ -64,7 +64,7 @@ export const mapReviewsToMonthlyCalendar = (
   calendarDates: Date[]
 ): CalendarDay[] => {
   return calendarDates.map((date) => {
-    const dateStr = date.toISOString().slice(0, 10);
+    const dateStr = dayjs(date).format("YYYY-MM-DD"); // ✅ 변경된 부분
     const matched = reviews.find((r) => r.date === dateStr);
 
     if (matched) {
@@ -79,6 +79,7 @@ export const mapReviewsToMonthlyCalendar = (
     }
   });
 };
+
 
 
 // Wrapped 페이지 타이틀용 (ex. "2025년 2월")

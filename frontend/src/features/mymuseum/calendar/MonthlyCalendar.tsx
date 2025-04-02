@@ -28,7 +28,7 @@ export default function MonthlyCalendar({
   const currentMonth = dayjs(selectedDate).month();
 
   const calendarData = mapReviewsToMonthlyCalendar(reviews, calendarDates);
-
+  
   // 이전/다음달 이동 핸들러
   const handlePrevMonth = () => {
     const prevMonth = dayjs(selectedDate).subtract(1, 'month').toDate();
@@ -77,8 +77,9 @@ export default function MonthlyCalendar({
 
                   // ❗해당 월이 아닌 날짜는 렌더링하지 않음
                   if (!isCurrentMonth) {
-                    return <div key={idx} />;
+                    return <div key={idx} className="w-10 h-10 mx-auto" />;
                   }
+                  
 
                   return (
                     <div key={idx} className="w-10 h-10 mx-auto flex items-center justify-center">
