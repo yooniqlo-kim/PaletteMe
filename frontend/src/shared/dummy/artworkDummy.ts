@@ -42,7 +42,7 @@ export const artworkDetailDummy: ArtworkDetailData[] = [
     likeCount: 223,
     isLiked: true,
     isBookmarked: false,
-    hasWrittenComment: true,
+    hasWrittenComment: null,
   },
   {
     artworkId: "a2",
@@ -57,6 +57,6 @@ export const artworkDetailDummy: ArtworkDetailData[] = [
     likeCount: 145,
     isLiked: false,
     isBookmarked: true,
-    hasWrittenComment: false,
+    hasWrittenComment: "5",
   },
 ];

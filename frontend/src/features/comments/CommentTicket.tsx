@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { BaseComment } from "@/shared/types/comment";
 import { BaseArtwork } from "@/shared/types/artwork";
 import { ArtworkImage } from "../detail/ArtworkImage";
@@ -10,14 +11,12 @@ import IconThumb from "@/shared/components/icons/IconThumb";
 export type CommentTicketProps = {
   comment: BaseComment;
   artwork: BaseArtwork;
-  onClick?: (commentId: string) => void;
   onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
 export function CommentTicket({
   comment,
   artwork,
-  onClick,
   onLikeChange,
 }: CommentTicketProps) {
   const {
@@ -30,6 +29,7 @@ export function CommentTicket({
   } = comment;
   const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
   const [isLiked, setIsLiked] = useState(initialIsLiked);
+  const navigate = useNavigate();
 
   const toggleLike = async () => {
     const next = !isLiked;
@@ -42,15 +42,24 @@ export function CommentTicket({
     setIsLiked(initialIsLiked);
   }, [initialLikeCount, initialIsLiked, commentId]);
 
+  const handleClick = () => {
+    navigate(`/comment/${commentId}`);
+  };
   return (
     <div
-      onClick={() => commentId && onClick?.(commentId)}
       className="w-full max-w-[17rem] h-[35rem] rounded-pm bg-white overflow-hidden flex flex-col cursor-pointer shadow-ticket"
+      onClick={handleClick}
     >
       <div className="relative">
         <ArtworkImage artwork={artwork} />
         <div className="absolute bottom-2 right-2 px-2 py-1 flex items-center gap-1 text-xs font-semibold">
-          <IconButton identifier="review_card" onClick={toggleLike}>
+          <IconButton
+            identifier="review_card"
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleLike();
+            }}
+          >
             <span className="inline-flex items-center">{likeCount}</span>
             <IconThumb isClicked={isLiked} />
           </IconButton>

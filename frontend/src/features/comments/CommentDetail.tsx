@@ -8,12 +8,16 @@ import IconThreeDots from "@/shared/components/icons/IconThreeDots";
 import DropdownMenu from "./CommentDropdown";
 import IconThumb from "@/shared/components/icons/IconThumb";
 
-import { baseArtworkDummy } from "@/shared/dummy/artworkDummy";
-import { commentDummy } from "@/shared/dummy/commentDummy";
 import { WriterMeta } from "@/shared/components/comments/WriterMeta";
+import { BaseComment } from "@/shared/types/comment";
+import { BaseArtwork } from "@/shared/types/artwork";
 
-export function CommentDetail() {
-  const [likeCount, setLikeCount] = useState<number>(commentDummy[0].likeCount);
+type Props = {
+  comment: BaseComment;
+  artwork: BaseArtwork;
+};
+export function CommentDetail({ comment, artwork }: Props) {
+  const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
 
   const toggleLike = () => {
@@ -24,18 +28,15 @@ export function CommentDetail() {
   return (
     <div className="bg-neutral-100 min-h-screen">
       <div className="bg-neutral-200 pt-2">
-        <ArtworkImage artwork={baseArtworkDummy} />
+        <ArtworkImage artwork={artwork} />
       </div>
       <div className="flex flex-col gap-2">
         <WhiteContainer withTopRound withMarginTop>
           <div className="relative">
             <div className="absolute -top-9 right-1 flex gap-2 z-10"></div>
-            <ArtworkMeta artwork={baseArtworkDummy} />
+            <ArtworkMeta artwork={artwork} />
             <span className="flex items-center justify-between">
-              <WriterMeta
-                user={commentDummy[0].user}
-                date={commentDummy[0].date}
-              />
+              <WriterMeta user={comment.user} date={comment.date} />
               <DropdownMenu
                 button={
                   <button className="cursor-pointer flex justify-center items-center">
@@ -48,7 +49,7 @@ export function CommentDetail() {
                 ]}
               />
             </span>
-            <DescriptionBox description={commentDummy[0].content} hideLine />
+            <DescriptionBox description={comment.content} hideLine />
           </div>
           <div className="flex justify-end py-3 px-2">
             <IconButton identifier="review_detail" onClick={toggleLike}>
