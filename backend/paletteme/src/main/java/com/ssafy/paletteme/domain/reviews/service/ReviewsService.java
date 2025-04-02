@@ -4,12 +4,16 @@ import com.ssafy.paletteme.domain.artworks.entity.Artworks;
 import com.ssafy.paletteme.domain.artworks.repository.ArtworksRepository;
 import com.ssafy.paletteme.domain.reviews.dto.*;
 import com.ssafy.paletteme.domain.reviews.entity.Reviews;
+import com.ssafy.paletteme.domain.reviews.entity.UsersReviewLike;
 import com.ssafy.paletteme.domain.reviews.exception.ReviewsError;
 import com.ssafy.paletteme.domain.reviews.exception.ReviewsException;
 import com.ssafy.paletteme.domain.reviews.repository.ReviewsRepository;
+import com.ssafy.paletteme.domain.reviews.repository.UsersReviewLikeRepository;
 import com.ssafy.paletteme.domain.users.entity.Users;
 import com.ssafy.paletteme.domain.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +22,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ReviewsService {
+    private static final Logger log = LoggerFactory.getLogger(ReviewsService.class);
+
     private final UsersRepository usersRepository;
     private final ReviewsRepository reviewsRepository;
     private final ArtworksRepository  artworksRepository;
+    private final UsersReviewLikeRepository  usersReviewLikeRepository;
 
     @Transactional
     public void writeReview(long userId, ReviewsWriteRequest reviewsWriteRequest) {
@@ -84,15 +91,47 @@ public class ReviewsService {
         Reviews review = reviewsRepository.findById(reviewId)
                 .orElseThrow(() -> new ReviewsException(ReviewsError.REVIEW_NOT_FOUND));
 
-        if (reviewLikeRepository.existsByUserAndReview(user, review)) {
+        // 이미 좋아요 한 경우
+        if (usersReviewLikeRepository.existsByUserAndReview(user, review)) {
             throw new ReviewsException(ReviewsError.REVIEW_ALREADY_LIKED);
         }
 
-        ReviewLike like = ReviewLike.of(user, review);
-        reviewLikeRepository.save(like);
+        // 좋아요 테이블에 추가
+        UsersReviewLike usersReviewLike = UsersReviewLike.of(user, review);
+        usersReviewLikeRepository.save(usersReviewLike);
 
-        ReviewLikeCnt likeCnt = reviewLikeCntRepository.findByReviewId(reviewId)
-                .orElseGet(() -> reviewLikeCntRepository.save(ReviewLikeCnt.of(reviewId)));
-        likeCnt.increaseLikeCnt();
+        // 리뷰의 좋아요 개수 추가
+        review.increaseLikeCnt();
     }
+
+    @Transactional
+    public void cancelLikeReview(int userId, int reviewId) {
+        Users user = usersRepository.findById((long) userId)
+                .orElseThrow(() -> new ReviewsException(ReviewsError.USER_NOT_FOUND));
+
+        Reviews review = reviewsRepository.findById(reviewId)
+                .orElse(null);
+
+        // 리뷰는 삭제됐는데, 리뷰 좋아요만 남은 경우에 대한 처리
+        if(review == null){
+            log.info("리뷰는 삭제되었지만 좋아요 기록이 남아 있어 삭제 처리됨 - reviewId: {}", reviewId);
+            UsersReviewLike like = usersReviewLikeRepository
+                    .findByUser_UserIdAndReview_ReviewId(user.getUserId(), reviewId)
+                    .orElseThrow(() -> new ReviewsException(ReviewsError.REVIEW_NOT_LIKED));
+
+            usersReviewLikeRepository.delete(like);
+            return;
+        }
+
+        // 좋아요한 기록이 있는지 확인
+        UsersReviewLike usersReviewLike = usersReviewLikeRepository.findByUserAndReview(user, review)
+                .orElseThrow(() -> new ReviewsException(ReviewsError.REVIEW_NOT_LIKED));
+
+        // 좋아요 테이블에서 삭제
+        usersReviewLikeRepository.delete(usersReviewLike);
+
+        // 리뷰 좋아요 수 감소
+        review.decreaseLikeCnt();
+    }
+
 }
