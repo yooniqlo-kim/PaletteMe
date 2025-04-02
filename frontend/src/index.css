@@ -29,7 +29,7 @@
   --color-navbar-active: #d33753;
   --color-secondary: #f2a0f4;
   --color-secondary-hover: #e58ce5;
-  --color-third: #FDF7EB;
+  --color-third: #fdf7eb;
   --color-inactive: #c2c2c2;
   --color-neutral-1: #f7f7f7;
   --color-neutral-2: #ebebeb;
@@ -60,6 +60,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --color-primary: #ff385c;
+  --toastify-toast-bd-radius: 10px;
+  --toastify-color-progress-error: var(--color-primary);
+  --toastify-font-family: "Pretendard", sans-serif;
 }
 
 /* 스크롤 */
