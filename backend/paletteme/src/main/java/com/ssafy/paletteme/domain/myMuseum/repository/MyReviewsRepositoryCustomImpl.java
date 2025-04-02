@@ -27,7 +27,7 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                 .from(reviews)
                 .where(reviews.user.userId.eq((userId))
                 .and(cursor != null ? reviews.reviewId.lt(cursor) : null))
-                .orderBy(reviews.createdAt.desc())
+                .orderBy(reviews.createdAt.desc(), reviews.reviewId.desc())
                 .limit(size)
                 .fetch();
 
