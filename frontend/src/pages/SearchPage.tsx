@@ -13,11 +13,6 @@ export default function SearchPage() {
   const [searchResult, setSearchResult] = useState<ArtworkSearchItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const searchResultWithLikes = searchResult.map((item) => ({
-    ...item,
-    isLiked: likedArtworks.includes(item.artworkId),
-  }));
   
 
   const [searchParams] = useSearchParams();
@@ -73,7 +68,7 @@ export default function SearchPage() {
     return (
       <SearchRecommendationResult
         query={query}
-        data={searchResultWithLikes}
+        data={searchResult}
         onCardLike={toggleLike}
       />
     );

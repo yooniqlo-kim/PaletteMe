@@ -10,18 +10,29 @@ export interface ArtworkSearchItem {
   enArtist: string;
   imageUrl: string | null;
   score: number;
+  isLiked: boolean;
 }
 
 export const getSearchArtworks = async (
-  keyword: string,
-  size: number = 10
-): Promise<ArtworkSearchItem[]> => {
-  const res = await api.get("/search/artworks", {
-    params: {
-      keyword,
-      size,
-    },
-  });
-
-  return res.data?.data ?? [];
-};
+    keyword: string,
+    size: number = 10,
+    lastArtworkId?: string,
+    lastScore?: number
+  ): Promise<ArtworkSearchItem[]> => {
+    const res = await api.get("/search/artworks", {
+      params: {
+        keyword,
+        size,
+        ...(lastArtworkId && lastScore !== undefined && {
+          lastArtworkId,
+          lastScore,
+        }),
+      },
+    });
+  
+    const { success, data } = res.data;
+    if (!success || !data) return [];
+  
+    return data;
+  };
+  
