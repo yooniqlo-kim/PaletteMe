@@ -5,14 +5,13 @@ import { BaseArtwork } from "@/shared/types/artwork";
 type CommentListViewProps = {
   comments: BaseComment[];
   artworks: Record<string, BaseArtwork>;
-  onClickComment?: (commentId: string) => void;
   onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
 export function CommentListView({
   comments,
   artworks,
-  onClickComment,
+
   onLikeChange,
 }: CommentListViewProps) {
   return (
@@ -25,7 +24,6 @@ export function CommentListView({
             comment={comment}
             artworkImageUrl={artwork?.artworkImageUrl}
             variant="list"
-            onClick={onClickComment}
             onLikeChange={onLikeChange}
           />
         );

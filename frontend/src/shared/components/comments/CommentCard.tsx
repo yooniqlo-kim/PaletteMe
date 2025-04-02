@@ -3,6 +3,7 @@ import { BaseComment } from "@/shared/types/comment";
 import { WriterMeta } from "./WriterMeta";
 import IconButton from "@/shared/components/buttons/IconButton";
 import IconThumb from "../icons/IconThumb";
+import { useNavigate } from "react-router";
 
 export type CommentCardVariant = "list" | "detail";
 
@@ -10,7 +11,6 @@ export type CommentCardProps = {
   comment: BaseComment;
   variant?: CommentCardVariant;
   artworkImageUrl?: string;
-  onClick?: (commentId: string) => void;
   onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
@@ -18,7 +18,6 @@ export function CommentCard({
   comment,
   artworkImageUrl,
   variant = "list",
-  onClick,
   onLikeChange,
 }: CommentCardProps) {
   const {
@@ -34,12 +33,13 @@ export function CommentCard({
   const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
   const [isLiked, setIsLiked] = useState(initialIsLiked);
 
+  const navigate = useNavigate();
   const isDetailMode = variant === "detail";
 
   // 목록 모드에서만 감상문 상세로 이동
   const handleClick = () => {
-    if (!isDetailMode && onClick) {
-      onClick(commentId);
+    if (!isDetailMode) {
+      navigate(`/comment/${commentId}`);
     }
   };
 
@@ -57,7 +57,6 @@ export function CommentCard({
     setLikeCount((prev) => (next ? prev + 1 : prev - 1));
     onLikeChange?.(commentId, next);
   };
-
   return (
     <div
       onClick={handleClick}
@@ -73,12 +72,15 @@ export function CommentCard({
         <div className="relative z-10 flex justify-between items-center">
           <WriterMeta user={user} date={date} />
           <div className="flex items-center gap-1 text-xs font-medium p-1">
-            {likeCount}
             <IconButton
               identifier="review_card"
-              onClick={toggleLike}
-              className=""
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLike();
+              }}
+              className="flex items-center gap-1"
             >
+              <span>{likeCount}</span>
               <IconThumb isClicked={isLiked} />
             </IconButton>
           </div>

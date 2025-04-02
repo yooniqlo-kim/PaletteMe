@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { ArtworkImage } from "./ArtworkImage";
 import { ArtworkMeta } from "@/shared/components/artworks/ArtworkMeta";
 import { DescriptionBox } from "./DescriptionBox";
@@ -25,8 +26,7 @@ export function ArtworkDetail({ artwork, comments }: Props) {
   const [isLiked, setIsLiked] = useState(artwork.isLiked);
   const [likeCount, setLikeCount] = useState<number>(artwork.likeCount);
   const [isBookmarked, setIsBookmarked] = useState(artwork.isBookmarked);
-
-  const hasWrittenComment = true;
+  const navigate = useNavigate();
 
   const handleToggleLike = () => {
     const nextLiked = !isLiked;
@@ -43,18 +43,20 @@ export function ArtworkDetail({ artwork, comments }: Props) {
     console.log(`감상문 ${commentId} 좋아요 상태 변경됨: ${isLiked}`);
   };
 
+  const handleFloatingClick = () => {
+    if (artwork.hasWrittenComment) {
+      navigate(`/comment/${artwork.hasWrittenComment}`);
+    } else {
+      navigate(`/comment/write/${artwork.artworkId}`);
+    }
+  };
+
   return (
     <div className="bg-neutral-100 min-h-screen">
       <div className="relative mx-auto max-w-[412px]">
         <FloatingButton
-          hasWrittenComment={hasWrittenComment}
-          onClick={() => {
-            if (hasWrittenComment) {
-              console.log("감상문 보기");
-            } else {
-              console.log("감상문 쓰기");
-            }
-          }}
+          hasWrittenComment={artwork.hasWrittenComment}
+          onClick={handleFloatingClick}
         />
       </div>
 

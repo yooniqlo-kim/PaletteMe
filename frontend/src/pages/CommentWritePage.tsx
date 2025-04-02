@@ -1,3 +1,4 @@
+import { useParams } from "react-router";
 import { useState, useCallback } from "react";
 import { ArtworkImage } from "@/features/detail/ArtworkImage";
 import { WhiteContainer } from "@/shared/components/textbox/WhiteRoundedContainer";
@@ -13,6 +14,10 @@ export default function WritePage() {
   }, []);
 
   const { state, reset, proceed } = useBlocker(isDirty);
+  const { artworkId } = useParams<{ artworkId: string }>();
+  const artwork = baseArtworkDummy.find((a) => a.artworkId === artworkId);
+
+  if (!artwork) return <div>작품 정보를 불러올 수 없습니다.</div>;
 
   const handleSubmit = async ({
     content,
@@ -26,7 +31,7 @@ export default function WritePage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          artworkId: baseArtworkDummy.artworkId,
+          artworkId: artwork.artworkId,
           content,
           visibility,
         }),
@@ -55,11 +60,15 @@ export default function WritePage() {
       )}
 
       <div className="bg-neutral-200 pt-2">
-        <ArtworkImage artwork={baseArtworkDummy} />
+        <ArtworkImage artwork={artwork} />
       </div>
 
       <WhiteContainer withTopRound withMarginTop>
-        <WriteForm onDirtyChange={handleDirtyChange} onSubmit={handleSubmit} />
+        <WriteForm
+          artwork={artwork}
+          onDirtyChange={handleDirtyChange}
+          onSubmit={handleSubmit}
+        />
       </WhiteContainer>
     </div>
   );

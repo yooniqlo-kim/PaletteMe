@@ -32,6 +32,15 @@ export default function CommentEditPage() {
     }
   }, [commentId]);
 
+  const artwork = baseArtworkDummy.find(
+    (a) => a.artworkId === comment?.artworkId
+  );
+
+  // 임시
+  if (!comment || !artwork) {
+    return <div className="p-4">정보를 불러오는 중...</div>;
+  }
+
   const handleSubmit = async ({
     content,
     visibility,
@@ -55,7 +64,7 @@ export default function CommentEditPage() {
       )}
 
       <div className="bg-neutral-200 pt-2">
-        <ArtworkImage artwork={baseArtworkDummy} />
+        <ArtworkImage artwork={artwork} />
       </div>
 
       <WhiteContainer withTopRound withMarginTop>

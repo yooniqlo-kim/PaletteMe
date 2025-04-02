@@ -14,5 +14,5 @@ export type ArtworkDetailData = BaseArtwork & {
   likeCount: number;
   isLiked: boolean;
   isBookmarked: boolean;
-  hasWrittenComment: boolean;
+  hasWrittenComment: string | null;
 };

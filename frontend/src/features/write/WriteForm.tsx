@@ -7,6 +7,7 @@ import { VisibilityToggle } from "./VisibilityToggle";
 import Button from "@/shared/components/buttons/Button";
 
 type WriteFormProps = {
+  artwork: BaseArtwork;
   onDirtyChange?: (isDirty: boolean) => void;
   initialValues?: {
     content: string;
@@ -19,6 +20,7 @@ type WriteFormProps = {
 };
 
 export function WriteForm({
+  artwork,
   onDirtyChange,
   initialValues,
   onSubmit,
@@ -43,7 +45,7 @@ export function WriteForm({
 
   return (
     <div className="flex flex-col gap-4">
-      <ArtworkMeta artwork={baseArtworkDummy} showYear showLocation />
+      <ArtworkMeta artwork={artwork} showYear showLocation />
       <KeywordSuggester />
       <TextArea value={content} onChange={(e) => setContent(e.target.value)} />
       <VisibilityToggle value={visibility} onChange={setVisibility} />

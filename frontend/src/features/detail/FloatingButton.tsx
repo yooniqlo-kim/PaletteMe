@@ -3,7 +3,7 @@ import IconPen from "@/shared/components/icons/IconPen";
 import { AlignJustify } from "lucide-react";
 
 type FloatingButtonProps = {
-  hasWrittenComment: boolean;
+  hasWrittenComment: string | null;
   onClick: () => void;
 };
 
