@@ -26,4 +26,11 @@ public class UsersArtworksLike {
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Artworks artwork;
+
+    public static UsersArtworksLike of(Users user, Artworks artwork) {
+        UsersArtworksLike like = new UsersArtworksLike();
+        like.user = user;
+        like.artwork = artwork;
+        return like;
+    }
 }

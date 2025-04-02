@@ -1,6 +1,7 @@
 package com.ssafy.paletteme.domain.artworks.controller;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
+import com.ssafy.paletteme.common.security.annotation.UserId;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDescriptionResponse;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDetailResponse;
 import com.ssafy.paletteme.domain.artworks.service.ArtworksService;
@@ -8,10 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/artworks")
@@ -32,5 +31,19 @@ public class ArtworksController {
     public ApiResponse<ArtworkDescriptionResponse> getArtworkDescription(@PathVariable String artworkId) {
         ArtworkDescriptionResponse response = artworkService.getArtworkDescription(artworkId);
         return ApiResponse.success(response);
+    }
+
+    @PostMapping("/artworks/{artworkId}/like")
+    public ApiResponse<Void> likeArtwork(@Parameter(hidden = true) @UserId int userId,
+                                            @PathVariable String artworkId) {
+        artworkService.likeArtwork(userId, artworkId);
+        return ApiResponse.success();
+    }
+
+    @PostMapping("/artworks/{artworkId}/cancel")
+    public ApiResponse<Void> cancelArtworkLike(@Parameter(hidden = true) @UserId int userId,
+                                                  @PathVariable String artworkId) {
+        artworkService.cancelArtworkLike(userId, artworkId);
+        return ApiResponse.success();
     }
 }
