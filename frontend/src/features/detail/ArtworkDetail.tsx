@@ -9,7 +9,7 @@ import { WhiteContainer } from "@/shared/components/textbox/WhiteRoundedContaine
 import { ArtworkDetailData } from "@/shared/types/artwork";
 import { BaseComment } from "@/shared/types/comment";
 
-import IconButton from "@/shared/components/Buttons/IconButton";
+import IconButton from "@/shared/components/buttons/IconButton";
 import IconBlackHeart from "@/shared/components/icons/IconBlackHeart";
 import IconBookmark from "@/shared/components/icons/IconBookmark";
 
