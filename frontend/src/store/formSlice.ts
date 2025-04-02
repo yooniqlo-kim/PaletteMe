@@ -10,7 +10,6 @@ type FormState = {
   nickname: string;
   artworkId: string[];
   color: string[];
-  step: number;
 };
 
 const initialState: FormState = {
@@ -23,7 +22,6 @@ const initialState: FormState = {
   nickname: "",
   artworkId: [],
   color: [],
-  step: 2,
 };
 
 export const formSlice = createSlice({

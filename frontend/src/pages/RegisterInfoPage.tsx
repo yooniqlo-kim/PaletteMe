@@ -1,4 +1,4 @@
-import { useFormDispatch } from "@/shared/hooks/useRegisterForm";
+import { useFormDispatch } from "@/store/hooks";
 import Button from "@/shared/components/buttons/Button";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import Input from "@/shared/components/form/Input";
