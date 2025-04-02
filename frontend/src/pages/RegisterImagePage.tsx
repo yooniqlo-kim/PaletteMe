@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { updateField } from "@/store/formSlice";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import { useNavigate } from "react-router";
-import { useFormDispatch } from "@/shared/hooks/useRegisterForm";
+import { useFormDispatch } from "@/store/hooks";
 
 type FormValues = {
   imageUrl: FileList;

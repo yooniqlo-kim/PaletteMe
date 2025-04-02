@@ -1,7 +1,4 @@
-import {
-  useFormDispatch,
-  useFormSelector,
-} from "@/shared/hooks/useRegisterForm";
+import { useFormDispatch, useFormSelector } from "@/store/hooks";
 import CompletedForm from "@/shared/components/form/CompletedForm";
 import { resetField } from "@/store/formSlice";
 import { useEffect } from "react";
