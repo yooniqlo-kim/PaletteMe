@@ -3,15 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 type UserState = {
   id: string;
   nickname: string;
-  profileUrl: string;
-  imageUrl: string;
+  s3Url: string;
 };
 
 const initialState: UserState = {
   id: "",
   nickname: "",
-  profileUrl: "",
-  imageUrl: "",
+  s3Url: "",
 };
 
 export const userSlice = createSlice({
