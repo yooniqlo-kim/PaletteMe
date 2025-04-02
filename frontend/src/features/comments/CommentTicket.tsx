@@ -5,7 +5,7 @@ import { BaseArtwork } from "@/shared/types/artwork";
 import { ArtworkImage } from "../detail/ArtworkImage";
 import { ArtworkMeta } from "../../shared/components/artworks/ArtworkMeta";
 import { WriterMeta } from "../../shared/components/comments/WriterMeta";
-import IconButton from "@/shared/components/Buttons/IconButton";
+import IconButton from "@/shared/components/buttons/IconButton";
 import IconThumb from "@/shared/components/icons/IconThumb";
 
 export type CommentTicketProps = {
