@@ -13,7 +13,7 @@ import com.ssafy.paletteme.domain.artworks.repository.ArtworksRepository;
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksBookmarkRepository;
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeCntRepository;
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeRepository;
-import com.ssafy.paletteme.domain.reviews.service.ReviewsService;
+import com.ssafy.paletteme.domain.artworks.service.command.ArtworkLikeCommandService;
 import com.ssafy.paletteme.domain.users.entity.Users;
 import com.ssafy.paletteme.domain.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +37,7 @@ public class ArtworksService {
     private final UsersArtworksLikeRepository  usersArtworksLikeRepository;
     private final UsersArtworksBookmarkRepository  usersArtworksBookmarkRepository;
 
+    private final ArtworkLikeCommandService artworkLikeCommandService;
     // TODO: BOOKMARK, REVIEW 엔티티가 추가되면 2개의 값도 추가하여 던져주기
     public ArtworkDetailResponse getArtworkDetail(String artworkId) {
         // 작품 정보 불러오기
@@ -73,20 +74,7 @@ public class ArtworksService {
         Users user = usersRepository.findById((long)userId)
                 .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
 
-        Artworks artwork = artworksRepository.findById(artworkId)
-                .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_FOUND));
-
-        boolean alreadyLiked = usersArtworksLikeRepository.existsByUserAndArtwork(user, artwork);
-        if (alreadyLiked) {
-            throw new ArtworksException(ArtworksError.ARTWORK_ALREADY_LIKED);
-        }
-
-        UsersArtworksLike like = UsersArtworksLike.of(user, artwork);
-        usersArtworksLikeRepository.save(like);
-
-        UsersArtworksLikeCnt usersArtworksLikeCnt = usersArtworksLikeCntRepository.findByArtworkId(artworkId)
-                .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORKLIKECNT_NOT_FOUND));
-        usersArtworksLikeCnt.increaseLikeCnt();
+        artworkLikeCommandService.likeArtwork(user, artworkId);
     }
 
     @Transactional
