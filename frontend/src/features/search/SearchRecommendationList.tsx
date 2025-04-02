@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import SearchRecommendationCard from "./SearchRecommendationCard";
+import { ArtworkSearchItem } from "@shared/api/search";
 
 interface Props {
-  data: { id: number; imageUrl: string; overlayText: string }[];
+  data: ArtworkSearchItem[];
 }
 
 export default function SearchRecommendationList({ data }: Props) {
@@ -16,10 +17,10 @@ export default function SearchRecommendationList({ data }: Props) {
     <div className="grid grid-cols-2 gap-4">
       {data.map((artwork) => (
         <SearchRecommendationCard
-          key={artwork.id}
-          imageUrl={artwork.imageUrl}
-          overlayText={artwork.overlayText}
-          onClick={() => handleCardClick(artwork.overlayText)}
+          key={artwork.artworkId}
+          imageUrl={artwork.imageUrl ?? "/images/fallback.jpg"}
+          overlayText={artwork.korTitle || artwork.originalTitle}
+          onClick={() => handleCardClick(artwork.korTitle || artwork.originalTitle)}
         />
       ))}
     </div>
