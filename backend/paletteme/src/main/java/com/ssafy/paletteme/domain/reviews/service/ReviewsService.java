@@ -75,4 +75,24 @@ public class ReviewsService {
 
         return ReviewListResponse.of(reviewSummaryResponseList);
     }
+
+    @Transactional
+    public void likeReview(int userId, int reviewId) {
+        Users user = usersRepository.findById((long) userId)
+                .orElseThrow(() -> new ReviewsException(ReviewsError.USER_NOT_FOUND));
+
+        Reviews review = reviewsRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewsException(ReviewsError.REVIEW_NOT_FOUND));
+
+        if (reviewLikeRepository.existsByUserAndReview(user, review)) {
+            throw new ReviewsException(ReviewsError.REVIEW_ALREADY_LIKED);
+        }
+
+        ReviewLike like = ReviewLike.of(user, review);
+        reviewLikeRepository.save(like);
+
+        ReviewLikeCnt likeCnt = reviewLikeCntRepository.findByReviewId(reviewId)
+                .orElseGet(() -> reviewLikeCntRepository.save(ReviewLikeCnt.of(reviewId)));
+        likeCnt.increaseLikeCnt();
+    }
 }
