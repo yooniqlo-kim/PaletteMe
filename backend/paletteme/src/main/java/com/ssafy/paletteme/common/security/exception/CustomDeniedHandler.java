@@ -1,9 +1,7 @@
 package com.ssafy.paletteme.common.security.exception;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.paletteme.common.response.ApiResponse;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;

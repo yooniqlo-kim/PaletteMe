@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 public class Museums {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "museum_id", nullable = false)
     private int museumId;
 

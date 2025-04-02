@@ -1,6 +1,7 @@
 package com.ssafy.paletteme.domain.users.service;
 
 import com.ssafy.paletteme.common.redis.RedisService;
+import com.ssafy.paletteme.domain.artworks.service.command.ArtworkLikeCommandService;
 import com.ssafy.paletteme.domain.users.dto.CheckIdRequest;
 import com.ssafy.paletteme.domain.users.dto.S3UploadResponse;
 import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
@@ -12,8 +13,6 @@ import com.ssafy.paletteme.domain.users.repository.*;
 import com.ssafy.paletteme.domain.users.utils.S3Util;
 import com.ssafy.paletteme.domain.users.utils.SmsCertificationUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +36,8 @@ public class UserService {
     private final RedisService redisService;
 
     private final UsersFavoriteColorRepository usersFavoriteColorRepository;
+
+    private final ArtworkLikeCommandService artworkLikeCommandService;
 
     // 최대 허용 크기(이미지 저장) (예: 10MB)
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -77,6 +78,11 @@ public class UserService {
         usersFavoriteColorRepository.saveAll(favoriteColorList);
 
         // 작품 좋아요 추가하기
+        List<String> artworkIdList = userSignupRequest.getArtworkId();
+        for(String artworkId : artworkIdList) {
+            artworkLikeCommandService.likeArtwork(users, artworkId);
+        }
+
 
     }
 
@@ -141,4 +147,3 @@ public class UserService {
     }
 }
 // TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기
-// TODO: 작품 좋아요 추가하기

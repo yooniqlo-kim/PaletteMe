@@ -1,8 +1,12 @@
 package com.ssafy.paletteme.domain.wrapped.service;
 
+import com.ssafy.paletteme.domain.wrapped.dto.WrappedResponse;
+import com.ssafy.paletteme.domain.wrapped.entity.Wrapped;
 import com.ssafy.paletteme.domain.wrapped.repository.WrappedRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -10,6 +14,15 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class WrappedService {
     private final WrappedRepository wrappedRepository;
+
+    @Transactional(readOnly = true)
+    public WrappedResponse getWrappedData(int userId) {
+        Wrapped wrapped = wrappedRepository.findByUserId(userId)
+                .orElse(null);
+
+        return WrappedResponse.of(wrapped);
+    }
+
 
     public void printTopArtistsByUser(LocalDateTime start, LocalDateTime end) {
         wrappedRepository.findTopArtistByReviewCount(start, end).forEach(t -> {
