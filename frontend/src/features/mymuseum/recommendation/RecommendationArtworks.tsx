@@ -59,9 +59,8 @@ export default function RecommendationArtworks({
         <IconLeftArrow />
       </button>
 
-
       {/* 고정된 카드 영역 */}
-      <div className="w-full max-w-[300px] aspect-[1/1]">
+      <div className="relative w-full max-w-[300px] aspect-[1/1] min-h-[300px]">
         {currentArtwork ? (
           <ArtworkCard
             key={currentArtwork.artworkId}
@@ -82,7 +81,7 @@ export default function RecommendationArtworks({
             }}
           />
         ) : (
-          <div className="w-full h-full bg-gray-100 rounded-lg animate-pulse" />
+          <div className="w-full h-full aspect-[1/1] min-h-[300px] bg-gray-100 rounded-lg animate-pulse" />
         )}
       </div>
 

@@ -93,7 +93,7 @@ export const ArtworkCard = ({
             target.src = placeholderImage;
           }
         }}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover aspect-[1/1]"
       />
 
       {isDimmed && <div className="absolute inset-0 bg-black opacity-40" />}
