@@ -3,17 +3,22 @@ package com.ssafy.paletteme.domain.artworks.service;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDescriptionResponse;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDetailResponse;
 import com.ssafy.paletteme.domain.artworks.entity.Artworks;
+import com.ssafy.paletteme.domain.artworks.entity.UsersArtworksBookmark;
 import com.ssafy.paletteme.domain.artworks.entity.UsersArtworksLike;
 import com.ssafy.paletteme.domain.artworks.entity.UsersArtworksLikeCnt;
 import com.ssafy.paletteme.domain.artworks.exception.ArtworksError;
 import com.ssafy.paletteme.domain.artworks.exception.ArtworksException;
 import com.ssafy.paletteme.domain.artworks.provider.GptPromptProvider;
 import com.ssafy.paletteme.domain.artworks.repository.ArtworksRepository;
+import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksBookmarkRepository;
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeCntRepository;
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeRepository;
+import com.ssafy.paletteme.domain.reviews.service.ReviewsService;
 import com.ssafy.paletteme.domain.users.entity.Users;
 import com.ssafy.paletteme.domain.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
@@ -22,12 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class ArtworksService {
+    private static final Logger log = LoggerFactory.getLogger(ArtworksService.class);
+
     private final ArtworksRepository artworksRepository;
     private final UsersArtworksLikeCntRepository usersArtworksLikeCntRepository;
     private final GptPromptProvider gptPromptProvider;
     private final ChatClient chatClient;
     private final UsersRepository usersRepository;
     private final UsersArtworksLikeRepository  usersArtworksLikeRepository;
+    private final UsersArtworksBookmarkRepository  usersArtworksBookmarkRepository;
 
     // TODO: BOOKMARK, REVIEW 엔티티가 추가되면 2개의 값도 추가하여 던져주기
     public ArtworkDetailResponse getArtworkDetail(String artworkId) {
@@ -98,6 +106,51 @@ public class ArtworksService {
         UsersArtworksLikeCnt usersArtworksLikeCnt = usersArtworksLikeCntRepository.findByArtworkId(artworkId)
                 .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORKLIKECNT_NOT_FOUND));
         usersArtworksLikeCnt.decreaseLikeCnt();
+    }
+
+    @Transactional
+    public void bookmarkArtwork(int userId, String artworkId) {
+        Users user = usersRepository.findById((long) userId)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
+
+        Artworks artwork = artworksRepository.findById(artworkId)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_FOUND));
+
+        boolean alreadyBookmarked = usersArtworksBookmarkRepository.existsByUserAndArtwork(user, artwork);
+        if (alreadyBookmarked) {
+            throw new ArtworksException(ArtworksError.ARTWORK_ALREADY_BOOKMARKED);
+        }
+
+        UsersArtworksBookmark bookmark = UsersArtworksBookmark.of(user, artwork);
+        usersArtworksBookmarkRepository.save(bookmark);
+    }
+
+
+    @Transactional
+    public void cancelBookmarkArtwork(int userId, String artworkId) {
+        Users user = usersRepository.findById((long) userId)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
+
+        Artworks artwork = artworksRepository.findById(artworkId)
+                .orElse(null);
+
+        // 작품은 삭제됐는데, 북마크만 남아 있는 경우에 대한 처리
+        if (artwork == null) {
+            log.info("작품은 삭제되었지만 북마크 기록이 남아 있어 삭제 처리됨 - artworkId: {}", artworkId);
+            UsersArtworksBookmark bookmark = usersArtworksBookmarkRepository
+                    .findByUser_UserIdAndArtwork_ArtworkId(user.getUserId(), artworkId)
+                    .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_BOOKMARKED));
+
+            usersArtworksBookmarkRepository.delete(bookmark);
+            return;
+        }
+
+        // 북마크 기록 확인
+        UsersArtworksBookmark bookmark = usersArtworksBookmarkRepository
+                .findByUserAndArtwork(user, artwork)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_BOOKMARKED));
+
+        usersArtworksBookmarkRepository.delete(bookmark);
     }
 
 }

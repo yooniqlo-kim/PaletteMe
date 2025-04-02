@@ -48,4 +48,20 @@ public class ArtworksController {
         artworkService.cancelArtworkLike(userId, artworkId);
         return ApiResponse.success();
     }
+
+    @PostMapping("/artworks/{artworkId}/bookmark")
+    @Operation(summary = "작품 북마크 등록", description = "artworkId에 해당하는 작품을 사용자가 북마크합니다.")
+    public ApiResponse<Void> bookmarkArtwork(@Parameter(hidden = true) @UserId int userId,
+                                             @PathVariable String artworkId) {
+        artworkService.bookmarkArtwork(userId, artworkId);
+        return ApiResponse.success();
+    }
+
+    @PostMapping("/artworks/{artworkId}/bookmark/cancel")
+    @Operation(summary = "작품 북마크 취소", description = "artworkId에 해당하는 작품에 대해 사용자가 등록한 북마크를 취소합니다.")
+    public ApiResponse<Void> cancelBookmarkArtwork(@Parameter(hidden = true) @UserId int userId,
+                                                   @PathVariable String artworkId) {
+        artworkService.cancelBookmarkArtwork(userId, artworkId);
+        return ApiResponse.success();
+    }
 }
