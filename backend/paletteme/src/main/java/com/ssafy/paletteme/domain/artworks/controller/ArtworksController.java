@@ -34,6 +34,7 @@ public class ArtworksController {
     }
 
     @PostMapping("/artworks/{artworkId}/like")
+    @Operation(summary = "작품 좋아요 등록", description = "artworkId에 해당하는 작품에 대해 사용자가 좋아요를 등록합니다.")
     public ApiResponse<Void> likeArtwork(@Parameter(hidden = true) @UserId int userId,
                                             @PathVariable String artworkId) {
         artworkService.likeArtwork(userId, artworkId);
@@ -41,6 +42,7 @@ public class ArtworksController {
     }
 
     @PostMapping("/artworks/{artworkId}/cancel")
+    @Operation(summary = "작품 좋아요 취소", description = "artworkId에 해당하는 작품에 대해 사용자가 눌렀던 좋아요를 취소합니다.")
     public ApiResponse<Void> cancelArtworkLike(@Parameter(hidden = true) @UserId int userId,
                                                   @PathVariable String artworkId) {
         artworkService.cancelArtworkLike(userId, artworkId);
