@@ -24,7 +24,7 @@ INSERT INTO users (
     grade_id, s3_url, id, password, name, birthday,
     phone_number, nickname, active
 ) VALUES (
-             1, 'url', 'lhj', '$2a$10$chU3titRWipnywR/T1qbouY7l8NRhWYLRo3prVu7TKBnYOfejeQcm', '홍길동', '1990-01-01',
+             1, 'url', 'lhj', '$2a$10$chU3titRWipnywR/T1qbouY7l8NRhWYLRo3prVu7TKBnYOfejeQcm', '홍길동', 1996,
              '010-1234-5678', '길동이', '1'
          );
 
