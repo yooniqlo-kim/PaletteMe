@@ -2,9 +2,11 @@ package com.ssafy.paletteme.domain.myMuseum.controller;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
 import com.ssafy.paletteme.common.security.annotation.UserId;
+import com.ssafy.paletteme.domain.myMuseum.dto.BookmarkedCollectionResponse;
 import com.ssafy.paletteme.domain.myMuseum.dto.LikedCollectionResponse;
 import com.ssafy.paletteme.domain.myMuseum.dto.MyReviewsResponse;
 import com.ssafy.paletteme.domain.myMuseum.dto.ReviewCalendarResponse;
+import com.ssafy.paletteme.domain.myMuseum.service.BookmarkedCollectionService;
 import com.ssafy.paletteme.domain.myMuseum.service.LikedCollectionService;
 import com.ssafy.paletteme.domain.myMuseum.service.MyReviewsService;
 import com.ssafy.paletteme.domain.myMuseum.service.ReviewCalendarService;
@@ -27,6 +29,7 @@ public class MyMuseumController {
     private final ReviewCalendarService reviewCalendarService;
     private final LikedCollectionService likedCollectionService;
     private final MyReviewsService myReviewsService;
+    private final BookmarkedCollectionService bookmarkedCollectionService;
 
     @Operation(summary = "캘린더 데이터 조회", description = "연, 월을 기준으로 해당 월의 리뷰 데이터 전체 조회")
     @GetMapping("/reviews/dates")
@@ -53,6 +56,15 @@ public class MyMuseumController {
                                                                       @RequestParam int size) {
 
         List<MyReviewsResponse> responses = myReviewsService.getMyReviews(userId, cursor, size);
+        return ApiResponse.success(responses);
+    }
+
+    @GetMapping("/artworks/bookmarked")
+    public ApiResponse<List<BookmarkedCollectionResponse>> getBookmarkedCollection(@Parameter(hidden = true) @UserId int userId,
+                                                                                            @RequestParam(required = false) Integer cursor,
+                                                                                            @RequestParam int size) {
+
+        List<BookmarkedCollectionResponse> responses = bookmarkedCollectionService.getBookmarkedCollection(userId, cursor, size);
         return ApiResponse.success(responses);
     }
 }
