@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface LikedCollectionService {
 
-    List<LikedCollectionResponse> getLikedCollection(int userId, int cursor, int size);
+    List<LikedCollectionResponse> getLikedCollection(int userId, Integer cursor, int size);
 }

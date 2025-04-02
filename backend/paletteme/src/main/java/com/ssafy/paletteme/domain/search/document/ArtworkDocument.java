@@ -19,10 +19,16 @@ public class ArtworkDocument {
     private String image_url;
 
     @Field(type = FieldType.Text)
+    private String original_title;
+
+    @Field(type = FieldType.Text)
     private String en_title;
 
     @Field(type = FieldType.Text, analyzer = "korean")
     private String kor_title;
+
+    @Field(type = FieldType.Text)
+    private String original_artist;
 
     @Field(type = FieldType.Text)
     private String en_artist;

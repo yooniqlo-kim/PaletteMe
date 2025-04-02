@@ -31,10 +31,13 @@ public class Artworks {
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Artists artist;
 
-    @Column(name = "en_title", nullable = false, length = 255)
+    @Column(name = "original_title", nullable = false, length = 255)
+    private String originalTitle;
+
+    @Column(name = "en_title", length = 255)
     private String enTitle;
 
-    @Column(name = "kor_title", nullable = false, length = 255)
+    @Column(name = "kor_title", length = 255)
     private String korTitle;
 
     @Column(name = "image_url", length = 255)

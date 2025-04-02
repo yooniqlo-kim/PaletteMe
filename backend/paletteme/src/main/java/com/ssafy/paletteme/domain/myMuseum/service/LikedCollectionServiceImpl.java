@@ -16,7 +16,7 @@ public class LikedCollectionServiceImpl implements LikedCollectionService{
     private final LikedCollectionRepository likedCollectionRepository;
 
     @Override
-    public List<LikedCollectionResponse> getLikedCollection(int userId, int cursor, int size) {
+    public List<LikedCollectionResponse> getLikedCollection(int userId, Integer cursor, int size) {
         List<LikedCollectionResponse> responses = likedCollectionRepository.findLikedArtworksByUserId(userId, cursor, size);
 
         if(responses.isEmpty()){
