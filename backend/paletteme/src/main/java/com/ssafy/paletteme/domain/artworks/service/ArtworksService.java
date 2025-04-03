@@ -14,12 +14,15 @@ import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksBookmarkRepos
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeCntRepository;
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeRepository;
 import com.ssafy.paletteme.domain.artworks.service.command.ArtworkLikeCommandService;
+import com.ssafy.paletteme.domain.reviews.entity.Reviews;
+import com.ssafy.paletteme.domain.reviews.repository.ReviewsRepository;
 import com.ssafy.paletteme.domain.users.entity.Users;
 import com.ssafy.paletteme.domain.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,11 +39,17 @@ public class ArtworksService {
     private final UsersRepository usersRepository;
     private final UsersArtworksLikeRepository  usersArtworksLikeRepository;
     private final UsersArtworksBookmarkRepository  usersArtworksBookmarkRepository;
-
+    private final ReviewsRepository reviewsRepository;
 
     private final ArtworkLikeCommandService artworkLikeCommandService;
-    // TODO: BOOKMARK, REVIEW 엔티티가 추가되면 2개의 값도 추가하여 던져주기
+
     public ArtworkDetailResponse getArtworkDetail(int userId, String artworkId) {
+        // 유효성 검사
+        Users user = usersRepository.findById((long) userId)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
+        Artworks artwork = artworksRepository.findById(artworkId)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_FOUND));
+
         // 작품 정보 불러오기
         ArtworkDetailResponse artworkDetailResponse = artworksRepository.findArtworkDetail(artworkId);
 
@@ -50,32 +59,39 @@ public class ArtworksService {
                     UsersArtworksLikeCnt newCnt = UsersArtworksLikeCnt.of(artworkId);
                     return usersArtworksLikeCntRepository.save(newCnt);
                 });
-
-        artworkDetailResponse.updateLike(usersArtworksLikeCnt.getLikeCnt()); // 좋아요 테이블에 값이 없을 경우 테이블 생성하기
+        artworkDetailResponse.updateLike(usersArtworksLikeCnt.getLikeCnt());
 
         // 작품 좋아요 눌렀는지 확인하기
-        Users user = usersRepository.findById((long)userId)
-                .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
-        Artworks artwork = artworksRepository.findById(artworkId)
-                        .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_FOUND));
-
         Boolean isLiked = usersArtworksLikeRepository.existsByUserAndArtwork(user, artwork);
         artworkDetailResponse.isLiked(isLiked);
+
+        // 작품 북마크 눌렀는지 확인하기
+        Boolean isBookMarked = usersArtworksBookmarkRepository.existsByUserAndArtwork(user, artwork);
+        artworkDetailResponse.isBookMarked(isBookMarked);
+
+        // 내 리뷰 중 가장 최신 리뷰 한 건만 가져오기
+        Reviews myReview = reviewsRepository.findTopByUserAndArtworkOrderByCreatedAtDesc(user, artwork).orElse(null);
+        Integer myReviewId = (myReview == null) ? null : myReview.getReviewId();
+        artworkDetailResponse.updateMyReviewId(myReviewId);
 
         return artworkDetailResponse;
     }
 
 
+
     public ArtworkDescriptionResponse getArtworkDescription(String artworkId) {
-        Prompt prompt = gptPromptProvider.buildPromptWithUserMessage(artworkId + "에 대해 설명해줘");
+        ArtworkDetailResponse artworkDetailResponse = artworksRepository.findArtworkDetail(artworkId);
+
+        Prompt prompt = gptPromptProvider.buildPromptWithUserMessage(artworkDetailResponse);
 
         // GPT 프롬프팅 통해서 정형화된 형태의 데이터 얻어오기
-//        ChatResponse chatResponse = chatClient.call(prompt);
-//        if (chatResponse == null || chatResponse.getResult() == null || chatResponse.getResult().getOutput() == null) {
-//                throw new ArtworksException(ArtworksError.GPT_RESPONSE_FAILED);
-//        }
-//        String description = chatResponse.getResult().getOutput().getContent();
-        String description = "MJ의 설명";
+        ChatResponse chatResponse = chatClient.call(prompt);
+        if (chatResponse == null || chatResponse.getResult() == null || chatResponse.getResult().getOutput() == null) {
+                throw new ArtworksException(ArtworksError.GPT_RESPONSE_FAILED);
+        }
+
+        String description = chatResponse.getResult().getOutput().getContent();
+
         return ArtworkDescriptionResponse.of(description);
     }
 

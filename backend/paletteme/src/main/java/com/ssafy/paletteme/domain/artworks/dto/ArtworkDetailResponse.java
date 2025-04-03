@@ -18,6 +18,8 @@ public class ArtworkDetailResponse {
     private String description;
     private int like = 0;
     private Boolean isLiked;
+    private Boolean isBookMarked;
+    private Integer myReviewId;
 
     @QueryProjection
     public ArtworkDetailResponse(String imgUrl, String museumName, String title, String artist,
@@ -36,6 +38,14 @@ public class ArtworkDetailResponse {
 
     public void isLiked(boolean isLiked) {
         this.isLiked = isLiked;
+    }
+
+    public void isBookMarked(boolean isBookMarked) {
+        this.isBookMarked = isBookMarked;
+    }
+
+    public void updateMyReviewId(Integer myReviewId) {
+        this.myReviewId = myReviewId;
     }
 
 }
