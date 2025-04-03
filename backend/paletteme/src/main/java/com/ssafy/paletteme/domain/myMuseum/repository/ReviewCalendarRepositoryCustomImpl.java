@@ -2,6 +2,7 @@ package com.ssafy.paletteme.domain.myMuseum.repository;
 
 import com.querydsl.core.types.dsl.DateTimeExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.paletteme.domain.artworks.entity.QArtworks;
 import com.ssafy.paletteme.domain.myMuseum.dto.QReviewCalendarResponse;
 import com.ssafy.paletteme.domain.myMuseum.dto.ReviewCalendarResponse;
 import com.ssafy.paletteme.domain.reviews.entity.QReviews;
@@ -17,6 +18,8 @@ public class ReviewCalendarRepositoryCustomImpl implements ReviewCalendarReposit
     private final JPAQueryFactory queryFactory;
 
     QReviews reviews = QReviews.reviews;
+    QArtworks artworks = QArtworks.artworks;
+
     @Override
     public List<ReviewCalendarResponse> findReviewsByUserAndMonth(int userId, int year, int month) {
         LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
@@ -30,10 +33,10 @@ public class ReviewCalendarRepositoryCustomImpl implements ReviewCalendarReposit
                 .select(new QReviewCalendarResponse(
                         reviews.reviewId,
                         reviews.createdAt,
-                        reviews.artwork.artworkId,
-                        reviews.content
+                        artworks.imageUrl
                 ))
                 .from(reviews)
+                .join(reviews.artwork, artworks)
                 .where(
                         reviews.user.userId.eq(userId),
                         dateCriteria.between(start, end)
