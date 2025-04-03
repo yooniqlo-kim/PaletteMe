@@ -30,7 +30,7 @@ public class ReviewsService {
     private final UsersReviewLikeRepository  usersReviewLikeRepository;
 
     @Transactional
-    public void writeReview(long userId, ReviewsWriteRequest reviewsWriteRequest) {
+    public ReviewWriteResponse writeReview(long userId, ReviewsWriteRequest reviewsWriteRequest) {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new ReviewsException(ReviewsError.USER_NOT_FOUND));
 
@@ -38,7 +38,12 @@ public class ReviewsService {
                 .orElseThrow(() -> new ReviewsException(ReviewsError.ARTWORKS_NOT_FOUND));
 
         Reviews reviews = reviewsWriteRequest.toEntity(user, artworks);
-        reviewsRepository.save(reviews);
+
+        reviews = reviewsRepository.save(reviews);
+
+        Boolean isLiked = usersReviewLikeRepository.existsByUserAndReview(user, reviews);
+
+        return ReviewWriteResponse.fromEntity(user, reviews, isLiked);
     }
 
     @Transactional(readOnly = true)
@@ -70,7 +75,13 @@ public class ReviewsService {
                 reviewsEditRequest.getIsPublic()
         );
 
-        return ReviewsEditResponse.fromEntity(reviews);
+        Users user = usersRepository.findById((long)userId)
+                .orElseThrow(() -> new ReviewsException(ReviewsError.USER_NOT_FOUND));
+
+        Boolean isLiked = usersReviewLikeRepository.existsByUserAndReview(user, reviews);
+
+
+        return ReviewsEditResponse.fromEntity(reviews, isLiked);
     }
 
     @Transactional
@@ -86,8 +97,8 @@ public class ReviewsService {
     }
 
     @Transactional(readOnly = true)
-    public ReviewListResponse getReviewsCursorPaging(String artworkId, Integer cursor, int size) {
-        List<ReviewSummaryResponse> reviewSummaryResponseList = reviewsRepository.findReviewsWithPaging(artworkId, cursor, size);
+    public ReviewListResponse getReviewsCursorPaging(int userId, String artworkId, Integer cursor, int size) {
+        List<ReviewSummaryResponse> reviewSummaryResponseList = reviewsRepository.findReviewsWithPaging(artworkId, cursor, size, userId);
 
         return ReviewListResponse.of(reviewSummaryResponseList);
     }
