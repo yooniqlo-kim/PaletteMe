@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import useToast from "@/shared/hooks/useToast";
-import { checkId, login } from "@/shared/api/auth";
+import { login } from "@/shared/api/auth";
 import { UserType } from "./type";
 
 export function useAuth() {
