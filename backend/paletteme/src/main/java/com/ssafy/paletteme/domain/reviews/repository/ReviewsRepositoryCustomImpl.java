@@ -10,6 +10,7 @@ import com.ssafy.paletteme.domain.reviews.dto.QReviewsWithArtworkResponses;
 import com.ssafy.paletteme.domain.reviews.dto.ReviewSummaryResponse;
 import com.ssafy.paletteme.domain.reviews.dto.ReviewsWithArtworkResponses;
 import com.ssafy.paletteme.domain.reviews.entity.QReviews;
+import com.ssafy.paletteme.domain.reviews.entity.QUsersReviewLike;
 import com.ssafy.paletteme.domain.users.entity.QUsers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -26,6 +27,7 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
     QMuseums museums =  QMuseums.museums;
     QArtists artists =  QArtists.artists;
     QUsers users =  QUsers.users;
+    QUsersReviewLike  usersReviewLike = QUsersReviewLike.usersReviewLike;
 
     @Override
     public ReviewsWithArtworkResponses getReviewsWithArtworkResponses(int reviewId) {
@@ -51,7 +53,7 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
 
 
     @Override
-    public List<ReviewSummaryResponse> findReviewsWithPaging(String artworkId, Integer cursor, int size) {
+    public List<ReviewSummaryResponse> findReviewsWithPaging(String artworkId, Integer cursor, int size, int userId) {
         return queryFactory
                 .select(new QReviewSummaryResponse(
                         reviews.reviewId,
@@ -59,15 +61,19 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                         users.s3Url,
                         reviews.createdAt.stringValue(),
                         reviews.content,
-                        reviews.likeCnt
+                        reviews.likeCnt,
+                        usersReviewLike.isNotNull() // 좋아요 여부
                 ))
                 .from(reviews)
                 .join(reviews.user, users)
+                .leftJoin(usersReviewLike)
+                .on(usersReviewLike.user.userId.eq(userId)
+                        .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
                 .where(
                         reviews.artwork.artworkId.eq(artworkId),
-                        gtCursor(cursor)
+                        cursor != null ? reviews.reviewId.lt(cursor.longValue()) : null
                 )
-                .orderBy(reviews.reviewId.desc()) // 최신순
+                .orderBy(reviews.reviewId.desc())
                 .limit(size)
                 .fetch();
     }
