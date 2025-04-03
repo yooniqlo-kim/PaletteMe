@@ -19,10 +19,11 @@ public class ArtworkSearchResponse {
     private String enArtist;
     private String imageUrl;
     private Double score;
+    private Boolean isLiked;
 
     @Builder
     private ArtworkSearchResponse(String artworkId, String originalTitle, String korTitle, String enTitle,
-                                 String originalArtist, String korArtist, String enArtist, String imageUrl, Double score) {
+                                 String originalArtist, String korArtist, String enArtist, String imageUrl, Double score, boolean isLiked) {
         this.artworkId = artworkId;
         this.originalTitle = originalTitle;
         this.korTitle = korTitle;
@@ -32,9 +33,10 @@ public class ArtworkSearchResponse {
         this.enArtist = enArtist;
         this.imageUrl = imageUrl;
         this.score = score;
+        this.isLiked = isLiked;
     }
 
-    public static ArtworkSearchResponse fromHit(Hit<ArtworkDocument> hit) {
+    public static ArtworkSearchResponse fromHit(Hit<ArtworkDocument> hit, boolean isLiked) {
         ArtworkDocument doc = hit.source();
         return ArtworkSearchResponse.builder()
                 .artworkId(doc.getArtwork_id())
@@ -46,6 +48,7 @@ public class ArtworkSearchResponse {
                 .enArtist(doc.getEn_artist())
                 .imageUrl(doc.getImage_url())
                 .score(hit.score())
+                .isLiked(isLiked)
                 .build();
     }
 }

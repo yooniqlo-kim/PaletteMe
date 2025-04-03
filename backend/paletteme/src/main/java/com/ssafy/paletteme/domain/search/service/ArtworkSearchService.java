@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface ArtworkSearchService {
 
-    List<ArtworkSearchResponse> searchByKeyword(String keyword, Double lastScore, String lastArtworkId, int size);
+    List<ArtworkSearchResponse> searchByKeyword(int userId, String keyword, Double lastScore, String lastArtworkId, int size);
 
     Map<String, String> splitByLanguage(String input);
 }

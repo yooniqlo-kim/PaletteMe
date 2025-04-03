@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UsersArtworksLikeRepository extends JpaRepository<UsersArtworksLike, String> {
+public interface UsersArtworksLikeRepository extends JpaRepository<UsersArtworksLike, String>, UsersArtworksLikeRepositoryCustom {
     boolean existsByUserAndArtwork(Users user, Artworks artwork);
     Optional<UsersArtworksLike> findByUserAndArtwork(Users user, Artworks artwork);
 
