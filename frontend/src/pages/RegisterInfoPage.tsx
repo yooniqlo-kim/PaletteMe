@@ -7,8 +7,13 @@ import Label from "@/shared/components/form/Label";
 import { updateField } from "@/store/formSlice";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { checkId } from "@/shared/api/auth";
-import { watch } from "fs";
+import {
+  checkId,
+  sendVerificationCode,
+  verifyCode,
+} from "@/shared/api/register";
+import { useState } from "react";
+import useToast from "@/shared/hooks/useToast";
 
 type FormValues = {
   id: string;
@@ -16,53 +21,98 @@ type FormValues = {
   confirmPassword: string;
   name: string;
   year: number;
-  phone: number;
+  phoneNumber: number;
   verificationCode: number;
 };
 
 export default function RegisterInfoPage() {
+  const [isValidId, setIsValidId] = useState<boolean>(false);
+  const [isValidPhoneNumber, SetIsValidPhoneNumber] = useState<boolean>(false);
+  const [idMsg, setIdMsg] = useState<string>();
+  const [phoneMsg, setPhoneMsg] = useState<string>();
+  const [codeMsg, setCodeMsg] = useState<string>();
   const dispatch = useFormDispatch();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   const {
     register,
     handleSubmit,
-    getValues,
+    watch,
     trigger,
     formState: { errors, isValid, isSubmitting },
   } = useForm<FormValues>({ mode: "onChange" });
 
+  const watchId = watch("id");
+  const watchPhoneNumber = watch("phoneNumber");
+  const watchVerificationCode = watch("verificationCode");
+
+  async function handleIdCheck() {
+    const isValid = await trigger("id");
+    if (!isValid) return;
+
+    try {
+      const response = await checkId({ id: watchId });
+      const { success, errorMsg } = response.data;
+      setIsValidId(success ? true : false);
+      setIdMsg(success ? "유효한 아이디입니다." : errorMsg);
+    } catch (error) {
+      showToast({
+        message: "아이디 중복 체크 중 문제가 발생했습니다. 다시 시도해주세요",
+        type: "error",
+      });
+    }
+  }
+
+  async function handleSendCode() {
+    const isValid = await trigger("phoneNumber");
+    if (!isValid) return;
+
+    try {
+      const response = await sendVerificationCode({
+        phoneNumber: watchPhoneNumber.toString(),
+      });
+      const { success, errorMsg } = response.data;
+      setPhoneMsg(success ? "인증번호가 전송되었습니다." : errorMsg);
+    } catch (error) {
+      showToast({
+        message: "인증번호 전송 중 문제가 발생했습니다. 다시 시도해주세요",
+        type: "error",
+      });
+    }
+  }
+
+  async function handleCheckCode() {
+    const isValid = await trigger("verificationCode");
+    if (!isValid) return;
+
+    try {
+      const response = await verifyCode({
+        phoneNumber: watchPhoneNumber.toString(),
+        verificationCode: watchVerificationCode.toString(),
+      });
+      const { success, errorMsg } = response.data;
+      SetIsValidPhoneNumber(success ? true : false);
+      setCodeMsg(success ? "인증번호가 일치합니다." : errorMsg);
+    } catch (error) {
+      showToast({
+        message: "인증번호 인증 중 문제가 발생했습니다. 다시 시도해주세요",
+        type: "error",
+      });
+    }
+  }
+
   function onSubmit(data: FormValues) {
-    console.log(data);
     dispatch(
       updateField({
         id: data.id,
         password: data.password,
         name: data.name,
         birthday: data.year.toString(),
-        phoneNumber: data.phone.toString(),
+        phoneNumber: data.phoneNumber.toString(),
       })
     );
     navigate("/signup/profile");
-  }
-
-  async function handleIdCheck() {
-    const isValid = await trigger("id"); // 아이디 필드만 검증
-
-    if (!isValid) return; // 유효하지 않으면 중복 확인 실행 X
-
-    try {
-      const id = getValues("id");
-      const response = await checkId({ id });
-
-      const { success, errorCode, data } = response.data;
-      if (success) {
-        console.log("성공");
-        console.log(errorCode);
-      }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   return (
@@ -75,14 +125,17 @@ export default function RegisterInfoPage() {
           <InputContainer>
             <Label htmlFor="id">아이디</Label>
             <span className="flex justify-between w-full gap-4">
-              <Input
-                {...register("id", { required: "아이디는 필수값입니다." })}
-                id="id"
-                type="text"
-                placeholder="아이디를 입력해주세요"
-                fallback={errors.id && errors.id.message}
-              />
-              <Button size="XS" onClick={handleIdCheck}>
+              <div className="flex flex-col grow">
+                <Input
+                  {...register("id", { required: "아이디는 필수값입니다." })}
+                  id="id"
+                  type="text"
+                  placeholder="아이디를 입력해주세요"
+                  fallback={errors.id?.message}
+                />
+                {idMsg && <p className="text-primary">{idMsg}</p>}
+              </div>
+              <Button size="XS" type="button" onClick={handleIdCheck}>
                 중복 확인
               </Button>
             </span>
@@ -98,7 +151,7 @@ export default function RegisterInfoPage() {
               id="password"
               type="password"
               placeholder="비밀번호를 입력해주세요 (8자 이상)"
-              fallback={errors.password && errors.password.message}
+              fallback={errors.password?.message}
             />
           </InputContainer>
 
@@ -108,15 +161,13 @@ export default function RegisterInfoPage() {
               {...register("confirmPassword", {
                 required: "비밀번호 확인이 필요합니다.",
                 validate: (value) =>
-                  value === getValues("password") ||
+                  value === watch("password") ||
                   "위에서 입력한 비밀번호와 일치하지 않습니다.",
               })}
               id="confirmPassword"
               type="password"
               placeholder="위에서 입력한 비밀번호를 다시 입력해주세요"
-              fallback={
-                errors.confirmPassword && errors.confirmPassword.message
-              }
+              fallback={errors.confirmPassword?.message}
             />
           </InputContainer>
 
@@ -127,35 +178,40 @@ export default function RegisterInfoPage() {
               id="name"
               type="text"
               placeholder="홍길동"
-              fallback={errors.name && errors.name.message}
+              fallback={errors.name?.message}
             />
           </InputContainer>
 
           <InputContainer>
-            <Label htmlFor="birthdate">태어난 연도</Label>
+            <Label htmlFor="year">태어난 연도</Label>
             <Input
-              {...register("year", {
-                required: "태어난 연도를 입력해주세요.",
-              })}
+              {...register("year", { required: "태어난 연도를 입력해주세요." })}
               id="year"
               type="number"
               min="1900"
               max={new Date().getFullYear()}
-              fallback={errors.year && errors.year.message}
+              fallback={errors.year?.message}
             />
           </InputContainer>
 
           <InputContainer>
-            <Label htmlFor="phone">전화번호</Label>
+            <Label htmlFor="phoneNumber">전화번호</Label>
             <span className="flex justify-between w-full gap-4">
-              <Input
-                {...register("phone", { required: "전화번호는 필수값입니다." })}
-                id="phone"
-                type="number"
-                placeholder="전화번호 입력 ( - 제외)"
-                fallback={errors.phone && errors.phone.message}
-              />
-              <Button size="XS">번호 전송</Button>
+              <div className="flex flex-col grow">
+                <Input
+                  {...register("phoneNumber", {
+                    required: "전화번호는 필수값입니다.",
+                  })}
+                  id="phoneNumber"
+                  type="number"
+                  placeholder="전화번호 입력 ( - 제외)"
+                  fallback={errors.phoneNumber?.message}
+                />
+                {phoneMsg && <p className="text-primary">{phoneMsg}</p>}
+              </div>
+              <Button size="XS" type="button" onClick={handleSendCode}>
+                번호 전송
+              </Button>
             </span>
           </InputContainer>
 
@@ -169,15 +225,22 @@ export default function RegisterInfoPage() {
                 id="verificationCode"
                 type="number"
                 placeholder="인증번호 6자리 입력"
-                fallback={
-                  errors.verificationCode && errors.verificationCode.message
-                }
+                fallback={errors.verificationCode?.message}
               />
-              <Button size="XS">확인</Button>
+              <div className="flex flex-col grow">
+                {codeMsg && <p className="text-primary">{codeMsg}</p>}
+              </div>
+              <Button size="XS" type="button" onClick={handleCheckCode}>
+                확인
+              </Button>
             </span>
           </InputContainer>
         </div>
-        <Button size="L" disabled={isSubmitting || !isValid}>
+        <Button
+          size="L"
+          disabled={
+            !isValidId || !isValidPhoneNumber || isSubmitting || !isValid
+          }>
           다음으로
         </Button>
       </form>

@@ -32,11 +32,3 @@ export async function login(data: { id: string; password: string }) {
   );
   return response;
 }
-
-export async function checkId(data: { id: string }) {
-  const response: AxiosResponse<ResponseType> = await axios.post(
-    `${AUTH_BASE_URL}/check-id`,
-    data
-  );
-  return response;
-}
