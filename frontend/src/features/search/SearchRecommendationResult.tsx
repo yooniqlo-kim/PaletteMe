@@ -2,23 +2,19 @@ import { useNavigate } from "react-router-dom";
 import { PageIntro } from "@shared/components/collection/PageIntro";
 import ArtworkListSection from "@shared/components/collection/ArtworkListSection";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
+import { ArtworkSearchItem } from "@shared/api/search";
 
 interface Props {
   query: string;
-  data: {
-    id: number;
-    overlayText: string;
-    imageUrl: string;
-    isLiked: boolean;
-  }[];
-  onCardLike: (id: number) => void; // ✅ 상위에서 받아온 좋아요 함수
+  data: (ArtworkSearchItem & { isLiked: boolean })[];
+  onCardLike: (id: string) => void;
 }
 
 export default function SearchRecommendationResult({ query, data, onCardLike }: Props) {
   const navigate = useNavigate();
-  const firstImageUrl = data[0]?.imageUrl || "/images/fallback.jpg";
+  const firstImageUrl = data[0]?.imageUrl ?? "/images/fallback.jpg";
 
-  const handleClickArtwork = (artworkId: number): void => {
+  const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artwork/${artworkId}`);
   };
 
@@ -36,19 +32,19 @@ export default function SearchRecommendationResult({ query, data, onCardLike }: 
         <div className="grid grid-cols-2 gap-4 pb-[5rem]">
           {data.map((artwork) => (
             <ArtworkCard
-              key={artwork.id}
+              key={artwork.artworkId}
               artwork={{
-                artworkId: String(artwork.id),
-                title: artwork.overlayText,
-                artist: "작가 미상",
-                artworkImageUrl: artwork.imageUrl,
+                artworkId: artwork.artworkId,
+                title: artwork.korTitle || artwork.originalTitle,
+                artist: artwork.korArtist || artwork.originalArtist || "작가 미상",
+                artworkImageUrl: artwork.imageUrl ?? "/images/fallback.jpg",
                 isLiked: artwork.isLiked,
               }}
               size="small"
               theme="light"
               borderRadius="small"
-              onClick={() => handleClickArtwork(artwork.id)}
-              onClickLike={() => onCardLike(artwork.id)} // ✅ 상위에서 받은 함수로 연결
+              onClick={() => handleClickArtwork(artwork.artworkId)}
+              onClickLike={() => onCardLike(artwork.artworkId)}
             />
           ))}
         </div>
