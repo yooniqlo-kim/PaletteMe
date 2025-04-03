@@ -24,7 +24,7 @@ export function useAuth() {
           s3Url: data!.s3Url,
         };
         sessionStorage.setItem("user", JSON.stringify(userData));
-        sessionStorage.setItem("token", JSON.stringify(data!.accessToken));
+        sessionStorage.setItem("token", data!.accessToken);
         navigate("/");
       }
     } catch (error) {
