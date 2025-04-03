@@ -41,6 +41,10 @@ export default function MymuseumPage() {
 
   const calendarData = mapReviewsToWeeklyCalendar(reviews ?? [], weekStart);
 
+  // 세션에서 유저 정보 가져오기
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const nickname = user?.nickname || "사용자";
+
   return (
     <div className="px-4 pb-[3.75rem]">
       <div className="max-w-[26.25rem] mx-auto w-full">
@@ -63,7 +67,7 @@ export default function MymuseumPage() {
 
         <div className="mb-6">
           <div className="text-base font-semibold mb-2">추천 작품</div>
-          <div>모네덕후님을 위한 추천 작품이에요.</div>
+          <div>{nickname}님을 위한 추천 작품이에요.</div>
           <RecommendationContainer />
         </div>
 
@@ -85,3 +89,4 @@ export default function MymuseumPage() {
     </div>
   );
 }
+
