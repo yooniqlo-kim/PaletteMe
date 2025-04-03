@@ -1,7 +1,6 @@
 import { useParams, Navigate, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { ArtworkDetail } from "@/features/detail/ArtworkDetail";
-import { commentDummy } from "@/shared/dummy/commentDummy";
 import { getArtworkDetail } from "@/shared/api/artwork";
 import { ArtworkDetailData } from "@/shared/types/artwork";
 import { mapToArtworkDetail } from "@/shared/utils/mapToArtworkDetail";
@@ -10,6 +9,7 @@ export default function ArtworkPage() {
   const { artworkId } = useParams<{ artworkId: string }>();
   const [artwork, setArtwork] = useState<ArtworkDetailData | null>(null);
   const [hasError, setHasError] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,13 +32,11 @@ export default function ArtworkPage() {
     fetchArtwork();
   }, [artworkId, navigate]);
 
-  const comments = commentDummy.filter((c) => c.artworkId === artworkId);
-
   if (hasError) return <Navigate to="/error" replace />;
 
   if (!artwork) {
     return <div className="p-4">작품 정보를 불러오는 중입니다...</div>;
   }
 
-  return <ArtworkDetail artwork={artwork} comments={comments} />;
+  return <ArtworkDetail artwork={artwork} />;
 }

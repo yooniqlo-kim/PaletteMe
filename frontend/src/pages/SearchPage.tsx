@@ -106,6 +106,8 @@ export default function SearchPage() {
         query={query}
         data={searchResult}
         onCardLike={toggleLike}
+        onIntersect={fetchNextPage}
+        hasMore={hasMore}  
       />
     );
   }
