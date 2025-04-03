@@ -12,7 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",
     "@tailwindcss/vite": "^4.0.15",
-    "@tanstack/react-query": "^5.69.0",
+    "@tanstack/react-query": "^5.71.1",
     "axios": "^1.8.4",
     "dayjs": "^1.11.13",
     "lucide-react": "^0.484.0",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/node": "^22.13.13",
-    "@types/react": "^19.0.10",
+    "@types/react": "^19.1.0",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.21.0",
