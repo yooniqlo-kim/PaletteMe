@@ -2,7 +2,7 @@ import { useState, useRef, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
 import MonthlyCalendar from "@/features/mymuseum/calendar/MonthlyCalendar";
-import { useCalendarReviews } from "@shared/hooks/useCalenderReviews";
+import { useMonthlyCalendarReviews } from "@shared/hooks/useCalendarReviews";
 import { WeeklyReview } from "@/shared/types/calendar";
 
 export default function CalendarPage() {
@@ -24,7 +24,7 @@ export default function CalendarPage() {
     });
   }, [month, year]);
 
-  const { data: reviews = [] } = useCalendarReviews(year, month, filteredInitialData);
+  const { data: reviews = [] } = useMonthlyCalendarReviews(year, month, filteredInitialData);
 
   return (
     <div className="p-4 my-4">

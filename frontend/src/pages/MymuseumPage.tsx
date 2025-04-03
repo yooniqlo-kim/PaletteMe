@@ -10,7 +10,7 @@ import RecommendationContainer from "@/features/mymuseum/recommendation/Recommen
 import masterpieces from "@/assets/masterpieces";
 import shuffle from "@/shared/utils/shuffle";
 import { mapReviewsToWeeklyCalendar } from "@/shared/utils/date";
-import { useWeeklyCalendarReviews } from "@shared/hooks/useCalenderReviews";
+import { useWeeklyCalendarReviews } from "@/shared/hooks/useCalendarReviews";
 
 export default function MymuseumPage() {
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ export default function MymuseumPage() {
   const {
     data: reviews,
     isLoading,
-    isError,
   } = useWeeklyCalendarReviews(weekStart);
 
   const shuffled = shuffle(masterpieces).slice(0, 4);
@@ -41,7 +40,6 @@ export default function MymuseumPage() {
 
   const calendarData = mapReviewsToWeeklyCalendar(reviews ?? [], weekStart);
 
-  // 세션에서 유저 정보 가져오기
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const nickname = user?.nickname || "사용자";
 
@@ -51,18 +49,13 @@ export default function MymuseumPage() {
         <div className="text-lg font-bold mb-4">마이뮤지엄</div>
 
         <div className="mb-6">
-          {isLoading ? (
-            <div className="h-[10.75rem] rounded-xl bg-neutral-200 animate-pulse" />
-          ) : isError ? (
-            <div className="text-red-500 text-sm">
-              감상문 데이터를 불러오는 데 실패했어요.
-            </div>
-          ) : (
-            <WeeklyCalendar
-              data={calendarData}
-              onClick={() => navigate("/mymuseum/calendar", { state: { reviews } })}
-            />
-          )}
+          <WeeklyCalendar
+            data={calendarData}
+            isLoading={isLoading}
+            onClick={() =>
+              navigate("/mymuseum/calendar", { state: { reviews } })
+            }
+          />
         </div>
 
         <div className="mb-6">
@@ -89,4 +82,3 @@ export default function MymuseumPage() {
     </div>
   );
 }
-

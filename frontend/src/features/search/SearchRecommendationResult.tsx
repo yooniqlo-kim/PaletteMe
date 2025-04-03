@@ -27,11 +27,6 @@ export default function SearchRecommendationResult({
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artwork/${artworkId}`);
   };
-
-  // 페이지가 로드 시, 스크롤을 최상단으로 이동
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "auto" });
-  }, []);
   
 
   // 마지막 요소에 IntersectionObserver 연결
@@ -66,33 +61,36 @@ export default function SearchRecommendationResult({
       </PageIntro>
 
       <ArtworkListSection>
-        <div className="grid grid-cols-2 gap-4 pb-[5rem]">
-          {data.map((artwork, idx) => {
-            const isLast = idx === data.length - 1;
+        {data.length === 0 ? (
+          <div className="flex justify-center items-center h-40 text-neutral-6 text-sm">
+            추천 작품이 없습니다.
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 pb-[5rem]">
+            {data.map((artwork, idx) => {
+              const isLast = idx === data.length - 1;
 
-            return (
-              <div
-                key={artwork.artworkId}
-                ref={isLast ? observerRef : null}
-              >
-                <ArtworkCard
-                  artwork={{
-                    artworkId: artwork.artworkId,
-                    title: artwork.korTitle || artwork.originalTitle,
-                    artist: artwork.korArtist || artwork.originalArtist || "작가 미상",
-                    artworkImageUrl: artwork.imageUrl ?? "/images/fallback.jpg",
-                    isLiked: artwork.isLiked,
-                  }}
-                  size="small"
-                  theme="light"
-                  borderRadius="small"
-                  onClick={() => handleClickArtwork(artwork.artworkId)}
-                  onClickLike={() => onCardLike(artwork.artworkId)}
-                />
-              </div>
-            );
-          })}
-        </div>
+              return (
+                <div key={artwork.artworkId} ref={isLast ? observerRef : null}>
+                  <ArtworkCard
+                    artwork={{
+                      artworkId: artwork.artworkId,
+                      title: artwork.korTitle || artwork.originalTitle,
+                      artist: artwork.korArtist || artwork.originalArtist || "작가 미상",
+                      artworkImageUrl: artwork.imageUrl ?? "/images/fallback.jpg",
+                      isLiked: artwork.isLiked,
+                    }}
+                    size="small"
+                    theme="light"
+                    borderRadius="small"
+                    onClick={() => handleClickArtwork(artwork.artworkId)}
+                    onClickLike={() => onCardLike(artwork.artworkId)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </ArtworkListSection>
     </div>
   );
