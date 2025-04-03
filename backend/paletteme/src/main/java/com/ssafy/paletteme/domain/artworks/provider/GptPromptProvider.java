@@ -1,5 +1,6 @@
 package com.ssafy.paletteme.domain.artworks.provider;
 
+import com.ssafy.paletteme.domain.artworks.dto.ArtworkDetailResponse;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -25,14 +26,24 @@ the historical context of the artwork, the period in which it was created, and t
 Your role is to make art accessible to those who may not be familiar with it.
 Explain in a clear and simple way, but never make it feel shallow—your explanations should remain rich and meaningful.
 
-Please respond in Korean.
+Please respond in Korean within 500 characters or less.
                 """);
     }
 
-    public Prompt buildPromptWithUserMessage(String userMessage) {
+    public Prompt buildPromptWithUserMessage(ArtworkDetailResponse artwork) {
+        String title = artwork.getTitle();
+        String artist = artwork.getArtist();
+        Integer createdYear = artwork.getCreatedYear();
+
+        String userMessage = String.format(
+                "This artwork is titled '%s', created by '%s' in %s. Please provide a detailed explanation about it.",
+                title, artist, createdYear
+        );
+
         return new Prompt(List.of(
                 getArtExpertSystemMessage(),
                 new UserMessage(userMessage)
         ));
     }
+
 }

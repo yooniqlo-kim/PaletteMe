@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,8 +70,7 @@ public class ArtworksService {
         artworkDetailResponse.isBookMarked(isBookMarked);
 
         // 내 리뷰 중 가장 최신 리뷰 한 건만 가져오기
-        Reviews myReview = reviewsRepository.findTopByUserAndArtworkOrderByCreatedAtDesc(user, artwork)
-                .orElse(null);
+        Reviews myReview = reviewsRepository.findTopByUserAndArtworkOrderByCreatedAtDesc(user, artwork).orElse(null);
         Integer myReviewId = (myReview == null) ? null : myReview.getReviewId();
         artworkDetailResponse.updateMyReviewId(myReviewId);
 
@@ -80,15 +80,18 @@ public class ArtworksService {
 
 
     public ArtworkDescriptionResponse getArtworkDescription(String artworkId) {
-        Prompt prompt = gptPromptProvider.buildPromptWithUserMessage(artworkId + "에 대해 설명해줘");
+        ArtworkDetailResponse artworkDetailResponse = artworksRepository.findArtworkDetail(artworkId);
+
+        Prompt prompt = gptPromptProvider.buildPromptWithUserMessage(artworkDetailResponse);
 
         // GPT 프롬프팅 통해서 정형화된 형태의 데이터 얻어오기
-//        ChatResponse chatResponse = chatClient.call(prompt);
-//        if (chatResponse == null || chatResponse.getResult() == null || chatResponse.getResult().getOutput() == null) {
-//                throw new ArtworksException(ArtworksError.GPT_RESPONSE_FAILED);
-//        }
-//        String description = chatResponse.getResult().getOutput().getContent();
-        String description = "MJ의 설명";
+        ChatResponse chatResponse = chatClient.call(prompt);
+        if (chatResponse == null || chatResponse.getResult() == null || chatResponse.getResult().getOutput() == null) {
+                throw new ArtworksException(ArtworksError.GPT_RESPONSE_FAILED);
+        }
+
+        String description = chatResponse.getResult().getOutput().getContent();
+
         return ArtworkDescriptionResponse.of(description);
     }
 
