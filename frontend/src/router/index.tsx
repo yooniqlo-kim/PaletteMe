@@ -27,6 +27,8 @@ import RegisterCompletePage from "@/pages/RegisterCompletePage";
 import CommentEditPage from "@/pages/CommentEditPage";
 import CommentMyPage from "@/pages/CommentMyPage";
 import CommentLikedPage from "@/pages/CommentLikedPage";
+import ProtectedRoute from "./ProtectedRoute";
+import ErrorPage from "@/pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,42 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <TodayArtsPage /> },
+      { path: "/login", element: <LoginPage /> },
+      { path: "/signup", element: <RegisterInfoPage /> },
+      { path: "/signup/profile", element: <RegisterImagePage /> },
+      { path: "signup/artwork", element: <RegisterArtworkPage /> },
+      { path: "signup/color", element: <RegisterColorPage /> },
+      { path: "signup/complete", element: <RegisterCompletePage /> },
+      { path: "*", element: <NotFoundPage /> },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: "/search", element: <SearchPage /> },
+          { path: "/mymuseum", element: <MymuseumPage /> },
+          { path: "/mymuseum/calendar", element: <CalenderPage /> },
+          { path: "/mymuseum/liked", element: <LikedCollectionPage /> },
+          { path: "/mymuseum/bookmark", element: <BookmarkCollectionPage /> },
+          { path: "profile", element: <ProfilePage /> },
+          { path: "profile/level", element: <LevelInfoPage /> },
+          { path: "profile/confirm", element: <ConfirmPasswordPage /> },
+          { path: "profile/update", element: <UpdateUserInfoPage /> },
+          { path: "profile/update-profile", element: <UpdateProfilePage /> },
+          { path: "profile/delete", element: <ConfirmDeleteAccountPage /> },
+          {
+            path: "profile/delete/complete",
+            element: <CompleteDeleteAccountPage />,
+          },
+          { path: "/artwork/:artworkId", element: <ArtworkPage /> },
+          { path: "/comment/write/:artworkId", element: <WritePage /> },
+
+          { path: "/wrapped", element: <WrappedPage /> },
+
+          { path: "/comment/:commentId", element: <CommentDetailPage /> },
+          { path: "comment/edit/:commentId", element: <CommentEditPage /> },
+          { path: "comment/my", element: <CommentMyPage /> },
+          { path: "comment/liked", element: <CommentLikedPage /> },
+        ],
+      },
       { path: "/search", element: <SearchPage /> },
       { path: "/mymuseum", element: <MymuseumPage /> },
       { path: "/mymuseum/calendar", element: <CalenderPage /> },
@@ -63,6 +101,7 @@ const router = createBrowserRouter([
       { path: "comment/edit/:commentId", element: <CommentEditPage /> },
       { path: "comment/my", element: <CommentMyPage /> },
       { path: "comment/liked", element: <CommentLikedPage /> },
+      { path: "/error", element: <ErrorPage /> },
     ],
   },
 ]);

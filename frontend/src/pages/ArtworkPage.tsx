@@ -1,36 +1,40 @@
-import { useParams } from "react-router";
+import { useParams, Navigate, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { ArtworkDetail } from "@/features/detail/ArtworkDetail";
-// import { artworkDetailDummy } from "@/shared/dummy/artworkDummy";
 import { commentDummy } from "@/shared/dummy/commentDummy";
 import { getArtworkDetail } from "@/shared/api/artwork";
 import { ArtworkDetailData } from "@/shared/types/artwork";
-
-// export default function ArtworkPage() {
-//   const { artworkId } = useParams<{ artworkId: string }>();
-//   const artwork = artworkDetailDummy.find((a) => a.artworkId === artworkId);
-//   const comments = commentDummy.filter((c) => c.artworkId === artworkId);
-//   if (!artwork) {
-//     return <div className="p-4">해당 작품을 찾을 수 없습니다.</div>;
-//   }
-//   return <ArtworkDetail artwork={artwork} comments={comments} />;
-// }
+import { mapToArtworkDetail } from "@/shared/utils/mapToArtworkDetail";
 
 export default function ArtworkPage() {
   const { artworkId } = useParams<{ artworkId: string }>();
   const [artwork, setArtwork] = useState<ArtworkDetailData | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (artworkId) {
-      getArtworkDetail(artworkId)
-        .then(setArtwork)
-        .catch((err) => {
-          console.error("에러", err);
-        });
+    if (!artworkId) {
+      navigate("/not-found", { replace: true });
+      return;
     }
-  }, [artworkId]);
+
+    const fetchArtwork = async () => {
+      try {
+        const res = await getArtworkDetail(artworkId);
+        const mapped = mapToArtworkDetail(res, artworkId);
+        setArtwork(mapped);
+      } catch (err) {
+        console.error("작품 로딩 에러:", err);
+        setHasError(true);
+      }
+    };
+
+    fetchArtwork();
+  }, [artworkId, navigate]);
 
   const comments = commentDummy.filter((c) => c.artworkId === artworkId);
+
+  if (hasError) return <Navigate to="/error" replace />;
 
   if (!artwork) {
     return <div className="p-4">작품 정보를 불러오는 중입니다...</div>;

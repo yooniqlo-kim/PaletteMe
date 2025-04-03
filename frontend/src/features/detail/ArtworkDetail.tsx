@@ -15,7 +15,9 @@ import IconBookmark from "@/shared/components/icons/IconBookmark";
 
 import FloatingButton from "./FloatingButton";
 
-import { aiDocentResponses } from "@/shared/dummy/aiDocentRes";
+import { getAIDescription } from "@/shared/api/artwork";
+
+//import { aiDocentResponses } from "@/shared/dummy/aiDocentRes";
 
 type Props = {
   artwork: ArtworkDetailData;
@@ -81,16 +83,7 @@ export function ArtworkDetail({ artwork, comments }: Props) {
         </WhiteContainer>
         <WhiteContainer>
           <AIDocentBox
-            onFetchExplanation={() =>
-              new Promise((resolve) =>
-                setTimeout(() => {
-                  resolve(
-                    aiDocentResponses[artwork.artworkId] ??
-                      "AI 응답이 없습니다."
-                  );
-                }, 1000)
-              )
-            }
+            onFetchExplanation={() => getAIDescription(artwork.artworkId)}
           />
         </WhiteContainer>
         <WhiteContainer>
