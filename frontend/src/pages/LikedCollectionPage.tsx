@@ -79,34 +79,35 @@ export default function LikedCollectionPage() {
       </PageIntro>
 
       <ArtworkListSection>
-        <div className="grid grid-cols-2 gap-4">
-          {artworks.map((artwork) => {
-            const [title, artist] = artwork.artworkId.split("_");
+        {artworks.length === 0 && !hasMore ? (
+          <div className="flex justify-center items-center h-70 text-neutral-6 text-sm">
+            좋아요한 작품이 없습니다.
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4">
+            {artworks.map((artwork) => {
+              const [title, artist] = artwork.artworkId.split("_");
 
-            return (
-              <ArtworkCard
-                key={artwork.artworkId}
-                artwork={{
-                  artworkId: artwork.artworkId,
-                  title,
-                  artist,
-                  artworkImageUrl: artwork.imgUrl ?? "",
-                  isLiked: true,
-                }}
-                size="small"
-                theme="light"
-                borderRadius="small"
-                onClick={() => handleClickArtwork(artwork.artworkId)}
-              />
-            );
-          })}
-          {hasMore && <div ref={observerRef} className="h-1" />}
-          {!hasMore && artworks.length === 0 && (
-            <div className="col-span-2 text-center text-sm text-gray-500">
-              좋아요한 작품이 없습니다.
-            </div>
-          )}
-        </div>
+              return (
+                <ArtworkCard
+                  key={artwork.artworkId}
+                  artwork={{
+                    artworkId: artwork.artworkId,
+                    title,
+                    artist,
+                    artworkImageUrl: artwork.imgUrl ?? "",
+                    isLiked: true,
+                  }}
+                  size="small"
+                  theme="light"
+                  borderRadius="small"
+                  onClick={() => handleClickArtwork(artwork.artworkId)}
+                />
+              );
+            })}
+            {hasMore && <div ref={observerRef} className="h-1" />}
+          </div>
+        )}
       </ArtworkListSection>
     </div>
   );
