@@ -35,3 +35,11 @@ export async function verifyCode(data: {
   );
   return response;
 }
+
+export async function checkNickname(data: { nickname: string }) {
+  const response: AxiosResponse<ResponseType> = await axios.post(
+    `${AUTH_BASE_URL}/check-nickname`,
+    data
+  );
+  return response;
+}
