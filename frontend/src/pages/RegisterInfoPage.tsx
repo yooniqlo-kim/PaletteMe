@@ -20,7 +20,7 @@ type FormValues = {
   password: string;
   confirmPassword: string;
   name: string;
-  year: number;
+  birthday: number;
   phoneNumber: number;
   verificationCode: number;
 };
@@ -108,7 +108,7 @@ export default function RegisterInfoPage() {
         id: data.id,
         password: data.password,
         name: data.name,
-        birthday: data.year.toString(),
+        birthday: data.birthday,
         phoneNumber: data.phoneNumber.toString(),
       })
     );
@@ -183,14 +183,16 @@ export default function RegisterInfoPage() {
           </InputContainer>
 
           <InputContainer>
-            <Label htmlFor="year">태어난 연도</Label>
+            <Label htmlFor="birthday">태어난 연도</Label>
             <Input
-              {...register("year", { required: "태어난 연도를 입력해주세요." })}
-              id="year"
+              {...register("birthday", {
+                required: "태어난 연도를 입력해주세요.",
+              })}
+              id="birthday"
               type="number"
               min="1900"
               max={new Date().getFullYear()}
-              fallback={errors.year?.message}
+              fallback={errors.birthday?.message}
             />
           </InputContainer>
 

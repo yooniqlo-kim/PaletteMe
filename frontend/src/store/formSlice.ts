@@ -4,9 +4,9 @@ type FormState = {
   id: string;
   password: string;
   name: string;
-  birthday: string;
+  birthday: number;
   phoneNumber: string;
-  imageUrl: string;
+  imageUrl?: string | null;
   nickname: string;
   artworkId: string[];
   color: string[];
@@ -16,9 +16,9 @@ const initialState: FormState = {
   id: "",
   password: "",
   name: "",
-  birthday: "",
+  birthday: 0,
   phoneNumber: "",
-  imageUrl: "",
+  imageUrl: null,
   nickname: "",
   artworkId: [],
   color: [],
