@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router";
 import useToast from "@/shared/hooks/useToast";
 import { login } from "@/shared/api/auth";
-import { useUserDispatch } from "@/store/hooks";
-import { setLoginData } from "@/store/userSlice";
+import { UserType } from "./type";
 
 export function useAuth() {
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const dispatch = useUserDispatch();
 
   async function handleLogin(enteredData: { id: string; password: string }) {
     try {
@@ -20,13 +18,12 @@ export function useAuth() {
         showToast({ message: `로그인 실패: ${errorCode}`, type: "error" });
       } else {
         showToast({ message: "로그인 성공", type: "success" });
-        dispatch(
-          setLoginData({
-            id: data!.id,
-            nickname: data!.nickname,
-            s3Url: data!.s3Url,
-          })
-        );
+        const userData: UserType = {
+          id: data!.id,
+          nickname: data!.nickname,
+          s3Url: data!.s3Url,
+        };
+        sessionStorage.setItem("user", JSON.stringify(userData));
         sessionStorage.setItem("token", JSON.stringify(data!.accessToken));
         navigate("/");
       }
@@ -36,5 +33,12 @@ export function useAuth() {
     }
   }
 
-  return { handleLogin };
+  function isLoggedIn() {
+    const user = sessionStorage.getItem("user");
+    const token = sessionStorage.getItem("token");
+
+    return user && token;
+  }
+
+  return { handleLogin, isLoggedIn };
 }
