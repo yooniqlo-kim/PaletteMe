@@ -12,14 +12,12 @@ import java.time.LocalDateTime;
 public class ReviewCalendarResponse {
     private int reviewId;
     private LocalDateTime createdAt;
-    private String artworkId;
-    private String content;
+    private String imgUrl;
 
     @QueryProjection
-    public ReviewCalendarResponse(int reviewId, LocalDateTime createdAt, String artworkId, String content) {
+    public ReviewCalendarResponse(int reviewId, LocalDateTime createdAt, String imgUrl) {
         this.reviewId = reviewId;
         this.createdAt = createdAt;
-        this.artworkId = artworkId;
-        this.content = content;
+        this.imgUrl = imgUrl;
     }
 }
