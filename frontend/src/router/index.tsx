@@ -27,6 +27,7 @@ import RegisterCompletePage from "@/pages/RegisterCompletePage";
 import CommentEditPage from "@/pages/CommentEditPage";
 import CommentMyPage from "@/pages/CommentMyPage";
 import CommentLikedPage from "@/pages/CommentLikedPage";
+import ErrorPage from "@/pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
       { path: "comment/edit/:commentId", element: <CommentEditPage /> },
       { path: "comment/my", element: <CommentMyPage /> },
       { path: "comment/liked", element: <CommentLikedPage /> },
+      { path: "/error", element: <ErrorPage /> },
     ],
   },
 ]);
