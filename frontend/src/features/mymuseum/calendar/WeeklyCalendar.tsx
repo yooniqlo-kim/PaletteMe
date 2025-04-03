@@ -5,12 +5,19 @@ import { CalendarDay } from "@/shared/types/calendar";
 
 interface WeeklyCalendarProps {
   data: CalendarDay[];
-  onClick?: () => void; // 전체 달력 클릭 → 월간 보기로 이동
+  isLoading?: boolean;
+  onClick?: () => void;
 }
 
-export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
+export default function WeeklyCalendar({
+  data,
+  isLoading,
+  onClick,
+}: WeeklyCalendarProps) {
   const navigate = useNavigate();
   const weekdays = ["월", "화", "수", "목", "금", "토", "일"];
+
+  const displayData: (CalendarDay | null)[] = Array.from({ length: 7 }, (_, idx) => data?.[idx] ?? null);
 
   return (
     <div
@@ -24,8 +31,8 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
 
       <div className="grid grid-cols-7 gap-2 px-2">
         {weekdays.map((weekday, idx) => {
-          const day = data[idx];
-          const hasReview = day && day.reviewId !== undefined;
+          const day = displayData[idx];
+          const hasReview = !!day?.reviewId;
 
           return (
             <div key={idx} className="flex flex-col items-center space-y-1">
@@ -34,7 +41,7 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
               {hasReview ? (
                 <div
                   onClick={(e) => {
-                    e.stopPropagation(); // 캘린더 전체 클릭 막고 감상문만 이동
+                    e.stopPropagation();
                     navigate(`/comment/${day.reviewId}`);
                   }}
                   className="w-9 h-9 rounded-full border-4 overflow-hidden cursor-pointer"
@@ -52,7 +59,11 @@ export default function WeeklyCalendar({ data, onClick }: WeeklyCalendarProps) {
               ) : (
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  className="w-9 h-9 rounded-full bg-[var(--color-neutral-4)] cursor-default"
+                  className={`w-9 h-9 rounded-full cursor-default ${
+                    isLoading
+                      ? "bg-neutral-300 animate-pulse"
+                      : "bg-[var(--color-neutral-4)]"
+                  }`}
                 />
               )}
             </div>
