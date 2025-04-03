@@ -151,5 +151,9 @@ public class UserService {
     }
 
 
+    public List<ArtworkRecommendationResponse> getRecommendedArtworks() {
+        List<ArtworkRecommendationResponse> list= redisService.getAllArtworkRecommendations();
+        return list;
+    }
 }
 // TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기

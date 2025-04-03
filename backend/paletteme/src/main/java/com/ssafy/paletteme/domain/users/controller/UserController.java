@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Tag(name = "Users", description = "회원 관련 API")
@@ -67,5 +68,12 @@ public class UserController {
     public ApiResponse<Void> checkNickname(@RequestBody CheckNicknameRequest request) {
         userService.checkNickname(request);
         return ApiResponse.success();
+    }
+
+    @Operation(summary = "유저 추천 작품 조회", description = "현재 유저에게 추천된 작품 리스트를 반환합니다.")
+    @GetMapping("/recommend-artworks")
+    public ApiResponse<List<ArtworkRecommendationResponse>> getRecommendedArtworks() {
+        List<ArtworkRecommendationResponse> response = userService.getRecommendedArtworks();
+        return ApiResponse.success(response);
     }
 }
