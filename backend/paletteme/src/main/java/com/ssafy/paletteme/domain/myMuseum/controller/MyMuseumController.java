@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,12 +28,22 @@ public class MyMuseumController {
     private final LikedOtherReviewsService likedOtherReviewsService;
 
     @Operation(summary = "캘린더 데이터 조회", description = "연, 월을 기준으로 해당 월의 리뷰 데이터 전체 조회")
-    @GetMapping("/reviews/dates")
-    public ApiResponse<List<ReviewCalendarResponse>> getReviewWithArtwork(@Parameter(hidden = true) @UserId int userId,
+    @GetMapping("/reviews/monthly")
+    public ApiResponse<List<MonthlyReviewResponse>> getMonthlyReviewCalendar(@Parameter(hidden = true) @UserId int userId,
                                                                           @RequestParam int year,
                                                                           @RequestParam int month) {
 
-        List<ReviewCalendarResponse> responses = reviewCalendarService.getReviewCalendar(userId, year, month);
+        List<MonthlyReviewResponse> responses = reviewCalendarService.getMonthlyReviewCalendar(userId, year, month);
+        return ApiResponse.success(responses);
+    }
+
+    @Operation(summary = "캘린더 데이터 일주일치 조회", description = "시작일, 종료일을 기준으로 해당 기간의 리뷰 데이터 전체 조회")
+    @GetMapping("/reviews/weekly")
+    public ApiResponse<List<WeeklyReviewResponse>> getWeeklyReviewCalendar(@Parameter(hidden = true) @UserId int userId,
+                                                                          @RequestParam LocalDate startDate,
+                                                                          @RequestParam LocalDate endDate) {
+
+        List<WeeklyReviewResponse> responses = reviewCalendarService.getWeeklyReviewCalendar(userId, startDate, endDate);
         return ApiResponse.success(responses);
     }
 
