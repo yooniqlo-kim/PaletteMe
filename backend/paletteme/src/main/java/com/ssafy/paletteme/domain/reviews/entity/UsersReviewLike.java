@@ -26,4 +26,11 @@ public class UsersReviewLike {
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Users user;
+
+    public static UsersReviewLike of(Users user, Reviews review) {
+        UsersReviewLike like = new UsersReviewLike();
+        like.user = user;
+        like.review = review;
+        return like;
+    }
 }

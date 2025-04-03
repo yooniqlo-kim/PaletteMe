@@ -38,7 +38,7 @@ public class Users {
     private String name;
 
     @Column(name = "birthday", nullable = false)
-    private LocalDate birthday;
+    private int birthYear;
 
     @Column(name = "phone_number", nullable = false, length = 500)
     private String phoneNumber;
@@ -57,11 +57,11 @@ public class Users {
     private LocalDate loginedAt;
 
     @Builder
-    public Users(String loginId, String password, String name, LocalDate birthday, String phoneNumber, String nickname, String s3Url, UsersGrade usersGrade){
+    public Users(String loginId, String password, String name, int birthYear, String phoneNumber, String nickname, String s3Url, UsersGrade usersGrade){
         this.loginId = loginId;
         this.password = password;
         this.name = name;
-        this.birthday = birthday;
+        this.birthYear = birthYear;
         this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.s3Url = s3Url;

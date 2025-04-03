@@ -17,6 +17,7 @@ public class ArtworkDetailResponse {
     private int createdYear;
     private String description;
     private int like = 0;
+    private Boolean isLiked;
 
     @QueryProjection
     public ArtworkDetailResponse(String imgUrl, String museumName, String title, String artist,
@@ -31,6 +32,10 @@ public class ArtworkDetailResponse {
 
     public void updateLike(int like) {
         this.like = like;
+    }
+
+    public void isLiked(boolean isLiked) {
+        this.isLiked = isLiked;
     }
 
 }

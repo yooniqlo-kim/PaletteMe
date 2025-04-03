@@ -16,4 +16,21 @@ public class UsersArtworksLikeCnt {
 
     @Column(name = "like_cnt", nullable = true)
     private Integer likeCnt = 0;
+
+    public static UsersArtworksLikeCnt of(String artworkId) {
+        UsersArtworksLikeCnt likeCnt = new UsersArtworksLikeCnt();
+        likeCnt.artworkId = artworkId;
+        likeCnt.likeCnt = 0;
+        return likeCnt;
+    }
+
+    public void increaseLikeCnt() {
+        this.likeCnt = this.likeCnt + 1;
+    }
+
+    public void decreaseLikeCnt() {
+        if (this.likeCnt > 0) {
+            this.likeCnt = this.likeCnt - 1;
+        }
+    }
 }

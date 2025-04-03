@@ -24,7 +24,7 @@ INSERT INTO users (
     grade_id, s3_url, id, password, name, birthday,
     phone_number, nickname, active
 ) VALUES (
-             1, 'url', 'lhj', '$2a$10$chU3titRWipnywR/T1qbouY7l8NRhWYLRo3prVu7TKBnYOfejeQcm', '홍길동', '1990-01-01',
+             1, 'url', 'lhj', '$2a$10$chU3titRWipnywR/T1qbouY7l8NRhWYLRo3prVu7TKBnYOfejeQcm', '홍길동', 1996,
              '010-1234-5678', '길동이', '1'
          );
 
@@ -138,3 +138,64 @@ INSERT INTO users_review_like (review_id, user_id) VALUES
 (2, 1),
 (3, 1),
 (4, 1);
+
+INSERT INTO wrapped (
+    user_id,
+    artist_name,
+    review_rank,
+    review_percentage,
+    review_cnt,
+    favorite_name,
+    favorite_artist,
+    favorite_img,
+    recommended_artwork,
+    recommended_artist,
+    recommended_img
+) VALUES (
+             1,
+             '학준',
+             5,
+             13,
+             12,
+             '별이 빛나는 밤에',
+             '빈센트 반 고흐',
+             'https://example.com/starry-night.jpg',
+             '붉은 수련',
+             '클로드 모네',
+             'https://example.com/water-lilies.jpg'
+         );
+
+
+
+INSERT INTO users (
+    grade_id, s3_url, id, password, name, birthday,
+    phone_number, nickname, active
+) VALUES (
+             2, 'url2', 'mjk', '$2a$10$abcdefgh1234567890abcdefABCDEFghijklmno', '김민준', 1997,
+             '010-9876-5432', '민준이', '1'
+         );
+
+
+INSERT INTO reviews (user_id, artwork_id, content, is_public, created_at, like_cnt, content_length) VALUES
+                                                                                                        (2, 'MonaLisa_Leonardo', '미소가 수수께끼 같아요.', true, '2025-04-01', 0, 13),
+                                                                                                        (2, 'TheLastSupper_Leonardo', '극적인 구도가 멋져요.', true, '2025-04-02', 0, 13),
+                                                                                                        (2, 'David_Michelangelo', '완벽한 인체 조형이에요.', true, '2025-04-03', 0, 13),
+                                                                                                        (2, 'Judith_Caravaggio', '빛과 어둠의 조화가 강렬해요.', true, '2025-04-04', 0, 16),
+                                                                                                        (2, 'ImpressionSunrise_Monet', '해돋이 색감이 따뜻해요.', true, '2025-04-05', 0, 13),
+                                                                                                        (2, 'WaterLilies_Monet', '평화로운 연못 분위기.', true, '2025-04-06', 0, 12),
+                                                                                                        (2, 'Guernica_Picasso', '전쟁의 참상을 표현했어요.', true, '2025-04-07', 0, 13),
+                                                                                                        (2, 'StarryNight_VanGogh', '별이 흐르는 듯한 느낌.', true, '2025-04-08', 0, 13),
+                                                                                                        (2, 'CampbellSoup_Warhol', '팝아트의 상징 같아요.', true, '2025-04-09', 0, 13),
+                                                                                                        (2, 'HowToExplain_Beuys', '철학적인 퍼포먼스네요.', true, '2025-04-10', 0, 13);
+
+INSERT INTO users_review_like (review_id, user_id) VALUES
+                                                       (32, 1),
+                                                       (33, 1),
+                                                       (34, 1),
+                                                       (35, 1),
+                                                       (36, 1),
+                                                       (37, 1),
+                                                       (38, 1),
+                                                       (39, 1),
+                                                       (40, 1);
+

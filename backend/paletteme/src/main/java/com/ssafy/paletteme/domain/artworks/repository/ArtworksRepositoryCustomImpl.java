@@ -24,8 +24,8 @@ public class ArtworksRepositoryCustomImpl implements ArtworksRepositoryCustom{
                 .select(new QArtworkDetailResponse(
                         artwork.imageUrl,
                         museum.museumName,
-                        artwork.enTitle,
-                        artist.enArtist,
+                        artwork.originalTitle,
+                        artist.originalArtist,
                         artwork.createdYear,
                         artwork.description
                 ))

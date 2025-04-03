@@ -65,4 +65,14 @@ public class Reviews extends BaseEntity {
         this.content = content;
         this.isPublic = isPublic;
     }
+
+    public void increaseLikeCnt() {
+        this.likeCnt = this.likeCnt + 1;
+    }
+
+    public void decreaseLikeCnt() {
+        if (this.likeCnt > 0) {
+            this.likeCnt = this.likeCnt - 1;
+        }
+    }
 }

@@ -26,4 +26,12 @@ public class UsersArtworksBookmark {
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Artworks artwork;
+
+    public static UsersArtworksBookmark of(Users user, Artworks artwork) {
+        UsersArtworksBookmark bookmark = new UsersArtworksBookmark();
+        bookmark.user = user;
+        bookmark.artwork = artwork;
+        return bookmark;
+    }
+
 }

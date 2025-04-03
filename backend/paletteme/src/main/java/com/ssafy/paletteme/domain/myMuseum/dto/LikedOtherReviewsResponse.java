@@ -9,26 +9,20 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MyReviewsResponse {
+public class LikedOtherReviewsResponse {
+    String nickaname;
     int reviewId;
     int likeCnt;
     String content;
     LocalDateTime createdAt;
-    String originalTitle;
-    String originalArtist;
-    String imageUrl;
-    Boolean isLiked;
 
     @QueryProjection
-    public MyReviewsResponse(int reviewId, int likeCnt, String content, LocalDateTime createdAt,
-                             String originalTitle, String originalArtist, String imageUrl, Boolean isLiked) {
+    public LikedOtherReviewsResponse(String nickname, int reviewId, int likeCnt, String content, LocalDateTime createdAt) {
+        this.nickaname = nickname;
         this.reviewId = reviewId;
         this.likeCnt = likeCnt;
         this.content = content;
         this.createdAt = createdAt;
-        this.originalTitle = originalTitle;
-        this.originalArtist = originalArtist;
-        this.imageUrl = imageUrl;
-        this.isLiked = isLiked;
     }
+
 }
