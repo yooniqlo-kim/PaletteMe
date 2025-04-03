@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router";
 import { ArtworkImage } from "./ArtworkImage";
 import { ArtworkMeta } from "@/shared/components/artworks/ArtworkMeta";
@@ -12,35 +12,116 @@ import { BaseComment } from "@/shared/types/comment";
 import IconButton from "@/shared/components/buttons/IconButton";
 import IconBlackHeart from "@/shared/components/icons/IconBlackHeart";
 import IconBookmark from "@/shared/components/icons/IconBookmark";
-
 import FloatingButton from "./FloatingButton";
 
-import { getAIDescription } from "@/shared/api/artwork";
-
-//import { aiDocentResponses } from "@/shared/dummy/aiDocentRes";
+import {
+  getAIDescription,
+  likeArtwork,
+  cancelLikeArtwork,
+  bookmarkArtwork,
+  cancelBookmarkArtwork,
+} from "@/shared/api/artwork";
+import { getComments } from "@/shared/api/comment";
 
 type Props = {
   artwork: ArtworkDetailData;
-  comments: BaseComment[];
 };
 
-export function ArtworkDetail({ artwork, comments }: Props) {
+export function ArtworkDetail({ artwork }: Props) {
+  const navigate = useNavigate();
+
+  // 작품 상태
   const [isLiked, setIsLiked] = useState(artwork.isLiked);
   const [likeCount, setLikeCount] = useState<number>(artwork.likeCount);
   const [isBookmarked, setIsBookmarked] = useState(artwork.isBookmarked);
-  const navigate = useNavigate();
 
-  const handleToggleLike = () => {
+  // 감상문 상태
+  const [comments, setComments] = useState<BaseComment[]>([]);
+  const [cursor, setCursor] = useState<number | undefined>(undefined);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingComments, setLoadingComments] = useState(false);
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const fetchComments = useCallback(async () => {
+    if (!hasMore || loadingComments) return;
+    setLoadingComments(true);
+
+    try {
+      const next = await getComments({
+        artworkId: artwork.artworkId,
+        cursor: cursor ?? undefined,
+        size: 5,
+      });
+
+      if (next.length === 0) {
+        setHasMore(false); // 다음 요청 막기
+      } else {
+        setComments((prev) => [...prev, ...next]);
+        setCursor(Number(next[next.length - 1].commentId)); // 마지막 커서 갱신
+      }
+    } catch (error) {
+      console.error("감상문 불러오기 실패:", error);
+      setHasMore(false);
+    } finally {
+      setLoadingComments(false);
+    }
+  }, [artwork.artworkId, cursor, hasMore, loadingComments]);
+
+  useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
+
+  useEffect(() => {
+    if (!observerRef.current || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchComments();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    const el = observerRef.current;
+    if (el) observer.observe(el);
+
+    return () => {
+      if (el) observer.unobserve(el);
+    };
+  }, [comments, hasMore, fetchComments]);
+
+  const handleToggleLike = async () => {
     const nextLiked = !isLiked;
-    setIsLiked(nextLiked);
-    setLikeCount((count) => (nextLiked ? count + 1 : count - 1));
+    try {
+      if (nextLiked) {
+        await likeArtwork(artwork.artworkId);
+        setLikeCount((count) => count + 1);
+      } else {
+        await cancelLikeArtwork(artwork.artworkId);
+        setLikeCount((count) => count - 1);
+      }
+      setIsLiked(nextLiked);
+    } catch (err) {
+      console.error("좋아요 요청 실패:", err);
+    }
   };
 
-  const handleToggleBookmark = () => {
-    setIsBookmarked((prev) => !prev);
+  const handleToggleBookmark = async () => {
+    const nextBookmarked = !isBookmarked;
+    try {
+      if (nextBookmarked) {
+        await bookmarkArtwork(artwork.artworkId);
+      } else {
+        await cancelBookmarkArtwork(artwork.artworkId);
+      }
+      setIsBookmarked(nextBookmarked);
+    } catch (err) {
+      console.error("북마크 요청 실패:", err);
+    }
   };
 
-  // 실제 api 요청이나 변경사항 추적 로직으로 교체
   const handleLikeChange = (commentId: string, isLiked: boolean) => {
     console.log(`감상문 ${commentId} 좋아요 상태 변경됨: ${isLiked}`);
   };
@@ -87,7 +168,17 @@ export function ArtworkDetail({ artwork, comments }: Props) {
           />
         </WhiteContainer>
         <WhiteContainer>
-          <CommentBox comments={comments} onLikeChange={handleLikeChange} />
+          <CommentBox
+            comments={comments}
+            onLikeChange={handleLikeChange}
+            observerRef={observerRef}
+            isLoading={loadingComments}
+          />
+          {loadingComments && (
+            <p className="text-center text-sm text-neutral-400 py-2">
+              불러오는 중...
+            </p>
+          )}
         </WhiteContainer>
       </div>
     </div>

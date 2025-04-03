@@ -6,5 +6,7 @@ export interface ArtworkDetailResponse {
   museumName?: string;
   description?: string;
   like?: number;
-  //나중에 추가될 요소 수정 필요
+  isLiked: boolean;
+  isBookMarked: boolean;
+  myReviewId?: number | null;
 }
