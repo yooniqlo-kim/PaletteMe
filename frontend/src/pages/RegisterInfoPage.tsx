@@ -7,6 +7,8 @@ import Label from "@/shared/components/form/Label";
 import { updateField } from "@/store/formSlice";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { checkId } from "@/shared/api/auth";
+import { watch } from "fs";
 
 type FormValues = {
   id: string;
@@ -26,6 +28,7 @@ export default function RegisterInfoPage() {
     register,
     handleSubmit,
     getValues,
+    trigger,
     formState: { errors, isValid, isSubmitting },
   } = useForm<FormValues>({ mode: "onChange" });
 
@@ -41,6 +44,25 @@ export default function RegisterInfoPage() {
       })
     );
     navigate("/signup/profile");
+  }
+
+  async function handleIdCheck() {
+    const isValid = await trigger("id"); // 아이디 필드만 검증
+
+    if (!isValid) return; // 유효하지 않으면 중복 확인 실행 X
+
+    try {
+      const id = getValues("id");
+      const response = await checkId({ id });
+
+      const { success, errorCode, data } = response.data;
+      if (success) {
+        console.log("성공");
+        console.log(errorCode);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -60,7 +82,9 @@ export default function RegisterInfoPage() {
                 placeholder="아이디를 입력해주세요"
                 fallback={errors.id && errors.id.message}
               />
-              <Button size="XS">중복 확인</Button>
+              <Button size="XS" onClick={handleIdCheck}>
+                중복 확인
+              </Button>
             </span>
           </InputContainer>
 

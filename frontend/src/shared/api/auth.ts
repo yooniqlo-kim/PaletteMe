@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const AUTH_BASE_URL = "http://localhost:8080/api/users";
+const AUTH_BASE_URL = "http://70.12.246.134:8080/api/users";
 
 type dataType = {
   id: string;
@@ -29,6 +29,14 @@ export async function login(data: { id: string; password: string }) {
         "Content-Type": "multipart/form-data",
       },
     }
+  );
+  return response;
+}
+
+export async function checkId(data: { id: string }) {
+  const response: AxiosResponse<ResponseType> = await axios.post(
+    `${AUTH_BASE_URL}/check-id`,
+    data
   );
   return response;
 }

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import useToast from "@/shared/hooks/useToast";
-import { login } from "@/shared/api/auth";
+import { checkId, login } from "@/shared/api/auth";
 import { UserType } from "./type";
 
 export function useAuth() {
@@ -24,7 +24,7 @@ export function useAuth() {
           s3Url: data!.s3Url,
         };
         sessionStorage.setItem("user", JSON.stringify(userData));
-        sessionStorage.setItem("token", JSON.stringify(data!.accessToken));
+        sessionStorage.setItem("token", data!.accessToken);
         navigate("/");
       }
     } catch (error) {
