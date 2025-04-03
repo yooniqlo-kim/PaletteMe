@@ -5,6 +5,8 @@ import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeRepository;
 import com.ssafy.paletteme.domain.search.document.ArtworkDocument;
 import com.ssafy.paletteme.domain.search.dto.ArtworkSearchResponse;
 import com.ssafy.paletteme.domain.search.exception.SearchError;
@@ -13,18 +15,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ArtworkSearchServiceImpl implements ArtworkSearchService {
 
     private final ElasticsearchClient elasticsearchClient;
+    private final UsersArtworksLikeRepository usersArtworksLikeRepository;
 
-    public List<ArtworkSearchResponse> searchByKeyword(String keyword, Double lastScore, String lastArtworkId, int size) {
+    public List<ArtworkSearchResponse> searchByKeyword(int userId, String keyword, Double lastScore, String lastArtworkId, int size) {
 
         if (keyword == null || keyword.trim().isEmpty()) {
             throw new SearchException(SearchError.EMPTY_KEYWORD);
@@ -75,15 +76,27 @@ public class ArtworkSearchServiceImpl implements ArtworkSearchService {
                 return builder;
             }, ArtworkDocument.class);
 
-            List<ArtworkSearchResponse> results = response.hits().hits().stream()
-                    .map(ArtworkSearchResponse::fromHit)
-                    .toList();
+            // 1. artworkId 수집
+            List<Hit<ArtworkDocument>> hits = response.hits().hits();
+            List<String> artworkIds = hits.stream()
+                    .map(hit -> hit.source().getArtwork_id())
+                    .collect(Collectors.toList());
 
-            if (results.isEmpty()) {
+            // 2. QueryDSL로 좋아요한 artworkId만 조회
+            Set<String> likedArtworkIds = new HashSet<>(usersArtworksLikeRepository
+                    .findLikedArtworkIdsByUserIdAndArtworkIds(userId, artworkIds));
+
+            if (artworkIds.isEmpty()) {
                 throw new SearchException(SearchError.NO_RESULT_FOUND);
             }
 
-            return results;
+            return hits.stream()
+                    .map(hit -> {
+                        ArtworkDocument doc = hit.source();
+                        boolean liked = likedArtworkIds.contains(doc.getArtwork_id());
+                        return ArtworkSearchResponse.fromHit(hit, liked);
+                    })
+                    .toList();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
