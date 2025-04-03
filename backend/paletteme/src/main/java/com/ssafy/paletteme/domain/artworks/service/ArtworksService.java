@@ -37,9 +37,10 @@ public class ArtworksService {
     private final UsersArtworksLikeRepository  usersArtworksLikeRepository;
     private final UsersArtworksBookmarkRepository  usersArtworksBookmarkRepository;
 
+
     private final ArtworkLikeCommandService artworkLikeCommandService;
     // TODO: BOOKMARK, REVIEW 엔티티가 추가되면 2개의 값도 추가하여 던져주기
-    public ArtworkDetailResponse getArtworkDetail(String artworkId) {
+    public ArtworkDetailResponse getArtworkDetail(int userId, String artworkId) {
         // 작품 정보 불러오기
         ArtworkDetailResponse artworkDetailResponse = artworksRepository.findArtworkDetail(artworkId);
 
@@ -51,6 +52,15 @@ public class ArtworksService {
                 });
 
         artworkDetailResponse.updateLike(usersArtworksLikeCnt.getLikeCnt()); // 좋아요 테이블에 값이 없을 경우 테이블 생성하기
+
+        // 작품 좋아요 눌렀는지 확인하기
+        Users user = usersRepository.findById((long)userId)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
+        Artworks artwork = artworksRepository.findById(artworkId)
+                        .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_FOUND));
+
+        Boolean isLiked = usersArtworksLikeRepository.existsByUserAndArtwork(user, artwork);
+        artworkDetailResponse.isLiked(isLiked);
 
         return artworkDetailResponse;
     }

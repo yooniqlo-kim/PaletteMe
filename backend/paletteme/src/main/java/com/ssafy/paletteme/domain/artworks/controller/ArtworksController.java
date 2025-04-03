@@ -21,8 +21,9 @@ public class ArtworksController {
 
     @GetMapping("/{artworkId}")
     @Operation(summary = "작품 상세 조회", description = "artworkId에 해당하는 작품의 상세 정보를 조회")
-    public ApiResponse<ArtworkDetailResponse> getArtworkDetail(@Parameter(description = "작품 ID", required = true) @PathVariable String artworkId) {
-        ArtworkDetailResponse response = artworkService.getArtworkDetail(artworkId);
+    public ApiResponse<ArtworkDetailResponse> getArtworkDetail(@Parameter(hidden = true) @UserId int userId,
+                                                               @Parameter(description = "작품 ID", required = true) @PathVariable String artworkId) {
+        ArtworkDetailResponse response = artworkService.getArtworkDetail(userId, artworkId);
         return ApiResponse.success(response);
     }
 
