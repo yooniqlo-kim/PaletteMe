@@ -53,7 +53,7 @@ public class ReviewsController {
         return ApiResponse.success();
     }
 
-    @PostMapping("/reviews/{reviewId}/like")
+    @PostMapping("/{reviewId}/like")
     @Operation(summary = "리뷰 좋아요 등록", description = "reviewId에 해당하는 리뷰에 대해 사용자가 좋아요를 등록")
     public ApiResponse<Void> likeReview(@Parameter(hidden = true) @UserId int userId,
                                         @PathVariable int reviewId) {
@@ -61,7 +61,7 @@ public class ReviewsController {
         return ApiResponse.success();
     }
 
-    @PostMapping("/reviews/{reviewId}/cancel")
+    @PostMapping("/{reviewId}/cancel")
     @Operation(summary = "리뷰 좋아요 취소", description = "reviewId에 해당하는 리뷰에 대해 사용자가 눌렀던 좋아요를 취소")
     public ApiResponse<Void> cancelLikeReview(@Parameter(hidden = true) @UserId int userId,
                                               @PathVariable int reviewId) {
