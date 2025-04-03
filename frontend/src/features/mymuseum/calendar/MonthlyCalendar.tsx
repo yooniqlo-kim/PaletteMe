@@ -38,7 +38,7 @@ export default function MonthlyCalendar({
 
   return (
     <div
-      className="w-full max-w-[26.25rem] mx-auto px-3 py-10 pb-[3.75rem] bg-[var(--color-third)]"
+      className="w-full max-w-[26.25rem] mx-auto px-3 py-6 pb-[3.75rem] bg-[var(--color-third)]"
       style={{ borderRadius: "var(--radius-ps)" }}
     >
       {/* 상단 네비게이션 */}
