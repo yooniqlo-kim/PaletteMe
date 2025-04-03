@@ -54,7 +54,7 @@ public class DeleteElasticsearchIndex {
 
         // Logstash 실행 (외부 프로세스로)
         ProcessBuilder builder = new ProcessBuilder(
-                "docker", "compose", "-f", "els.yml", "up", "-d", "logstash"
+                "docker", "compose", "-f", "docker-compose.yaml", "up", "-d", "logstash"
         );
 
         // 에러 출력도 포함해서 실행 로그 보기
