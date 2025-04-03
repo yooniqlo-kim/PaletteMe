@@ -16,6 +16,7 @@ public class ReviewsWithArtworkResponses {
     private String createdAt;
     private String content;
     private int reviewLike;
+    private Boolean isLiked;
 
     @QueryProjection
     public ReviewsWithArtworkResponses(String imgUrl, String museumName, String title, String artist,
@@ -29,4 +30,9 @@ public class ReviewsWithArtworkResponses {
         this.content = content;
         this.reviewLike = reviewLike;
     }
+
+    public void updateIsLiked(boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+
 }

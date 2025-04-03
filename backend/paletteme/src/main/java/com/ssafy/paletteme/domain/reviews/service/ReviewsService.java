@@ -44,6 +44,15 @@ public class ReviewsService {
     @Transactional(readOnly = true)
     public ReviewsWithArtworkResponses  getReviewsWithArtwork(long userId, int reviewId) {
         ReviewsWithArtworkResponses reviewsWithArtworkResponses = reviewsRepository.getReviewsWithArtworkResponses(reviewId);
+
+        // 좋아요 눌렀는지 확인하기
+        Reviews reviews = reviewsRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewsException(ReviewsError.REVIEW_NOT_FOUND));
+        Users users = usersRepository.findById(userId)
+                .orElseThrow(() -> new ReviewsException(ReviewsError.USER_NOT_FOUND));
+        boolean isLiked = usersReviewLikeRepository.existsByUserAndReview(users, reviews);
+        reviewsWithArtworkResponses.updateIsLiked(isLiked);
+
         return reviewsWithArtworkResponses;
     }
 
