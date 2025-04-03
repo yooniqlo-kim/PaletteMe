@@ -36,7 +36,16 @@ Please respond in Korean within 500 characters or less.
         Integer createdYear = artwork.getCreatedYear();
 
         String userMessage = String.format(
-                "This artwork is titled '%s', created by '%s' in %s. Please provide a detailed explanation about it.",
+                """
+                I will give you artwork information. Assume the provided information is accurate and do not correct it. 
+                Based on this information, please give a detailed explanation about the artwork.
+                
+                - Title: '%s'
+                - Artist: '%s'
+                - Year: %s
+                
+                Respond in Korean within 500 characters.
+                """,
                 title, artist, createdYear
         );
 
