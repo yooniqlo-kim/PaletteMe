@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const AUTH_BASE_URL = "http://localhost:8080/api/users";
+const AUTH_BASE_URL = "http://70.12.246.134:8080/api/users";
 
 type dataType = {
   id: string;
@@ -15,6 +15,16 @@ type ResponseType = {
   errorCode: string;
   data: dataType | null;
 };
+
+// type SignUpType = {
+//   id: string;
+//   password: string;
+//   name: string;
+//   birthday: number;
+//   nickname: string;
+//   artworkId: string[];
+//   color: string[];
+// };
 
 export async function login(data: { id: string; password: string }) {
   const formData = new FormData();
