@@ -12,6 +12,8 @@ import { updateField } from "@/store/formSlice";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import { useNavigate } from "react-router";
 import { useFormDispatch } from "@/store/hooks";
+import useToast from "@/shared/hooks/useToast";
+import { checkNickname } from "@/shared/api/register";
 
 type FormValues = {
   imageUrl: FileList;
@@ -26,11 +28,16 @@ export default function RegisterImagePage() {
     register,
     handleSubmit,
     watch,
+    trigger,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({ mode: "onChange" });
   const [imagePreview, setImagePreview] = useState<string | null>();
+  const [nicknameMsg, setNicknameMsg] = useState<string>();
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
 
   const image = watch("imageUrl");
+  const watchNickname = watch("nickname");
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (image && image.length > 0) {
@@ -46,8 +53,27 @@ export default function RegisterImagePage() {
     event.preventDefault();
   }
 
+  async function handleCheckNickname() {
+    const isValid = trigger("nickname");
+
+    if (!isValid) return;
+
+    try {
+      const response = await checkNickname({ nickname: watchNickname });
+      const { success, errorMsg } = response.data;
+      setNicknameMsg(success ? "유효한 닉네임입니다." : errorMsg);
+      setIsNicknameValid(success ? true : false);
+    } catch (error) {
+      showToast({
+        message: "닉네임 중복 체크 중 오류가 발생했습니다.",
+        type: "error",
+      });
+    }
+  }
+
   function onSubmit(data: FormValues) {
     console.log(data);
+    console.log("IMAGE,", data.imageUrl[0]);
     dispatch(
       updateField({
         imageUrl:
@@ -83,28 +109,34 @@ export default function RegisterImagePage() {
         <InputContainer>
           <Label htmlFor="nickname">닉네임</Label>
           <span className="flex justify-between w-full gap-4">
-            <Input
-              {...register("nickname", {
-                required: "닉네임은 필수값입니다.",
-                minLength: {
-                  value: 2,
-                  message: "닉네임은 두 자 이상 입력해야 합니다.",
-                },
-                maxLength: {
-                  value: 20,
-                  message: "닉네임은 최대 20자까지 가능합니다.",
-                },
-              })}
-              id="nickname"
-              type="text"
-              placeholder="2자 이상 20자 이하로 입력해주세요"
-              fallback={errors.nickname && errors.nickname.message}
-            />
-
-            <Button size="XS">중복 확인</Button>
+            <div className="flex flex-col grow">
+              <Input
+                {...register("nickname", {
+                  required: "닉네임은 필수값입니다.",
+                  minLength: {
+                    value: 2,
+                    message: "닉네임은 두 자 이상 입력해야 합니다.",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "닉네임은 최대 20자까지 가능합니다.",
+                  },
+                })}
+                id="nickname"
+                type="text"
+                placeholder="2자 이상 20자 이하로 입력해주세요"
+                fallback={errors.nickname && errors.nickname.message}
+              />
+              {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
+            </div>
+            <Button size="XS" onClick={handleCheckNickname}>
+              중복 확인
+            </Button>
           </span>
         </InputContainer>
-        <Button size="L" disabled={!isValid || isSubmitting}>
+        <Button
+          size="L"
+          disabled={!isNicknameValid || !isValid || isSubmitting}>
           다음으로
         </Button>
       </form>
