@@ -14,16 +14,18 @@ public class ReviewSummaryResponse {
     private String createdAt;
     private String content;
     private int reviewLike;
+    private Boolean isLiked;
 
     @QueryProjection
     public ReviewSummaryResponse(int reviewId, String nickname, String userImg,
-                                 String createdAt, String content, int reviewLike) {
+                                 String createdAt, String content, int reviewLike, Boolean isLiked) {
         this.reviewId = reviewId;
         this.nickname = nickname;
         this.userImg = userImg;
         this.createdAt = createdAt;
         this.content = content;
         this.reviewLike = reviewLike;
+        this.isLiked = isLiked;
     }
 
 }
