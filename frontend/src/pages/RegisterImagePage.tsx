@@ -16,7 +16,7 @@ import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 
 type FormValues = {
-  imageUrl: FileList;
+  image: FileList;
   nickname: string;
 };
 
@@ -35,7 +35,7 @@ export default function RegisterImagePage() {
   const [nicknameMsg, setNicknameMsg] = useState<string>();
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
 
-  const image = watch("imageUrl");
+  const image = watch("image");
   const watchNickname = watch("nickname");
   const { showToast } = useToast();
 
@@ -72,12 +72,12 @@ export default function RegisterImagePage() {
   }
 
   function onSubmit(data: FormValues) {
-    console.log(data);
-    console.log("IMAGE,", data.imageUrl[0]);
+    // console.log(URL.createObjectURL(data.image[0]));
+
     dispatch(
       updateField({
         imageUrl:
-          data.imageUrl.length === 0 ? defaultImg : data.imageUrl[0].name,
+          data.image.length === 0 ? null : URL.createObjectURL(data.image[0]),
         nickname: data.nickname,
       })
     );
@@ -89,7 +89,7 @@ export default function RegisterImagePage() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-8 w-full">
         <h2 className="text-lg font-semibold">프로필 설정</h2>
-        <Label htmlFor="imageUrl">
+        <Label htmlFor="image">
           <span className="relative">
             <UserImage userImg={imagePreview || defaultImg} />
             <span className="absolute bottom-0 left-20 z-10">
@@ -100,8 +100,8 @@ export default function RegisterImagePage() {
           </span>
         </Label>
         <Input
-          {...register("imageUrl")}
-          id="imageUrl"
+          {...register("image")}
+          id="image"
           type="file"
           accept="image/*"
           className="hidden"
@@ -129,7 +129,7 @@ export default function RegisterImagePage() {
               />
               {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
             </div>
-            <Button size="XS" onClick={handleCheckNickname}>
+            <Button size="XS" onClick={handleCheckNickname} type="button">
               중복 확인
             </Button>
           </span>

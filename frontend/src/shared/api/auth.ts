@@ -16,15 +16,16 @@ type ResponseType = {
   data: dataType | null;
 };
 
-// type SignUpType = {
-//   id: string;
-//   password: string;
-//   name: string;
-//   birthday: number;
-//   nickname: string;
-//   artworkId: string[];
-//   color: string[];
-// };
+type SignUpType = {
+  id: string;
+  password: string;
+  name: string;
+  birthday: number;
+  nickname: string;
+  artworkId: string[];
+  color: string[];
+  imageUrl: string;
+};
 
 export async function login(data: { id: string; password: string }) {
   const formData = new FormData();
@@ -41,4 +42,8 @@ export async function login(data: { id: string; password: string }) {
     }
   );
   return response;
+}
+
+export async function signup(data: SignUpType) {
+  const formData = new FormData();
 }
