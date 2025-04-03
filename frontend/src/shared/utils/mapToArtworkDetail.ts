@@ -15,8 +15,8 @@ export const mapToArtworkDetail = (
     description: data.description,
 
     likeCount: data.like ?? 0,
-    isLiked: false, // api 수정되면 고치기
-    isBookmarked: false, // api 수정되면 고치기
-    hasWrittenComment: null, // api 수정되면 고치기
+    isLiked: data.isLiked,
+    isBookmarked: data.isBookMarked,
+    hasWrittenComment: data.myReviewId != null ? String(data.myReviewId) : null,
   };
 };
