@@ -1,16 +1,13 @@
-// 날짜 기반으로 감상문 요약 정보
+// 주간 달력에 필요한 감상문 요약 정보 (프론트 전용 구조)
 export interface WeeklyReview {
-    date: string;         // YYYY-MM-DD
-    artworkId: string;
-    imgUrl: string;
-    reviewId: number;
-  }
-  
-  // 주간 달력 데이터 형태
-  export type CalendarDay = {
-    date: string;         // YYYY-MM-DD
-    artworkId?: string;
-    imageUrl?: string;
-    commentId?: string;   // 프론트 내부 식별용 (백엔드 -> reviewId / 프론트 -> commentId)
-  };
-  
+  date: string;         // YYYY-MM-DD
+  reviewId: number;
+  imgUrl: string;
+}
+
+// 주간 달력 렌더링에 사용되는 날짜 정보 구조
+export type CalendarDay = {
+  date: string;          // YYYY-MM-DD
+  reviewId?: number;
+  imgUrl?: string;
+};
