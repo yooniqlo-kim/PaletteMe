@@ -40,13 +40,13 @@ public class ArtworkSearchServiceImpl implements ArtworkSearchService {
         if (!ko.isEmpty()) {
             shouldQueries.add(Query.of(q -> q.match(m -> m.field("kor_title").query(ko))));
             shouldQueries.add(Query.of(q -> q.match(m -> m.field("kor_artist").query(ko))));
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("description.ko").query(ko))));
+            //shouldQueries.add(Query.of(q -> q.match(m -> m.field("description.ko").query(ko))));
         }
 
         if (!en.isEmpty()) {
             shouldQueries.add(Query.of(q -> q.match(m -> m.field("en_title").query(en))));
             shouldQueries.add(Query.of(q -> q.match(m -> m.field("en_artist").query(en))));
-            shouldQueries.add(Query.of(q -> q.match(m -> m.field("description.en").query(en))));
+            //shouldQueries.add(Query.of(q -> q.match(m -> m.field("description.en").query(en))));
         }
 
         // 언어 상관 없이 original에서 검색
