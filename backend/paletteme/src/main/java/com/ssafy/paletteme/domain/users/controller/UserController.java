@@ -2,10 +2,7 @@ package com.ssafy.paletteme.domain.users.controller;
 
 import com.ssafy.paletteme.common.response.ApiResponse;
 import com.ssafy.paletteme.common.security.annotation.UserId;
-import com.ssafy.paletteme.domain.users.dto.PhoneNumberRequest;
-import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
-import com.ssafy.paletteme.domain.users.dto.VerificationRequest;
-import com.ssafy.paletteme.domain.users.dto.CheckIdRequest;
+import com.ssafy.paletteme.domain.users.dto.*;
 import com.ssafy.paletteme.domain.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -63,5 +60,12 @@ public class UserController {
     @GetMapping(value = "/token-test")
     public ApiResponse<Integer> tokenTest(@Parameter(hidden = true) @UserId int userId){
         return ApiResponse.success(userId);
+    }
+
+    @Operation(summary = "닉네임 중복 확인", description = "사용자가 입력한 닉네임이 이미 존재하는지 확인.")
+    @PostMapping("/check-nickname")
+    public ApiResponse<Void> checkNickname(@RequestBody CheckNicknameRequest request) {
+        userService.checkNickname(request);
+        return ApiResponse.success();
     }
 }
