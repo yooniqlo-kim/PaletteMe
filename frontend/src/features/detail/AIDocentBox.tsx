@@ -4,16 +4,25 @@ type AIDocentBoxProps = {
   onFetchExplanation: () => Promise<string>;
 };
 
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
   const [loading, setLoading] = useState(false);
   const [aiText, setAiText] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   const handleClick = async () => {
     if (loading || aiText) return; // 중복 방지
     setLoading(true);
+    setError(false);
+
     try {
-      const text = await onFetchExplanation();
+      const [text] = await Promise.all([onFetchExplanation(), delay(1200)]);
       setAiText(text);
+    } catch (err) {
+      console.error("AI 설명 로딩 실패", err);
+      setAiText("AI 설명을 가져오지 못했습니다.");
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -28,9 +37,11 @@ export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
 
   const balloonColor = loading
     ? "bg-primary/60 text-white font-semibold animate-pulse"
+    : error
+    ? "bg-gray-300 text-red-500 font-semibold"
     : isInitial
     ? "bg-primary text-white cursor-pointer font-semibold"
-    : "bg-[#FFEAEA] text-black font-normal text-xs";
+    : "bg-[#FFEAEA] text-black font-normal";
 
   return (
     <div className="space-y-4">
