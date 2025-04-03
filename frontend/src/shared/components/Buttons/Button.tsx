@@ -25,7 +25,6 @@ export default function Button({
 
   return (
     <button
-      type="button"
       className={`w-full h-12 bg-primary hover:bg-primary-hover font-semibold text-white rounded-ps py-1 box-border cursor-pointer ${style} ${className} ${
         props.disabled
           ? "bg-primary-inactive hover:bg-primary-inactive"
