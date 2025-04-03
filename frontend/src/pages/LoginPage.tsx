@@ -3,6 +3,7 @@ import Button from "@/shared/components/buttons/Button";
 import Input from "@/shared/components/form/Input";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import loginLogo from "@/assets/logos/MainLogo_500x80.svg";
 
 type LoginFormValues = {
   id: string;
@@ -22,7 +23,11 @@ export default function LoginPage() {
       <form
         onSubmit={handleSubmit(handleLogin)}
         className="w-70 flex flex-col justify-center items-center gap-16">
-        <h2 className="font-extrabold text-lg text-primary">PaletteMe</h2>
+        <img
+          src={loginLogo}
+          alt="PaletteMe Logo"
+          className="w-[220px] h-[60px]"
+        />
         <div className="w-full flex flex-col gap-10">
           <Input
             {...register("id", { required: "아이디는 필수값입니다." })}
