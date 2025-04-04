@@ -7,6 +7,7 @@ import IconButton from "@/shared/components/buttons/IconButton";
 import IconThreeDots from "@/shared/components/icons/IconThreeDots";
 import DropdownMenu from "./CommentDropdown";
 import IconThumb from "@/shared/components/icons/IconThumb";
+import { likeComment, cancelLikeComment } from "@/shared/api/comment";
 
 import { WriterMeta } from "@/shared/components/comments/WriterMeta";
 import { BaseComment } from "@/shared/types/comment";
@@ -20,9 +21,26 @@ export function CommentDetail({ comment, artwork }: Props) {
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
   const [isLiked, setIsLiked] = useState(false); // 좋아요 상태 관리
 
-  const toggleLike = () => {
-    setIsLiked((prev) => !prev); // 좋아요 상태 토글
-    setLikeCount((prev: number) => (isLiked ? prev - 1 : prev + 1));
+  const toggleLike = async () => {
+    const next = !isLiked;
+
+    // Optimistic UI: 상태 먼저 변경
+    setIsLiked(next);
+    setLikeCount((prev) => (next ? prev + 1 : prev - 1));
+
+    try {
+      if (next) {
+        await likeComment(comment.commentId);
+      } else {
+        await cancelLikeComment(comment.commentId);
+      }
+    } catch (error) {
+      console.error("좋아요 처리 실패", error);
+
+      // 롤백
+      setIsLiked(!next);
+      setLikeCount((prev) => (!next ? prev + 1 : prev - 1));
+    }
   };
 
   return (

@@ -81,3 +81,12 @@ export const mapReviewsToMonthlyCalendar = (
 export const getWrappedMonthString = () => {
   return dayjs().subtract(1, "month").format("YYYY년 M월");
 };
+
+// 감상문 날짜 변환용
+export const formatDate = (isoString: string): string => {
+  const date = new Date(isoString);
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  return `${year}.${month}.${day}`;
+};

@@ -70,7 +70,8 @@ export function ArtworkDetail({ artwork }: Props) {
 
   useEffect(() => {
     fetchComments();
-  }, [fetchComments]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!observerRef.current || !hasMore) return;
@@ -123,14 +124,26 @@ export function ArtworkDetail({ artwork }: Props) {
   };
 
   const handleLikeChange = (commentId: string, isLiked: boolean) => {
-    console.log(`감상문 ${commentId} 좋아요 상태 변경됨: ${isLiked}`);
+    setComments((prev) =>
+      prev.map((comment) =>
+        comment.commentId === commentId
+          ? {
+              ...comment,
+              isLiked,
+              likeCount: isLiked
+                ? comment.likeCount + 1
+                : comment.likeCount - 1,
+            }
+          : comment
+      )
+    );
   };
 
   const handleFloatingClick = () => {
     if (artwork.hasWrittenComment) {
-      navigate(`/comment/${artwork.hasWrittenComment}`);
+      navigate(`/comments/${artwork.hasWrittenComment}`);
     } else {
-      navigate(`/comment/write/${artwork.artworkId}`);
+      navigate(`/comments/write/${artwork.artworkId}`, { state: { artwork } });
     }
   };
 
