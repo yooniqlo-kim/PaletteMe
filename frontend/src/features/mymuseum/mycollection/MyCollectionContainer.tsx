@@ -20,8 +20,8 @@ export default function MyCollections({ images }: Props) {
           artwork={{
             artworkId: item.artworkId,
             artworkImageUrl: item.imgUrl,
-            title: item.title,
-            artist: item.artist,
+            title: item.title ?? "제목 없음",
+            artist: item.artist ?? "작가 미상",
             isLiked: item.isLiked, 
           }}
           size="small"
