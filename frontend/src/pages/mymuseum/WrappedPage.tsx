@@ -38,10 +38,10 @@ export default function WrappedPage() {
   if (loading || !wrappedData) return <div>로딩 중...</div>;
 
   const {
-    favoriteArtist,
+    favoriteArtwork,
     reviewRank,
     mostMemorableArtwork,
-    review_based_recommendations
+    review_based_recommendations = [],
   } = wrappedData;
 
   return (
@@ -51,28 +51,20 @@ export default function WrappedPage() {
           <WrappedStep
             currentStep={currentStep}
             onNext={handleNext}
-            artistName={favoriteArtist.artist}
+            artistName={favoriteArtwork.artist}
             reviewCnt={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
             reviewRank={reviewRank.myRank}
-            favoriteName={mostMemorableArtwork.title}
-            favoriteArtist={mostMemorableArtwork.artist}
-            favoriteImg={mostMemorableArtwork.imgUrl}
-            recommendedArtwork={review_based_recommendations.map(item => item.title)}
-            recommendedArtist={review_based_recommendations.map(item => item.artist)}
-            recommendedImg={review_based_recommendations.map(item => item.imgUrl)}
+            favoriteArtwork={mostMemorableArtwork}
+            recommendations={review_based_recommendations}
           />
         ) : (
           <WrappedEnd
-            reviewCount={reviewRank.reviewCount} 
+            reviewCount={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
-            artistName={favoriteArtist.artist}
-            favoriteName={mostMemorableArtwork.title}
-            favoriteArtist={mostMemorableArtwork.artist}
-            favoriteImg={mostMemorableArtwork.imgUrl}
-            recommendedArtwork={review_based_recommendations.map(item => item.title)}
-            recommendedArtist={review_based_recommendations.map(item => item.artist)}
-            recommendedImg={review_based_recommendations.map(item => item.imgUrl)}
+            artistName={favoriteArtwork.artist}
+            favoriteArtwork={mostMemorableArtwork}
+            recommendations={review_based_recommendations}
           />
         )}
       </div>

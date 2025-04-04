@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import wrapped01 from '@/assets/images/wrapped01.jpg';
 import wrapped02 from '@/assets/images/wrapped02.jpg';
 import wrapped03 from '@/assets/images/wrapped03.jpg';
@@ -9,6 +8,8 @@ import WrappedProgressBar from '@/shared/components/progressbar/WrappedProgressB
 import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
 import { getWrappedMonthString } from '@/shared/utils/date';
 
+import { Recommendation } from '@/shared/api/wrapped';
+
 interface Props {
   currentStep: number;
   onNext: () => void;
@@ -16,12 +17,12 @@ interface Props {
   reviewCnt: number;
   reviewPercentage: number;
   reviewRank: number;
-  favoriteName: string;
-  favoriteArtist: string;
-  favoriteImg: string;
-  recommendedArtwork: string[];
-  recommendedArtist: string[];
-  recommendedImg: string[];
+  favoriteArtwork: {
+    title: string;
+    artist: string;
+    imgUrl: string;
+  };
+  recommendations: Recommendation[];
 }
 
 export default function WrappedStep({
@@ -31,12 +32,8 @@ export default function WrappedStep({
   reviewCnt,
   reviewPercentage,
   reviewRank,
-  favoriteName,
-  favoriteArtist,
-  favoriteImg,
-  recommendedArtwork,
-  recommendedArtist,
-  recommendedImg,
+  favoriteArtwork,
+  recommendations,
 }: Props) {
   const [isReady, setIsReady] = useState(false);
 
@@ -107,59 +104,55 @@ export default function WrappedStep({
           </>
         )}
 
-        {currentStep === 3 && favoriteImg && (
+        {currentStep === 3 && favoriteArtwork?.imgUrl && (
           <>
             <h2 className="max-w-[300px] w-full mx-auto">가장 인상깊게 본 작품은</h2>
             <ArtworkCard
               artwork={{
                 artworkId: 'wrapped-favorite',
-                artworkImageUrl: favoriteImg,
-                title: favoriteName || '',
+                artworkImageUrl: favoriteArtwork.imgUrl,
+                title: favoriteArtwork.title,
                 isLiked: false,
-                artist: favoriteArtist || '',
+                artist: favoriteArtwork.artist,
               }}
               size="large"
               theme="light"
               hasBorder
             />
-            <p className="mt-2">작가: {favoriteArtist}</p>
-            <p className="mt-2">작품이름: {favoriteName}</p>
+            <p className="mt-2">작가: {favoriteArtwork.artist}</p>
+            <p className="mt-2">작품이름: {favoriteArtwork.title}</p>
           </>
         )}
 
-        {currentStep === 4 &&
-          recommendedImg &&
-          recommendedImg.length >= 2 &&
-          recommendedArtwork &&
-          recommendedArtist && (
-            <>
-              <h2 className="text-xl mb-4">당신에게 추천하는 작품이에요</h2>
-              <div className="flex flex-wrap justify-center gap-4">
-                {[0, 1].map((i) => (
-                  <div key={i} className="w-full max-w-[140px]">
-                    <ArtworkCard
-                      artwork={{
-                        artworkId: `wrapped-reco-${i}`,
-                        artworkImageUrl: recommendedImg[i],
-                        title: recommendedArtwork[i] || '',
-                        isLiked: false,
-                        artist: recommendedArtist[i] || '',
-                      }}
-                      size="small"
-                      theme="light"
-                      hasBorder
-                    />
-                  </div>
-                ))}
-              </div>
-              <p className="mt-2">
-                작가: {recommendedArtist[0]}, {recommendedArtist[1]}
-              </p>
-              <p className="mt-2">
-                작품이름: {recommendedArtwork[0]}, {recommendedArtwork[1]}
-              </p>
-            </>
-          )}
+        {currentStep === 4 && recommendations.length >= 2 && (
+          <>
+            <h2 className="text-xl mb-4">당신에게 추천하는 작품이에요</h2>
+            <div className="flex flex-wrap justify-center gap-4">
+              {[0, 1].map((i) => (
+                <div key={i} className="w-full max-w-[140px]">
+                  <ArtworkCard
+                    artwork={{
+                      artworkId: `wrapped-reco-${i}`,
+                      artworkImageUrl: recommendations[i].imgUrl,
+                      title: recommendations[i].title,
+                      isLiked: false,
+                      artist: recommendations[i].artist,
+                    }}
+                    size="small"
+                    theme="light"
+                    hasBorder
+                  />
+                </div>
+              ))}
+            </div>
+            <p className="mt-2">
+              작가: {recommendations[0].artist}, {recommendations[1].artist}
+            </p>
+            <p className="mt-2">
+              작품이름: {recommendations[0].title}, {recommendations[1].title}
+            </p>
+          </>
+        )}
       </div>
     </div>
   );

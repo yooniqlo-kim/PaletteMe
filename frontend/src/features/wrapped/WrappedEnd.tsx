@@ -2,28 +2,26 @@ import { useNavigate } from 'react-router-dom';
 import wrapped06 from '@/assets/images/wrapped06.jpg';
 import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
 import { DownloadIcon } from 'lucide-react';
+import { Recommendation } from '@/shared/api/wrapped';
 
 interface WrappedEndProps {
   reviewCount: number;
   reviewPercentage: number;
   artistName: string;
-  favoriteName: string;
-  favoriteArtist: string;
-  favoriteImg: string;
-  recommendedArtwork: string[];
-  recommendedArtist: string[];
-  recommendedImg: string[];
+  favoriteArtwork: {
+    title: string;
+    artist: string;
+    imgUrl: string;
+  };
+  recommendations: Recommendation[];
 }
 
 export default function WrappedEnd({
   reviewCount,
   reviewPercentage,
   artistName,
-  favoriteName,
-  favoriteArtist,
-  favoriteImg,
-  recommendedArtwork = [],
-  recommendedArtist = [],
+  favoriteArtwork,
+  recommendations = [],
 }: WrappedEndProps) {
   const navigate = useNavigate();
 
@@ -45,10 +43,10 @@ export default function WrappedEnd({
               <ArtworkCard
                 artwork={{
                   artworkId: "fake-id",
-                  artworkImageUrl: favoriteImg,
-                  title: favoriteName || "",
+                  artworkImageUrl: favoriteArtwork.imgUrl,
+                  title: favoriteArtwork.title,
                   isLiked: false,
-                  artist: favoriteArtist || "",
+                  artist: favoriteArtwork.artist,
                 }}
                 size="small"
                 theme="light"
@@ -77,16 +75,16 @@ export default function WrappedEnd({
 
             <div>
               <p className="text-sm text-gray-600 mb-1">추천 작품</p>
-              {recommendedArtwork.length > 0 && (
+              {recommendations[0] && (
                 <>
-                  <p className="text-base font-bold text-primary">{recommendedArtwork[0]}</p>
-                  <p className="text-sm text-gray-700">{recommendedArtist[0]}</p>
+                  <p className="text-base font-bold text-primary">{recommendations[0].title}</p>
+                  <p className="text-sm text-gray-700">{recommendations[0].artist}</p>
                 </>
               )}
-              {recommendedArtwork.length > 1 && (
+              {recommendations[1] && (
                 <>
-                  <p className="mt-2 text-base font-bold text-primary">{recommendedArtwork[1]}</p>
-                  <p className="text-sm text-gray-700">{recommendedArtist[1]}</p>
+                  <p className="mt-2 text-base font-bold text-primary">{recommendations[1].title}</p>
+                  <p className="text-sm text-gray-700">{recommendations[1].artist}</p>
                 </>
               )}
             </div>
