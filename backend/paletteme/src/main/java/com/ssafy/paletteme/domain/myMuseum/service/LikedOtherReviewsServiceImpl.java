@@ -16,8 +16,8 @@ public class LikedOtherReviewsServiceImpl implements LikedOtherReviewsService {
     private final MyReviewsRepository  myReviewsRepository;
 
     @Override
-    public List<LikedOtherReviewsResponse> getLikedOtherReviews(Integer cursor, int size) {
-        List<LikedOtherReviewsResponse> responses = myReviewsRepository.getLikedOtherReviews(cursor, size);
+    public List<LikedOtherReviewsResponse> getLikedOtherReviews(int userId, Integer cursor, int size) {
+        List<LikedOtherReviewsResponse> responses = myReviewsRepository.getLikedOtherReviews(userId, cursor, size);
 
         if(responses.isEmpty()){
             throw new MyReviewException(MyReviewError.EMPTY_MY_REVIEW);
