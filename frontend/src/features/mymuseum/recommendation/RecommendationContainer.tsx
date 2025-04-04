@@ -3,32 +3,45 @@ import RecommendedFilterChips from "./RecommendedFilterChips";
 import RecommendationArtworks from "./RecommendationArtworks";
 
 import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
-import { mapRecommendedToArtwork } from "@/shared/types/recommendation";
+import type { RecommendationFilter, RecommendedArtwork } from "@/shared/api/recommendation";
+import { mapRecommendedToArtwork } from "@/shared/utils/mapRecommendedToArtwork";
+import { fetchRecommendationsByFilter } from "@features/mymuseum/recommendation/api/fetchRecommendationsByFilter";
 import type { BaseArtwork } from "@/shared/types/artwork";
 
 export default function RecommendationContainer() {
-  const [selectedFilter, setSelectedFilter] = useState<string>("age");
+  const [selectedFilter, setSelectedFilter] = useState<RecommendationFilter>("age");
   const [artworks, setArtworks] = useState<BaseArtwork[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!selectedFilter) {
-      setArtworks([]);
-      return;
-    }
-
-    // ✅ 추천 작품 메타 → artwork 타입으로 변환
-    const raw = recommendationDummy[selectedFilter] || [];
-    const mapped = raw.map(mapRecommendedToArtwork);
-    setArtworks(mapped);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const dummyOrApiData: RecommendedArtwork[] =
+          selectedFilter === "age"
+            ? recommendationDummy.age
+            : await fetchRecommendationsByFilter(selectedFilter);
+  
+        const mapped = dummyOrApiData.map(mapRecommendedToArtwork) as (BaseArtwork & { isLiked?: boolean })[];
+        setArtworks(mapped);
+      } catch (err) {
+        console.error("추천 작품 로딩 실패:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    fetchData();
   }, [selectedFilter]);
+  
 
   return (
     <div>
       <RecommendedFilterChips
         selected={selectedFilter}
-        onSelect={setSelectedFilter}
+        onSelect={(value) => setSelectedFilter(value as RecommendationFilter)}
       />
-      <RecommendationArtworks key={selectedFilter} artworks={artworks} />
+      <RecommendationArtworks key={selectedFilter} artworks={artworks} isLoading={isLoading} />
     </div>
   );
 }
