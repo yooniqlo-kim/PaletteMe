@@ -22,13 +22,16 @@ public class RedisService {
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+
     public void set(String key, String value, Duration timeout) {
         redisTemplate.opsForValue().set(key, value, timeout);
     }
 
+
     public String get(String key) {
         return redisTemplate.opsForValue().get(key);
     }
+
 
     public List<ArtworkRecommendationResponse> getAllArtworkRecommendations() {
         Set<String> keys = redisTemplate.keys("recommend:artwork:*");
@@ -43,24 +46,27 @@ public class RedisService {
                 .collect(Collectors.toList());
     }
 
+
     public void delete(String key) {
         redisTemplate.delete(key);
     }
+
 
     public boolean hasKey(String key) {
         return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 
 
-    public void saveUserStats(UserStats userStats, Duration timeout) {
+    public void saveUserStats(UserStats userStats) {
         String key = "user:stats:" + userStats.getUserId();
         try {
             String value = objectMapper.writeValueAsString(userStats);
-            redisTemplate.opsForValue().set(key, value, timeout);
+            redisTemplate.opsForValue().set(key, value, Duration.ofDays(1));
         } catch (JsonProcessingException e) {
             throw new RuntimeException("UserStats 직렬화 실패", e);
         }
     }
+
 
     public UserStats getUserStats(int userId) {
         String key = "user:stats:" + userId;
@@ -74,4 +80,5 @@ public class RedisService {
             throw new RuntimeException("UserStats 역직렬화 실패", e);
         }
     }
+
 }

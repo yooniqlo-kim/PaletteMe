@@ -7,6 +7,7 @@ import com.ssafy.paletteme.common.security.filter.JWTFilter;
 import com.ssafy.paletteme.common.security.filter.LoginFilter;
 import com.ssafy.paletteme.common.security.jwt.JwtUtil;
 import com.ssafy.paletteme.domain.users.service.UserStatsService;
+import com.ssafy.paletteme.domain.users.utils.UsersGradeUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +40,7 @@ public class SecurityConfig {
     // 필요한 Service들
     private final UserStatsService userStatsService;
     private final RedisService redisService;
+    private final UsersGradeUpdater usersGradeUpdater;
 
     // 비밀번호 암호화
     @Bean
@@ -72,7 +74,7 @@ public class SecurityConfig {
         );
 
         /* 인증 필터 추가, /api/users/login에서만 해당 필터 작동 */
-        LoginFilter loginFilter = new LoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil, redisService, userStatsService);
+        LoginFilter loginFilter = new LoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil, redisService, userStatsService, usersGradeUpdater);
         loginFilter.setFilterProcessesUrl("/users/login");
         http.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 

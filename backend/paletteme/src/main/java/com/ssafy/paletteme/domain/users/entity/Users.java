@@ -93,5 +93,9 @@ public class Users {
     public void increaseAttendance() {
         this.attendance++;
     }
+
+    public void updateGrade(UsersGrade grade) {
+        this.grade = grade;
+    }
 }
 

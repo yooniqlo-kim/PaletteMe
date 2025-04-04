@@ -9,6 +9,7 @@ import com.ssafy.paletteme.common.security.provider.CustomUserDetails;
 import com.ssafy.paletteme.domain.users.dto.UserLoginResponse;
 import com.ssafy.paletteme.domain.users.dto.UserStats;
 import com.ssafy.paletteme.domain.users.service.UserStatsService;
+import com.ssafy.paletteme.domain.users.utils.UsersGradeUpdater;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,8 +20,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 import java.io.IOException;
-import java.time.Duration;
 
 
 /*
@@ -44,12 +45,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final JwtUtil jwtUtil;
     private final RedisService redisService;
     private final UserStatsService userStatsService;
+    private final UsersGradeUpdater usersGradeUpdater;
 
-    public                                                                                                                                                                                                                                                                                                                                  LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RedisService redisService, UserStatsService  userStatsService) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RedisService redisService, UserStatsService  userStatsService, UsersGradeUpdater usersGradeUpdater) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.redisService = redisService;
         this.userStatsService = userStatsService;
+        this.usersGradeUpdater = usersGradeUpdater;
     }
 
     @Override
@@ -72,9 +75,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // Redis에 사용자의 등업 관련 정보 저장하기
         UserStats userStats = userStatsService.generateStatsForUser(userDetails.getUserId());
-        //TODO: 로그아웃 시 해당 데이터를 지워주고, 시간에 대한 설정은 추후에 수정하기
-        redisService.saveUserStats(userStats, Duration.ofDays(1));
+        usersGradeUpdater.updateUserGradeIfNeeded(userStats);
 
+        //TODO: 로그아웃 시 해당 데이터를 지워주고, 시간에 대한 설정은 추후에 수정하기
+        redisService.saveUserStats(userStats);
 
 
         // jwt 생성
