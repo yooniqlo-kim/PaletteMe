@@ -35,7 +35,10 @@ public class ArtworkLikeCommandService {
         usersArtworksLikeRepository.save(like);
 
         UsersArtworksLikeCnt likeCnt = usersArtworksLikeCntRepository.findByArtworkId(artworkId)
-                .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORKLIKECNT_NOT_FOUND));
-        likeCnt.increaseLikeCnt();
+                .orElseGet(() -> usersArtworksLikeCntRepository.save(UsersArtworksLikeCnt.of(artworkId)));
+
+        likeCnt.increaseLikeCnt(); // +1
+        usersArtworksLikeCntRepository.save(likeCnt);
+
     }
 }

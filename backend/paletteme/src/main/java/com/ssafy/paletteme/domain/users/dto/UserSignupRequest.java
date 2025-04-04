@@ -17,7 +17,7 @@ public class UserSignupRequest {
     private String id;
     private String password;
     private String name;
-    private int birthYear;
+    private int birthday;
     private String phoneNumber;
     private String nickname;
     private List<String> artworkId;
@@ -28,7 +28,7 @@ public class UserSignupRequest {
                 .loginId(id)
                 .password(encodedPassword)
                 .name(name)
-                .birthYear(birthYear)
+                .birthday(birthday)
                 .phoneNumber(phoneNumber)
                 .nickname(nickname)
                 .s3Url(s3Url)

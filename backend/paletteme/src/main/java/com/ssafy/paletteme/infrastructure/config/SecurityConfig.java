@@ -56,7 +56,7 @@ public class SecurityConfig {
                 // 명시한 url만 인가 없이 허용
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/users/sign-up", "/users/login", "users/phone/send", "/users/phone/send", "/users/phone/verify", "/users/check-id").permitAll()
+                                .requestMatchers("/users/sign-up", "/users/login", "users/phone/send", "/users/phone/send", "/users/phone/verify", "/users/check-id","/users/check-nickname","/users/recommend-artworks").permitAll()
 //                                .requestMatchers("/artworks/**").permitAll()
                                 .requestMatchers("/search/artworks").permitAll()
                                 .anyRequest().authenticated());

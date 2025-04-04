@@ -2,10 +2,7 @@ package com.ssafy.paletteme.domain.users.service;
 
 import com.ssafy.paletteme.common.redis.RedisService;
 import com.ssafy.paletteme.domain.artworks.service.command.ArtworkLikeCommandService;
-import com.ssafy.paletteme.domain.users.dto.CheckIdRequest;
-import com.ssafy.paletteme.domain.users.dto.S3UploadResponse;
-import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
-import com.ssafy.paletteme.domain.users.dto.VerificationRequest;
+import com.ssafy.paletteme.domain.users.dto.*;
 import com.ssafy.paletteme.domain.users.entity.*;
 import com.ssafy.paletteme.domain.users.exception.UserError;
 import com.ssafy.paletteme.domain.users.exception.UserException;
@@ -139,11 +136,24 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public void checkNickname(CheckNicknameRequest checkNicknameRequest) {
+        String nickname = checkNicknameRequest.getNickname();
+        if(usersRepository.existsByNickname(nickname)){
+            throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_NICKNAME);
+        }
+    }
 
     private String generate6DigitCode() {
         Random random = new Random();
         int code = 100000 + random.nextInt(900000); // 100000 ~ 999999
         return String.valueOf(code);
+    }
+
+
+    public List<ArtworkRecommendationResponse> getRecommendedArtworks() {
+        List<ArtworkRecommendationResponse> list= redisService.getAllArtworkRecommendations();
+        return list;
     }
 }
 // TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기

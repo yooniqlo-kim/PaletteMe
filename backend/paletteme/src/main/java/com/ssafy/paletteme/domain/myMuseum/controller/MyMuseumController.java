@@ -84,7 +84,7 @@ public class MyMuseumController {
             @RequestParam(required = false) Integer cursor,
             @RequestParam int size) {
 
-        List<LikedOtherReviewsResponse> responses = likedOtherReviewsService.getLikedOtherReviews(cursor, size);
+        List<LikedOtherReviewsResponse> responses = likedOtherReviewsService.getLikedOtherReviews(userId, cursor, size);
         return ApiResponse.success(responses);
     }
 }

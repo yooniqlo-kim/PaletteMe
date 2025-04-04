@@ -14,6 +14,7 @@ public class MyReviewsResponse {
     int likeCnt;
     String content;
     LocalDateTime createdAt;
+    String artworkId;
     String originalTitle;
     String originalArtist;
     String imageUrl;
@@ -21,11 +22,12 @@ public class MyReviewsResponse {
 
     @QueryProjection
     public MyReviewsResponse(int reviewId, int likeCnt, String content, LocalDateTime createdAt,
-                             String originalTitle, String originalArtist, String imageUrl, Boolean isLiked) {
+                             String artworkId,String originalTitle, String originalArtist, String imageUrl, Boolean isLiked) {
         this.reviewId = reviewId;
         this.likeCnt = likeCnt;
         this.content = content;
         this.createdAt = createdAt;
+        this.artworkId = artworkId;
         this.originalTitle = originalTitle;
         this.originalArtist = originalArtist;
         this.imageUrl = imageUrl;
