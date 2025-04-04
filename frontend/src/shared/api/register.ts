@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { BASE_URL } from "./baseUrl";
 
-const AUTH_BASE_URL = "http://70.12.246.134:8080/api/users";
+const AUTH_BASE_URL = `${BASE_URL}/users`;
 
 type ResponseType = {
   success: boolean;
@@ -42,4 +43,24 @@ export async function checkNickname(data: { nickname: string }) {
     data
   );
   return response;
+}
+
+export async function getArtworks() {
+  const response: AxiosResponse<{
+    success: boolean;
+    errorMsg: string | null;
+    errorCode: string | null;
+    data:
+      | Array<{ artworkId: string; imageUrl: string }>
+      | { artworkId: string; imageUrl: string }
+      | null;
+  }> = await axios.get(`${AUTH_BASE_URL}/recommend-artworks`);
+
+  const responseData = response.data.data;
+
+  return Array.isArray(responseData)
+    ? responseData
+    : responseData
+    ? [responseData]
+    : [];
 }
