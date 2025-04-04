@@ -3,7 +3,7 @@ import { ArtworkImage } from "../detail/ArtworkImage";
 import { ArtworkMeta } from "@/shared/components/artworks/ArtworkMeta";
 import { WhiteContainer } from "@/shared/components/textbox/WhiteRoundedContainer";
 import { DescriptionBox } from "../detail/DescriptionBox";
-import IconButton from "@/shared/components/Buttons/IconButton";
+import IconButton from "@/shared/components/buttons/IconButton";
 import IconThreeDots from "@/shared/components/icons/IconThreeDots";
 import DropdownMenu from "./CommentDropdown";
 import IconThumb from "@/shared/components/icons/IconThumb";

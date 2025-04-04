@@ -40,15 +40,13 @@ export const mapReviewsToWeeklyCalendar = (
     current.setDate(current.getDate() + i);
 
     const dateStr = current.toISOString().slice(0, 10); // YYYY-MM-DD
-
     const matchedReview = reviews.find((r) => r.date === dateStr);
 
     if (matchedReview) {
       days.push({
         date: matchedReview.date,
-        artworkId: matchedReview.artworkId,
-        imageUrl: matchedReview.imgUrl,
-        commentId: String(matchedReview.reviewId),
+        reviewId: matchedReview.reviewId,
+        imgUrl: matchedReview.imgUrl,
       });
     } else {
       days.push({ date: dateStr });
@@ -64,22 +62,20 @@ export const mapReviewsToMonthlyCalendar = (
   calendarDates: Date[]
 ): CalendarDay[] => {
   return calendarDates.map((date) => {
-    const dateStr = date.toISOString().slice(0, 10);
+    const dateStr = dayjs(date).format("YYYY-MM-DD");
     const matched = reviews.find((r) => r.date === dateStr);
 
     if (matched) {
       return {
         date: matched.date,
-        artworkId: matched.artworkId,
-        imageUrl: matched.imgUrl,
-        commentId: String(matched.reviewId),
+        reviewId: matched.reviewId,
+        imgUrl: matched.imgUrl,
       };
     } else {
       return { date: dateStr };
     }
   });
 };
-
 
 // Wrapped 페이지 타이틀용 (ex. "2025년 2월")
 export const getWrappedMonthString = () => {

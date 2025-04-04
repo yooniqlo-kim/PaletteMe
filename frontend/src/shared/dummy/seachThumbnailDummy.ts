@@ -1,10 +1,109 @@
-export const searchDummy = [
-    { id: 1, imageUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg", overlayText: "국립중앙박물관" },
-    { id: 2, imageUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg", overlayText: "인상주의" },
-    { id: 3, imageUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg", overlayText: "MOMA" },
-    { id: 4, imageUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg", overlayText: "모네" },
-    { id: 5, imageUrl: "", overlayText: "르누아르" },
-    { id: 6, imageUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg", overlayText: "르네상스" },
-    { id: 7, imageUrl: "", overlayText: "초현실주의" },
-    { id: 8, imageUrl: "", overlayText: "현대미술" },
-  ];
+import { ArtworkSearchItem } from "@shared/api/search";
+
+import recommended_search_thumbnail_monet from '@/assets/recommendations/recommended_search_thumbnail_monet.jpg';
+import recommended_search_thumbnail_picaso from '@/assets/recommendations/recommended_search_thumbnail_picaso.jpg';
+import recommended_search_thumbnail_manet from '@/assets/recommendations/recommended_search_thumbnail_manet.jpg';
+import recommended_search_thumbnail_cezanne from '@/assets/recommendations/recommended_search_thumbnail_cezanne.jpg';
+import recommended_search_thumbnail_goya from '@/assets/recommendations/recommended_search_thumbnail_goya.jpg';    
+import recommended_search_thumbnail_matisse from '@/assets/recommendations/recommended_search_thumbnail_matisse.jpg';
+import recommended_search_thumbnail_warhol from '@/assets/recommendations/recommended_search_thumbnail_warhol.jpg';
+import recommended_search_thumbnail_degas from '@/assets/recommendations/recommended_search_thumbnail_degas.jpg';
+
+export const searchDummy: ArtworkSearchItem[] = [
+  {
+    artworkId: "dummy_1",
+    korTitle: "클로드 모네",
+    originalTitle: "Claude Monet",
+    enTitle: "Claude Monet",
+    korArtist: "클로드 모네",
+    originalArtist: "Claude Monet",
+    enArtist: "Claude Monet",
+    imageUrl: recommended_search_thumbnail_monet,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_2",
+    korTitle: "파블로 피카소",
+    originalTitle: "Pablo Picasso",
+    enTitle: "Pablo Picasso",
+    korArtist: "파블로 피카소",
+    originalArtist: "Pablo Picasso",
+    enArtist: "Pablo Picasso",
+    imageUrl: recommended_search_thumbnail_picaso,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_3",
+    korTitle: "에두아르 마네",
+    originalTitle: "Édouard Manet",
+    enTitle: "Édouard Manet",
+    korArtist: "에두아르 마네",
+    originalArtist: "Édouard Manet",
+    enArtist: "Édouard Manet",
+    imageUrl: recommended_search_thumbnail_manet,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_4",
+    korTitle: "폴 세잔",
+    originalTitle: "Paul Cézanne",
+    enTitle: "Paul Cézanne",
+    korArtist: "폴 세잔",
+    originalArtist: "Paul Cézanne",
+    enArtist: "Paul Cézanne",
+    imageUrl: recommended_search_thumbnail_cezanne,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_5",
+    korTitle: "프란시스코 고야",
+    originalTitle: "Francisco Goya",
+    enTitle: "Francisco Goya",
+    korArtist: "프란시스코 고야",
+    originalArtist: "Francisco Goya",
+    enArtist: "Francisco Goya",
+    imageUrl: recommended_search_thumbnail_goya,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_6",
+    korTitle: "앙리 마티스",
+    originalTitle: "Henri Matisse",
+    enTitle: "Henri Matisse",
+    korArtist: "앙리 마티스",
+    originalArtist: "Henri Matisse",
+    enArtist: "Henri Matisse",
+    imageUrl: recommended_search_thumbnail_matisse,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_7",
+    korTitle: "앤디 워홀",
+    originalTitle: "Andy Warhol",
+    enTitle: "Andy Warhol",
+    korArtist: "앤디 워홀",
+    originalArtist: "Andy Warhol",
+    enArtist: "Andy Warhol",
+    imageUrl: recommended_search_thumbnail_warhol,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_8",
+    korTitle: "에드가 드가",
+    originalTitle: "Edgar Degas",
+    enTitle: "Edgar Degas",
+    korArtist: "에드가 드가",
+    originalArtist: "Edgar Degas",
+    enArtist: "Edgar Degas",
+    imageUrl: recommended_search_thumbnail_degas,
+    score: 0,
+    isLiked: false,
+  },
+];

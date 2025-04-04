@@ -1,5 +1,5 @@
 export type BaseUser = {
-  userId: string;
+  userId?: string;
   profileImageUrl: string;
   nickname: string;
 };
