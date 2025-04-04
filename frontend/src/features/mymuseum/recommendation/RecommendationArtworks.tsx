@@ -7,91 +7,88 @@ import { useNavigate } from "react-router-dom";
 
 type Props = {
   artworks: BaseArtwork[];
-  onReachEnd?: () => void;
   isLoading?: boolean;
 };
 
-export default function RecommendationArtworks({
-  artworks,
-  onReachEnd,
-}: Props) {
+export default function RecommendationArtworks({ artworks }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setCurrentIndex(0);
+    setCurrentIndex(0); // 인덱스 초기화
   }, [artworks]);
 
   const currentArtwork = artworks[currentIndex];
-  const isLast = currentIndex === artworks.length - 1;
 
   const showPrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prev) => prev - 1);
-    }
+    setCurrentIndex((prev) =>
+      prev === 0 ? artworks.length - 1 : prev - 1
+    );
   };
 
   const showNext = () => {
-    if (!isLast) {
-      setCurrentIndex((prev) => prev + 1);
-    }
-    if (isLast && onReachEnd) {
-      onReachEnd();
-    }
+    setCurrentIndex((prev) =>
+      (prev + 1) % artworks.length
+    );
   };
 
   const toggleLike = (id: string) => {
     setLikedArtworks((prev) =>
-      prev.includes(id) ? prev.filter((artId) => artId !== id) : [...prev, id]
+      prev.includes(id)
+        ? prev.filter((artId) => artId !== id)
+        : [...prev, id]
     );
   };
 
   return (
-    <div className="relative mt-4 w-fit mx-auto">
+    <div className="mt-4 w-full flex justify-center items-center gap-4 px-4">
       {/* 왼쪽 화살표 */}
       <button
         onClick={showPrev}
-        disabled={currentIndex === 0}
-        className="absolute left-[-3rem] top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default
-                  w-10 h-10 max-[640px]:w-8 max-[640px]:h-8 max-[500px]:w-6 max-[500px]:h-6 flex items-center justify-center"
+        disabled={artworks.length === 0}
+        className="w-10 h-10 max-sm:w-8 max-sm:h-8 max-[500px]:w-6 max-[500px]:h-6 
+                 flex items-center justify-center disabled:opacity-30 disabled:cursor-default"
       >
         <IconLeftArrow />
       </button>
 
-      {/* 고정된 카드 영역 */}
-      <div className="relative w-full max-w-[300px] aspect-[1/1] min-h-[300px]">
-        {currentArtwork ? (
-          <ArtworkCard
-            key={currentArtwork.artworkId}
-            artwork={{
-              ...currentArtwork,
-              isLiked: likedArtworks.includes(currentArtwork.artworkId ?? ""),
-            }}
-            size="large"
-            borderRadius="small"
-            theme="light"
-            onClickLike={() =>
-              currentArtwork.artworkId && toggleLike(currentArtwork.artworkId)
-            }
-            onClick={() => {
-              if (currentArtwork.artworkId) {
-                navigate(`/artwork/${currentArtwork.artworkId}`);
+      {/* 카드 */}
+      <div className="flex justify-center items-center w-full">
+        <div className="w-full max-w-[260px] aspect-[1/1]">
+          {currentArtwork ? (
+            <ArtworkCard
+              key={currentArtwork.artworkId}
+              artwork={{
+                ...currentArtwork,
+                isLiked: likedArtworks.includes(currentArtwork.artworkId ?? ""),
+              }}
+              size="large"
+              borderRadius="small"
+              theme="light"
+              onClickLike={() =>
+                currentArtwork.artworkId &&
+                toggleLike(currentArtwork.artworkId)
               }
-            }}
-          />
-        ) : (
-          <div className="w-full h-full aspect-[1/1] min-h-[300px] bg-gray-100 rounded-lg animate-pulse" />
-        )}
+              onClick={() => {
+                if (currentArtwork.artworkId) {
+                  navigate(`/artwork/${currentArtwork.artworkId}`);
+                }
+              }}
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-100 rounded-lg animate-pulse" />
+          )}
+        </div>
       </div>
 
       {/* 오른쪽 화살표 */}
       <button
         onClick={showNext}
         disabled={artworks.length === 0}
-        className="absolute right-[-3rem] top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default
-                  w-10 h-10 max-[640px]:w-8 max-[640px]:h-8 max-[500px]:w-6 max-[500px]:h-6 flex items-center justify-center"
+        className="w-10 h-10 max-sm:w-8 max-sm:h-8 max-[500px]:w-6 max-[500px]:h-6 
+                 flex items-center justify-center disabled:opacity-30 disabled:cursor-default"
       >
         <IconRightArrow />
       </button>

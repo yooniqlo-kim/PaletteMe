@@ -39,7 +39,7 @@ export const mapReviewsToWeeklyCalendar = (
     const current = new Date(weekStartDate);
     current.setDate(current.getDate() + i);
 
-    const dateStr = current.toISOString().slice(0, 10); // YYYY-MM-DD
+    const dateStr = dayjs(current).format("YYYY-MM-DD");
     const matchedReview = reviews.find((r) => r.date === dateStr);
 
     if (matchedReview) {

@@ -3,6 +3,7 @@ import WrappedStep from '@/features/wrapped/WrappedStep';
 import WrappedEnd from '@/features/wrapped/WrappedEnd';
 import { fetchWrapped } from '@features/wrapped/api/wrappedApi';
 import { WrappedData } from '@/shared/api/wrapped';
+import { mapWrappedData } from '@/shared/utils/mapWrappedData'; // ✅ 추가
 
 export default function WrappedPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -19,8 +20,9 @@ export default function WrappedPage() {
 
     const getWrapped = async () => {
       try {
-        const data = await fetchWrapped();
-        setWrappedData(data);
+        const rawData = await fetchWrapped();            // ✅ 원본 데이터
+        const mapped = mapWrappedData(rawData);          // ✅ WrappedData로 변환
+        setWrappedData(mapped);                          // ✅ 이제 타입 일치
       } catch (e) {
         console.error("랩트 API 호출 실패:", e);
       } finally {
@@ -38,10 +40,10 @@ export default function WrappedPage() {
   if (loading || !wrappedData) return <div>로딩 중...</div>;
 
   const {
-    favoriteArtist,
+    favoriteArtwork,
     reviewRank,
     mostMemorableArtwork,
-    review_based_recommendations
+    review_based_recommendations = [],
   } = wrappedData;
 
   return (
@@ -51,28 +53,20 @@ export default function WrappedPage() {
           <WrappedStep
             currentStep={currentStep}
             onNext={handleNext}
-            artistName={favoriteArtist.artist}
+            artistName={favoriteArtwork.artist}
             reviewCnt={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
             reviewRank={reviewRank.myRank}
-            favoriteName={mostMemorableArtwork.title}
-            favoriteArtist={mostMemorableArtwork.artist}
-            favoriteImg={mostMemorableArtwork.imgUrl}
-            recommendedArtwork={review_based_recommendations.map(item => item.title)}
-            recommendedArtist={review_based_recommendations.map(item => item.artist)}
-            recommendedImg={review_based_recommendations.map(item => item.imgUrl)}
+            favoriteArtwork={mostMemorableArtwork}
+            recommendations={review_based_recommendations}
           />
         ) : (
           <WrappedEnd
-            reviewCount={reviewRank.reviewCount} 
+            reviewCount={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
-            artistName={favoriteArtist.artist}
-            favoriteName={mostMemorableArtwork.title}
-            favoriteArtist={mostMemorableArtwork.artist}
-            favoriteImg={mostMemorableArtwork.imgUrl}
-            recommendedArtwork={review_based_recommendations.map(item => item.title)}
-            recommendedArtist={review_based_recommendations.map(item => item.artist)}
-            recommendedImg={review_based_recommendations.map(item => item.imgUrl)}
+            artistName={favoriteArtwork.artist}
+            favoriteArtwork={mostMemorableArtwork}
+            recommendations={review_based_recommendations}
           />
         )}
       </div>
