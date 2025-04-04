@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import WrappedStep from '@/features/wrapped/WrappedStep';
 import WrappedEnd from '@/features/wrapped/WrappedEnd';
-import { wrappedDummy } from '@/shared/dummy/wrappedDummy';
+import { fetchWrapped } from '@features/wrapped/api/wrappedApi';
+import { WrappedData } from '@/shared/api/wrapped';
 
 export default function WrappedPage() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [wrappedData, setWrappedData] = useState<WrappedData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, 5));
@@ -13,17 +16,33 @@ export default function WrappedPage() {
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+
+    const getWrapped = async () => {
+      try {
+        const data = await fetchWrapped();
+        setWrappedData(data);
+      } catch (e) {
+        console.error("랩트 API 호출 실패:", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getWrapped();
+
     return () => {
       document.body.style.overflow = originalOverflow;
     };
   }, []);
+
+  if (loading || !wrappedData) return <div>로딩 중...</div>;
 
   const {
     favoriteArtist,
     reviewRank,
     mostMemorableArtwork,
     review_based_recommendations
-  } = wrappedDummy.data;
+  } = wrappedData;
 
   return (
     <div className="fixed inset-0 h-screen w-screen overflow-hidden z-50 flex justify-center items-center">
@@ -45,6 +64,7 @@ export default function WrappedPage() {
           />
         ) : (
           <WrappedEnd
+            reviewCount={reviewRank.reviewCount} 
             reviewPercentage={reviewRank.topPercentage}
             artistName={favoriteArtist.artist}
             favoriteName={mostMemorableArtwork.title}

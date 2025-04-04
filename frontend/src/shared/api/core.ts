@@ -4,7 +4,8 @@ export const api = axios.create({
   baseURL: "http://70.12.246.87:8080/api",
   withCredentials: true,
 });
-// 영단 "hhtp://22.99.170.52:8080/api"
+// 로컬 "http://localhost:8080/api"
+// 영단 "http://70.12.247.36:8080/api"
 // 윤 "http://70.12.246.87:8080/api"
 // 학준 "http://70.12.246.134:8080/api",
 

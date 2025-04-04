@@ -1,8 +1,8 @@
-// 추천 API 응답 타입 (작품 요약 정보)
+// 작품 요약 정보 (API)
 export type RecommendedArtwork = {
   artworkId: string;
-  title: string;
-  artist: string;
+  title?: string;   
+  artist?: string; 
   year?: string;
   description?: string;
   location?: string;
@@ -10,7 +10,7 @@ export type RecommendedArtwork = {
   isLiked?: boolean;
 };
 
-// 추천 API 전체 응답 구조
+// API 응답 데이터 구조
 export type RecommendationResponseData = {
   age: RecommendedArtwork[];
   favorite_artist: RecommendedArtwork[];
@@ -18,25 +18,10 @@ export type RecommendationResponseData = {
   color: RecommendedArtwork[];
 };
 
+// 최종 API 응답 타입
 export type RecommendationAPIResponse = {
   success: boolean;
   errorMsg: string | null;
   errorCode: string | null;
   data: RecommendationResponseData;
 };
-
-// 추천 작품 요약 → ArtworkCard에 넘길 형태로 변환
-import type { BaseArtwork } from "@/shared/types/artwork";
-
-export function mapRecommendedToArtwork(item: RecommendedArtwork): BaseArtwork & { isLiked?: boolean } {
-  return {
-    artworkId: item.artworkId,
-    artworkImageUrl: item.imgUrl,
-    title: item.title,
-    artist: item.artist,
-    year: item.year,
-    location: item.location,
-    description: item.description,
-    isLiked: item.isLiked,
-  };
-}

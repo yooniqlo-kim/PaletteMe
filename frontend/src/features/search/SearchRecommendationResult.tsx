@@ -21,13 +21,12 @@ export default function SearchRecommendationResult({
   hasMore,
 }: Props) {
   const navigate = useNavigate();
-  const firstImageUrl = data[0]?.imageUrl ?? "/images/fallback.jpg";
+  const firstImageUrl = data[0]?.imageUrl ?? "";
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artwork/${artworkId}`);
   };
-  
 
   // 마지막 요소에 IntersectionObserver 연결
   useEffect(() => {
@@ -77,7 +76,7 @@ export default function SearchRecommendationResult({
                       artworkId: artwork.artworkId,
                       title: artwork.korTitle || artwork.originalTitle,
                       artist: artwork.korArtist || artwork.originalArtist || "작가 미상",
-                      artworkImageUrl: artwork.imageUrl ?? "/images/fallback.jpg",
+                      artworkImageUrl: artwork.imageUrl ?? "",
                       isLiked: artwork.isLiked,
                     }}
                     size="small"

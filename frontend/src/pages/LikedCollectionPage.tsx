@@ -13,7 +13,7 @@ export default function LikedCollectionPage() {
   const [artworks, setArtworks] = useState<LikedArtwork[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
   const [hasMore, setHasMore] = useState(true);
-  const [firstImageUrl, setFirstImageUrl] = useState("/images/fallback.jpg");
+  const [firstImageUrl, setFirstImageUrl] = useState("");
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -32,7 +32,8 @@ export default function LikedCollectionPage() {
         setArtworks((prev) => [...prev, ...newData]);
         setCursor(newData[newData.length - 1]?.userArtworkLikeId ?? null);
 
-        if (artworks.length === 0 && newData[0]?.imgUrl) {
+        // 초기 이미지 조건
+        if (!artworks.length && newData[0]?.imgUrl) {
           setFirstImageUrl(newData[0].imgUrl);
         }
 

@@ -40,5 +40,11 @@ export function useAuth() {
     return user && token;
   }
 
-  return { handleLogin, isLoggedIn };
+  function logout() {
+    sessionStorage.clear();
+    navigate("/login");
+    showToast({ message: "로그아웃되었습니다.", type: "success" });
+  }
+
+  return { handleLogin, isLoggedIn, logout };
 }
