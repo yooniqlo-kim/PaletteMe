@@ -10,7 +10,7 @@ import ProfilePage from "@/pages/profile/ProfilePage";
 import LoginPage from "@/pages/login/LoginPage";
 import WrappedPage from "@/pages/mymuseum/WrappedPage";
 import ArtworkPage from "@/pages/ArtworkPage";
-import NotFoundPage from "@/pages/NotFoundPage";
+import NotFoundPage from "@/pages/error/NotFoundPage";
 import WritePage from "@/pages/CommentWritePage";
 import LevelInfoPage from "@/pages/profile/LevelInfoPage";
 import ConfirmPasswordPage from "@/pages/profile/ConfirmPasswordPage";
@@ -28,7 +28,7 @@ import CommentEditPage from "@/pages/CommentEditPage";
 import CommentMyPage from "@/pages/CommentMyPage";
 import CommentLikedPage from "@/pages/CommentLikedPage";
 import ProtectedRoute from "./ProtectedRoute";
-import ErrorPage from "@/pages/ErrorPage";
+import ErrorPage from "@/pages/error/ErrorPage";
 
 const router = createBrowserRouter([
   {

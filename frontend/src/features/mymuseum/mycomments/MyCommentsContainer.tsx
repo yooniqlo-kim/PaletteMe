@@ -16,13 +16,10 @@ export default function MyComments({ images }: Props) {
   const navigate = useNavigate();
 
   const overlayTexts = ["내 감상문", "감상문 좋아요"];
-
-  const handleNavigateToComments = () => {
-    navigate("/mymuseum/comments");
-  };
+  const navigatePaths = ["/comments/my", "/comments/liked"];
 
   return (
-    <div onClick={handleNavigateToComments} className="w-full cursor-pointer">
+    <div className="w-full">
       <div className="grid grid-cols-2 gap-4 w-full max-w-[23.75rem] mx-auto">
         {images.map((item, idx) => (
           <ArtworkCard
@@ -40,6 +37,7 @@ export default function MyComments({ images }: Props) {
             overlayTextSize="--text-md"
             borderRadius="small"
             hasBorder
+            onClick={() => navigate(navigatePaths[idx])}
           />
         ))}
       </div>
