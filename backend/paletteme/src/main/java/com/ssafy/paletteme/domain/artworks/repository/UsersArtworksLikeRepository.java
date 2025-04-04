@@ -11,4 +11,5 @@ public interface UsersArtworksLikeRepository extends JpaRepository<UsersArtworks
     boolean existsByUserAndArtwork(Users user, Artworks artwork);
     Optional<UsersArtworksLike> findByUserAndArtwork(Users user, Artworks artwork);
 
+    int countByUser(Users user);
 }

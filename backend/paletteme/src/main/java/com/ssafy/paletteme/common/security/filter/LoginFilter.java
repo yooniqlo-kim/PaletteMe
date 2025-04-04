@@ -1,11 +1,14 @@
 package com.ssafy.paletteme.common.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.paletteme.common.redis.RedisService;
 import com.ssafy.paletteme.common.response.ApiResponse;
 import com.ssafy.paletteme.common.security.exception.SecurityResponseUtil;
 import com.ssafy.paletteme.common.security.jwt.JwtUtil;
 import com.ssafy.paletteme.common.security.provider.CustomUserDetails;
 import com.ssafy.paletteme.domain.users.dto.UserLoginResponse;
+import com.ssafy.paletteme.domain.users.dto.UserStats;
+import com.ssafy.paletteme.domain.users.service.UserStatsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import java.io.IOException;
+import java.time.Duration;
 
 
 /*
@@ -38,10 +42,14 @@ import java.io.IOException;
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final RedisService redisService;
+    private final UserStatsService userStatsService;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public                                                                                                                                                                                                                                                                                                                                  LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RedisService redisService, UserStatsService  userStatsService) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.redisService = redisService;
+        this.userStatsService = userStatsService;
     }
 
     @Override
@@ -60,8 +68,16 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
-        // jwt 생성
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        // Redis에 사용자의 등업 관련 정보 저장하기
+        UserStats userStats = userStatsService.generateStatsForUser(userDetails.getUserId());
+        //TODO: 로그아웃 시 해당 데이터를 지워주고, 시간에 대한 설정은 추후에 수정하기
+        redisService.saveUserStats(userStats, Duration.ofDays(1));
+
+
+
+        // jwt 생성
         String role = "ROLE_USER";
         String accessToken = jwtUtil.createJwt("access", userDetails.getUserId(), userDetails.getId(),role);
         String refreshToken = jwtUtil.createJwt("refresh", userDetails.getUserId(), userDetails.getId(),role); ;
