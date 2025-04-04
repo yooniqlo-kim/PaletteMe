@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import NotFoundImg from "../assets/images/NotFound.png";
+import NotFoundImg from "@/assets/images/NotFound.png";
 
 type ErrorPageProps = {
   message?: string;
