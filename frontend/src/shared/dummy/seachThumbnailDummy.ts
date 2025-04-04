@@ -1,5 +1,14 @@
 import { ArtworkSearchItem } from "@shared/api/search";
 
+import recommended_search_thumbnail_monet from '@/assets/recommendations/recommended_search_thumbnail_monet.jpg';
+import recommended_search_thumbnail_picaso from '@/assets/recommendations/recommended_search_thumbnail_picaso.jpg';
+import recommended_search_thumbnail_manet from '@/assets/recommendations/recommended_search_thumbnail_manet.jpg';
+import recommended_search_thumbnail_cezanne from '@/assets/recommendations/recommended_search_thumbnail_cezanne.jpg';
+import recommended_search_thumbnail_goya from '@/assets/recommendations/recommended_search_thumbnail_goya.jpg';    
+import recommended_search_thumbnail_matisse from '@/assets/recommendations/recommended_search_thumbnail_matisse.jpg';
+import recommended_search_thumbnail_warhol from '@/assets/recommendations/recommended_search_thumbnail_warhol.jpg';
+import recommended_search_thumbnail_degas from '@/assets/recommendations/recommended_search_thumbnail_degas.jpg';
+
 export const searchDummy: ArtworkSearchItem[] = [
   {
     artworkId: "dummy_1",
@@ -9,7 +18,7 @@ export const searchDummy: ArtworkSearchItem[] = [
     korArtist: "클로드 모네",
     originalArtist: "Claude Monet",
     enArtist: "Claude Monet",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/88/Claude_Monet_1899_Nympheas.jpg",
+    imageUrl: recommended_search_thumbnail_monet,
     score: 0,
     isLiked: false,
   },
@@ -21,7 +30,7 @@ export const searchDummy: ArtworkSearchItem[] = [
     korArtist: "파블로 피카소",
     originalArtist: "Pablo Picasso",
     enArtist: "Pablo Picasso",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/en/7/74/PicassoGuernica.jpg",
+    imageUrl: recommended_search_thumbnail_picaso,
     score: 0,
     isLiked: false,
   },
@@ -33,19 +42,19 @@ export const searchDummy: ArtworkSearchItem[] = [
     korArtist: "에두아르 마네",
     originalArtist: "Édouard Manet",
     enArtist: "Édouard Manet",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/88/Edouard_Manet_-_Olympia_-_Google_Art_Project_3.jpg",
+    imageUrl: recommended_search_thumbnail_manet,
     score: 0,
     isLiked: false,
   },
   {
     artworkId: "dummy_4",
-    korTitle: "살바도르 달리",
-    originalTitle: "Salvador Dalí",
-    enTitle: "Salvador Dalí",
-    korArtist: "살바도르 달리",
-    originalArtist: "Salvador Dalí",
-    enArtist: "Salvador Dalí",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/en/1/1d/The_Persistence_of_Memory.jpg",
+    korTitle: "폴 세잔",
+    originalTitle: "Paul Cézanne",
+    enTitle: "Paul Cézanne",
+    korArtist: "폴 세잔",
+    originalArtist: "Paul Cézanne",
+    enArtist: "Paul Cézanne",
+    imageUrl: recommended_search_thumbnail_cezanne,
     score: 0,
     isLiked: false,
   },
@@ -57,7 +66,7 @@ export const searchDummy: ArtworkSearchItem[] = [
     korArtist: "프란시스코 고야",
     originalArtist: "Francisco Goya",
     enArtist: "Francisco Goya",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/0/0b/El_Tres_de_Mayo%2C_by_Francisco_de_Goya%2C_from_Prado_in_Google_Earth.jpg",
+    imageUrl: recommended_search_thumbnail_goya,
     score: 0,
     isLiked: false,
   },
@@ -69,19 +78,19 @@ export const searchDummy: ArtworkSearchItem[] = [
     korArtist: "앙리 마티스",
     originalArtist: "Henri Matisse",
     enArtist: "Henri Matisse",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/en/1/1c/Henri_Matisse_Woman_with_a_Hat.jpg",
+    imageUrl: recommended_search_thumbnail_matisse,
     score: 0,
     isLiked: false,
   },
   {
     artworkId: "dummy_7",
-    korTitle: "앤디워홀",
+    korTitle: "앤디 워홀",
     originalTitle: "Andy Warhol",
     enTitle: "Andy Warhol",
     korArtist: "앤디 워홀",
     originalArtist: "Andy Warhol",
     enArtist: "Andy Warhol",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/en/0/0a/Marilyn_Diptych.jpg",
+    imageUrl: recommended_search_thumbnail_warhol,
     score: 0,
     isLiked: false,
   },
@@ -93,7 +102,7 @@ export const searchDummy: ArtworkSearchItem[] = [
     korArtist: "에드가 드가",
     originalArtist: "Edgar Degas",
     enArtist: "Edgar Degas",
-    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/f/f3/Edgar_Germain_Hilaire_Degas_069.jpg",
+    imageUrl: recommended_search_thumbnail_degas,
     score: 0,
     isLiked: false,
   },
