@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 import { useFormDispatch } from "@/store/hooks";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
+import { usePrefetchRecommendArtworks } from "@/features/register/useRecommendArtworks";
 
 type FormValues = {
   image: FileList;
@@ -34,6 +35,7 @@ export default function RegisterImagePage() {
   const [imagePreview, setImagePreview] = useState<string | null>();
   const [nicknameMsg, setNicknameMsg] = useState<string>();
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
+  usePrefetchRecommendArtworks();
 
   const image = watch("image");
   const watchNickname = watch("nickname");
@@ -42,7 +44,6 @@ export default function RegisterImagePage() {
   useEffect(() => {
     if (image && image.length > 0) {
       const file = image[0];
-      console.log(file);
       const objectUrl = URL.createObjectURL(file);
       setImagePreview(objectUrl);
       return () => URL.revokeObjectURL(objectUrl);
@@ -72,8 +73,6 @@ export default function RegisterImagePage() {
   }
 
   function onSubmit(data: FormValues) {
-    // console.log(URL.createObjectURL(data.image[0]));
-
     dispatch(
       updateField({
         imageUrl:
@@ -134,7 +133,9 @@ export default function RegisterImagePage() {
             </Button>
           </span>
         </InputContainer>
-        <Button size="L" disabled={!isValid || isSubmitting}>
+        <Button
+          size="L"
+          disabled={!isNicknameValid || !isValid || isSubmitting}>
           다음으로
         </Button>
       </form>
