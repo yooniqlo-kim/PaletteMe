@@ -34,6 +34,7 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                         reviews.likeCnt,
                         reviews.content,
                         reviews.createdAt,
+                        artworks.artworkId,
                         artworks.originalTitle,
                         artists.originalArtist,
                         artworks.imageUrl,
@@ -54,18 +55,20 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
     }
 
     @Override
-    public List<LikedOtherReviewsResponse> getLikedOtherReviews(Integer cursor, int size) {
+    public List<LikedOtherReviewsResponse> getLikedOtherReviews(int userId, Integer cursor, int size) {
         return queryFactory
                 .select(new QLikedOtherReviewsResponse(
-                        reviews.user.nickname,      // nickname
-                        reviews.reviewId,           // reviewId
-                        reviews.likeCnt,            // likeCnt
-                        reviews.content,            // content
-                        reviews.createdAt           // createdAt
+                        reviews.user.nickname,
+                        reviews.reviewId,
+                        reviews.likeCnt,
+                        reviews.content,
+                        reviews.createdAt,
+                        reviews.artwork.artworkId
                 ))
                 .from(reviews)
                 .join(usersReviewLike).on(usersReviewLike.review.eq(reviews))
                 .where(
+                        usersReviewLike.user.userId.eq(userId),
                         cursor != null ? reviews.reviewId.lt(cursor) : null
                 )
                 .orderBy(reviews.createdAt.desc(), reviews.reviewId.desc())
