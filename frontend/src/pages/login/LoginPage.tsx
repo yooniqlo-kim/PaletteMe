@@ -50,7 +50,7 @@ export default function LoginPage() {
         </div>
 
         <div className="flex flex-col justify-center items-center gap-4 text-sm font-semibold">
-          <Link to="/register" className="text-primary">
+          <Link to="/signup" className="text-primary">
             회원 가입
           </Link>
           <Link to="/" className="text-neutral-6">
