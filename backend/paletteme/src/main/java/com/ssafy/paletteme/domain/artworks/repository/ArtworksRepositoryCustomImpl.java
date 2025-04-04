@@ -22,6 +22,7 @@ public class ArtworksRepositoryCustomImpl implements ArtworksRepositoryCustom{
     public ArtworkDetailResponse findArtworkDetail(String artworkId) {
         return queryFactory
                 .select(new QArtworkDetailResponse(
+                        artwork.artworkId,
                         artwork.imageUrl,
                         museum.museumName,
                         artwork.originalTitle,
