@@ -238,11 +238,7 @@ export default function RegisterInfoPage() {
             </span>
           </InputContainer>
         </div>
-        <Button
-          size="L"
-          disabled={
-            !isValidId || !isValidPhoneNumber || isSubmitting || !isValid
-          }>
+        <Button size="L" disabled={isSubmitting || !isValid}>
           다음으로
         </Button>
       </form>

@@ -134,9 +134,7 @@ export default function RegisterImagePage() {
             </Button>
           </span>
         </InputContainer>
-        <Button
-          size="L"
-          disabled={!isNicknameValid || !isValid || isSubmitting}>
+        <Button size="L" disabled={!isValid || isSubmitting}>
           다음으로
         </Button>
       </form>

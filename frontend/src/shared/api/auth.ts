@@ -1,6 +1,7 @@
+import { UserFormData } from "@/store/formSlice";
 import axios, { AxiosResponse } from "axios";
 
-const AUTH_BASE_URL = "http://70.12.246.134:8080/api/users";
+const AUTH_BASE_URL = "http://70.12.246.87:8080/api/users";
 
 type dataType = {
   id: string;
@@ -11,20 +12,9 @@ type dataType = {
 
 type ResponseType = {
   success: boolean;
-  errorMsg: number;
-  errorCode: string;
+  errorMsg: number | string;
+  errorCode: string | number;
   data: dataType | null;
-};
-
-type SignUpType = {
-  id: string;
-  password: string;
-  name: string;
-  birthday: number;
-  nickname: string;
-  artworkId: string[];
-  color: string[];
-  imageUrl: string;
 };
 
 export async function login(data: { id: string; password: string }) {
@@ -44,6 +34,45 @@ export async function login(data: { id: string; password: string }) {
   return response;
 }
 
-export async function signup(data: SignUpType) {
+export async function signup(data: UserFormData) {
   const formData = new FormData();
+
+  const extractedData = {
+    id: data.id,
+    password: data.password,
+    name: data.name,
+    birthday: data.birthday,
+    nickname: data.nickname,
+    artworkId: data.artworkId,
+    color: data.color,
+    phoneNumber: data.phoneNumber,
+  };
+
+  formData.append(
+    "data",
+    new Blob([JSON.stringify(extractedData)], {
+      type: "application/json",
+    })
+  );
+
+  if (data.imageUrl) {
+    const response = await fetch(data.imageUrl);
+    const blob = await response.blob();
+
+    const file = new File([blob], "profile.jpg", { type: blob.type });
+    formData.append("file", file);
+  }
+
+  console.log("formData", formData);
+
+  const response: AxiosResponse<ResponseType> = await axios.post(
+    `${AUTH_BASE_URL}/sign-up`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response;
 }
