@@ -8,5 +8,5 @@ export type BaseComment = {
   content: string;
   likeCount: number;
   isLiked: boolean;
-  visibility: "public" | "private";
+  visibility?: "public" | "private";
 };

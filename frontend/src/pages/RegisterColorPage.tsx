@@ -4,7 +4,7 @@ import { updateField } from "@/store/formSlice";
 import ColorCard from "@/features/register/ColorCard";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import { useNavigate } from "react-router";
-import { useFormDispatch } from "@/shared/hooks/useRegisterForm";
+import { useFormDispatch } from "@/store/hooks";
 
 const COLOR = [
   { name: "RED", color: "#FF0000" },

@@ -9,16 +9,20 @@ import RecommendationContainer from "@/features/mymuseum/recommendation/Recommen
 
 import masterpieces from "@/assets/masterpieces";
 import shuffle from "@/shared/utils/shuffle";
-import { weeklyDummy } from "@/shared/dummy/weeklyDummy";
 import { mapReviewsToWeeklyCalendar } from "@/shared/utils/date";
+import { useWeeklyCalendarReviews } from "@/shared/hooks/useCalendarReviews";
 
 export default function MymuseumPage() {
   const navigate = useNavigate();
+  const weekStart = dayjs().startOf("week").add(1, "day").toDate();
 
-  // 컬렉션 셔플
+  const {
+    data: reviews,
+    isLoading,
+  } = useWeeklyCalendarReviews(weekStart);
+
   const shuffled = shuffle(masterpieces).slice(0, 4);
 
-  // RecommendedArtwork 형태로 매핑
   const myCollectionImages = shuffled.slice(0, 2).map((img, i) => ({
     artworkId: `c${i}`,
     imgUrl: img.image,
@@ -27,7 +31,6 @@ export default function MymuseumPage() {
     isLiked: false,
   }));
 
-  // CommentPreview 형태로 매핑
   const myCommentsImages = shuffled.slice(2, 4).map((img, i) => ({
     id: `cm${i}`,
     imageUrl: img.image,
@@ -35,11 +38,10 @@ export default function MymuseumPage() {
     artist: img.artist,
   }));
 
-  // 오늘 기준으로 이번 주 월요일
-  const weekStart = dayjs().startOf("week").add(1, "day").toDate();
+  const calendarData = mapReviewsToWeeklyCalendar(reviews ?? [], weekStart);
 
-  // 감상문 데이터를 CalendarDay[]로 변환
-  const calendarData = mapReviewsToWeeklyCalendar(weeklyDummy, weekStart);
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const nickname = user?.nickname || "사용자";
 
   return (
     <div className="px-4 pb-[3.75rem]">
@@ -49,13 +51,16 @@ export default function MymuseumPage() {
         <div className="mb-6">
           <WeeklyCalendar
             data={calendarData}
-            onClick={() => navigate("/mymuseum/calendar")}
+            isLoading={isLoading}
+            onClick={() =>
+              navigate("/mymuseum/calendar", { state: { reviews } })
+            }
           />
         </div>
 
         <div className="mb-6">
           <div className="text-base font-semibold mb-2">추천 작품</div>
-          <div>모네덕후님을 위한 추천 작품이에요.</div>
+          <div>{nickname}님을 위한 추천 작품이에요.</div>
           <RecommendationContainer />
         </div>
 
