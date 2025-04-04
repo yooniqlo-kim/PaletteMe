@@ -9,5 +9,5 @@ public interface MyReviewsRepositoryCustom {
 
     List<MyReviewsResponse> getMyReviews(int userId, Integer cursor, int size);
 
-    List<LikedOtherReviewsResponse> getLikedOtherReviews(Integer cursor, int size);
+    List<LikedOtherReviewsResponse> getLikedOtherReviews(int userId, Integer cursor, int size);
 }

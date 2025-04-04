@@ -10,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class ArtworkDetailResponse {
+    private String artworkId;
     private String imgUrl;
     private String museumName;
     private String title;
@@ -22,8 +23,9 @@ public class ArtworkDetailResponse {
     private Integer myReviewId;
 
     @QueryProjection
-    public ArtworkDetailResponse(String imgUrl, String museumName, String title, String artist,
+    public ArtworkDetailResponse(String artworkId, String imgUrl, String museumName, String title, String artist,
                                  int createdYear, String description) {
+        this.artworkId = artworkId;
         this.imgUrl = imgUrl;
         this.museumName = museumName;
         this.title = title;
