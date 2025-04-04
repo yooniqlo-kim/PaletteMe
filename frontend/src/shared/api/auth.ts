@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-const AUTH_BASE_URL = "http://70.12.246.87:8080/api/users";
+const AUTH_BASE_URL = "http://j12a505.p.ssafy.io:8080/api/users";
 
 type dataType = {
   id: string;

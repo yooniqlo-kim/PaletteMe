@@ -3,6 +3,7 @@ import WrappedStep from '@/features/wrapped/WrappedStep';
 import WrappedEnd from '@/features/wrapped/WrappedEnd';
 import { fetchWrapped } from '@features/wrapped/api/wrappedApi';
 import { WrappedData } from '@/shared/api/wrapped';
+import { mapWrappedData } from '@/shared/utils/mapWrappedData'; // ✅ 추가
 
 export default function WrappedPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -19,8 +20,9 @@ export default function WrappedPage() {
 
     const getWrapped = async () => {
       try {
-        const data = await fetchWrapped();
-        setWrappedData(data);
+        const rawData = await fetchWrapped();            // ✅ 원본 데이터
+        const mapped = mapWrappedData(rawData);          // ✅ WrappedData로 변환
+        setWrappedData(mapped);                          // ✅ 이제 타입 일치
       } catch (e) {
         console.error("랩트 API 호출 실패:", e);
       } finally {

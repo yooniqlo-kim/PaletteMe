@@ -22,3 +22,17 @@ export interface WrappedData {
   };
   review_based_recommendations?: Recommendation[]; // 만약 사용할 거면 optional로 남김
 }
+
+//API 응답을 위한 타입 정의
+export interface RawWrappedApiResponse {
+  artistName: string;
+  reviewRank: number;
+  reviewPercentage: number;
+  reviewCnt: number;
+  favoriteName: string;
+  favoriteArtist: string;
+  favoriteImg: string;
+  recommendedArtwork: string;
+  recommendedArtist: string;
+  recommendedImg: string;
+}
