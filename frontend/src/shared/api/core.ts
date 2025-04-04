@@ -1,7 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "./baseUrl";
 
 export const api = axios.create({
-  baseURL: "http://j12a505.p.ssafy.io:8080/api",
+  baseURL: BASE_URL,
   withCredentials: true,
 });
 // 로컬 "http://localhost:8080/api"

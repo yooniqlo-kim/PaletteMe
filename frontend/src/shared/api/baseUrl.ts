@@ -1,1 +1,1 @@
-export const BASE_URL = "http://70.12.246.87:8080/api";
+export const BASE_URL = import.meta.env.VITE_SERVER_URL;
