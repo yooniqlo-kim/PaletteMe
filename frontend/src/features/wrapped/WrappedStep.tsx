@@ -80,7 +80,7 @@ export default function WrappedStep({
             <h2 className="text-xl mb-2">{getWrappedMonthString()}</h2>
             <p className="text-2xl font-bold">Wrapped 결산</p>
             <p className="mt-4">
-              지난 한 달간 <span className="font-semibold">{nickname} 덕후</span> 님의 활동 기록입니다.
+              지난 한 달간 <span className="font-semibold">{nickname}</span> 님의 활동 기록입니다.
             </p>
             <p className="mt-2">시작해볼까요?</p>
           </>
@@ -123,20 +123,19 @@ export default function WrappedStep({
             <p className="mt-2">작품이름: {favoriteArtwork.title}</p>
           </>
         )}
-
-        {currentStep === 4 && recommendations.length >= 2 && (
+        {currentStep === 4 && recommendations.length >= 1 && (
           <>
             <h2 className="text-xl mb-4">당신에게 추천하는 작품이에요</h2>
             <div className="flex flex-wrap justify-center gap-4">
-              {[0, 1].map((i) => (
+              {recommendations.slice(0, 2).map((item, i) => (
                 <div key={i} className="w-full max-w-[140px]">
                   <ArtworkCard
                     artwork={{
                       artworkId: `wrapped-reco-${i}`,
-                      artworkImageUrl: recommendations[i].imgUrl,
-                      title: recommendations[i].title,
+                      artworkImageUrl: item.imgUrl,
+                      title: item.title,
                       isLiked: false,
-                      artist: recommendations[i].artist,
+                      artist: item.artist,
                     }}
                     size="small"
                     theme="light"
@@ -146,13 +145,14 @@ export default function WrappedStep({
               ))}
             </div>
             <p className="mt-2">
-              작가: {recommendations[0].artist}, {recommendations[1].artist}
+              작가: {recommendations.map((r) => r.artist).join(', ')}
             </p>
             <p className="mt-2">
-              작품이름: {recommendations[0].title}, {recommendations[1].title}
+              작품이름: {recommendations.map((r) => r.title).join(', ')}
             </p>
           </>
         )}
+
       </div>
     </div>
   );
