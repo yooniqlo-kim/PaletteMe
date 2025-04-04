@@ -2,11 +2,15 @@ import { useState, useEffect } from "react";
 import IconLeftArrow from "@/shared/components/icons/IconLeftArrow";
 import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import type { BaseArtwork } from "@shared/types/artwork";
 import { useNavigate } from "react-router-dom";
+import { likeArtwork, cancelLikeArtwork } from "@/shared/api/artwork";
+
+import type { BaseArtwork } from "@shared/types/artwork";
+
+type ExtendedArtwork = BaseArtwork & { isLiked?: boolean };
 
 type Props = {
-  artworks: BaseArtwork[];
+  artworks: ExtendedArtwork[];
   isLoading?: boolean;
 };
 
@@ -17,7 +21,11 @@ export default function RecommendationArtworks({ artworks }: Props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setCurrentIndex(0); // 인덱스 초기화
+    setCurrentIndex(0);
+    const initiallyLiked = artworks
+      .filter((a) => a.isLiked)
+      .map((a) => a.artworkId);
+    setLikedArtworks(initiallyLiked);
   }, [artworks]);
 
   const currentArtwork = artworks[currentIndex];
@@ -34,12 +42,21 @@ export default function RecommendationArtworks({ artworks }: Props) {
     );
   };
 
-  const toggleLike = (id: string) => {
-    setLikedArtworks((prev) =>
-      prev.includes(id)
-        ? prev.filter((artId) => artId !== id)
-        : [...prev, id]
-    );
+  const toggleLike = async (id: string) => {
+    const isLiked = likedArtworks.includes(id);
+    try {
+      if (isLiked) {
+        await cancelLikeArtwork(id);
+      } else {
+        await likeArtwork(id);
+      }
+      setLikedArtworks((prev) =>
+        isLiked ? prev.filter((artId) => artId !== id) : [...prev, id]
+      );
+    } catch (error) {
+      console.error("작품 좋아요 처리 실패:", error);
+      alert("작품 좋아요 처리에 실패했어요.");
+    }
   };
 
   return (
@@ -48,8 +65,7 @@ export default function RecommendationArtworks({ artworks }: Props) {
       <button
         onClick={showPrev}
         disabled={artworks.length === 0}
-        className="w-10 h-10 max-sm:w-8 max-sm:h-8 max-[500px]:w-6 max-[500px]:h-6 
-                 flex items-center justify-center disabled:opacity-30 disabled:cursor-default"
+        className="w-10 h-10 flex items-center justify-center disabled:opacity-30"
       >
         <IconLeftArrow />
       </button>
@@ -62,19 +78,14 @@ export default function RecommendationArtworks({ artworks }: Props) {
               key={currentArtwork.artworkId}
               artwork={{
                 ...currentArtwork,
-                isLiked: likedArtworks.includes(currentArtwork.artworkId ?? ""),
+                isLiked: likedArtworks.includes(currentArtwork.artworkId),
               }}
               size="large"
               borderRadius="small"
               theme="light"
-              onClickLike={() =>
-                currentArtwork.artworkId &&
-                toggleLike(currentArtwork.artworkId)
-              }
+              onClickLike={() => toggleLike(currentArtwork.artworkId)}
               onClick={() => {
-                if (currentArtwork.artworkId) {
-                  navigate(`/artwork/${currentArtwork.artworkId}`);
-                }
+                navigate(`/artwork/${currentArtwork.artworkId}`);
               }}
             />
           ) : (
@@ -87,8 +98,7 @@ export default function RecommendationArtworks({ artworks }: Props) {
       <button
         onClick={showNext}
         disabled={artworks.length === 0}
-        className="w-10 h-10 max-sm:w-8 max-sm:h-8 max-[500px]:w-6 max-[500px]:h-6 
-                 flex items-center justify-center disabled:opacity-30 disabled:cursor-default"
+        className="w-10 h-10 flex items-center justify-center disabled:opacity-30"
       >
         <IconRightArrow />
       </button>

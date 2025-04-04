@@ -1,3 +1,4 @@
+// features/mymuseum/recommendation/components/RecommendationContainer.tsx
 import { useState, useEffect } from "react";
 import RecommendedFilterChips from "./RecommendedFilterChips";
 import RecommendationArtworks from "./RecommendationArtworks";
@@ -17,6 +18,7 @@ export default function RecommendationContainer() {
   const [artworks, setArtworks] = useState<BaseArtwork[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // 추천 작품 가져오는 API
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);

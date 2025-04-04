@@ -1,6 +1,6 @@
 import { api } from "./core";
 
-// ✅ 공통 응답 타입
+// 공통 응답 타입
 export interface ReviewData {
   reviewId: number;
   createdAt: string; // "2025-03-01T00:00:00"
