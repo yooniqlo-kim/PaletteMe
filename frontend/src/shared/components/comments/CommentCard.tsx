@@ -4,6 +4,7 @@ import { WriterMeta } from "./WriterMeta";
 import IconButton from "@/shared/components/buttons/IconButton";
 import IconThumb from "../icons/IconThumb";
 import { useNavigate } from "react-router";
+import { likeComment, cancelLikeComment } from "@/shared/api/comment";
 
 export type CommentCardVariant = "list" | "detail";
 
@@ -53,10 +54,26 @@ export function CommentCard({
 
   const toggleLike = async () => {
     const next = !isLiked;
+
+    // 1. 우선 UI 상태 업데이트 (Optimistic UI)
     setIsLiked(next);
     setLikeCount((prev) => (next ? prev + 1 : prev - 1));
     onLikeChange?.(commentId, next);
+
+    try {
+      if (next) {
+        await likeComment(commentId);
+      } else {
+        await cancelLikeComment(commentId);
+      }
+    } catch (error) {
+      console.error("좋아요 처리 실패", error);
+      setIsLiked(!next);
+      setLikeCount((prev) => (!next ? prev + 1 : prev - 1));
+      onLikeChange?.(commentId, !next);
+    }
   };
+
   return (
     <div
       onClick={handleClick}
