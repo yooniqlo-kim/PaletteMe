@@ -15,14 +15,19 @@ export default function SearchRecommendationList({ data }: Props) {
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      {data.map((artwork) => (
-        <SearchRecommendationCard
-          key={artwork.artworkId}
-          imageUrl={artwork.imageUrl ?? "/images/fallback.jpg"}
-          overlayText={artwork.korTitle || artwork.originalTitle}
-          onClick={() => handleCardClick(artwork.korTitle || artwork.originalTitle)}
-        />
-      ))}
+      {data.map((artwork) => {
+        const title = artwork.korTitle || artwork.originalTitle;
+
+        return (
+          <SearchRecommendationCard
+            key={artwork.artworkId}
+            imageUrl={artwork.imageUrl ?? ""}
+            overlayText={title}
+            onClick={() => handleCardClick(title)}
+          />
+        );
+      })}
     </div>
   );
 }
+
