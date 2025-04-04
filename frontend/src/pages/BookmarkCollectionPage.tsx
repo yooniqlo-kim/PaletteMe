@@ -16,7 +16,7 @@ export default function BookmarkCollectionPage() {
   const [artworks, setArtworks] = useState<BookmarkArtwork[]>([]);
   const [cursor, setCursor] = useState<number | null>(null);
   const [hasMore, setHasMore] = useState(true);
-  const [firstImageUrl, setFirstImageUrl] = useState("/images/fallback.jpg");
+  const [firstImageUrl, setFirstImageUrl] = useState("");
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
@@ -34,7 +34,8 @@ export default function BookmarkCollectionPage() {
         setArtworks((prev) => [...prev, ...newData]);
         setCursor(newData[newData.length - 1]?.userArtworkBookmarkId ?? null);
 
-        if (artworks.length === 0 && newData[0]?.imgUrl) {
+        // 초기 이미지 설정 시점
+        if (!artworks.length && newData[0]?.imgUrl) {
           setFirstImageUrl(newData[0].imgUrl);
         }
 
@@ -97,7 +98,7 @@ export default function BookmarkCollectionPage() {
                     artworkId: artwork.artworkId,
                     title,
                     artist,
-                    artworkImageUrl: artwork.imgUrl ?? "",
+                    artworkImageUrl: artwork.imgUrl ?? "", 
                     isLiked: true,
                   }}
                   size="small"

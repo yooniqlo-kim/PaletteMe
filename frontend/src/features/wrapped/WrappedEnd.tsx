@@ -4,10 +4,11 @@ import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
 import { DownloadIcon } from 'lucide-react';
 
 interface WrappedEndProps {
+  reviewCount: number;
   reviewPercentage: number;
   artistName: string;
   favoriteName: string;
-  favoriteArtist: string; 
+  favoriteArtist: string;
   favoriteImg: string;
   recommendedArtwork: string[];
   recommendedArtist: string[];
@@ -15,10 +16,11 @@ interface WrappedEndProps {
 }
 
 export default function WrappedEnd({
+  reviewCount,
   reviewPercentage,
   artistName,
   favoriteName,
-  favoriteArtist, 
+  favoriteArtist,
   favoriteImg,
   recommendedArtwork = [],
   recommendedArtist = [],
@@ -32,8 +34,8 @@ export default function WrappedEnd({
   return (
     <div className="w-full h-screen bg-gray-200 flex items-center justify-center overflow-hidden">
       <div className="flex flex-col w-full h-full max-w-[500px] mx-auto overflow-hidden">
-        
-        {/* 상단 이미지 (비율 기준 상단 45%) */}
+
+        {/* 상단 이미지 */}
         <div
           className="flex-grow basis-[45%] relative bg-cover bg-center"
           style={{ backgroundImage: `url(${wrapped06})` }}
@@ -56,7 +58,7 @@ export default function WrappedEnd({
           </div>
         </div>
 
-        {/* 하단 카드 (나머지 영역 55%) */}
+        {/* 하단 카드 */}
         <div
           className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left text-gray-800 shadow-lg z-20"
           style={{
@@ -69,20 +71,18 @@ export default function WrappedEnd({
             <div>
               <p className="text-sm mb-1 text-gray-600">감상평 수</p>
               <p className="text-lg font-bold text-primary">
-                N개 <span className="text-black font-medium">감상평 상위 {reviewPercentage}%</span>
+                {reviewCount}개 <span className="text-black font-medium">감상평 상위 {reviewPercentage}%</span>
               </p>
             </div>
 
             <div>
               <p className="text-sm text-gray-600 mb-1">추천 작품</p>
-              {/* 추천 작품 1개 이상일 경우 렌더링 */}
               {recommendedArtwork.length > 0 && (
                 <>
                   <p className="text-base font-bold text-primary">{recommendedArtwork[0]}</p>
                   <p className="text-sm text-gray-700">{recommendedArtist[0]}</p>
                 </>
               )}
-              {/* 추천 작품 2개 이상일 경우 렌더링 */}
               {recommendedArtwork.length > 1 && (
                 <>
                   <p className="mt-2 text-base font-bold text-primary">{recommendedArtwork[1]}</p>
