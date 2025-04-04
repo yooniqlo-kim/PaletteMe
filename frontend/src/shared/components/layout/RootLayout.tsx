@@ -24,7 +24,9 @@ export default function RootLayout() {
 
         <main
           id="scrollable-container"
-          className="flex-1 overflow-y-auto pt-[3.25rem] pb-[3.75rem]"
+          className={`flex-1 overflow-y-auto ${
+            shouldHideLayout ? "" : "pt-[3.25rem] pb-[3.75rem]"
+          }`}
         >
           {!shouldHideLayout && <ScrollToTop />}
           <Outlet />
@@ -35,4 +37,3 @@ export default function RootLayout() {
     </div>
   );
 }
-
