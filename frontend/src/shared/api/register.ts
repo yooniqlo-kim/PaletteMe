@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { BASE_URL } from "./baseUrl";
 
-const AUTH_BASE_URL = "http://70.12.246.87:8080/api/users";
+const AUTH_BASE_URL = `${BASE_URL}/users`;
 
 type ResponseType = {
   success: boolean;
