@@ -220,16 +220,16 @@ export default function RegisterInfoPage() {
           <InputContainer>
             <Label htmlFor="verificationCode">인증번호 입력</Label>
             <span className="flex justify-between w-full gap-4">
-              <Input
-                {...register("verificationCode", {
-                  required: "인증번호를 입력해주세요.",
-                })}
-                id="verificationCode"
-                type="number"
-                placeholder="인증번호 6자리 입력"
-                fallback={errors.verificationCode?.message}
-              />
               <div className="flex flex-col grow">
+                <Input
+                  {...register("verificationCode", {
+                    required: "인증번호를 입력해주세요.",
+                  })}
+                  id="verificationCode"
+                  type="number"
+                  placeholder="인증번호 6자리 입력"
+                  fallback={errors.verificationCode?.message}
+                />
                 {codeMsg && <p className="text-primary">{codeMsg}</p>}
               </div>
               <Button size="XS" type="button" onClick={handleCheckCode}>
