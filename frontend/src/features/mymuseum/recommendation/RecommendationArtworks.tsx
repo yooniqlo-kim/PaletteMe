@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   artworks: BaseArtwork[];
   onReachEnd?: () => void;
+  isLoading?: boolean;
 };
 
 export default function RecommendationArtworks({
