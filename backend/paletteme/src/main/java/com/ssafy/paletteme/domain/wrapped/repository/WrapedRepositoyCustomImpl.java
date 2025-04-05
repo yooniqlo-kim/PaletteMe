@@ -14,13 +14,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /*
-ROW_NUMBER() 쓰고 싶어도 QueryDSL에서는 직접 지원 안 해서 이렇게 자바 후처리를 많이 해야함...
-만약 유저가 수천 명 이상이면, 쿼리에서 아예 ROW_NUMBER()를 사용하는 native SQL or JPQL + DTO 조합이 더 효율적
+ROW_NUMBER() 쓰고 싶어도 QueryDSL에서는 직접 지원 안 해서 이렇게 자바 후처리를 많이 해야함.
+만약 유저가 수천 명 이상이면, 쿼리에서 아예 ROW_NUMBER()를 사용하는 [native SQL]가 [JPQL + DTO] 조합이 더 효율적
 추후에 변경하기
 */
 @Repository
 @RequiredArgsConstructor
-public class WraapedRepositoyCustomImpl implements WraapedRepositoyCustom{
+public class WrapedRepositoyCustomImpl implements WrapedRepositoyCustom {
     private final JPAQueryFactory queryFactory;
 
     QReviews review = QReviews.reviews;
