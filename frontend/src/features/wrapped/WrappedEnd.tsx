@@ -85,7 +85,7 @@ export default function WrappedEnd({
           style={{
             borderTopLeftRadius: "var(--radius-ps)",
             borderTopRightRadius: "var(--radius-ps)",
-            color: "#333333", // 전체 기본 글자 색상
+            color: "#333333",
           }}
           onClick={handleClick}
         >
