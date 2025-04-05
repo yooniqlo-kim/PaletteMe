@@ -103,16 +103,17 @@ export default function WrappedStep({
 
         {currentStep === 2 && (
           <>
-            <h2 className="text-lg font-bold mb-2">지난 한달 간</h2>
-            <p className="text-md">
+            <h2 className="text-md font-bold mb-2">지난 한달 간</h2>
+            <p className="font-bold text-lg">
               <span className="font-bold text-primary">{reviewCnt}개</span> 감상평을 남겨
             </p>
-            <p className="text-md">
+            <p className="font-bold text-lg">
               상위 <span className="font-bold text-primary">{reviewPercentage}%</span> 가 되셨네요!
             </p>
             <br/>
             <br/>
-            <p>
+            <br/>
+            <p className="font-bold">
               전체 감상자 중 <span className="font-bold text-primary">{reviewRank}위</span>에 올라와 계세요
             </p>
             <p className="mt-2">
