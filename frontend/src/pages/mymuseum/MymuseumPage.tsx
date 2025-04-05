@@ -46,9 +46,8 @@ export default function MymuseumPage() {
   return (
     <div className="px-4 pb-[3.75rem]">
       <div className="max-w-[26.25rem] mx-auto w-full">
-        <div className="text-lg font-bold mb-4">마이뮤지엄</div>
-
-        <div className="mb-6">
+        {/* <div className="text-lg font-bold mb-4">마이뮤지엄</div> */}
+        <div className="py-6 mb-6">
           <WeeklyCalendar
             data={calendarData}
             isLoading={isLoading}

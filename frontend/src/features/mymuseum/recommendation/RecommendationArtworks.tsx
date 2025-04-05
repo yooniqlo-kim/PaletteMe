@@ -85,7 +85,7 @@ export default function RecommendationArtworks({ artworks }: Props) {
               theme="light"
               onClickLike={() => toggleLike(currentArtwork.artworkId)}
               onClick={() => {
-                navigate(`/artwork/${currentArtwork.artworkId}`);
+                navigate(`/artworks/${currentArtwork.artworkId}`);
               }}
             />
           ) : (

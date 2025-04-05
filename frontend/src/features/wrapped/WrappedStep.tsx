@@ -77,8 +77,13 @@ export default function WrappedStep({
       >
         {currentStep === 0 && (
           <>
-            <h2 className="text-xl mb-2">{getWrappedMonthString()}</h2>
-            <p className="text-2xl font-bold">Wrapped 결산</p>
+            <img
+              src="/src/assets/logos/MainLogo_142x24.svg"
+              alt="PaletteMe 로고"
+              className="mb-4 h-[32px] mx-auto"
+            />
+            <h2 className="text-lg font-semibold">{getWrappedMonthString()}</h2>
+            <p className="text-2xl font-semibold">Wrapped 결산</p>
             <p className="mt-4">
               지난 한 달간 <span className="font-semibold">{nickname}</span> 님의 활동 기록입니다.
             </p>
