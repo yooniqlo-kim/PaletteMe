@@ -105,6 +105,8 @@ export default function WrappedStep({
             <p className="text-md">
               상위 <span className="font-bold text-primary">{reviewPercentage}%</span> 가 되셨네요!
             </p>
+            <br/>
+            <br/>
             <p>
               전체 감상자 중 <span className="font-bold text-primary">{reviewRank}위</span>에 올라와 계세요
             </p>

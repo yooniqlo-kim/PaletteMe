@@ -1,6 +1,6 @@
 export default function IconThumb({ isClicked }: { isClicked: boolean }) {
-  let stroke = isClicked ? "white" : "white";
-  let fill = isClicked ? "var(--color-primary)" : "var(--color-neutral-5)";
+  const stroke = isClicked ? "white" : "white";
+  const fill = isClicked ? "var(--color-primary)" : "var(--color-neutral-5)";
 
   return (
     <>

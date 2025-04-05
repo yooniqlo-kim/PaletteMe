@@ -94,14 +94,16 @@ export default function WrappedEnd({
               <p style={{ fontSize: "0.875rem", color: "#717171", marginBottom: "0.25rem" }}>
                 감상평 수
               </p>
-              <p style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#ff385c" }}>
-                {reviewCount}개{" "}
-                <span style={{ color: "#000000", fontWeight: 500 }}>
-                  감상평 상위 {reviewPercentage}%
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <p style={{ fontSize: "1.25rem", fontWeight: "bold", color: "#ff385c" }}>
+                  {reviewCount}개
+                </p>
+                <span style={{ fontSize: "1.25rem", color: "#000000", fontWeight: 500 }}>
+                  감상평 상위 
+                  <span style={{ color: "#ff385c" }}> {reviewPercentage} %</span>
                 </span>
-              </p>
+              </div>
             </div>
-
             <div>
               <p style={{ fontSize: "0.875rem", color: "#717171", marginBottom: "0.25rem" }}>
                 추천 작품
