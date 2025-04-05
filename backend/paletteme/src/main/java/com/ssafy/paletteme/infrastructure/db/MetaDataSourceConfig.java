@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 @Configuration
 public class MetaDataSourceConfig {
 
-    // 2개 이상의 DataSource를 만들 때 충돌을 방지하기 위해 우선순위 정해줌, Primary에 meta테이블 생성 됨.
+    // 2개 이상의 DataSource를 만들 때 충돌을 방지하기 위해 우선순위 정해줌, Primary에 spring boot의 meta테이블들이 생성 됨.
     @Primary
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource-meta")
