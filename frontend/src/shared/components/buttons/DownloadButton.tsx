@@ -15,11 +15,13 @@ export default function DownloadButton({ onClick }: DownloadButtonProps) {
     <IconButton
       identifier="review_detail"
       onClick={handleClick}
-      className="border-none"
+      className="!bg-transparent !border-none !shadow-none"
     >
       <div className="flex items-center gap-1">
         <IconDownload />
-        <span className="text-black text-sm font-medium whitespace-nowrap">Share this wrapped</span>
+        <span className="text-black text-sm font-medium whitespace-nowrap">
+          Share this wrapped
+        </span>
       </div>
     </IconButton>
   );
