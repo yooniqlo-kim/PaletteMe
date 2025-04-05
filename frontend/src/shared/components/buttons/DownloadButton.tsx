@@ -1,15 +1,26 @@
 import IconButton from "@/shared/components/buttons/IconButton";
-import IconDownload from "@/shared/components//icons/IconDownload";
+import IconDownload from "@/shared/components/icons/IconDownload";
 
 interface DownloadButtonProps {
   onClick: () => void;
 }
 
 export default function DownloadButton({ onClick }: DownloadButtonProps) {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onClick();
+  };
+
   return (
-    <IconButton identifier="review_detail" onClick={onClick}>
-      <IconDownload />
-      <span className="ml-1 text-black text-sm font-medium">다운로드</span>
+    <IconButton
+      identifier="review_detail"
+      onClick={handleClick}
+      className="border-none"
+    >
+      <div className="flex items-center gap-1">
+        <IconDownload />
+        <span className="text-black text-sm font-medium whitespace-nowrap">Share this wrapped</span>
+      </div>
     </IconButton>
   );
 }

@@ -88,25 +88,37 @@ export default function WrappedStep({
 
         {currentStep === 1 && (
           <>
-            <h2 className="text-xl mb-2">당신의 최애 화가는</h2>
-            <p className="text-lg font-bold">{artistName}</p>
-            <p>입니다</p>
+            <h2 className="text-lg font-semibold mb-2">당신의 최애 화가는</h2>
+            <p className="text-xl font-bold text-primary">
+              {artistName}
+            </p>
+            <p className="text-mg">입니다</p>
           </>
         )}
 
         {currentStep === 2 && (
           <>
-            <h2 className="text-xl mb-2">지난 한달 간</h2>
-            <p>{reviewCnt}개 감상평을 남겨</p>
-            <p>상위 {reviewPercentage}% 가 되셨네요!</p>
-            <p>전체 감상자 중 {reviewRank}위에 올라와 계세요</p>
-            <p className="mt-2">당신의 시선과 마음이 담긴 감상 하나하나가 모여, 멋진 색으로 완성되었어요.</p>
+            <h2 className="text-lg font-bold mb-2">지난 한달 간</h2>
+            <p className="text-md">
+              <span className="font-bold text-primary">{reviewCnt}개</span> 감상평을 남겨
+            </p>
+            <p className="text-md">
+              상위 <span className="font-bold text-primary">{reviewPercentage}%</span> 가 되셨네요!
+            </p>
+            <p>
+              전체 감상자 중 <span className="font-bold text-primary">{reviewRank}위</span>에 올라와 계세요
+            </p>
+            <p className="mt-2">
+              당신의 시선과 마음이 담긴 감상 하나하나가 모여,<br />
+              멋진 색으로 완성되었어요.
+            </p>
           </>
         )}
-
         {currentStep === 3 && favoriteArtwork?.imgUrl && (
           <>
-            <h2 className="max-w-[300px] w-full mx-auto">가장 인상깊게 본 작품은</h2>
+            <h2 className="max-w-[300px] w-full mx-auto font-semibold text-lg">가장 인상깊게 본 작품은</h2>
+            <p className="mt-2 font-bold text-mg text-primary">{favoriteArtwork.title}</p>
+            <p className="mt-2">{favoriteArtwork.artist}</p>
             <ArtworkCard
               artwork={{
                 artworkId: 'wrapped-favorite',
@@ -119,37 +131,37 @@ export default function WrappedStep({
               theme="light"
               hasBorder
             />
-            <p className="mt-2">작가: {favoriteArtwork.artist}</p>
-            <p className="mt-2">작품이름: {favoriteArtwork.title}</p>
           </>
         )}
         {currentStep === 4 && recommendations.length >= 1 && (
           <>
-            <h2 className="text-xl mb-4">당신에게 추천하는 작품이에요</h2>
+            <h2 className="text-lg font-semibold mb-4">당신에게 추천하는 작품이에요</h2>
             <div className="flex flex-wrap justify-center gap-4">
               {recommendations.slice(0, 2).map((item, i) => (
-                <div key={i} className="w-full max-w-[140px]">
-                  <ArtworkCard
-                    artwork={{
-                      artworkId: `wrapped-reco-${i}`,
-                      artworkImageUrl: item.imgUrl,
-                      title: item.title,
-                      isLiked: false,
-                      artist: item.artist,
-                    }}
-                    size="small"
-                    theme="light"
-                    hasBorder
-                  />
+                <div key={i} className="flex flex-col items-center">
+                  <div className="max-w-[300px] text-center">
+                    <p className="mt-2 text-primary text-sm font-semibold break-words">
+                      {item.title}
+                    </p>
+                    <p className="text-sm text-neutral-7 break-words">{item.artist}</p>
+                  </div>
+                  <div className="mt-2 max-w-[180px] w-full">
+                    <ArtworkCard
+                      artwork={{
+                        artworkId: `wrapped-reco-${i}`,
+                        artworkImageUrl: item.imgUrl,
+                        title: item.title,
+                        isLiked: false,
+                        artist: item.artist,
+                      }}
+                      size="small"
+                      theme="light"
+                      hasBorder
+                    />
+                  </div>
                 </div>
               ))}
             </div>
-            <p className="mt-2">
-              작가: {recommendations.map((r) => r.artist).join(', ')}
-            </p>
-            <p className="mt-2">
-              작품이름: {recommendations.map((r) => r.title).join(', ')}
-            </p>
           </>
         )}
 

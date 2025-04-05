@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import html2canvas from 'html2canvas';
 import wrapped06 from '@/assets/images/wrapped06.jpg';
 import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
-import { DownloadIcon } from 'lucide-react';
 import { Recommendation } from '@/shared/api/wrapped';
+import DownloadButton from '@shared/components/buttons/DownloadButton';
+import { getWrappedMonthString } from "@/shared/utils/date";
 
 interface WrappedEndProps {
   reviewCount: number;
@@ -26,13 +28,34 @@ export default function WrappedEnd({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/mymuseum');
+    navigate("/mymuseum");
+  };
+
+  const handleDownload = async () => {
+    const target = document.getElementById("wrapped-capture");
+    if (!target) return;
+
+    const canvas = await html2canvas(target, {
+      scrollY: -window.scrollY,
+      useCORS: true,
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
+    });
+
+    const image = canvas.toDataURL("image/png");
+
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "palette-wrapped.png";
+    link.click();
   };
 
   return (
-    <div className="w-full h-screen bg-gray-200 flex items-center justify-center overflow-hidden">
+    <div
+      id="wrapped-capture"
+      className="w-full h-screen bg-[#ebebeb] flex items-center justify-center overflow-hidden"
+    >
       <div className="flex flex-col w-full h-full max-w-[500px] mx-auto overflow-hidden">
-
         {/* 상단 이미지 */}
         <div
           className="flex-grow basis-[45%] relative bg-cover bg-center"
@@ -58,52 +81,80 @@ export default function WrappedEnd({
 
         {/* 하단 카드 */}
         <div
-          className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left text-gray-800 shadow-lg z-20"
+          className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left shadow-lg z-20"
           style={{
-            borderTopLeftRadius: 'var(--radius-ps)',
-            borderTopRightRadius: 'var(--radius-ps)',
+            borderTopLeftRadius: "var(--radius-ps)",
+            borderTopRightRadius: "var(--radius-ps)",
+            color: "#333333", // 전체 기본 글자 색상
           }}
           onClick={handleClick}
         >
           <div className="space-y-4 overflow-y-auto">
             <div>
-              <p className="text-sm mb-1 text-gray-600">감상평 수</p>
-              <p className="text-lg font-bold text-primary">
-                {reviewCount}개 <span className="text-black font-medium">감상평 상위 {reviewPercentage}%</span>
+              <p style={{ fontSize: "0.875rem", color: "#717171", marginBottom: "0.25rem" }}>
+                감상평 수
+              </p>
+              <p style={{ fontSize: "1.125rem", fontWeight: "bold", color: "#ff385c" }}>
+                {reviewCount}개{" "}
+                <span style={{ color: "#000000", fontWeight: 500 }}>
+                  감상평 상위 {reviewPercentage}%
+                </span>
               </p>
             </div>
 
             <div>
-              <p className="text-sm text-gray-600 mb-1">추천 작품</p>
+              <p style={{ fontSize: "0.875rem", color: "#717171", marginBottom: "0.25rem" }}>
+                추천 작품
+              </p>
               {recommendations[0] && (
                 <>
-                  <p className="text-base font-bold text-primary">{recommendations[0].title}</p>
-                  <p className="text-sm text-gray-700">{recommendations[0].artist}</p>
+                  <p style={{ fontSize: "1rem", fontWeight: "bold", color: "#ff385c" }}>
+                    {recommendations[0].title}
+                  </p>
+                  <p style={{ fontSize: "0.875rem", color: "#5e5e5e" }}>
+                    {recommendations[0].artist}
+                  </p>
                 </>
               )}
               {recommendations[1] && (
                 <>
-                  <p className="mt-2 text-base font-bold text-primary">{recommendations[1].title}</p>
-                  <p className="text-sm text-gray-700">{recommendations[1].artist}</p>
+                  <p style={{ marginTop: "0.5rem", fontSize: "1rem", fontWeight: "bold", color: "#ff385c" }}>
+                    {recommendations[1].title}
+                  </p>
+                  <p style={{ fontSize: "0.875rem", color: "#5e5e5e" }}>
+                    {recommendations[1].artist}
+                  </p>
                 </>
               )}
             </div>
 
             <div>
-              <p className="text-sm text-gray-600 mb-1">최애 화가</p>
-              <p className="text-xl font-bold text-primary">{artistName}</p>
+              <p style={{ fontSize: "0.875rem", color: "#717171", marginBottom: "0.25rem" }}>
+                최애 화가
+              </p>
+              <p className="text-lg font-bold" style={{ color: "#ff385c" }}>
+                {artistName}
+              </p>
             </div>
           </div>
 
+          {/* 푸터 */}
           <div>
-            <div className="pt-4 border-t border-gray-200 flex justify-between items-center text-gray-500 text-sm">
-              <span className="font-bold text-lg">PaletteMe</span>
-              <span>2025 03 Wrapped</span>
+            <div
+              className="pt-4 border-t flex justify-between items-center text-sm"
+              style={{ borderTop: "1px solid #d3d3d3", color: "#5e5e5e" }}
+            >
+              <img
+                src="/src/assets/logos/MainLogo_142x24.svg"
+                alt="PaletteMe"
+                style={{ width: "142px", height: "20px" }}
+              />
+              <span>{getWrappedMonthString()} Wrapped</span>
             </div>
 
-            <div className="pt-3 flex items-center justify-center gap-2">
-              <DownloadIcon size={18} />
-              <span className="text-sm text-black font-medium">Share this wrapped</span>
+            {/* 버튼 */}
+            <div className="pt-3 flex justify-center" data-html2canvas-ignore="true">
+              <DownloadButton onClick={handleDownload} />
             </div>
           </div>
         </div>

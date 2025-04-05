@@ -80,7 +80,7 @@ export const ArtworkCard = ({
     <div
       onClick={handleClick}
       className={`relative ${dimension} overflow-hidden cursor-pointer ${
-        hasBorder ? "border border-white" : ""
+        hasBorder ? "border-5 border-white" : ""
       }`}
       style={{ borderRadius: borderRadiusValue }}
     >
