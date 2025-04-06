@@ -18,12 +18,13 @@ function getLevelImage(level: Level) {
 }
 
 export default function ProfilePage() {
-  const nickname = "길동이";
-  const { logout } = useAuth();
+  const { logout, getUserMeta } = useAuth();
+
+  const userMeta = getUserMeta();
 
   return (
     <section className="px-3 py-3 flex flex-col gap-6 box-border">
-      <UserProfile nickname={nickname} />
+      <UserProfile nickname={userMeta!.nickname} image={userMeta?.s3Url} />
       <UserMeta review={0} like={0} loggedIn={0} />
       <img className="w-full h-full" src={getLevelImage(5)} alt="level" />
       <Menu />
