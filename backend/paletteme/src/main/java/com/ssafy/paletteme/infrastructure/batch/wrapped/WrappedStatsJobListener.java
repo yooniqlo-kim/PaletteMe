@@ -29,16 +29,6 @@ public class WrappedStatsJobListener  implements JobExecutionListener {
         LocalDateTime start = LocalDateTime.parse(jobExecution.getJobParameters().getString("startDate"));
         LocalDateTime end = LocalDateTime.parse(jobExecution.getJobParameters().getString("endDate"));
 
-        // Function.identity(): t -> t 와 같은 의미, 입력값을 그대로 반환하는 함수.
-//        Map<Integer, Tuple> topArtistMap = wrappedRepository.findTopArtistByReviewCount(start, end).stream()
-//                .collect(Collectors.toMap(t -> t.get(reviews.user.userId), Function.identity()));
-//
-//        Map<Integer, Tuple> rankMap = wrappedRepository.rankUsersByReviewCount(start, end).stream()
-//                .collect(Collectors.toMap(t -> t.get(users.userId), Function.identity()));
-//
-//        Map<Integer, Tuple> longestReviewMap = wrappedRepository.findLongestReviewPerUser(start, end).stream()
-//                .collect(Collectors.toMap(t -> t.get(reviews.user.userId), Function.identity()));
-
         Map<Integer, Tuple> topArtistMap = wrappedRepository.findTopArtistByReviewCount(start, end).stream()
                 .filter(t -> t.get(users.userId) != null) // 안전
                 .collect(Collectors.toMap(

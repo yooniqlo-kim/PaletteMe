@@ -9,34 +9,24 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 @Component
 @RequiredArgsConstructor
 public class WrappedStatsWriter implements ItemWriter<WrappedStatsDto> {
     private final WrappedRepository wrappedRepository;
     private static final Logger logger = LoggerFactory.getLogger(WrappedStatsWriter.class);
 
+    // Step을 생성할 때 지정한 chunk의 size만큼 데이터가 옴.
     @Override
     public void write(Chunk<? extends WrappedStatsDto> chunk) throws Exception {
-//        System.out.println("WrappedStatsWriter.write");
-//        List<Wrapped> wrappedList = new ArrayList<>();
-//
-//        for (WrappedStatsDto dto : chunk) {
-//            System.out.println(dto.toString());
-//            Users user = usersRepository.findById(Long.valueOf(dto.getUserId()))
-//                    .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. id = " + dto.getUserId()));
-//            Wrapped wrapped = dto.toEntity(user);
-//
-//            wrappedList.add(wrapped);
-//        }
-//
-//        wrappedRepository.saveAll(wrappedList);
+        List<Wrapped> entityList = StreamSupport.stream(chunk.spliterator(), false)
+                .map(WrappedStatsDto::toEntity)
+                .toList();
 
-        for (WrappedStatsDto dto : chunk) {
-            Wrapped wrapped = dto.toEntity();
-            // 디버깅용 로그
-            logger.info("Saving wrapped for userId: {}", wrapped.getUserId());
+        logger.info("Saving {} wrapped entities", entityList.size());
 
-            wrappedRepository.save(wrapped);
-        }
+        wrappedRepository.saveAll(entityList);
     }
 }
