@@ -5,7 +5,7 @@ export const getArtworkDetail = async (artworkId: string) => {
   const res = await api.get(`/artworks/${artworkId}`);
   const { success, data, errorMsg } = res.data;
   if (!success || !data) {
-    throw new Error(errorMsg ?? "작품 정보를 불러오는 데 실패했습니다.");
+    throw new Error(errorMsg ?? "작품 정보 불러오기 실패");
   }
   return data;
 };
@@ -13,15 +13,20 @@ export const getArtworkDetail = async (artworkId: string) => {
 //작품 ai 설명
 export const getAIDescription = async (artworkId: string): Promise<string> => {
   const res = await api.get(`/artworks/${artworkId}/description`);
-  return res.data.data.description;
+  const { success, data, errorMsg } = res.data;
+  if (!success) {
+    throw new Error(errorMsg ?? "작품 설명 불러오기 실패");
+  }
+  return data.description;
 };
+
 
 //작품 좋아요
 export const likeArtwork = async (artworkId: string) => {
   const res = await api.post(`/artworks/artworks/${artworkId}/like`);
   const { success, errorMsg } = res.data;
   if (!success) {
-    throw new Error(errorMsg ?? "작품 좋아요에 실패했습니다.");
+    throw new Error(errorMsg ?? "작품 좋아요 실패");
   }
 };
 
@@ -30,7 +35,7 @@ export const cancelLikeArtwork = async (artworkId: string) => {
   const res = await api.post(`/artworks/artworks/${artworkId}/cancel`);
   const { success, errorMsg } = res.data;
   if (!success) {
-    throw new Error(errorMsg ?? "작품 좋아요 취소에 실패했습니다.");
+    throw new Error(errorMsg ?? "작품 좋아요 취소 실패");
   }
 };
 

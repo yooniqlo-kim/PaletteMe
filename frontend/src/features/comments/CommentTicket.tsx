@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { BaseComment } from "@/shared/types/comment";
 import { BaseArtwork } from "@/shared/types/artwork";
 import { ArtworkImage } from "../detail/ArtworkImage";
 import { ArtworkMeta } from "../../shared/components/artworks/ArtworkMeta";
 import { WriterMeta } from "../../shared/components/comments/WriterMeta";
+import { likeComment, cancelLikeComment } from "@/shared/api/comment";
+
 import IconButton from "@/shared/components/buttons/IconButton";
 import IconThumb from "@/shared/components/icons/IconThumb";
 
@@ -33,17 +35,28 @@ export function CommentTicket({
 
   const toggleLike = async () => {
     const next = !isLiked;
+
+    // 우선 UI 상태 업데이트
     setIsLiked(next);
     setLikeCount((prev) => (next ? prev + 1 : prev - 1));
     onLikeChange?.(commentId, next);
+
+    try {
+      if (next) {
+        await likeComment(commentId);
+      } else {
+        await cancelLikeComment(commentId);
+      }
+    } catch (error) {
+      console.error("좋아요 처리 실패", error);
+      setIsLiked(!next);
+      setLikeCount((prev) => (!next ? prev + 1 : prev - 1));
+      onLikeChange?.(commentId, !next);
+    }
   };
-  useEffect(() => {
-    setLikeCount(initialLikeCount);
-    setIsLiked(initialIsLiked);
-  }, [initialLikeCount, initialIsLiked, commentId]);
 
   const handleClick = () => {
-    navigate(`/comment/${commentId}`);
+    navigate(`/comments/${commentId}`);
   };
   return (
     <div
