@@ -26,6 +26,7 @@ public class MyMuseumController {
     private final MyReviewsService myReviewsService;
     private final BookmarkedCollectionService bookmarkedCollectionService;
     private final LikedOtherReviewsService likedOtherReviewsService;
+    private final ColorRecommendService colorRecommendService;
 
     @Operation(summary = "캘린더 데이터 조회", description = "연, 월을 기준으로 해당 월의 리뷰 데이터 전체 조회")
     @GetMapping("/reviews/monthly")
@@ -87,4 +88,15 @@ public class MyMuseumController {
         List<LikedOtherReviewsResponse> responses = likedOtherReviewsService.getLikedOtherReviews(userId, cursor, size);
         return ApiResponse.success(responses);
     }
+
+    @Operation(summary = "색상 추천 컬렉션 조회", description = "사용자가 선호한 색상 기반으로 추천 조회")
+    @GetMapping("/recommend/color")
+    public ApiResponse<List<RecommendResponse>> recommendByColor(
+            @Parameter(hidden = true) @UserId int userId,
+            @RequestParam int size) {
+
+        List<RecommendResponse> responses = colorRecommendService.recommend(userId, size);
+        return ApiResponse.success(responses);
+    }
+
 }
