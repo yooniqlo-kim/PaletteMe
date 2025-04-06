@@ -1,9 +1,11 @@
-import { useNavigate } from "react-router-dom";
-import wrappedThumbnail from "@/assets/images/wrapped-thumbnail.jpg";
 import { useEffect, useState } from "react";
+import wrappedThumbnail from "@/assets/images/wrapped-thumbnail.jpg";
 
-export default function WrappedSummaryCard() {
-  const navigate = useNavigate();
+interface WrappedSummaryCardProps {
+  onClick?: () => void;
+}
+
+export default function WrappedSummaryCard({ onClick }: WrappedSummaryCardProps) {
   const [nickname, setNickname] = useState("");
 
   useEffect(() => {
@@ -16,13 +18,9 @@ export default function WrappedSummaryCard() {
     }
   }, []);
 
-  const handleClick = () => {
-    navigate("/wrapped");
-  };
-
   return (
     <div
-      onClick={handleClick}
+      onClick={onClick}
       className="relative w-full max-w-[23.75rem] h-[13.75rem] rounded-lg overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.02] group"
     >
       <img
@@ -37,7 +35,7 @@ export default function WrappedSummaryCard() {
         }}
       >
         <span className="mb-1 transition-all duration-300 group-hover:text-[1.3rem]">
-        지난 한 달 동안
+          지난 한 달 동안
         </span>
         <span className="mb-1 transition-all duration-300 group-hover:text-[1.3rem]">
           {nickname || "사용자"}님은
