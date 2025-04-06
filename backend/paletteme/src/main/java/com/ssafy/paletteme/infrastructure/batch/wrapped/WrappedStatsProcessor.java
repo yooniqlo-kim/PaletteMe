@@ -54,7 +54,7 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
                 reviewPercentage = 100; // 모든 유저가 동일한 수의 리뷰를 썼다면 100%
             } else {
                 // 적게 쓸수록 퍼센트 높고, 많이 쓸수록 퍼센트 낮게
-                reviewPercentage = (int) (((double) (max - reviewCnt) / (max - min)) * 99) + 1;
+                reviewPercentage = (int) Math.round(((double) (max - reviewCnt) / (max - min)) * 99) + 1;
             }
         }
 
