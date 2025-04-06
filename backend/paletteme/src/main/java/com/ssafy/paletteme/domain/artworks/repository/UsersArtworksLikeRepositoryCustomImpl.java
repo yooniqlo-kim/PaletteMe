@@ -31,7 +31,7 @@ public class UsersArtworksLikeRepositoryCustomImpl implements UsersArtworksLikeR
     }
 
     @Override
-    public List<Integer> findLikedArtworkIdsByUserId(int userId) {
+    public List<Integer> findLikedArtistIdsByUserId(int userId) {
         return queryFactory
                 .select(qArtwork.artist.artistId)
                 .from(usersArtworksLike)
@@ -41,4 +41,32 @@ public class UsersArtworksLikeRepositoryCustomImpl implements UsersArtworksLikeR
                 .distinct()
                 .fetch();
     }
+
+    @Override
+    public List<String> findLikedArtworkIdsByUserId(int userId) {
+        return queryFactory
+                .select(usersArtworksLike.artwork.artworkId)
+                .from(usersArtworksLike)
+                .where(usersArtworksLike.user.userId.eq(userId))
+                .fetch();
+    }
+
+    @Override
+    public List<String> findArtworksLikedByUsersWhoLiked(List<String> likedArtworkIds, int userId, List<String> excludedArtworkIds) {
+        return queryFactory
+                .select(usersArtworksLike.artwork.artworkId)
+                .from(usersArtworksLike)
+                .where(
+                        usersArtworksLike.artwork.artworkId.in(likedArtworkIds),
+                        usersArtworksLike.user.userId.ne(userId),
+                        excludedArtworkIds != null && !excludedArtworkIds.isEmpty()
+                                ? usersArtworksLike.artwork.artworkId.notIn(excludedArtworkIds)
+                                : null
+                )
+                .distinct()
+                .fetch();
+    }
+
+
+
 }
