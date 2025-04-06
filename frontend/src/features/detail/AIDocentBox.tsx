@@ -1,4 +1,5 @@
 import { useState } from "react";
+import mainLogo from "@/assets/images/MainLogo_100x100.png";
 
 type AIDocentBoxProps = {
   onFetchExplanation: () => Promise<string>;
@@ -17,7 +18,7 @@ export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
     setError(false);
 
     try {
-      const [text] = await Promise.all([onFetchExplanation(), delay(1200)]);
+      const [text] = await Promise.all([onFetchExplanation(), delay(0)]);
       setAiText(text);
     } catch (err) {
       console.error("AI 설명 로딩 실패", err);
@@ -30,9 +31,9 @@ export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
   const isInitial = !aiText;
 
   const balloonBase = `
-    px-4 py-2 rounded-ps
+    px-4 py-3 rounded-ps
     text-xs whitespace-pre-line transition-all duration-500 ease-in-out
-    inline-block max-w-[80%] text-left
+    inline-block max-w-[80%] text-left relative
   `;
 
   const balloonColor = loading
@@ -46,12 +47,17 @@ export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
   return (
     <div className="space-y-4">
       <p className="text-md font-semibold text-neutral-700">AI 도슨트</p>
-      <div className="flex justify-center pb-4">
+      <div className="flex justify-center pb-4 relative">
         <div
-          className={`${balloonBase} ${balloonColor} `}
+          className={`${balloonBase} ${balloonColor}`}
           onClick={handleClick}
         >
-          {aiText ?? "AI 도슨트의 설명 듣기"}
+          {aiText ?? "물감이의 설명 듣기"}
+          <img
+            src={mainLogo}
+            alt="AI 도슨트 물감이"
+            className="w-12 h-12 absolute -top-9.5 left-8/9 -translate-x-1/2"
+          />
         </div>
       </div>
     </div>

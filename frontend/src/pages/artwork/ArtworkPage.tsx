@@ -4,6 +4,8 @@ import { ArtworkDetail } from "@/features/detail/ArtworkDetail";
 import { getArtworkDetail } from "@/shared/api/artwork";
 import { ArtworkDetailData } from "@/shared/types/artwork";
 import { mapToArtworkDetail } from "@/shared/utils/mapToArtworkDetail";
+import { ArtworkDetailSkeleton } from "@/features/detail/ArtworkDetailSkeleton";
+
 
 export default function ArtworkPage() {
   const { artworkId } = useParams<{ artworkId: string }>();
@@ -35,7 +37,7 @@ export default function ArtworkPage() {
   if (hasError) return <Navigate to="/error" replace />;
 
   if (!artwork) {
-    return <div className="p-4">작품 정보를 불러오는 중입니다...</div>;
+    return <ArtworkDetailSkeleton />;
   }
 
   return <ArtworkDetail artwork={artwork} />;

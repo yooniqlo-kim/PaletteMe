@@ -6,7 +6,7 @@ import { WriteForm } from "@/features/write/WriteForm";
 import Modal from "@/shared/components/modal/Modal";
 import { useBlocker } from "react-router";
 import { BaseArtwork } from "@/shared/types/artwork";
-import { postComment } from "@/shared/api/comment";
+import { writeComment } from "@/shared/api/comment";
 import { mapToBaseCommentFromWriteResponse } from "@/shared/utils/mapToBaseComment";
 import { flushSync } from "react-dom";
 
@@ -36,16 +36,14 @@ export default function WritePage() {
     visibility: "public" | "private";
   }) => {
     try {
-      const res = await postComment({
+      const res = await writeComment({
         artworkId: artwork.artworkId,
         content,
         isPublic: visibility === "public",
       });
-
-      if (!res?.data) throw new Error("등록 실패");
-
+  
       const mappedComment = mapToBaseCommentFromWriteResponse(
-        res.data,
+        res,
         artwork.artworkId
       );
 
@@ -53,11 +51,13 @@ export default function WritePage() {
         setIsNavigatingInternally(true);
         setIsDirty(false);
       });
+
       setTimeout(() => {
-        navigate(`/comment/${mappedComment.commentId}`, {
+        navigate(`/comments/${mappedComment.commentId}`, {
           state: { comment: mappedComment, artwork },
         });
       }, 0);
+
     } catch (err) {
       console.error(err);
       alert("오류가 발생했습니다.");

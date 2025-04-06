@@ -1,19 +1,24 @@
 import { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
-
+import { useParams, useNavigate } from "react-router-dom";
+import { flushSync } from "react-dom";
 import { ArtworkImage } from "@/features/detail/ArtworkImage";
 import { WhiteContainer } from "@/shared/components/textbox/WhiteRoundedContainer";
 import { WriteForm } from "@/features/write/WriteForm";
 import Modal from "@/shared/components/modal/Modal";
 import { useBlocker } from "react-router";
-
-import { baseArtworkDummy } from "@/shared/dummy/artworkDummy"; // 실제 API로 교체해야 함
+import { ArtworkDetailSkeleton } from "@/features/detail/ArtworkDetailSkeleton";
+import { getCommentDetail, editComment } from "@/shared/api/comment";
+import { mapToCommentAndArtwork } from "@/shared/utils/mapToBaseComment";
 import { BaseComment } from "@/shared/types/comment";
-import { commentDummy } from "@/shared/dummy/commentDummy";
+import { ArtworkPreview } from "@/shared/types/artwork";
+
 
 export default function CommentEditPage() {
   const { commentId } = useParams<{ commentId: string }>();
+  const navigate = useNavigate();
+
   const [comment, setComment] = useState<BaseComment | null>(null);
+  const [artwork, setArtwork] = useState<ArtworkPreview | null>(null);
   const [isDirty, setIsDirty] = useState(false);
 
   const { state, reset, proceed } = useBlocker(isDirty);
@@ -23,33 +28,47 @@ export default function CommentEditPage() {
   }, []);
 
   useEffect(() => {
-    // API 대신 dummy에서 commentId로 찾기
-    const matched = commentDummy.find((c) => c.commentId === commentId);
-    if (matched) {
-      setComment(matched);
-    } else {
-      alert("해당 감상문을 찾을 수 없습니다.");
-    }
+    if (!commentId) return;
+
+    const fetch = async () => {
+      try {
+        const res = await getCommentDetail(commentId);
+        const { comment, artwork } = mapToCommentAndArtwork(res, commentId);
+        setComment(comment);
+        setArtwork(artwork);
+      } catch (e) {
+        console.error("감상문 상세 조회 실패", e);
+        alert("감상문 정보를 불러오는 데 실패했습니다.");
+      }
+    };
+
+    fetch();
   }, [commentId]);
 
-  const artwork = baseArtworkDummy.find(
-    (a) => a.artworkId === comment?.artworkId
-  );
-
-  // 임시
   if (!comment || !artwork) {
-    return <div className="p-4">정보를 불러오는 중...</div>;
+    return <ArtworkDetailSkeleton/>;
   }
 
   const handleSubmit = async ({
     content,
     visibility,
   }: Pick<BaseComment, "content" | "visibility">) => {
-    alert(`수정 완료!\n\n내용: ${content}\n공개 설정: ${visibility}`);
-    // 실제로는 PUT 요청이 들어갈 자리
-  };
+    try {
+      await editComment(commentId!, {
+        content,
+        isPublic: visibility === "public",
+      });
 
-  if (!comment) return <div className="p-4">감상문을 불러오는 중...</div>;
+      flushSync(() => {
+        setIsDirty(false);
+      });
+  
+      navigate(`/comments/${commentId}`);
+    } catch (err) {
+      console.error("수정 실패", err);
+      alert("감상문 수정 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
     <div className="bg-neutral-100 min-h-screen">
@@ -71,7 +90,8 @@ export default function CommentEditPage() {
         <WriteForm
           initialValues={comment}
           onDirtyChange={handleDirtyChange}
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit} 
+          artwork={artwork}
         />
       </WhiteContainer>
     </div>

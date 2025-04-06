@@ -4,10 +4,10 @@ import { KeywordSuggester } from "./KeywordSuggester";
 import { TextArea } from "./TextArea";
 import { VisibilityToggle } from "./VisibilityToggle";
 import Button from "@/shared/components/buttons/Button";
-import { BaseArtwork } from "@/shared/types/artwork";
+import { ArtworkPreview } from "@/shared/types/artwork";
 
 type WriteFormProps = {
-  artwork: BaseArtwork;
+  artwork: ArtworkPreview;
   onDirtyChange?: (isDirty: boolean) => void;
   initialValues?: {
     content: string;

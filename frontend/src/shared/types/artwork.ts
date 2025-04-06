@@ -16,3 +16,13 @@ export type ArtworkDetailData = BaseArtwork & {
   isBookmarked: boolean;
   hasWrittenComment: string | null;
 };
+
+// 감상문용
+export type ArtworkPreview = {
+  artworkId: string;
+  title: string;
+  artist: string;
+  artworkImageUrl: string;
+  location?: string;
+  year?: string;
+};
