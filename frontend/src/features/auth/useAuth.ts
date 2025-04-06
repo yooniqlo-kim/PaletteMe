@@ -46,5 +46,12 @@ export function useAuth() {
     showToast({ message: "로그아웃되었습니다.", type: "success" });
   }
 
-  return { handleLogin, isLoggedIn, logout };
+  function getUserMeta(): UserType | null {
+    const userData: string | null = sessionStorage.getItem("user");
+    if (!userData) return null;
+    const { id, nickname, s3Url } = JSON.parse(userData);
+    return { id, nickname, s3Url };
+  }
+
+  return { handleLogin, isLoggedIn, logout, getUserMeta };
 }

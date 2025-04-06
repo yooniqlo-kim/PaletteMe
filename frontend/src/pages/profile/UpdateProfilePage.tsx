@@ -8,9 +8,12 @@ import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
 import { ChangeEvent, FormEvent, useState } from "react";
 import defaultImg from "@/assets/images/MainLogo.png";
+import { useAuth } from "@/features/auth/useAuth";
 
 export default function UpdateProfilePage() {
-  const [image, setImage] = useState<string>(defaultImg);
+  const { getUserMeta } = useAuth();
+  const userMeta = getUserMeta();
+  const [image, setImage] = useState<string>(userMeta?.s3Url || defaultImg);
 
   function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -59,13 +62,13 @@ export default function UpdateProfilePage() {
               id="nickname"
               name="nickname"
               type="text"
-              placeholder="홍길동"
+              placeholder={userMeta?.nickname}
             />
 
             <Button size="XS">중복 확인</Button>
           </span>
         </InputContainer>
-        <Button size="L">다음으로</Button>
+        <Button size="L">수정하기</Button>
       </Form>
     </div>
   );
