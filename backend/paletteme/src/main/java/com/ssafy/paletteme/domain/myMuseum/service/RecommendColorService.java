@@ -13,10 +13,7 @@
     import org.springframework.stereotype.Service;
 
     import java.time.LocalDateTime;
-    import java.util.ArrayList;
-    import java.util.Collections;
-    import java.util.List;
-    import java.util.Random;
+    import java.util.*;
     import java.util.stream.Collectors;
 
     @Service
@@ -53,11 +50,7 @@
             LocalDateTime twoWeeksAgo = LocalDateTime.now().minusWeeks(2);
             List<String> alreadyRecommendIds = usersRecommendHistoryRepository.findArtworkIds(userId,twoWeeksAgo);
 
-            if(alreadyRecommendIds == null) {
-                return new ArrayList<>();
-            }
-
-            return alreadyRecommendIds;
+            return alreadyRecommendIds != null ? alreadyRecommendIds : new ArrayList<>();
         }
 
         public List<RecommendResponse> generateCandidates(List<String> favoriteColors, List<String> excludedIds, int limit, int userId) {
@@ -89,11 +82,11 @@
                     .map(Artworks::getArtworkId)
                     .collect(Collectors.toList());
 
-            List<String> likedArtworkIds = usersArtworksLikeRepository
+            Set<String> likedArtworkIds = usersArtworksLikeRepository
                     .findByUserUserIdAndArtworkArtworkIdIn(userId, artworkIds)
                     .stream()
                     .map(like -> like.getArtwork().getArtworkId())
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
 
             return artworks.stream()
                     .map(art -> RecommendResponse.builder()
