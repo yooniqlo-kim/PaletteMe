@@ -80,7 +80,7 @@ export default function SearchPage() {
   }, [query]);
 
   const handleCardClick = (id: string) => {
-    navigate(`/artwork/${id}`);
+    navigate(`/artworks/${id}`);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

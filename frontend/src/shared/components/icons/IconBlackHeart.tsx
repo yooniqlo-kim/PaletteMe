@@ -1,6 +1,6 @@
 // 작품 상세 페이지에서 보이는 하트
 export default function IconBlackHeart({ isClicked }: { isClicked: boolean }) {
-  let color = isClicked ? "black" : "none";
+  const color = isClicked ? "black" : "none";
 
   return (
     <svg

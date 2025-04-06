@@ -21,13 +21,19 @@ export default function RecommendationContainer() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // const apiData = await fetchRecommendationsByFilter(selectedFilter);
-        const dummyOrApiData: RecommendedArtwork[] =
-          selectedFilter === "age"
-            ? recommendationDummy.age
-            : await fetchRecommendationsByFilter(selectedFilter);
+        let rawData: RecommendedArtwork[];
 
-        const mapped = dummyOrApiData.map(
+        // API가 준비되면 이 조건문 전체 삭제
+        if (selectedFilter === "age") {
+          rawData = recommendationDummy.age;
+        } else {
+          rawData = await fetchRecommendationsByFilter(selectedFilter);
+        }
+
+        // 최종 버전은 이렇게 바뀜:
+        // const rawData = await fetchRecommendationsByFilter(selectedFilter);
+
+        const mapped = rawData.map(
           mapRecommendedToArtwork
         ) as (BaseArtwork & { isLiked?: boolean })[];
 

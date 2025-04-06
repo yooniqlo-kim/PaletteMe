@@ -77,9 +77,9 @@ export const mapReviewsToMonthlyCalendar = (
   });
 };
 
-// Wrapped 페이지 타이틀용 (ex. "2025년 2월")
+// Wrapped 페이지 타이틀용 (ex. "2025 03")
 export const getWrappedMonthString = () => {
-  return dayjs().subtract(1, "month").format("YYYY년 M월");
+  return dayjs().subtract(1, "month").format("YYYY MM");
 };
 
 // 감상문 날짜 변환용

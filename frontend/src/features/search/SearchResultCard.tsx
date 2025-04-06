@@ -8,6 +8,7 @@ interface Props {
   onClick: () => void;
   onClickLike?: () => void;
   isLiked?: boolean;
+  disabled?: boolean;
 }
 
 export default function SearchResultCard({
@@ -15,12 +16,13 @@ export default function SearchResultCard({
   artworkId,
   isLiked = false,
   onClickLike,
+  disabled = false,
 }: Props) {
   const navigate = useNavigate();
 
   // Artwork 객체 생성
   const fakeArtwork: BaseArtwork & { isLiked?: boolean } = {
-    artworkId: "fake-id",
+    artworkId: artworkId,
     artworkImageUrl: imageUrl,
     title: "",
     artist: "",
@@ -30,7 +32,7 @@ export default function SearchResultCard({
 
   // 카드 클릭 시 상세 페이지로 이동
   const handleCardClick = () => {
-    navigate(`/artwork/${artworkId}`);
+    navigate(`/artworks/${artworkId}`);
   };
 
   return (
@@ -41,6 +43,7 @@ export default function SearchResultCard({
       theme="light"
       onClick={handleCardClick}
       onClickLike={onClickLike}
+      disabled={disabled}
     />
   );
 }

@@ -1,5 +1,5 @@
 export default function IconBookmark({ isClicked }: { isClicked: boolean }) {
-  let color = isClicked ? "black" : "none";
+  const color = isClicked ? "black" : "none";
 
   return (
     <svg
