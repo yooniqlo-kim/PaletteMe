@@ -1,6 +1,6 @@
 // navbar 아이콘
 export default function IconCalendar({ isActive }: { isActive: boolean }) {
-  let color = isActive
+  const color = isActive
     ? "var(--color-navbar-active)"
     : "var(--color-neutral-6)";
 

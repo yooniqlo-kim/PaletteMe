@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import SearchRecommendationCard from "./SearchRecommendationCard";
 import { ArtworkSearchItem } from "@shared/api/search";
 
+
 interface Props {
   data: ArtworkSearchItem[];
 }
+
 
 export default function SearchRecommendationList({ data }: Props) {
   const navigate = useNavigate();

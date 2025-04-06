@@ -9,9 +9,10 @@ type IconButtonProps = ComponentPropsWithoutRef<"button"> & {
 export default function IconButton({
   identifier,
   children,
+  className = "",
   ...props
 }: IconButtonProps) {
-  let restProperties;
+  let restProperties = "";
 
   if (identifier === "heart")
     restProperties =
@@ -27,10 +28,11 @@ export default function IconButton({
 
   return (
     <button
-      className={`${restProperties} rounded-ps cursor-pointer text-[12px] flex justify-center items-center`}
+      className={`${restProperties} rounded-ps cursor-pointer text-[12px] flex justify-center items-center ${className}`}
       {...props}
     >
       {children}
     </button>
   );
 }
+

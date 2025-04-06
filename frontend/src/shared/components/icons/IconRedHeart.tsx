@@ -1,6 +1,6 @@
 // 작품 리스트에 보이는 빨간색 하트 (180*180)
 export default function IconRedHeart({ isClicked }: { isClicked: boolean }) {
-  let color = isClicked
+  const color = isClicked
     ? "var(--color-navbar-active)"
     : "var(--color-neutral-3)";
 

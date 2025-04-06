@@ -21,6 +21,7 @@ type Props = {
   onClick?: () => void;
   onClickLike?: () => void;
   clickAction?: "navigate" | "like";
+  disabled?: boolean;
 };
 
 export const ArtworkCard = ({
@@ -36,6 +37,7 @@ export const ArtworkCard = ({
   onClick,
   onClickLike,
   clickAction = "navigate",
+  disabled = false,
 }: Props) => {
   const { artworkImageUrl, title, isLiked = false } = artwork;
 
@@ -80,7 +82,7 @@ export const ArtworkCard = ({
     <div
       onClick={handleClick}
       className={`relative ${dimension} overflow-hidden cursor-pointer ${
-        hasBorder ? "border border-white" : ""
+        hasBorder ? "border-5 border-white" : ""
       }`}
       style={{ borderRadius: borderRadiusValue }}
     >
@@ -116,6 +118,7 @@ export const ArtworkCard = ({
             e.preventDefault();
             onClickLike();
           }}
+          disabled={disabled}
           className="absolute bottom-2 right-2 z-10"
         >
           {size === "small" ? (
