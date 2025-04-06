@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import WrappedStep from '@/features/wrapped/WrappedStep';
 import WrappedEnd from '@/features/wrapped/WrappedEnd';
 import { fetchWrapped } from '@features/wrapped/api/wrappedApi';
 import { WrappedData } from '@/shared/api/wrapped';
-import { mapWrappedData } from '@/shared/utils/mapWrappedData'; // ✅ 추가
+import { mapWrappedData } from '@/shared/utils/mapWrappedData';
 
 export default function WrappedPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [wrappedData, setWrappedData] = useState<WrappedData | null>(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const isSample = new URLSearchParams(location.search).get("sample") === "true";
 
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, 5));
@@ -19,10 +22,19 @@ export default function WrappedPage() {
     document.body.style.overflow = 'hidden';
 
     const getWrapped = async () => {
+      if (isSample) {
+        const sample = sessionStorage.getItem("wrapped-sample");
+        if (sample) {
+          setWrappedData(JSON.parse(sample));
+          setLoading(false);
+          return;
+        }
+      }
+
       try {
-        const rawData = await fetchWrapped();            // ✅ 원본 데이터
-        const mapped = mapWrappedData(rawData);          // ✅ WrappedData로 변환
-        setWrappedData(mapped);                          // ✅ 이제 타입 일치
+        const rawData = await fetchWrapped(); 
+        const mapped = mapWrappedData(rawData);
+        setWrappedData(mapped);                   
       } catch (e) {
         console.error("랩트 API 호출 실패:", e);
       } finally {
@@ -35,7 +47,7 @@ export default function WrappedPage() {
     return () => {
       document.body.style.overflow = originalOverflow;
     };
-  }, []);
+  },[isSample]);
 
   if (loading || !wrappedData) return <div>로딩 중...</div>;
 
