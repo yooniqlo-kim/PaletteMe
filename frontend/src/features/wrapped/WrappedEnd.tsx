@@ -130,7 +130,7 @@ export default function WrappedEnd({
               )}
             </div>
 
-            <div>
+            <div className="mb-1">
               <p style={{ fontSize: "0.875rem", color: "#717171", marginBottom: "0.25rem" }}>
                 최애 화가
               </p>

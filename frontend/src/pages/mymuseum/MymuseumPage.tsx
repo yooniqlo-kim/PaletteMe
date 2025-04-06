@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -11,15 +12,17 @@ import masterpieces from "@/assets/masterpieces";
 import shuffle from "@/shared/utils/shuffle";
 import { mapReviewsToWeeklyCalendar } from "@/shared/utils/date";
 import { useWeeklyCalendarReviews } from "@/shared/hooks/useCalendarReviews";
+import WrappedEmptyModal from "@/features/wrapped/WrappedEmptyModal";
+import { fetchWrapped } from "@/features/wrapped/api/wrappedApi";
+import { mapWrappedData } from "@/shared/utils/mapWrappedData";
+import { WrappedDummy } from "@/shared/dummy/wrappedDummy";
 
 export default function MymuseumPage() {
   const navigate = useNavigate();
-  const weekStart = dayjs().startOf("week").add(1, "day").toDate();
+  const [isModalOpened, setIsModalOpened] = useState(false);
 
-  const {
-    data: reviews,
-    isLoading,
-  } = useWeeklyCalendarReviews(weekStart);
+  const weekStart = dayjs().startOf("week").add(1, "day").toDate();
+  const { data: reviews, isLoading } = useWeeklyCalendarReviews(weekStart);
 
   const shuffled = shuffle(masterpieces).slice(0, 4);
 
@@ -43,6 +46,33 @@ export default function MymuseumPage() {
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const nickname = user?.nickname || "사용자";
 
+  //  테스트용: 무조건 모달 열기
+  // const handleWrappedClick = async () => {
+  //   setIsModalOpened(true);
+  // };
+  
+  const handleWrappedClick = async () => {
+    try {
+      const raw = await fetchWrapped();
+      const mapped = mapWrappedData(raw);
+
+      if (mapped.reviewRank.reviewCount === 0) {
+        setIsModalOpened(true);
+      } else {
+        navigate("/wrapped");
+      }
+    } catch (e) {
+      console.error("랩트 데이터 확인 실패:", e);
+      setIsModalOpened(true);
+    }
+  };
+
+  const handleUseSample = () => {
+    sessionStorage.setItem("wrapped-sample", JSON.stringify(WrappedDummy));
+    setIsModalOpened(false);
+    navigate("/wrapped?sample=true");
+  };
+
   return (
     <div className="px-4 pb-[3.75rem]">
       <div className="max-w-[26.25rem] mx-auto w-full">
@@ -51,9 +81,7 @@ export default function MymuseumPage() {
           <WeeklyCalendar
             data={calendarData}
             isLoading={isLoading}
-            onClick={() =>
-              navigate("/mymuseum/calendar", { state: { reviews } })
-            }
+            onClick={() => navigate("/mymuseum/calendar", { state: { reviews } })}
           />
         </div>
 
@@ -65,7 +93,7 @@ export default function MymuseumPage() {
 
         <div className="mb-6">
           <div className="text-base font-semibold mb-2">Wrapped</div>
-          <WrappedSummaryCard />
+          <WrappedSummaryCard onClick={handleWrappedClick} />
         </div>
 
         <div className="mb-6">
@@ -78,6 +106,14 @@ export default function MymuseumPage() {
           <MyCommentsContainer images={myCommentsImages} />
         </div>
       </div>
+
+      {isModalOpened && (
+        <WrappedEmptyModal
+          open={isModalOpened}
+          onClose={() => setIsModalOpened(false)}
+          onUseSample={handleUseSample}
+        />
+      )}
     </div>
   );
 }
