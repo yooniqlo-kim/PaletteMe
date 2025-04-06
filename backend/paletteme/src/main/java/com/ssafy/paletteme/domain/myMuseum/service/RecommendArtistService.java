@@ -25,7 +25,7 @@ public class RecommendArtistService implements RecommendService {
 
     @Override
     public List<RecommendResponse> recommend(int userId, int limit) {
-        List<Integer> likedArtistIds = usersArtworksLikeRepository.findLikedArtworkIdsByUserId(userId);
+        List<Integer> likedArtistIds = usersArtworksLikeRepository.findLikedArtistIdsByUserId(userId);
         List<String> excludedIds = getRecentRecommendedArtworkIds(userId);
 
         List<RecommendResponse> candidates = generateCandidates(likedArtistIds, excludedIds, userId, limit);
