@@ -21,7 +21,7 @@
 
     @Service
     @RequiredArgsConstructor
-    public class ColorRecommendService implements RecommendService {
+    public class RecommendColorService implements RecommendService {
 
         private final UsersFavoriteColorRepository usersFavoriteColorRepository;
         private final UsersRecommendHistoryRepository usersRecommendHistoryRepository;
