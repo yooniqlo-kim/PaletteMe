@@ -5,11 +5,11 @@ import { useNavigate } from "react-router";
 export default function LevelInfoPage() {
   const navigate = useNavigate();
   return (
-    <section className="flex flex-col px-3 gap-5">
+    <section className="flex flex-col px-3 gap-10">
       <div>
         <h2 className="text-lg font-semibold">회원등급</h2>
         <p className="text-neutral-8 font-semibold text-sm">
-          무지개 파레트에 도전해보세요!
+          모든 빛을 흡수하는 반타블랙에 도전해보세요!
         </p>
       </div>
       <LevelItemList />
