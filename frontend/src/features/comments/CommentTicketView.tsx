@@ -8,14 +8,12 @@ import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 type CommentTicketViewProps = {
   comments: BaseComment[];
   artworks: Record<string, BaseArtwork>;
-  onClickComment?: (commentId: string) => void;
   onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
 export function CommentTicketView({
   comments,
   artworks,
-  onClickComment,
   onLikeChange,
 }: CommentTicketViewProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -44,7 +42,6 @@ export function CommentTicketView({
       <CommentTicket
         comment={comment}
         artwork={artwork}
-        onClick={onClickComment}
         onLikeChange={onLikeChange}
       />
 
