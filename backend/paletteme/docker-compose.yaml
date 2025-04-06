@@ -1,7 +1,7 @@
 services:
   es:
     build:
-      context: .
+      context: elasticsearch
       args:
         VERSION: 8.13.4
     container_name: es
@@ -9,20 +9,29 @@ services:
       - node.name=single-node
       - cluster.name=backtony
       - discovery.type=single-node
-      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
     ports:
       - 9200:9200
       - 9300:9300
     networks:
       - es-bridge
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
 
   kibana:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:8.13.4
     environment:
-      SERVER_NAME: kibana
-      ELASTICSEARCH_HOSTS: http://es:9200
-      ELASTICSEARCH_SSL_VERIFICATIONMODE: none
+      - SERVER_NAME=kibana
+      - ELASTICSEARCH_HOSTS=http://es:9200
+      - ELASTICSEARCH_USERNAME=${ELASTIC_KIBANA_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_KIBANA_PASSWORD}
+      - SERVER_BASEPATH=/kibana
+      - SERVER_REWRITEBASEPATH=true
     ports:
       - 5601:5601
     depends_on:
@@ -35,6 +44,8 @@ services:
     container_name: logstash
     environment:
       - ELASTICSEARCH_HOSTS=http://es:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
@@ -61,6 +72,7 @@ services:
       - es-bridge
     volumes:
       - mysql-data:/var/lib/mysql
+      - /home/ubuntu/export:/data
 
   redis:
     image: redis:latest
@@ -69,6 +81,34 @@ services:
       - 6379:6379
     networks:
       - es-bridge
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    #    ports:
+    #      - 8080:8080
+    env_file: .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - es-bridge
+
+#  frontend:
+#    build:
+#      context: ../../frontend
+#      dockerfile: Dockerfile
+#    container_name: frontend
+#    ports:
+#      - 80:80
+#    networks:
+#      - es-bridge
 
 networks:
   es-bridge:
