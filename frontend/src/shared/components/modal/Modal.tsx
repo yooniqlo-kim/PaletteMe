@@ -11,6 +11,8 @@ type ModalProps = {
   onClose: () => void;
   route?: string;
   onConfirm?: () => void;
+  cancelText?: string;       // 버튼 텍스트 커스터마이징
+  confirmText?: string;      // 버튼 텍스트 커스터마이징
 };
 
 //  Modal 컴포넌트 사용하는 곳에서 아래와 같이 사용
@@ -31,6 +33,8 @@ export default function Modal({
   onClose,
   route,
   onConfirm,
+  cancelText, 
+  confirmText,
 }: ModalProps) {
   const dialog = useRef<HTMLDialogElement | null>(null);
 
@@ -76,16 +80,16 @@ export default function Modal({
         <p className="text-sm font-medium">{confirmMsg}</p>
       </div>
 
-      <div className="flex justify-between w-full">
+      <div className="whitespace-nowrap flex justify-between w-full">
         <Button size="S" onClick={handleClick}>
-          아니오
+          {cancelText ?? "아니오"}
         </Button>
         <Button
           size="S"
           onClick={onConfirm ?? handleClick}
-          className="bg-white border border-primary !text-primary hover:bg-white"
+          className="whitespace-nowrap bg-white border border-primary !text-primary hover:bg-white"
         >
-          네
+          {confirmText ?? "네"}
         </Button>
       </div>
     </dialog>,

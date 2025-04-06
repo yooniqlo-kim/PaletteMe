@@ -55,18 +55,12 @@ export default function RecommendationContainer() {
         onSelect={(value) => setSelectedFilter(value as RecommendationFilter)}
       />
 
-      {isLoading ? (
-        <div className="flex justify-center items-center py-10">
-          <div className="w-6 h-6 border-4 border-gray-300 border-t-[var(--color-primary)] rounded-full animate-spin" />
-          <span className="ml-3 text-neutral-6 text-sm">작품을 불러오는 중입니다...</span>
-        </div>
-      ) : (
-        <RecommendationArtworks
-          key={selectedFilter}
-          artworks={artworks}
-          isLoading={isLoading}
-        />
-      )}
+      {/* 항상 렌더링되도록 수정 */}
+      <RecommendationArtworks
+        key={selectedFilter}
+        artworks={artworks}
+        isLoading={isLoading}
+      />
     </div>
   );
 }

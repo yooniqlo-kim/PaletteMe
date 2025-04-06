@@ -1,32 +1,30 @@
-export const wrappedDummy = {
-  success: true,
-  errorMsg: null,
-  errorCode: null,
-  data: {
-    favoriteArtist: {
-      artist: 'Claude Monet',
+import { WrappedData } from "@/shared/api/wrapped";
+
+export const WrappedDummy: WrappedData = {
+  favoriteArtwork: {
+    title: "Woman with a Parasol",
+    artist: "Claude Monet",
+    imgUrl:
+      "https://api.nga.gov/iiif/99758d9d-c10b-4d02-a198-7e49afb1f3a6/full/!200,200/0/default.jpg",
+  },
+  reviewRank: {
+    myRank: 1,
+    topPercentage: 90,
+    reviewCount: 50,
+  },
+  mostMemorableArtwork: {
+    title: "The persistence of Memory",
+    artist: "Salvador Dali",
+    imgUrl:
+      "https://www.moma.org/media/W1siZiIsIjM4NjQ3MCJdLFsicCIsImNvbnZlcnQiLCItcmVzaXplIDEwMjR4MTAyNFx1MDAzZSJdXQ.jpg?sha=fedd8615f8cd03f3",
+  },
+  review_based_recommendations: [
+    {
+      title: "The persistence of Memory",
+      artist: "Salvador Dali",
+      imgUrl:
+        "https://www.moma.org/media/W1siZiIsIjM4NjQ3MCJdLFsicCIsImNvbnZlcnQiLCItcmVzaXplIDEwMjR4MTAyNFx1MDAzZSJdXQ.jpg?sha=fedd8615f8cd03f3",
     },
-    reviewRank: {
-      myRank: 2,
-      topPercentage: 85,
-      reviewCount: 142,
-    },
-    mostMemorableArtwork: {
-      title: 'Water Lilies',
-      artist: 'Claude Monet',
-      imgUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg",
-    },
-    review_based_recommendations: [
-      {
-        title: 'The Hay Wain',
-        artist: 'John Constable',
-        imgUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg",
-      },
-      {
-        title: 'Starry Night',
-        artist: 'Vincent van Gogh',
-        imgUrl: "https://cdn.safetimes.co.kr/news/photo/202106/96480_77112_1213.jpg",
-      }
-    ]
-  }
+  ],
 };
+

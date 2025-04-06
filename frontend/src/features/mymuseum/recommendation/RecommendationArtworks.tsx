@@ -4,6 +4,7 @@ import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import { useNavigate } from "react-router-dom";
 import { likeArtwork, cancelLikeArtwork } from "@/shared/api/artwork";
+import placeholderLight300 from "@/assets/images/placeholder-art-light-300x300.jpg";
 
 import type { BaseArtwork } from "@shared/types/artwork";
 
@@ -14,7 +15,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-export default function RecommendationArtworks({ artworks }: Props) {
+export default function RecommendationArtworks({ artworks, isLoading }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
 
@@ -72,25 +73,34 @@ export default function RecommendationArtworks({ artworks }: Props) {
 
       {/* 카드 */}
       <div className="flex justify-center items-center w-full">
-        <div className="w-full max-w-[260px] aspect-[1/1]">
-          {currentArtwork ? (
-            <ArtworkCard
-              key={currentArtwork.artworkId}
-              artwork={{
-                ...currentArtwork,
-                isLiked: likedArtworks.includes(currentArtwork.artworkId),
-              }}
-              size="large"
-              borderRadius="small"
-              theme="light"
-              onClickLike={() => toggleLike(currentArtwork.artworkId)}
-              onClick={() => {
+        <div className="w-full max-w-[260px] aspect-[1/1] min-h-[260px]">
+          <ArtworkCard
+            key={currentArtwork?.artworkId || "loading"}
+            artwork={{
+              ...(currentArtwork ?? {
+                artworkId: "loading",
+                title: "작품 불러오는 중...",
+                imageUrl: placeholderLight300,
+                artistName: "",
+                year: "",
+              }),
+              isLiked: currentArtwork
+                ? likedArtworks.includes(currentArtwork.artworkId)
+                : false,
+            }}
+            size="large"
+            borderRadius="small"
+            theme="light"
+            disabled={isLoading}
+            onClickLike={() =>
+              currentArtwork && toggleLike(currentArtwork.artworkId)
+            }
+            onClick={() => {
+              if (currentArtwork) {
                 navigate(`/artworks/${currentArtwork.artworkId}`);
-              }}
-            />
-          ) : (
-            <div className="w-full h-full bg-gray-100 rounded-lg animate-pulse" />
-          )}
+              }
+            }}
+          />
         </div>
       </div>
 
