@@ -40,7 +40,7 @@ const LEVEL = [
 
 export default function LevelItemList() {
   return (
-    <div className="bg-neutral-3 py-4 px-4 font-medium text-neutral-7">
+    <div className="bg-neutral-2 py-4 px-4 font-medium text-neutral-7 rounded-md">
       <table className="flex flex-col gap-4">
         <thead className="flex justify-between w-full">
           <tr className="w-full flex justify-between items-center text-xs px-6">
