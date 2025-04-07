@@ -49,7 +49,18 @@ export default function WrappedStep({
     }
   };
 
-  const nickname = useMemo(() => sessionStorage.getItem("nickname") || "사용자", []);
+  const nickname = useMemo(() => {
+    const user = sessionStorage.getItem("user");
+    if (!user) return "사용자";
+  
+    try {
+      const parsed = JSON.parse(user);
+      return parsed.nickname || "사용자";
+    } catch {
+      return "사용자";
+    }
+  }, []);
+  
 
   const handleDownload = async () => {
     const target = document.getElementById("wrapped-capture");

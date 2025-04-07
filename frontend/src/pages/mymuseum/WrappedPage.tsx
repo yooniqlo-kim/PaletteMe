@@ -18,6 +18,13 @@ export default function WrappedPage() {
   };
 
   useEffect(() => {
+    if (currentStep === 5 && isSample) {
+      sessionStorage.removeItem("wrapped-sample");
+    }
+  }, [currentStep, isSample]);
+  
+
+  useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
@@ -50,6 +57,8 @@ export default function WrappedPage() {
   },[isSample]);
 
   if (loading || !wrappedData) return <div>로딩 중...</div>;
+
+  
 
   const {
     favoriteArtwork,

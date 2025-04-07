@@ -32,7 +32,7 @@ export function CommentTicketView({
   return (
     <div className="relative w-full flex flex-col items-center">
       <button
-        className="absolute left-1 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
+        className="absolute cursor-pointer left-3 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
         onClick={goPrev}
         disabled={currentIndex === 0}
       >
@@ -46,7 +46,7 @@ export function CommentTicketView({
       />
 
       <button
-        className="absolute right-1 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
+        className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
         onClick={goNext}
         disabled={currentIndex === total - 1}
       >

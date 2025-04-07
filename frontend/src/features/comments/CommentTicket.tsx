@@ -73,7 +73,7 @@ export function CommentTicket({
               toggleLike();
             }}
           >
-            <span className="inline-flex items-center">{likeCount}</span>
+            <span className="relative top-[2px]">{likeCount}</span>
             <IconThumb isClicked={isLiked} />
           </IconButton>
         </div>

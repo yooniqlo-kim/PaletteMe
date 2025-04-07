@@ -10,6 +10,8 @@ import level3 from "@/assets/levels/level_3.svg";
 import level4 from "@/assets/levels/level_4.svg";
 import level5 from "@/assets/levels/level_5.svg";
 import { Level } from "./type";
+import { useQuery } from "@tanstack/react-query";
+import useProfile from "./useProfile";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
 
@@ -21,12 +23,48 @@ export default function ProfilePage() {
   const { logout, getUserMeta } = useAuth();
 
   const userMeta = getUserMeta();
+  const { getProfile } = useProfile();
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
+  let content;
+
+  if (isLoading) {
+    content = (
+      <p className="text-primary flex justify-center items-center">
+        로딩 중입니다....
+      </p>
+    );
+  } else if (isError) {
+    content = (
+      <p className="text-primary flex justify-center items-center">
+        회원 정보 조회 중 오류가 발생했습니다.
+      </p>
+    );
+  } else {
+    content = (
+      <>
+        <UserMeta
+          review={data!.reviewCount}
+          like={data!.artworkLikeCount}
+          loggedIn={data!.attendance}
+        />
+        <img
+          className="w-full h-full"
+          src={getLevelImage(Number(data!.grade) as Level)}
+          alt="level"
+        />
+      </>
+    );
+  }
 
   return (
-    <section className="px-3 py-3 flex flex-col gap-6 box-border">
+    <section className="px-3 py-3 flex flex-col gap-10 box-border">
       <UserProfile nickname={userMeta!.nickname} image={userMeta?.s3Url} />
-      <UserMeta review={0} like={0} loggedIn={0} />
-      <img className="w-full h-full" src={getLevelImage(5)} alt="level" />
+      {content}
       <Menu />
       <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center">
         <button onClick={logout}>로그아웃</button>

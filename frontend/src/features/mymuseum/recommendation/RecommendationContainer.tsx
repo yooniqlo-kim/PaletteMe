@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import RecommendedFilterChips from "./RecommendedFilterChips";
 import RecommendationArtworks from "./RecommendationArtworks";
 
-import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
+// import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
 import type {
   RecommendationFilter,
-  RecommendedArtwork,
 } from "@/shared/api/recommendation";
 import { mapRecommendedToArtwork } from "@/shared/utils/mapRecommendedToArtwork";
 import { fetchRecommendationsByFilter } from "@features/mymuseum/recommendation/api/fetchRecommendationsByFilter";
@@ -21,22 +20,13 @@ export default function RecommendationContainer() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        let rawData: RecommendedArtwork[];
-
-        // API가 준비되면 이 조건문 전체 삭제
-        if (selectedFilter === "age") {
-          rawData = recommendationDummy.age;
-        } else {
-          rawData = await fetchRecommendationsByFilter(selectedFilter);
-        }
-
-        // 최종 버전은 이렇게 바뀜:
-        // const rawData = await fetchRecommendationsByFilter(selectedFilter);
-
+        const size = 10; // 추천 받을 작품 개수
+        const rawData = await fetchRecommendationsByFilter(selectedFilter, size);
+  
         const mapped = rawData.map(
           mapRecommendedToArtwork
         ) as (BaseArtwork & { isLiked?: boolean })[];
-
+  
         setArtworks(mapped);
       } catch (err) {
         console.error("추천 작품 로딩 실패:", err);
@@ -44,9 +34,10 @@ export default function RecommendationContainer() {
         setIsLoading(false);
       }
     };
-
+  
     fetchData();
   }, [selectedFilter]);
+  
 
   return (
     <div>
