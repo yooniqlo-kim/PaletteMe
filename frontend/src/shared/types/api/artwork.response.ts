@@ -1,4 +1,5 @@
 export interface ArtworkDetailResponse {
+  artworkId?: string;
   title: string;
   artist: string;
   imgUrl?: string;

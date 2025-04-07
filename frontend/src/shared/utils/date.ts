@@ -39,7 +39,7 @@ export const mapReviewsToWeeklyCalendar = (
     const current = new Date(weekStartDate);
     current.setDate(current.getDate() + i);
 
-    const dateStr = current.toISOString().slice(0, 10); // YYYY-MM-DD
+    const dateStr = dayjs(current).format("YYYY-MM-DD");
     const matchedReview = reviews.find((r) => r.date === dateStr);
 
     if (matchedReview) {
@@ -77,7 +77,16 @@ export const mapReviewsToMonthlyCalendar = (
   });
 };
 
-// Wrapped 페이지 타이틀용 (ex. "2025년 2월")
+// Wrapped 페이지 타이틀용 (ex. "2025 03")
 export const getWrappedMonthString = () => {
-  return dayjs().subtract(1, "month").format("YYYY년 M월");
+  return dayjs().subtract(1, "month").format("YYYY MM");
+};
+
+// 감상문 날짜 변환용
+export const formatDate = (isoString: string): string => {
+  const date = new Date(isoString);
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, "0");
+  const day = `${date.getDate()}`.padStart(2, "0");
+  return `${year}.${month}.${day}`;
 };

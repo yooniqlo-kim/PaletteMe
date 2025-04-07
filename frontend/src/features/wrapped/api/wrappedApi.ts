@@ -1,7 +1,7 @@
 import { api } from "@/shared/api/core";
-import { WrappedData } from "@shared/api/wrapped";
+import { RawWrappedApiResponse } from "@shared/api/wrapped";
 
-export const fetchWrapped = async (): Promise<WrappedData> => {
-  const response = await api.get("/mymuseum/wrapped");
+export const fetchWrapped = async (): Promise<RawWrappedApiResponse> => {
+  const response = await api.get("/wrapped");
   return response.data.data;
 };

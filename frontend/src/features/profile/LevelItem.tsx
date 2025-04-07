@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef } from "react";
 
-type LevelItemProps = ComponentPropsWithoutRef<"li"> & {
+type LevelItemProps = ComponentPropsWithoutRef<"tr"> & {
   level: string;
   review: string;
   like: string;
@@ -13,18 +13,14 @@ export default function LevelItem({
   like,
   loggedIn,
 }: LevelItemProps) {
-  const isGradient = level.startsWith("linear-gradient");
-
   return (
-    <li className="h-15 flex justify-between items-center rounded-ps bg-white border border-neutral-6 text-sm px-5 box-border">
-      <span
-        className="w-10 h-10 rounded-[50%]"
-        style={
-          isGradient ? { backgroundImage: level } : { backgroundColor: level }
-        }></span>
-      <span>{review}</span>
-      <span>{like}</span>
-      <span>{loggedIn}</span>
-    </li>
+    <tr className="h-15 flex justify-between items-center rounded-ps bg-white border border-neutral-6 text-sm px-5 box-border">
+      <td>
+        <img src={level} alt="level" loading="lazy" className="w-8 h-8" />
+      </td>
+      <td>{review}</td>
+      <td>{like}</td>
+      <td>{loggedIn}</td>
+    </tr>
   );
 }
