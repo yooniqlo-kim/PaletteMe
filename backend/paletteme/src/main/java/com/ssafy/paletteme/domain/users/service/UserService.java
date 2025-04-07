@@ -155,5 +155,12 @@ public class UserService {
         List<ArtworkRecommendationResponse> list= redisService.getAllArtworkRecommendations();
         return list;
     }
+
+    public void logout(int userId) {
+        String key = "user:stats:" + userId;
+        redisService.delete(key);
+    }
+
+
 }
 // TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기
