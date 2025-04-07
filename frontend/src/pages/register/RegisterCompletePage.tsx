@@ -30,7 +30,9 @@ function RegisterCompletePage() {
   let content;
 
   if (isFetching) {
-    content = <p>회원가입 중입니다...</p>;
+    content = (
+      <CompletedForm msg="회원 가입 중입니다" btnMsg="....." route="/login" />
+    );
   } else if (success) {
     content = (
       <CompletedForm
@@ -41,7 +43,12 @@ function RegisterCompletePage() {
     );
   } else {
     content = (
-      <p className="text-red-500">{errorMsg || "회원가입에 실패했습니다."}</p>
+      // <p className="text-red-500">{errorMsg || "회원가입에 실패했습니다."}</p>
+      <CompletedForm
+        msg={errorMsg || "회원가입에 실패했습니다."}
+        btnMsg="다시 회원가입하기"
+        route="/signup"
+      />
     );
   }
 
