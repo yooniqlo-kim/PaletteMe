@@ -111,7 +111,9 @@ export function CommentDetail({ comment, artwork }: Props) {
           </div>
           <div className="flex justify-end py-3 px-2">
             <IconButton identifier="review_detail" onClick={toggleLike}>
-              <span className="inline-flex items-center">{likeCount}</span>
+              <span className="inline-flex items-center relative top-[2px] ">
+                {likeCount}
+              </span>
               <IconThumb isClicked={isLiked} />
             </IconButton>
           </div>
