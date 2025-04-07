@@ -38,6 +38,25 @@ public class RedisService {
         redisTemplate.delete(key);
     }
 
+    public <T> void setObject(String key, T object, Duration timeout) {
+        try {
+            String json = objectMapper.writeValueAsString(object);
+            set(key, json, timeout);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Object serialization failed", e);
+        }
+    }
+
+    public <T> T getObject(String key, Class<T> clazz) {
+        String json = get(key);
+        if (json == null) return null;
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Object deserialization failed", e);
+        }
+    }
+
     public List<ArtworkRecommendationResponse> getAllArtworkRecommendations() {
         Set<String> keys = redisTemplate.keys("recommend:artwork:*");
         if (keys == null || keys.isEmpty()) return Collections.emptyList();
