@@ -39,7 +39,14 @@ export default function BookmarkCollectionPage() {
       if (res.success) {
         const newData = res.data ?? [];
 
-        setArtworks((prev) => [...prev, ...newData]);
+        setArtworks((prev) => {
+          // 썸네일로 설정
+          if (!prev.length && newData[0]?.imgUrl) {
+            setFirstImageUrl(newData[0].imgUrl);
+          }
+          return [...prev, ...newData];
+        });
+        
         setCursor(newData[newData.length - 1]?.userArtworkBookmarkId ?? null);
 
         // 초기 이미지 설정 시점

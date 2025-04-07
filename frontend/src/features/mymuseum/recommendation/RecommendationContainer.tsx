@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import RecommendedFilterChips from "./RecommendedFilterChips";
 import RecommendationArtworks from "./RecommendationArtworks";
 
-// import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
 import type {
   RecommendationFilter,
 } from "@/shared/api/recommendation";
@@ -10,34 +10,57 @@ import { mapRecommendedToArtwork } from "@/shared/utils/mapRecommendedToArtwork"
 import { fetchRecommendationsByFilter } from "@features/mymuseum/recommendation/api/fetchRecommendationsByFilter";
 import type { BaseArtwork } from "@/shared/types/artwork";
 
+const initialCache: Record<RecommendationFilter, BaseArtwork[]> = {
+  age: [],
+  favorite_artist: [],
+  similar_taste: [],
+  color: [],
+};
+
 export default function RecommendationContainer() {
   const [selectedFilter, setSelectedFilter] =
     useState<RecommendationFilter>("age");
+
   const [artworks, setArtworks] = useState<BaseArtwork[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const [cache, setCache] = useState(initialCache);
+
+  useEffect(() => {
+    return () => {
+      setCache(initialCache);
+    };
+  }, [location.pathname]);
+  
 
   useEffect(() => {
     const fetchData = async () => {
+      if (cache[selectedFilter]) {
+        // 캐시에 있으면 API 호출 생략
+        setArtworks(cache[selectedFilter]);
+        return;
+      }
+
       setIsLoading(true);
       try {
-        const size = 10; // 추천 받을 작품 개수
+        const size = 10;
         const rawData = await fetchRecommendationsByFilter(selectedFilter, size);
-  
+
         const mapped = rawData.map(
           mapRecommendedToArtwork
         ) as (BaseArtwork & { isLiked?: boolean })[];
-  
+
         setArtworks(mapped);
+        setCache((prev) => ({ ...prev, [selectedFilter]: mapped }));
       } catch (err) {
         console.error("추천 작품 로딩 실패:", err);
       } finally {
         setIsLoading(false);
       }
     };
-  
+
     fetchData();
-  }, [selectedFilter]);
-  
+  }, [selectedFilter, cache]);
 
   return (
     <div>
@@ -46,7 +69,6 @@ export default function RecommendationContainer() {
         onSelect={(value) => setSelectedFilter(value as RecommendationFilter)}
       />
 
-      {/* 항상 렌더링되도록 수정 */}
       <RecommendationArtworks
         key={selectedFilter}
         artworks={artworks}

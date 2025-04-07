@@ -32,17 +32,18 @@ export default function LikedCollectionPage() {
   const loadMore = useCallback(async () => {
     try {
       const res = await fetchLikedArtworks(cursor);
-
+  
       if (res.success) {
         const newData = res.data ?? [];
-
+  
         setArtworks((prev) => [...prev, ...newData]);
         setCursor(newData[newData.length - 1]?.userArtworkLikeId ?? null);
-
-        if (!artworks.length && user.profileImageUrl) {
-          setFirstImageUrl(user.profileImageUrl);
+  
+        // artworks가 비어 있고, 새로운 데이터가 있을 경우 첫 이미지로 설정
+        if (!artworks.length && newData.length > 0) {
+          setFirstImageUrl(newData[0].imgUrl ?? "");
         }
-
+  
         if (!newData.length) {
           setHasMore(false);
         }
@@ -53,7 +54,8 @@ export default function LikedCollectionPage() {
       console.error("좋아요한 작품 불러오기 실패:", e);
       setHasMore(false);
     }
-  }, [cursor, artworks.length, user.profileImageUrl]);
+  }, [cursor, artworks.length]);
+  
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
