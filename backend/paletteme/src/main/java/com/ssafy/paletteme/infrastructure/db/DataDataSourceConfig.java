@@ -24,7 +24,7 @@ import java.util.HashMap;
                 "com.ssafy.paletteme.domain.users.repository",
                 "com.ssafy.paletteme.domain.myMuseum.repository",
                 "com.ssafy.paletteme.domain.wrapped.repository",
-                "com.ssafy.paletteme.domain.search.repository"
+                "com.ssafy.paletteme.domain.ranking.repository"
 ,
         },
         entityManagerFactoryRef = "dataEntityManager",

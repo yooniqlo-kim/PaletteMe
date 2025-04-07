@@ -13,22 +13,29 @@ public class ReviewsWithArtworkResponses {
     private String title;
     private String artist;
     private String userImg;
+    private String nickname;
     private String createdAt;
     private String content;
     private int reviewLike;
     private Boolean isLiked;
+    private Boolean isPublic;
+    private String artworkId;
 
     @QueryProjection
     public ReviewsWithArtworkResponses(String imgUrl, String museumName, String title, String artist,
-                                       String userImg, String createdAt, String content, int reviewLike) {
+                                       String userImg, String nickname, String createdAt, String content, int reviewLike,
+                                       Boolean isPublic, String artworkId) {
         this.imgUrl = imgUrl;
         this.museumName = museumName;
         this.title = title;
         this.artist = artist;
         this.userImg = userImg;
+        this.nickname = nickname;
         this.createdAt = createdAt;
         this.content = content;
         this.reviewLike = reviewLike;
+        this.isPublic = isPublic;
+        this.artworkId = artworkId;
     }
 
     public void updateIsLiked(boolean isLiked) {
