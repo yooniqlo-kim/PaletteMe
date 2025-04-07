@@ -76,4 +76,12 @@ public class UserController {
         List<ArtworkRecommendationResponse> response = userService.getRecommendedArtworks();
         return ApiResponse.success(response);
     }
+
+    @Operation(summary = "로그아웃", description = "현재 사용자관련 데이터를 레디스에서 지웁니다.")
+    @PostMapping("/logout")
+    public ApiResponse<Void> logout(@Parameter(hidden = true) @UserId int userId) {
+        userService.logout(userId);
+        return ApiResponse.success();
+    }
+
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Wrapped", description = "Wrapped API")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/wrapped")
+@RequestMapping("/mymuseum/wrapped")
 public class WrappedController {
     private final WrappedService wrappedService;
 
