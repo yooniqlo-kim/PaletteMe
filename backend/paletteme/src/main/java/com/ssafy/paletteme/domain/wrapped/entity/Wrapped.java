@@ -1,8 +1,10 @@
 package com.ssafy.paletteme.domain.wrapped.entity;
 
-import com.ssafy.paletteme.domain.artworks.entity.Artists;
-import com.ssafy.paletteme.domain.users.entity.Users;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,15 +13,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class Wrapped {
-
     @Id
     private int userId;
-
-    @MapsId // userId를 PK + FK로 사용
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",
-            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)) //db 컬럼명으로 명시, Users에는 userId로 되있음.
-    private Users users;
 
     @Column(name = "artist_name")
     private String artistName;
@@ -33,6 +28,7 @@ public class Wrapped {
     @Column(name = "review_cnt")
     private Integer reviewCnt;
 
+    // 감상평 수 기반 최야 작품명, 화가명, 이미지
     @Column(name = "favorite_name")
     private String favoriteName;
 
@@ -50,4 +46,22 @@ public class Wrapped {
 
     @Column(name = "recommended_img")
     private String recommendedImg;
+
+    @Builder
+    public Wrapped(int userId, String artistName,
+                   Integer reviewRank, Integer reviewPercentage, Integer reviewCnt,
+                   String favoriteName, String favoriteArtist, String favoriteImg,
+                   String recommendedArtwork, String recommendedArtist, String recommendedImg) {
+        this.userId = userId;
+        this.artistName = artistName;
+        this.reviewRank = reviewRank;
+        this.reviewPercentage = reviewPercentage;
+        this.reviewCnt = reviewCnt;
+        this.favoriteName = favoriteName;
+        this.favoriteArtist = favoriteArtist;
+        this.favoriteImg = favoriteImg;
+        this.recommendedArtwork = recommendedArtwork;
+        this.recommendedArtist = recommendedArtist;
+        this.recommendedImg = recommendedImg;
+    }
 }
