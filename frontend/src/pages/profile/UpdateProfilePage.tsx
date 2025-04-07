@@ -1,47 +1,86 @@
 import Button from "@/shared/components/buttons/Button";
-import RoundedButton from "@/shared/components/buttons/RoundedButton";
-import Form from "@/shared/components/form/Form";
 import Input from "@/shared/components/form/Input";
 import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
+import defaultImg from "@/assets/images/MainLogo.png";
+import { FormEvent, useEffect, useState } from "react";
+import RoundedButton from "@/shared/components/buttons/RoundedButton";
 import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
-import { ChangeEvent, FormEvent, useState } from "react";
-import defaultImg from "@/assets/images/MainLogo.png";
+import { useForm } from "react-hook-form";
+import useToast from "@/shared/hooks/useToast";
+import { checkNickname } from "@/shared/api/register";
 import { useAuth } from "@/features/auth/useAuth";
+import useProfile from "./useProfile";
 
-export default function UpdateProfilePage() {
+type FormValues = {
+  image: FileList;
+  nickname: string;
+};
+
+export default function RegisterImagePage() {
   const { getUserMeta } = useAuth();
-  const userMeta = getUserMeta();
-  const [image, setImage] = useState<string>(userMeta?.s3Url || defaultImg);
+  const { s3Url, nickname: originalNickname } = getUserMeta();
+  const { updateUserInfo } = useProfile();
 
-  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    trigger,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<FormValues>({ mode: "onChange" });
+  const [imagePreview, setImagePreview] = useState<string>(s3Url);
+  const [nicknameMsg, setNicknameMsg] = useState<string>();
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
+
+  const image = watch("image");
+  const watchNickname = watch("nickname");
+  const { showToast } = useToast();
+
+  useEffect(() => {
+    if (image && image.length > 0) {
+      const file = image[0];
+      const objectUrl = URL.createObjectURL(file);
+      setImagePreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
     }
-  }
+  }, [image]);
 
   function handleButtonClick(event: FormEvent) {
     event.preventDefault();
   }
 
-  function updateUserInfo(data: unknown) {
-    console.log(data);
+  async function handleCheckNickname() {
+    const isValid = trigger("nickname");
+
+    if (!isValid) return;
+
+    try {
+      const response = await checkNickname({ nickname: watchNickname });
+      const { success, errorMsg } = response.data;
+      setNicknameMsg(success ? "유효한 닉네임입니다." : errorMsg);
+      setIsNicknameValid(success ? true : false);
+    } catch (error) {
+      showToast({
+        message: "닉네임 중복 체크 중 오류가 발생했습니다.",
+        type: "error",
+      });
+    }
+  }
+
+  function onSubmit(data: FormValues) {
+    updateUserInfo(data);
   }
   return (
-    <div className="px-7">
-      <Form
-        onSave={updateUserInfo}
+    <section className="flex px-7">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-8 w-full">
         <h2 className="text-lg font-semibold">프로필 업데이트</h2>
-        <Label htmlFor="fileInput">
+        <Label htmlFor="image">
           <span className="relative">
-            <UserImage userImg={image} />
+            <UserImage userImg={imagePreview || defaultImg} />
             <span className="absolute bottom-0 left-20 z-10">
               <RoundedButton identifier="user" onClick={handleButtonClick}>
                 <IconCamera />
@@ -50,27 +89,50 @@ export default function UpdateProfilePage() {
           </span>
         </Label>
         <Input
-          id="fileInput"
+          {...register("image")}
+          id="image"
           type="file"
           accept="image/*"
-          onChange={handleImageChange}
           className="hidden"
         />
         <InputContainer>
           <Label htmlFor="nickname">닉네임</Label>
           <span className="flex justify-between w-full gap-4">
-            <Input
-              id="nickname"
-              name="nickname"
-              type="text"
-              placeholder={userMeta?.nickname}
-            />
-
-            <Button size="XS">중복 확인</Button>
+            <div className="flex flex-col grow">
+              <Input
+                {...register("nickname", {
+                  required: "닉네임은 필수값입니다.",
+                  minLength: {
+                    value: 2,
+                    message: "닉네임은 두 자 이상 입력해야 합니다.",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "닉네임은 최대 20자까지 가능합니다.",
+                  },
+                  validate: (value) =>
+                    value === originalNickname
+                      ? "새로운 닉네임을 입력해주세요"
+                      : true,
+                })}
+                id="nickname"
+                type="text"
+                placeholder="2자 이상 20자 이하로 입력해주세요"
+                fallback={errors.nickname && errors.nickname.message}
+              />
+              {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
+            </div>
+            <Button size="XS" onClick={handleCheckNickname} type="button">
+              중복 확인
+            </Button>
           </span>
         </InputContainer>
-        <Button size="L">수정하기</Button>
-      </Form>
-    </div>
+        <Button
+          size="L"
+          disabled={!isNicknameValid || !isValid || isSubmitting}>
+          수정하기
+        </Button>
+      </form>
+    </section>
   );
 }
