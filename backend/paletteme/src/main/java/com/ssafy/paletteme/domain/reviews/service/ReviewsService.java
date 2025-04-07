@@ -1,5 +1,6 @@
 package com.ssafy.paletteme.domain.reviews.service;
 
+import com.ssafy.paletteme.common.redis.RedisService;
 import com.ssafy.paletteme.domain.artworks.entity.Artworks;
 import com.ssafy.paletteme.domain.artworks.repository.ArtworksRepository;
 import com.ssafy.paletteme.domain.reviews.dto.*;
@@ -9,8 +10,11 @@ import com.ssafy.paletteme.domain.reviews.exception.ReviewsError;
 import com.ssafy.paletteme.domain.reviews.exception.ReviewsException;
 import com.ssafy.paletteme.domain.reviews.repository.ReviewsRepository;
 import com.ssafy.paletteme.domain.reviews.repository.UsersReviewLikeRepository;
+import com.ssafy.paletteme.domain.users.dto.UserStats;
 import com.ssafy.paletteme.domain.users.entity.Users;
+import com.ssafy.paletteme.domain.users.repository.UsersGradeRepository;
 import com.ssafy.paletteme.domain.users.repository.UsersRepository;
+import com.ssafy.paletteme.domain.users.utils.UsersGradeUpdater;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +32,9 @@ public class ReviewsService {
     private final ReviewsRepository reviewsRepository;
     private final ArtworksRepository  artworksRepository;
     private final UsersReviewLikeRepository  usersReviewLikeRepository;
+    private final RedisService redisService;
+    private final UsersGradeRepository usersGradeRepository;
+    private final UsersGradeUpdater usersGradeUpdater;
 
     @Transactional
     public ReviewWriteResponse writeReview(long userId, ReviewsWriteRequest reviewsWriteRequest) {
@@ -42,6 +49,13 @@ public class ReviewsService {
         reviews = reviewsRepository.save(reviews);
 
         Boolean isLiked = usersReviewLikeRepository.existsByUserAndReview(user, reviews);
+
+
+        // 레디스 출력 -> 등급 변경 -> 등급 확인 -> 레디스 입력
+        UserStats userStats = redisService.getUserStats(user.getUserId());
+        userStats.incrementReviewCount();
+        usersGradeUpdater.updateUserGradeIfNeeded(userStats);
+        redisService.saveUserStats(userStats);
 
         return ReviewWriteResponse.fromEntity(user, reviews, isLiked);
     }
