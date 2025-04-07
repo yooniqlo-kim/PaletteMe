@@ -88,16 +88,21 @@ export function CommentCard({
         {/* 작성자 정보 및 좋아요 */}
         <div className="relative z-10 flex justify-between items-center">
           <WriterMeta user={user} date={date} />
-          <div className="flex items-center gap-1 text-xs font-medium p-1">
+          <div className="flex items-center gap-1 text-xs font-medium">
             <IconButton
-              identifier="review_card"
+              identifier="review_list"
               onClick={(e) => {
                 e.stopPropagation();
                 toggleLike();
               }}
-              className="flex items-center gap-1"
             >
-              <span>{likeCount}</span>
+              <span
+                className={`relative top-[2px] ${
+                  !isDetailMode ? "text-white" : ""
+                }`}
+              >
+                {likeCount}
+              </span>
               <IconThumb isClicked={isLiked} />
             </IconButton>
           </div>

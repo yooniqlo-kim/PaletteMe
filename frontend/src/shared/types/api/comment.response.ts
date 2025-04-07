@@ -13,6 +13,7 @@ export interface ReviewsWithArtworkResponse {
   createdAt?: string;
   reviewLike?: number;
   isLiked?: boolean;
+  isPublic?: boolean;
 }
 
 // 감상문 리스트 조회
@@ -69,7 +70,7 @@ export interface LikedOtherReviewsResponse {
 }
 
 // 내가 작성한 감상문 리스트 조회
-export type MyReviewsListResponse  = MyReviewsListResponse[];
+export type MyReviewsListResponse = MyReviewsListResponse[];
 
 // 내가 작성한 감상문 조회
 export interface MyReviewsResponse {

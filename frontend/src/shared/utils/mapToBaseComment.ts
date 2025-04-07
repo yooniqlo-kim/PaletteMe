@@ -2,7 +2,7 @@ import {
   ReviewSummaryResponse,
   ReviewsWithArtworkResponse,
   ReviewWriteResponse,
-  LikedOtherReviewsResponse, 
+  LikedOtherReviewsResponse,
   MyReviewsResponse,
 } from "../types/api/comment.response";
 import { BaseComment } from "@/shared/types/comment";
@@ -27,17 +27,18 @@ export const mapToBaseComment = (
 });
 
 export const mapToCommentAndArtwork = (
-  res: ReviewsWithArtworkResponse,commentIdFromParam: string
+  res: ReviewsWithArtworkResponse,
+  commentIdFromParam: string
 ): { comment: BaseComment; artwork: ArtworkPreview } => {
   return {
     comment: {
       commentId: commentIdFromParam,
-      artworkId: res.artworkId  ?? "",
+      artworkId: res.artworkId ?? "",
       content: res.content ?? "",
       date: formatDate(res.createdAt ?? ""),
       likeCount: res.reviewLike ?? 0,
       isLiked: res.isLiked ?? false,
-      visibility: "public",
+      visibility: res.isPublic ? "public" : "private",
       user: {
         nickname: res.nickname ?? "",
         profileImageUrl: res.userImg ?? "",
@@ -63,7 +64,7 @@ export const mapToBaseCommentFromWriteResponse = (
   return {
     commentId: String(res.reviewId),
     artworkId,
-    content: res.content?? "",
+    content: res.content ?? "",
     date: formatDate(res.createdAt ?? ""),
     likeCount: res.reviewLike ?? 0,
     isLiked: res.liked ?? false,
