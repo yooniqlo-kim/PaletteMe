@@ -84,4 +84,51 @@ public class UserController {
         return ApiResponse.success();
     }
 
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴는 소프트 딜리트로 진행")
+    @PostMapping("/inactive")
+    public ApiResponse<Void> deactivateUser(@Parameter(hidden = true) @UserId int userId) {
+        userService.deactivateUser(userId);
+        return ApiResponse.success();
+    }
+
+    @Operation(summary = "비밀번호 확인", description = "회원 탈퇴 전 비밀번호를 확인합니다.")
+    @PostMapping("/verify-password")
+    public ApiResponse<PasswordVerifyResponse> verifyPassword(
+            @Parameter(hidden = true) @UserId int userId,
+            @RequestBody PasswordVerifyRequest request
+    ) {
+        PasswordVerifyResponse response = userService.verifyPassword(userId, request);
+        return ApiResponse.success(response);
+    }
+
+    @Operation(summary = "프로필 정보 조회", description = "감상평 수, 좋아요 수, 출석일 수를 조회합니다.")
+    @GetMapping("/profile")
+    public ApiResponse<UserProfileResponse> getUserProfile(
+            @Parameter(hidden = true) @UserId int userId
+    ) {
+        UserProfileResponse response = userService.getUserProfile(userId);
+        return ApiResponse.success(response);
+    }
+
+    @Operation(summary = "비밀번호 변경", description = "새 비밀번호로 변경합니다.")
+    @PostMapping("/update-password")
+    public ApiResponse<Void> updatePassword(
+            @Parameter(hidden = true) @UserId int userId,
+            @RequestBody PasswordUpdateRequest request
+    ) {
+        userService.updatePassword(userId, request);
+        return ApiResponse.success();
+    }
+
+    @Operation(summary = "회원 정보 수정", description = "닉네임과 프로필 이미지를 수정합니다.")
+    @PostMapping(value = "/update-info", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse<Void> updateUserInfo(
+            @Parameter(hidden = true) @UserId int userId,
+            @RequestPart("data")  UpdateUserInfoRequest request,
+            @RequestPart(value = "file", required = false) MultipartFile file
+    ){
+        userService.updateUserInfo(userId, request, file);
+        return ApiResponse.success();
+    }
+
 }
