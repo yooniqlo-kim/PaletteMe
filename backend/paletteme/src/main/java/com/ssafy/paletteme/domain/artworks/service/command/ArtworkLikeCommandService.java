@@ -11,8 +11,7 @@ import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeCntReposi
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeRepository;
 import com.ssafy.paletteme.domain.users.dto.UserStats;
 import com.ssafy.paletteme.domain.users.entity.Users;
-import com.ssafy.paletteme.domain.users.repository.UsersGradeRepository;
-import com.ssafy.paletteme.domain.users.repository.UsersRepository;
+import com.ssafy.paletteme.domain.users.service.UserStatsService;
 import com.ssafy.paletteme.domain.users.utils.UsersGradeUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,10 +25,8 @@ public class ArtworkLikeCommandService {
     private final UsersArtworksLikeRepository usersArtworksLikeRepository;
     private final UsersArtworksLikeCntRepository usersArtworksLikeCntRepository;
     private final RedisService redisService;
-    private final UsersGradeRepository usersGradeRepository;
-    private final UsersRepository usersRepository;
     private final UsersGradeUpdater usersGradeUpdater;
-
+    private final UserStatsService userStatsService;
 
     @Transactional
     public void likeArtwork(Users user, String artworkId) {
@@ -52,6 +49,11 @@ public class ArtworkLikeCommandService {
 
 
         UserStats userStats = redisService.getUserStats(user.getUserId());
+
+        if(userStats == null){
+            UserStats newUserStats = userStatsService.generateStatsForUser(user.getUserId());
+            userStats = newUserStats;
+        }
         userStats.incrementLikeCount();
 
         // 유저 등급 변경 했는지 확인하기.
