@@ -36,7 +36,6 @@ export default function MyComments({ images }: Props) {
             overlayTextPosition="center"
             overlayTextSize="--text-md"
             borderRadius="small"
-            hasBorder
             onClick={() => navigate(navigatePaths[idx])}
           />
         ))}
