@@ -1,7 +1,7 @@
-import { BaseArtwork } from "@/shared/types/artwork";
+import { ArtworkPreview } from "@/shared/types/artwork";
 
 export type ArtworkMetaProps = {
-  artwork: BaseArtwork;
+  artwork: ArtworkPreview;
   showYear?: boolean;
   showLocation?: boolean;
 };

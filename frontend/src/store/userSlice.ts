@@ -17,10 +17,14 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setLoginData(state, action: PayloadAction<UserState>) {
-      return action.payload;
+      state.id = action.payload.id;
+      state.nickname = action.payload.nickname;
+      state.s3Url = action.payload.s3Url;
     },
     clearLoginData(state) {
-      return initialState;
+      state.id = "";
+      state.nickname = "";
+      state.s3Url = "";
     },
   },
 });

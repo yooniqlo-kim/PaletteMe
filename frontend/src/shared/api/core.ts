@@ -1,7 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "./baseUrl";
 
 export const api = axios.create({
-  baseURL: "http://70.12.246.87:8080/api",
+  baseURL: BASE_URL,
   withCredentials: true,
 });
 // 로컬 "http://localhost:8080/api"

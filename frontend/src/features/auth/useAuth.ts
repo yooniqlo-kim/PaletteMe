@@ -40,5 +40,18 @@ export function useAuth() {
     return user && token;
   }
 
-  return { handleLogin, isLoggedIn };
+  function logout() {
+    sessionStorage.clear();
+    navigate("/login");
+    showToast({ message: "로그아웃되었습니다.", type: "success" });
+  }
+
+  function getUserMeta(): UserType | null {
+    const userData: string | null = sessionStorage.getItem("user");
+    if (!userData) return null;
+    const { id, nickname, s3Url } = JSON.parse(userData);
+    return { id, nickname, s3Url };
+  }
+
+  return { handleLogin, isLoggedIn, logout, getUserMeta };
 }

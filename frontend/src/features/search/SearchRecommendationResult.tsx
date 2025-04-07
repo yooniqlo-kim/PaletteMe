@@ -4,10 +4,11 @@ import ArtworkListSection from "@shared/components/collection/ArtworkListSection
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
 import { ArtworkSearchItem } from "@shared/api/search";
 import { useEffect, useRef } from "react";
+import { useToggleLike } from "@/shared/hooks/useToggleLike";
 
 interface Props {
   query: string;
-  data: (ArtworkSearchItem & { isLiked: boolean })[];
+  data: (ArtworkSearchItem & { isLiked?: boolean })[];
   onCardLike: (id: string) => void;
   onIntersect?: () => void;
   hasMore?: boolean;
@@ -16,7 +17,6 @@ interface Props {
 export default function SearchRecommendationResult({
   query,
   data,
-  onCardLike,
   onIntersect,
   hasMore,
 }: Props) {
@@ -24,11 +24,14 @@ export default function SearchRecommendationResult({
   const firstImageUrl = data[0]?.imageUrl ?? "";
   const observerRef = useRef<HTMLDivElement | null>(null);
 
+  // 좋아요 상태 관리
+  const { likedArtworks, toggleLike, loadingArtworkId } = useToggleLike();
+
   const handleClickArtwork = (artworkId: string): void => {
-    navigate(`/artwork/${artworkId}`);
+    navigate(`/artworks/${artworkId}`);
   };
 
-  // 마지막 요소에 IntersectionObserver 연결
+  // IntersectionObserver
   useEffect(() => {
     if (!onIntersect || !hasMore) return;
 
@@ -68,6 +71,7 @@ export default function SearchRecommendationResult({
           <div className="grid grid-cols-2 gap-4 pb-[5rem]">
             {data.map((artwork, idx) => {
               const isLast = idx === data.length - 1;
+              const isLiked = likedArtworks.includes(artwork.artworkId);
 
               return (
                 <div key={artwork.artworkId} ref={isLast ? observerRef : null}>
@@ -77,13 +81,14 @@ export default function SearchRecommendationResult({
                       title: artwork.korTitle || artwork.originalTitle,
                       artist: artwork.korArtist || artwork.originalArtist || "작가 미상",
                       artworkImageUrl: artwork.imageUrl ?? "",
-                      isLiked: artwork.isLiked,
+                      isLiked,
                     }}
                     size="small"
                     theme="light"
                     borderRadius="small"
                     onClick={() => handleClickArtwork(artwork.artworkId)}
-                    onClickLike={() => onCardLike(artwork.artworkId)}
+                    onClickLike={() => toggleLike(artwork.artworkId)} // ✅ API 연결
+                    disabled={loadingArtworkId === artwork.artworkId}  // ✅ 중복 클릭 방지
                   />
                 </div>
               );

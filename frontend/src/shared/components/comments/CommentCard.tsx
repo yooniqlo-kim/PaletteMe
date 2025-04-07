@@ -4,6 +4,7 @@ import { WriterMeta } from "./WriterMeta";
 import IconButton from "@/shared/components/buttons/IconButton";
 import IconThumb from "../icons/IconThumb";
 import { useNavigate } from "react-router";
+import { likeComment, cancelLikeComment } from "@/shared/api/comment";
 
 export type CommentCardVariant = "list" | "detail";
 
@@ -39,7 +40,7 @@ export function CommentCard({
   // 목록 모드에서만 감상문 상세로 이동
   const handleClick = () => {
     if (!isDetailMode) {
-      navigate(`/comment/${commentId}`);
+      navigate(`/comments/${commentId}`);
     }
   };
 
@@ -53,10 +54,26 @@ export function CommentCard({
 
   const toggleLike = async () => {
     const next = !isLiked;
+
+    // 우선 UI 상태 업데이트
     setIsLiked(next);
     setLikeCount((prev) => (next ? prev + 1 : prev - 1));
     onLikeChange?.(commentId, next);
+
+    try {
+      if (next) {
+        await likeComment(commentId);
+      } else {
+        await cancelLikeComment(commentId);
+      }
+    } catch (error) {
+      console.error("좋아요 처리 실패", error);
+      setIsLiked(!next);
+      setLikeCount((prev) => (!next ? prev + 1 : prev - 1));
+      onLikeChange?.(commentId, !next);
+    }
   };
+
   return (
     <div
       onClick={handleClick}
@@ -67,7 +84,7 @@ export function CommentCard({
     >
       <div className="relative p-4 flex flex-col">
         {/* 반투명 배경을 background에 설정 */}
-        {!isDetailMode && <div className="absolute inset-0 bg-black/20 z-0" />}
+        {!isDetailMode && <div className="absolute inset-0 bg-black/45 z-0" />}
         {/* 작성자 정보 및 좋아요 */}
         <div className="relative z-10 flex justify-between items-center">
           <WriterMeta user={user} date={date} />

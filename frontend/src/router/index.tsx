@@ -1,34 +1,34 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "@/shared/components/layout/RootLayout";
-import TodayArtsPage from "@/pages/TodayArtsPage";
-import SearchPage from "@/pages/SearchPage";
-import MymuseumPage from "@/pages/MymuseumPage";
-import LikedCollectionPage from "@/pages/LikedCollectionPage";
-import BookmarkCollectionPage from "@/pages/BookmarkCollectionPage";
-import CalenderPage from "@/pages/CalenderPage";
-import ProfilePage from "@/pages/ProfilePage";
-import LoginPage from "@/pages/LoginPage";
-import WrappedPage from "@/pages/WrappedPage";
-import ArtworkPage from "@/pages/ArtworkPage";
-import NotFoundPage from "@/pages/NotFoundPage";
-import WritePage from "@/pages/CommentWritePage";
-import LevelInfoPage from "@/pages/LevelInfoPage";
-import ConfirmPasswordPage from "@/pages/ConfirmPasswordPage";
-import UpdateUserInfoPage from "@/pages/UpdateUserInfoPage";
-import ConfirmDeleteAccountPage from "@/pages/ConfirmDeleteAccountPage";
-import CompleteDeleteAccountPage from "@/pages/CompleteDeleteAccountPage";
-import UpdateProfilePage from "@/pages/UpdateProfilePage";
-import CommentDetailPage from "@/pages/CommentDetailPage";
-import RegisterInfoPage from "@/pages/RegisterInfoPage";
-import RegisterImagePage from "@/pages/RegisterImagePage";
-import RegisterArtworkPage from "@/pages/RegisterArtworkPage";
-import RegisterColorPage from "@/pages/RegisterColorPage";
-import RegisterCompletePage from "@/pages/RegisterCompletePage";
-import CommentEditPage from "@/pages/CommentEditPage";
-import CommentMyPage from "@/pages/CommentMyPage";
-import CommentLikedPage from "@/pages/CommentLikedPage";
+import TodayArtsPage from "@/pages/artwork/TodayArtsPage";
+import SearchPage from "@/pages/search/SearchPage";
+import MymuseumPage from "@/pages/mymuseum/MymuseumPage";
+import LikedCollectionPage from "@/pages/mymuseum/LikedCollectionPage";
+import BookmarkCollectionPage from "@/pages/mymuseum/BookmarkCollectionPage";
+import CalenderPage from "@/pages/mymuseum/CalendarPage";
+import ProfilePage from "@/pages/profile/ProfilePage";
+import LoginPage from "@/pages/login/LoginPage";
+import WrappedPage from "@/pages/mymuseum/WrappedPage";
+import ArtworkPage from "@/pages/artwork/ArtworkPage";
+import NotFoundPage from "@/pages/error/NotFoundPage";
+import WritePage from "@/pages/comment/CommentWritePage";
+import LevelInfoPage from "@/pages/profile/LevelInfoPage";
+import ConfirmPasswordPage from "@/pages/profile/ConfirmPasswordPage";
+import UpdateUserInfoPage from "@/pages/profile/UpdateUserInfoPage";
+import ConfirmDeleteAccountPage from "@/pages/profile/ConfirmDeleteAccountPage";
+import CompleteDeleteAccountPage from "@/pages/profile/CompleteDeleteAccountPage";
+import UpdateProfilePage from "@/pages/profile/UpdateProfilePage";
+import CommentDetailPage from "@/pages/comment/CommentDetailPage";
+import RegisterInfoPage from "@/pages/register/RegisterInfoPage";
+import RegisterImagePage from "@/pages/register/RegisterImagePage";
+import RegisterArtworkPage from "@/pages/register/RegisterArtworkPage";
+import RegisterColorPage from "@/pages/register/RegisterColorPage";
+import RegisterCompletePage from "@/pages/register/RegisterCompletePage";
+import CommentEditPage from "@/pages/comment/CommentEditPage";
+import CommentMyPage from "@/pages/comment/CommentMyPage";
+import CommentLikedPage from "@/pages/comment/CommentLikedPage";
 import ProtectedRoute from "./ProtectedRoute";
-import ErrorPage from "@/pages/ErrorPage";
+import ErrorPage from "@/pages/error/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -61,15 +61,15 @@ const router = createBrowserRouter([
             path: "profile/delete/complete",
             element: <CompleteDeleteAccountPage />,
           },
-          { path: "/artwork/:artworkId", element: <ArtworkPage /> },
-          { path: "/comment/write/:artworkId", element: <WritePage /> },
+          { path: "/artworks/:artworkId", element: <ArtworkPage /> },
+          { path: "/comments/write/:artworkId", element: <WritePage /> },
 
           { path: "/wrapped", element: <WrappedPage /> },
 
-          { path: "/comment/:commentId", element: <CommentDetailPage /> },
-          { path: "comment/edit/:commentId", element: <CommentEditPage /> },
-          { path: "comment/my", element: <CommentMyPage /> },
-          { path: "comment/liked", element: <CommentLikedPage /> },
+          { path: "/comments/:commentId", element: <CommentDetailPage /> },
+          { path: "comments/:commentId/edit", element: <CommentEditPage /> },
+          { path: "comments/my", element: <CommentMyPage /> },
+          { path: "comments/liked", element: <CommentLikedPage /> },
         ],
       },
       { path: "/search", element: <SearchPage /> },
@@ -87,8 +87,8 @@ const router = createBrowserRouter([
         path: "profile/delete/complete",
         element: <CompleteDeleteAccountPage />,
       },
-      { path: "/artwork/:artworkId", element: <ArtworkPage /> },
-      { path: "/comment/write/:artworkId", element: <WritePage /> },
+      { path: "/artworks/:artworkId", element: <ArtworkPage /> },
+      { path: "/comments/write/:artworkId", element: <WritePage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/signup", element: <RegisterInfoPage /> },
       { path: "/signup/profile", element: <RegisterImagePage /> },
@@ -97,10 +97,10 @@ const router = createBrowserRouter([
       { path: "signup/complete", element: <RegisterCompletePage /> },
       { path: "/wrapped", element: <WrappedPage /> },
       { path: "*", element: <NotFoundPage /> },
-      { path: "/comment/:commentId", element: <CommentDetailPage /> },
-      { path: "comment/edit/:commentId", element: <CommentEditPage /> },
-      { path: "comment/my", element: <CommentMyPage /> },
-      { path: "comment/liked", element: <CommentLikedPage /> },
+      { path: "/comments/:commentId", element: <CommentDetailPage /> },
+      { path: "comments/edit/:commentId", element: <CommentEditPage /> },
+      { path: "comments/my", element: <CommentMyPage /> },
+      { path: "comments/liked", element: <CommentLikedPage /> },
       { path: "/error", element: <ErrorPage /> },
     ],
   },
