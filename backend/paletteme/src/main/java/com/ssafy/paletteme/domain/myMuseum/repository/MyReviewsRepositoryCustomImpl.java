@@ -10,6 +10,7 @@ import com.ssafy.paletteme.domain.myMuseum.dto.MyReviewsResponse;
 import com.ssafy.paletteme.domain.myMuseum.dto.QLikedOtherReviewsResponse;
 import com.ssafy.paletteme.domain.myMuseum.dto.QMyReviewsResponse;
 import com.ssafy.paletteme.domain.reviews.entity.QReviews;
+import com.ssafy.paletteme.domain.reviews.entity.QUsersReviewLike;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,7 +26,7 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
     QReviews reviews = QReviews.reviews;
     QArtworks artworks = QArtworks.artworks;
     QArtists artists = QArtists.artists;
-    QUsersArtworksLike usersArtworksLike = QUsersArtworksLike.usersArtworksLike;
+    QUsersReviewLike usersReviewLike = QUsersReviewLike.usersReviewLike;
 
     @Override
     public List<MyReviewsResponse> getMyReviews(int userId, Integer cursor, int size) {
@@ -40,21 +41,22 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                         artists.originalArtist,
                         artworks.imageUrl,
                         new CaseBuilder()
-                                .when(usersArtworksLike.isNotNull()).then(true)
+                                .when(usersReviewLike.isNotNull()).then(true)
                                 .otherwise(false)
                 ))
                 .from(reviews)
                 .join(reviews.artwork, artworks)
                 .join(artworks.artist, artists)
-                .leftJoin(usersArtworksLike)
-                .on(usersArtworksLike.user.userId.eq(userId)
-                        .and(usersArtworksLike.artwork.artworkId.eq(artworks.artworkId)))
-                .where(reviews.user.userId.eq((userId))
-                .and(cursor != null ? reviews.reviewId.lt(cursor) : null))
+                .leftJoin(usersReviewLike)
+                .on(usersReviewLike.user.userId.eq(userId)
+                        .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
+                .where(
+                        reviews.user.userId.eq(userId),
+                        cursor != null ? reviews.reviewId.lt(cursor) : null
+                )
                 .orderBy(reviews.createdAt.desc(), reviews.reviewId.desc())
                 .limit(size)
                 .fetch();
-
     }
 
     @Override
