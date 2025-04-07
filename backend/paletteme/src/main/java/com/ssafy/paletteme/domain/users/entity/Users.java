@@ -71,6 +71,8 @@ public class Users {
     @PrePersist
     private void prePersist() {
         if(isActive == null){
+            System.out.println("Users.prePersist");
+            System.out.println("isActive == null");
             isActive = AccountStatus.ACTIVE;
         }
 
@@ -96,6 +98,22 @@ public class Users {
 
     public void updateGrade(UsersGrade grade) {
         this.grade = grade;
+    }
+
+    public void inactivate() {
+        this.isActive = AccountStatus.INACTIVE;
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateS3Url(String s3Url) {
+        this.s3Url = s3Url;
     }
 }
 
