@@ -71,6 +71,7 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                         .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
                 .where(
                         reviews.artwork.artworkId.eq(artworkId),
+                        reviews.isPublic.eq(true),
                         cursor != null ? reviews.reviewId.lt(cursor.longValue()) : null
                 )
                 .orderBy(reviews.reviewId.desc())
