@@ -39,7 +39,7 @@ export const ArtworkCard = ({
   clickAction = "navigate",
   disabled = false,
 }: Props) => {
-  const { artworkImageUrl, title, isLiked = false } = artwork;
+  const { artworkImageUrl, title, isLiked } = artwork;
 
   let dimension = "";
 
@@ -121,11 +121,11 @@ export const ArtworkCard = ({
           disabled={disabled}
           className="absolute bottom-2 right-2 z-10"
         >
-          {size === "small" ? (
-            <IconRedHeart isClicked={isLiked} />
-          ) : (
-            <IconRedHeartLarge isClicked={isLiked} />
-          )}
+        {size === "small" ? (
+          <IconRedHeart isClicked={!!isLiked} />
+        ) : (
+          <IconRedHeartLarge isClicked={!!isLiked} />
+        )}
         </button>
       )}
     </div>

@@ -1,38 +1,26 @@
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import type { BaseArtwork } from "@/shared/types/artwork";
-import { useNavigate } from "react-router-dom";
+import type { ArtworkSearchItem } from "@shared/api/search";
 
 interface Props {
-  imageUrl: string;
-  artworkId: string;
+  artwork: ArtworkSearchItem;
   onClick: () => void;
   onClickLike?: () => void;
-  isLiked?: boolean;
   disabled?: boolean;
 }
 
 export default function SearchResultCard({
-  imageUrl,
-  artworkId,
-  isLiked = false,
+  artwork,
+  onClick,
   onClickLike,
   disabled = false,
 }: Props) {
-  const navigate = useNavigate();
-
-  // Artwork 객체 생성
   const fakeArtwork: BaseArtwork & { isLiked?: boolean } = {
-    artworkId: artworkId,
-    artworkImageUrl: imageUrl,
-    title: "",
-    artist: "",
-    isLiked: isLiked,
-  };
-  
-
-  // 카드 클릭 시 상세 페이지로 이동
-  const handleCardClick = () => {
-    navigate(`/artworks/${artworkId}`);
+    artworkId: artwork.artworkId,
+    artworkImageUrl: artwork.imageUrl ?? "",
+    title: artwork.enTitle ?? "",
+    artist: artwork.enArtist ?? "",
+    isLiked: artwork.isLiked,
   };
 
   return (
@@ -41,8 +29,9 @@ export default function SearchResultCard({
       size="small"
       borderRadius="small"
       theme="light"
-      onClick={handleCardClick}
+      onClick={onClick}
       onClickLike={onClickLike}
+      clickAction="navigate"
       disabled={disabled}
     />
   );

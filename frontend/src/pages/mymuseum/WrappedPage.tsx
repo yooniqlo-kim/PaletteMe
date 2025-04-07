@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import WrappedStep from '@/features/wrapped/WrappedStep';
 import WrappedEnd from '@/features/wrapped/WrappedEnd';
 import { fetchWrapped } from '@features/wrapped/api/wrappedApi';
-import { WrappedData } from '@/shared/api/wrapped';
+import type { WrappedData } from "@/shared/types/WrappedData";
 import { mapWrappedData } from '@/shared/utils/mapWrappedData';
 
 export default function WrappedPage() {
