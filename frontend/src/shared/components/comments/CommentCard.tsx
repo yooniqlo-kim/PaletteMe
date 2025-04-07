@@ -37,11 +37,11 @@ export function CommentCard({
   const navigate = useNavigate();
   const isDetailMode = variant === "detail";
 
-  // 목록 모드에서만 감상문 상세로 이동
+  // 목록 모드에서만 감상문 상세로 이동(수정)
   const handleClick = () => {
-    if (!isDetailMode) {
-      navigate(`/comments/${commentId}`);
-    }
+    // if (!isDetailMode) {
+    navigate(`/comments/${commentId}`);
+    // }
   };
 
   const wrapperClassNames = `
@@ -148,7 +148,10 @@ function DetailContent({ content, expanded, onToggle }: DetailContentProps) {
 
       {isLong && (
         <button
-          onClick={onToggle}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle();
+          }}
           className="mt-1 underline text-neutral-500 cursor-pointer"
         >
           {expanded ? "간략히" : "더보기"}

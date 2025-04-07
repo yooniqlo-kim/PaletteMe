@@ -98,7 +98,7 @@ export const mapToCommentAndArtworkList = (
       isLiked: true,
       user: {
         nickname: item.nickname ?? "",
-        profileImageUrl: item.userImg ?? "",
+        profileImageUrl: item.userImgUrl ?? "",
       },
       visibility: "public",
     };
@@ -107,7 +107,7 @@ export const mapToCommentAndArtworkList = (
       artworkId: item.artworkId,
       title: item.title ?? "",
       artist: item.artist ?? "",
-      artworkImageUrl: item.imgUrl ?? "",
+      artworkImageUrl: item.artworkImageUrl ?? "",
     };
 
     comments.push(comment);
