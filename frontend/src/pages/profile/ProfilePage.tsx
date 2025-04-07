@@ -20,9 +20,8 @@ function getLevelImage(level: Level) {
 }
 
 export default function ProfilePage() {
-  const { logout, getUserMeta } = useAuth();
+  const { logout } = useAuth();
 
-  const userMeta = getUserMeta();
   const { getProfile } = useProfile();
 
   const { data, isLoading, isError } = useQuery({
@@ -63,7 +62,7 @@ export default function ProfilePage() {
 
   return (
     <section className="px-3 py-3 flex flex-col gap-10 box-border">
-      <UserProfile nickname={userMeta!.nickname} image={userMeta?.s3Url} />
+      <UserProfile nickname={data!.nickname} image={data!.userImageUrl} />
       {content}
       <Menu />
       <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center">

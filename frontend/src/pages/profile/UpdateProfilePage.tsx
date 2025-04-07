@@ -77,7 +77,7 @@ export default function RegisterImagePage() {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-8 w-full">
-        <h2 className="text-lg font-semibold">프로필 업데이트</h2>
+        <h2 className="text-lg font-semibold">프로필</h2>
         <Label htmlFor="image">
           <span className="relative">
             <UserImage userImg={imagePreview || defaultImg} />

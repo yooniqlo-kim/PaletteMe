@@ -1,10 +1,13 @@
 import { BASE_URL } from "@/shared/api/baseUrl";
 import { api } from "@/shared/api/core";
 import useToast from "@/shared/hooks/useToast";
+import { useNavigate } from "react-router";
 
 const USER_BASE_URL = `${BASE_URL}/users`;
 
 type profileType = {
+  nickname: string;
+  userImageUrl: string;
   reviewCount: number;
   artworkLikeCount: number;
   attendance: number;
@@ -18,6 +21,7 @@ type UpdatedUserType = {
 
 export default function useProfile() {
   const { showToast } = useToast();
+  const navigate = useNavigate();
   async function getProfile(): Promise<profileType> {
     const response = await api.get(`${USER_BASE_URL}/profile`);
 
@@ -59,6 +63,12 @@ export default function useProfile() {
         message: errorMsg || "회원 정보 수정을 실패했습니다.",
         type: "error",
       });
+    } else {
+      showToast({
+        message: "회원 정보를 성공적으로 수정했습니다.",
+        type: "success",
+      });
+      navigate("/profile");
     }
 
     return data;
