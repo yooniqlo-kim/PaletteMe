@@ -81,10 +81,10 @@ export default function WrappedEnd({
 
         {/* 하단 카드 */}
         <div
-          className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left shadow-lg z-20"
+          className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left shadow-lg z-20 "
           style={{
-            borderTopLeftRadius: "var(--radius-ps)",
-            borderTopRightRadius: "var(--radius-ps)",
+            // borderTopLeftRadius: "var(--radius-ps)",
+            // borderTopRightRadius: "var(--radius-ps)",
             color: "#333333",
           }}
           onClick={handleClick}

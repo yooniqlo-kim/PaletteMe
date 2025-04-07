@@ -6,6 +6,7 @@ import ArtworkListSection from "@shared/components/collection/ArtworkListSection
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
 import { fetchLikedArtworks, LikedArtwork } from "@/shared/api/collection";
+import { BaseUser } from "@/shared/types/user";
 
 export default function LikedCollectionPage() {
   const navigate = useNavigate();
@@ -16,7 +17,13 @@ export default function LikedCollectionPage() {
   const [firstImageUrl, setFirstImageUrl] = useState("");
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  // 세션에서 유저 가져오기
+  const rawUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const user: BaseUser = {
+    userId: rawUser.id,
+    nickname: rawUser.nickname,
+    profileImageUrl: rawUser.s3Url,
+  };
 
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artworks/${artworkId}`);
@@ -32,9 +39,8 @@ export default function LikedCollectionPage() {
         setArtworks((prev) => [...prev, ...newData]);
         setCursor(newData[newData.length - 1]?.userArtworkLikeId ?? null);
 
-        // 초기 이미지 조건
-        if (!artworks.length && newData[0]?.imgUrl) {
-          setFirstImageUrl(newData[0].imgUrl);
+        if (!artworks.length && user.profileImageUrl) {
+          setFirstImageUrl(user.profileImageUrl);
         }
 
         if (!newData.length) {
@@ -47,7 +53,7 @@ export default function LikedCollectionPage() {
       console.error("좋아요한 작품 불러오기 실패:", e);
       setHasMore(false);
     }
-  }, [cursor, artworks.length]);
+  }, [cursor, artworks.length, user.profileImageUrl]);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {

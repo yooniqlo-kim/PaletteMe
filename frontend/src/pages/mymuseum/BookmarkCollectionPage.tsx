@@ -5,6 +5,7 @@ import { PageIntro } from "@shared/components/collection/PageIntro";
 import ArtworkListSection from "@shared/components/collection/ArtworkListSection";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
+
 import {
   fetchBookmarkedArtworks,
   BookmarkArtwork,
@@ -19,7 +20,13 @@ export default function BookmarkCollectionPage() {
   const [firstImageUrl, setFirstImageUrl] = useState("");
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  // 세션에서 유저 가져오기
+  const rawUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const user: BaseUser = {
+    userId: rawUser.id,
+    nickname: rawUser.nickname,
+    profileImageUrl: rawUser.s3Url,
+  };
 
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artworks/${artworkId}`);
