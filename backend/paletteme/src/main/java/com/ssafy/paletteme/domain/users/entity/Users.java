@@ -71,8 +71,6 @@ public class Users {
     @PrePersist
     private void prePersist() {
         if(isActive == null){
-            System.out.println("Users.prePersist");
-            System.out.println("isActive == null");
             isActive = AccountStatus.ACTIVE;
         }
 

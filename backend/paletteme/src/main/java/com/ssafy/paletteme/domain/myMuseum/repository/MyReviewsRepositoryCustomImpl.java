@@ -58,20 +58,25 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
     public List<LikedOtherReviewsResponse> getLikedOtherReviews(int userId, Integer cursor, int size) {
         return queryFactory
                 .select(new QLikedOtherReviewsResponse(
-                        reviews.user.nickname,
-                        reviews.reviewId,
-                        reviews.likeCnt,
-                        reviews.content,
-                        reviews.createdAt,
-                        reviews.artwork.artworkId
+                        reviews.user.nickname,                  // 작성자 닉네임
+                        reviews.reviewId,                       // 리뷰 ID
+                        reviews.likeCnt,                        // 좋아요 수
+                        reviews.content,                        // 리뷰 내용
+                        reviews.createdAt,                      // 작성일
+                        reviews.artwork.artworkId,              // 작품 ID
+                        reviews.artwork.originalTitle,               // 작품명
+                        reviews.artwork.imageUrl,               // 작품 이미지
+                        reviews.artwork.artist.originalArtist        // 작가명
                 ))
                 .from(reviews)
-                .join(usersReviewLike).on(usersReviewLike.review.eq(reviews))
+                .join(usersReviewLike).on(usersReviewLike.review.eq(reviews)) // 유저가 좋아요 누른 리뷰
+                .join(reviews.artwork, artworks)                              // 리뷰와 연결된 작품
+                .join(artworks.artist, artists)                               // 작품의 작가
                 .where(
-                        usersReviewLike.user.userId.eq(userId),
-                        cursor != null ? reviews.reviewId.lt(cursor) : null
+                        usersReviewLike.user.userId.eq(userId),               // 해당 유저의 좋아요
+                        cursor != null ? reviews.reviewId.lt(cursor) : null  // 커서 기반 페이징
                 )
-                .orderBy(reviews.createdAt.desc(), reviews.reviewId.desc())
+                .orderBy(reviews.createdAt.desc(), reviews.reviewId.desc())  // 최신순 정렬
                 .limit(size)
                 .fetch();
     }
