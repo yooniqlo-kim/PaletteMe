@@ -191,7 +191,7 @@ public class UserService {
         int reviewCount = reviewsRepository.countByUser(user);
         int artworkLikeCount = usersArtworksLikeRepository.countByUser(user);
 
-        return UserProfileResponse.of(reviewCount, artworkLikeCount, attendance, grade);
+        return UserProfileResponse.of(reviewCount, artworkLikeCount, attendance, grade, user.getNickname(), user.getS3Url());
     }
 
     @Transactional
