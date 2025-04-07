@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface ReviewsRepository extends JpaRepository<Reviews, Integer>, ReviewsRepositoryCustom {
     Optional<Reviews> findById(int reviewId);
     Optional<Reviews> findTopByUserAndArtworkOrderByCreatedAtDesc(Users user, Artworks artwork);
+
+    int countByUser(Users user);
 }
