@@ -87,7 +87,7 @@ export default function MonthlyCalendar({
                         {hasReview ? (
                           <div
                             onClick={() =>
-                              navigate(`/comment/${day.reviewId}`)
+                              navigate(`/comments/${day.reviewId}`)
                             }
                             className="w-full h-full rounded-full overflow-hidden border-4 cursor-pointer"
                             style={{ borderColor: "#FF718E" }}

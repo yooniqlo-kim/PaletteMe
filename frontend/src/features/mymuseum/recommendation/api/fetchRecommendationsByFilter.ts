@@ -13,10 +13,20 @@ const endpointMap: Record<RecommendationFilter, string> = {
 };
 
 export async function fetchRecommendationsByFilter(
-  filter: RecommendationFilter
+  filter: RecommendationFilter,
+  size: number = 10 // 기본값
 ): Promise<RecommendedArtwork[]> {
   const endpoint = endpointMap[filter];
 
-  const res = await api.get<RecommendationResponse>(`/mymuseum/recommend/${endpoint}`);
+  const res = await api.get<RecommendationResponse>(
+    `/mymuseum/recommend/${endpoint}`,
+    {
+      params: {
+        size,
+      },
+    }
+  );
+
   return res.data.data[filter] ?? [];
 }
+

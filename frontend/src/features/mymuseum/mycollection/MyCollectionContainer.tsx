@@ -30,7 +30,6 @@ export default function MyCollections({ images }: Props) {
           overlayTextPosition="center"
           overlayTextSize="--text-md"
           borderRadius="small"
-          hasBorder
           onClick={() => {
             const path = idx === 0 ? "/mymuseum/liked" : "/mymuseum/bookmark";
             navigate(path);
