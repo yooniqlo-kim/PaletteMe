@@ -35,12 +35,15 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                 .select(new QReviewsWithArtworkResponses(
                         artworks.imageUrl,
                         museums.museumName,
-                        artworks.enTitle,
-                        artists.enArtist,
+                        artworks.originalTitle,
+                        artists.originalArtist,
                         users.s3Url,
+                        users.nickname,
                         reviews.createdAt.stringValue(),
                         reviews.content,
-                        reviews.likeCnt
+                        reviews.likeCnt,
+                        reviews.isPublic,
+                        artworks.artworkId
                 ))
                 .from(reviews)
                 .join(reviews.artwork, artworks)
