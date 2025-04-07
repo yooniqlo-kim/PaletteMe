@@ -25,8 +25,14 @@ export default function SearchRecommendationResult({
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // 좋아요 상태 관리
-  const { likedArtworks, toggleLike, loadingArtworkId } = useToggleLike();
+  const { likedArtworks, toggleLike, loadingArtworkId, setLikedArtworks, } = useToggleLike();
 
+  useEffect(() => {
+    const likedIds = data.filter((art) => art.isLiked).map((a) => a.artworkId);
+    setLikedArtworks(likedIds);
+  }, [data, setLikedArtworks]);
+  
+  
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artworks/${artworkId}`);
   };
@@ -52,6 +58,9 @@ export default function SearchRecommendationResult({
     };
   }, [onIntersect, hasMore]);
 
+  
+  
+
   return (
     <div className="min-h-screen">
       <PageIntro imageUrl={firstImageUrl}>
@@ -76,19 +85,20 @@ export default function SearchRecommendationResult({
               return (
                 <div key={artwork.artworkId} ref={isLast ? observerRef : null}>
                   <ArtworkCard
+                    key={artwork.artworkId}
                     artwork={{
                       artworkId: artwork.artworkId,
                       title: artwork.korTitle || artwork.originalTitle,
                       artist: artwork.korArtist || artwork.originalArtist || "작가 미상",
                       artworkImageUrl: artwork.imageUrl ?? "",
-                      isLiked,
                     }}
+                    isLiked={isLiked}
                     size="small"
                     theme="light"
                     borderRadius="small"
                     onClick={() => handleClickArtwork(artwork.artworkId)}
-                    onClickLike={() => toggleLike(artwork.artworkId)} // ✅ API 연결
-                    disabled={loadingArtworkId === artwork.artworkId}  // ✅ 중복 클릭 방지
+                    onClickLike={() => toggleLike(artwork.artworkId)}
+                    disabled={loadingArtworkId === artwork.artworkId}
                   />
                 </div>
               );

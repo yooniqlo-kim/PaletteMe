@@ -9,7 +9,8 @@ import placeholderDark180 from "@/assets/images/placeholder-art-dark-180x180.jpg
 import placeholderDark300 from "@/assets/images/placeholder-art-dark-300x300.jpg";
 
 type Props = {
-  artwork: BaseArtwork & { isLiked?: boolean };
+  artwork: BaseArtwork;
+  isLiked?: boolean;
   size?: "small" | "large";
   theme?: "light" | "dark";
   isDimmed?: boolean;
@@ -26,6 +27,7 @@ type Props = {
 
 export const ArtworkCard = ({
   artwork,
+  isLiked = false,
   size = "small",
   theme = "light",
   isDimmed = false,
@@ -39,7 +41,7 @@ export const ArtworkCard = ({
   clickAction = "navigate",
   disabled = false,
 }: Props) => {
-  const { artworkImageUrl, title, isLiked } = artwork;
+  const { artworkImageUrl, title } = artwork;
 
   let dimension = "";
 
@@ -121,11 +123,11 @@ export const ArtworkCard = ({
           disabled={disabled}
           className="absolute bottom-2 right-2 z-10"
         >
-        {size === "small" ? (
-          <IconRedHeart isClicked={!!isLiked} />
-        ) : (
-          <IconRedHeartLarge isClicked={!!isLiked} />
-        )}
+          {size === "small" ? (
+            <IconRedHeart isClicked={isLiked} />
+          ) : (
+            <IconRedHeartLarge isClicked={isLiked} />
+          )}
         </button>
       )}
     </div>

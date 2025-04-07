@@ -26,6 +26,7 @@ export default function SearchResultCard({
   return (
     <ArtworkCard
       artwork={fakeArtwork}
+      isLiked={artwork.isLiked}
       size="small"
       borderRadius="small"
       theme="light"

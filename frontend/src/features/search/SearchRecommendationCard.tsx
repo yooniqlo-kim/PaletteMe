@@ -5,6 +5,7 @@ interface Props {
   imageUrl: string;
   overlayText: string;
   artistName?: string;
+  isLiked?: boolean;
   onClick: () => void;
 }
 
@@ -25,6 +26,7 @@ export default function SearchRecommendationCard({
   return (
     <ArtworkCard
       artwork={fakeArtwork}
+      isLiked={false}
       overlayText={overlayText}
       overlayTextPosition="bottomRight"
       size="small"
