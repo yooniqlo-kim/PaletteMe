@@ -7,9 +7,12 @@ import {
   ReviewWriteResponse,
   ReviewsEditResponse,
   LikedOtherReviewsResponse,
-  MyReviewsResponse
+  MyReviewsResponse,
 } from "../types/api/comment.response";
-import { ReviewsWriteRequest, ReviewsEditRequest } from "../types/api/comment.request";
+import {
+  ReviewsWriteRequest,
+  ReviewsEditRequest,
+} from "../types/api/comment.request";
 
 // 작품 상세의 댓글 리스트
 export const getComments = async ({
@@ -99,11 +102,17 @@ export const cancelLikeComment = async (commentId: string) => {
 };
 
 // 내가 작성한 감상문 리스트 조회
-export const getMyReviews = async (
-  { cursor, size }: { cursor?: number; size: number }
-): Promise<MyReviewsResponse[]> => {
-  const params: any = { size };
-  if (cursor !== undefined) params.cursor = cursor;
+export const getMyReviews = async ({
+  cursor,
+  size,
+}: {
+  cursor?: number;
+  size: number;
+}): Promise<MyReviewsResponse[]> => {
+  const params: { cursor?: number; size: number } = { size };
+  if (cursor !== undefined) {
+    params.cursor = cursor;
+  }
 
   const res = await api.get("/mymuseum/reviews", { params });
   const { success, data, errorMsg } = res.data;
@@ -116,11 +125,17 @@ export const getMyReviews = async (
 };
 
 // 좋아요한 감상문 리스트 조회
-export const getLikedReviews = async (
-  { cursor, size }: { cursor?: number; size: number }
-): Promise<LikedOtherReviewsResponse[]> => {
-  const params: any = { size };
-  if (cursor !== undefined) params.cursor = cursor;
+export const getLikedReviews = async ({
+  cursor,
+  size,
+}: {
+  cursor?: number;
+  size: number;
+}): Promise<LikedOtherReviewsResponse[]> => {
+  const params: { cursor?: number; size: number } = { size };
+  if (cursor !== undefined) {
+    params.cursor = cursor;
+  }
 
   const res = await api.get("/mymuseum/reviews/liked", { params });
   const { success, data, errorMsg } = res.data;
