@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const userMeta = getUserMeta();
 
   return (
-    <section className="px-3 py-3 flex flex-col gap-6 box-border">
+    <section className="px-3 py-3 flex flex-col gap-10 box-border">
       <UserProfile nickname={userMeta!.nickname} image={userMeta?.s3Url} />
       <UserMeta review={0} like={0} loggedIn={0} />
       <img className="w-full h-full" src={getLevelImage(5)} alt="level" />

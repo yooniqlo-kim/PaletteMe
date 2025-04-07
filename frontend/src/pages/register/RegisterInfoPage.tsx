@@ -6,7 +6,7 @@ import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 import { updateField } from "@/store/formSlice";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   checkId,
   sendVerificationCode,
@@ -246,6 +246,10 @@ export default function RegisterInfoPage() {
           다음으로
         </Button>
       </form>
+      <div className="flex flex-col gap-1 items-center mt-4 text-neutral-6">
+        <p>이미 계정이 있으신가요?</p>
+        <Link to="/login">로그인하기</Link>
+      </div>
     </FormWrapper>
   );
 }
