@@ -1,10 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { popularKeywordsDummy } from '@shared/dummy/popularKeywordsDummy';
+import { fetchPopularArtworks } from '@/shared/api/ranking';
 
 const fetchPopularKeywords = async (): Promise<string[]> => {
-  return new Promise((resolve) =>
-    setTimeout(() => resolve(popularKeywordsDummy), 500)
-  );
+  return await fetchPopularArtworks();
 };
 
 interface Props {

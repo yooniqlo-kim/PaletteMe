@@ -37,11 +37,11 @@ export function CommentCard({
   const navigate = useNavigate();
   const isDetailMode = variant === "detail";
 
-  // 목록 모드에서만 감상문 상세로 이동
+  // 목록 모드에서만 감상문 상세로 이동(수정)
   const handleClick = () => {
-    if (!isDetailMode) {
-      navigate(`/comments/${commentId}`);
-    }
+    // if (!isDetailMode) {
+    navigate(`/comments/${commentId}`);
+    // }
   };
 
   const wrapperClassNames = `
@@ -88,16 +88,21 @@ export function CommentCard({
         {/* 작성자 정보 및 좋아요 */}
         <div className="relative z-10 flex justify-between items-center">
           <WriterMeta user={user} date={date} />
-          <div className="flex items-center gap-1 text-xs font-medium p-1">
+          <div className="flex items-center gap-1 text-xs font-medium">
             <IconButton
-              identifier="review_card"
+              identifier="review_list"
               onClick={(e) => {
                 e.stopPropagation();
                 toggleLike();
               }}
-              className="flex items-center gap-1"
             >
-              <span>{likeCount}</span>
+              <span
+                className={`relative top-[2px] ${
+                  !isDetailMode ? "text-white" : ""
+                }`}
+              >
+                {likeCount}
+              </span>
               <IconThumb isClicked={isLiked} />
             </IconButton>
           </div>
@@ -143,7 +148,10 @@ function DetailContent({ content, expanded, onToggle }: DetailContentProps) {
 
       {isLong && (
         <button
-          onClick={onToggle}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle();
+          }}
           className="mt-1 underline text-neutral-500 cursor-pointer"
         >
           {expanded ? "간략히" : "더보기"}

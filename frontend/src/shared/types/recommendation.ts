@@ -7,7 +7,7 @@ export type RecommendedArtwork = {
   description?: string;
   location?: string;
   imgUrl: string;
-  isLiked?: boolean;
+  liked?: boolean;
 };
 
 // API 응답 데이터 구조

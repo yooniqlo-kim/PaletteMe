@@ -10,6 +10,6 @@ export function mapRecommendedToArtwork(
     artworkImageUrl: item.imgUrl,
     title: "", // 서버에 없는 값은 일단 빈 문자열 처리
     artist: "",
-    isLiked: item.isLiked,
+    isLiked: item.liked ?? false
   };
 }
