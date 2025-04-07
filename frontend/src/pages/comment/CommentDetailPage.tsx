@@ -21,7 +21,7 @@ export default function CommentDetailPage() {
 
   useEffect(() => {
     // location.state에 comment, artwork 둘 다 있으면 바로 세팅
-    if (state?.comment && state?.artwork) {  
+    if (state?.comment && state?.artwork) {
       setComment(state.comment);
       setArtwork(state.artwork);
       return;
@@ -39,14 +39,14 @@ export default function CommentDetailPage() {
         setArtwork(artwork);
       } catch (e) {
         console.error("감상문 상세 조회 실패", e);
-        navigate("/not-found", { replace: true }); 
+        navigate("/not-found", { replace: true });
       }
     };
     fetch();
-  }, [commentId, state]);
+  }, [commentId, state, navigate]);
 
   if (!comment || !artwork) {
-    return <ArtworkDetailSkeleton/>;
+    return <ArtworkDetailSkeleton />;
   }
 
   return <CommentDetail comment={comment} artwork={artwork} />;

@@ -8,7 +8,11 @@ import IconButton from "@/shared/components/buttons/IconButton";
 import IconThreeDots from "@/shared/components/icons/IconThreeDots";
 import DropdownMenu from "./CommentDropdown";
 import IconThumb from "@/shared/components/icons/IconThumb";
-import { deleteComment, likeComment, cancelLikeComment } from "@/shared/api/comment";
+import {
+  deleteComment,
+  likeComment,
+  cancelLikeComment,
+} from "@/shared/api/comment";
 import { WriterMeta } from "@/shared/components/comments/WriterMeta";
 import { BaseComment } from "@/shared/types/comment";
 import { ArtworkPreview } from "@/shared/types/artwork";
@@ -24,6 +28,8 @@ export function CommentDetail({ comment, artwork }: Props) {
   const [likeCount, setLikeCount] = useState<number>(comment.likeCount);
   const [isLiked, setIsLiked] = useState(comment.isLiked);
   const [isModalOpened, setIsModalOpened] = useState(false);
+  const currentUser = sessionStorage.getItem("user");
+  const currentNickname = currentUser ? JSON.parse(currentUser).nickname : null;
 
   const toggleLike = async () => {
     const next = !isLiked;
@@ -68,7 +74,7 @@ export function CommentDetail({ comment, artwork }: Props) {
 
   return (
     <div className="bg-neutral-100 min-h-screen">
-            {isModalOpened && (
+      {isModalOpened && (
         <Modal
           open={isModalOpened}
           msg="감상문을 삭제하시겠습니까?"
@@ -87,17 +93,19 @@ export function CommentDetail({ comment, artwork }: Props) {
             <ArtworkMeta artwork={artwork} />
             <span className="flex items-center justify-between">
               <WriterMeta user={comment.user} date={comment.date} />
-              <DropdownMenu
-                button={
-                  <button className="cursor-pointer flex justify-center items-center">
-                    <IconThreeDots />
-                  </button>
-                }
-                options={[
-                  { label: "수정하기", onClick: handleEdit },
-                  { label: "삭제하기", onClick: handleDelete },
-                ]}
-              />
+              {comment.user.nickname === currentNickname && (
+                <DropdownMenu
+                  button={
+                    <button className="cursor-pointer flex justify-center items-center">
+                      <IconThreeDots />
+                    </button>
+                  }
+                  options={[
+                    { label: "수정하기", onClick: handleEdit },
+                    { label: "삭제하기", onClick: handleDelete },
+                  ]}
+                />
+              )}
             </span>
             <DescriptionBox description={comment.content} hideLine />
           </div>
