@@ -44,7 +44,7 @@ services:
     container_name: logstash
     environment:
       - ELASTICSEARCH_HOSTS=http://es:9200
-      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
       - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -87,8 +87,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: backend
-    #    ports:
-    #      - 8080:8080
+    ports:
+     - 8080:8080
     env_file: .env
     environment:
       - SPRING_PROFILES_ACTIVE=prod
@@ -97,6 +97,23 @@ services:
     depends_on:
       - mysql
       - redis
+    networks:
+      - es-bridge
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt:ro  # EC2의 인증서 폴더 공유
+      - ../../frontend/dist:/usr/share/nginx/html:ro  # Vite 결과물
+    depends_on:
+      - kibana
+      - es
+      - backend
     networks:
       - es-bridge
 
