@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface WrappedRepository extends JpaRepository<Wrapped, Integer>, WraapedRepositoyCustom {
+public interface WrappedRepository extends JpaRepository<Wrapped, Integer>, WrapedRepositoyCustom {
     // findById(Users users)처럼도 쓸 수 있고, users.getUserId()가 내부적으로 PK니까 문제 없이 작동.
 
     Optional<Wrapped> findByUserId(Integer userId);
