@@ -9,7 +9,7 @@ import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
 import { getWrappedMonthString } from '@/shared/utils/date';
 import html2canvas from 'html2canvas';
 import DownloadButton from '@/shared/components/buttons/DownloadButton';
-import { Recommendation } from '@/shared/api/wrapped';
+import { Recommendation } from '@/shared/types/api/wrapped';
 
 interface Props {
   currentStep: number;

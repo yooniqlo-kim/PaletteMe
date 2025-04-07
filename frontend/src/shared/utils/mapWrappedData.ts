@@ -2,9 +2,9 @@ import {
   WrappedData,
   RawWrappedApiResponse,
   Recommendation,
-} from '@shared/api/wrapped';
+} from '@shared/types/api/wrapped';
 
-interface ExtendedRawWrappedApiResponse extends RawWrappedApiResponse {
+interface ExtendedRawWrappedApiResponse extends Partial<RawWrappedApiResponse> {
   recommendedArtwork2?: string;
   recommendedArtist2?: string;
   recommendedImg2?: string;
@@ -17,6 +17,7 @@ interface ExtendedRawWrappedApiResponse extends RawWrappedApiResponse {
   reviewPercentage?: number;
   reviewCnt?: number;
 }
+
 
 export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedData {
   const recommendations: Recommendation[] = [];

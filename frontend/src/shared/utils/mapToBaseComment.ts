@@ -21,7 +21,7 @@ export const mapToBaseComment = (
   isLiked: res.isLiked ?? false,
   user: {
     nickname: res.nickname ?? "",
-    profileImageUrl: item.userImg ?? "",
+    profileImageUrl: res.userImg ?? "",
   },
   visibility: "public",
 });
@@ -98,7 +98,7 @@ export const mapToCommentAndArtworkList = (
       isLiked: true,
       user: {
         nickname: item.nickname ?? "",
-        profileImageUrl: item.userImgUrl ?? "",
+        profileImageUrl: item.userImg ?? "",
       },
       visibility: "public",
     };
@@ -151,7 +151,7 @@ export const mapToMyCommentsAndArtworks = (
       artworkId: item.artworkId,
       title: item.originalTitle ?? "",
       artist: item.originalArtist ?? "",
-      artworkImageUrl: item.imgUrl ?? "",
+      artworkImageUrl: item.imageUrl ?? "",
     };
 
     comments.push(comment);

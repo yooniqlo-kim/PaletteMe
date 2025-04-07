@@ -1,6 +1,6 @@
 import Modal from "@/shared/components/modal/Modal";
 import { WrappedDummy } from "@/shared/dummy/wrappedDummy";
-import type { WrappedData } from "@/shared/types/WrappedData";
+import type { WrappedData } from "@/shared/types/api/wrapped";
 
 type Props = {
   open: boolean;

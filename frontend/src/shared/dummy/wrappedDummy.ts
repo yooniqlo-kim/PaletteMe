@@ -1,4 +1,4 @@
-import { WrappedData } from "@/shared/types/WrappedData";
+import { WrappedData } from "@/shared/types/api/wrapped";
 
 export const WrappedDummy: WrappedData = {
   favoriteArtwork: {

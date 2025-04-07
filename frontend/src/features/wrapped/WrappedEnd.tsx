@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import wrapped06 from '@/assets/images/wrapped06.jpg';
 import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
-import { Recommendation } from '@/shared/api/wrapped';
+import { Recommendation } from '@/shared/types/api/wrapped';
 import DownloadButton from '@shared/components/buttons/DownloadButton';
 import { getWrappedMonthString } from "@/shared/utils/date";
 

@@ -5,6 +5,7 @@ import { PageIntro } from "@shared/components/collection/PageIntro";
 import ArtworkListSection from "@shared/components/collection/ArtworkListSection";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
+import { BaseUser } from "@shared/types/user";
 
 import {
   fetchBookmarkedArtworks,
