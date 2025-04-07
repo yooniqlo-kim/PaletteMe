@@ -30,34 +30,6 @@ public class WrapedRepositoyCustomImpl implements WrapedRepositoyCustom {
     QArtists artist = QArtists.artists;
 
     // 최애 화가
-//    @Override
-//    public List<Tuple> findTopArtistByReviewCount(LocalDateTime startDate, LocalDateTime endDate) {
-//        List<Tuple> result = queryFactory
-//                .select(
-//                        review.user.userId,
-//                        artwork.artist.artistId,
-//                        artwork.artist.enArtist,
-//                        review.reviewId.count()
-//                )
-//                .from(review)
-//                .join(review.artwork, artwork)
-//                .join(artwork.artist, artist)
-//                .where(review.createdAt.between(startDate, endDate))
-//                .groupBy(review.user.userId, artwork.artist.artistId, artwork.artist.enArtist)
-//                .fetch();
-//
-//        return result.stream()
-//                .collect(Collectors.groupingBy(
-//                        t -> t.get(review.user.userId),
-//                        Collectors.collectingAndThen(
-//                                Collectors.maxBy(Comparator.comparing(t -> t.get(review.reviewId.count()))),
-//                                Optional::get
-//                        )
-//                ))
-//                .values()
-//                .stream()
-//                .toList();
-//    }
     @Override
     public List<Tuple> findTopArtistByReviewCount(LocalDateTime startDate, LocalDateTime endDate) {
         List<Tuple> result = queryFactory
@@ -137,48 +109,4 @@ public class WrapedRepositoyCustomImpl implements WrapedRepositoyCustom {
         return new ArrayList<>(longestPerUser.values());
     }
 
-//    @Override
-//    public List<Tuple> rankUsersByReviewCount(LocalDateTime startDate, LocalDateTime endDate) {
-//        return queryFactory
-//                .select(
-//                        user.userId,
-//                        review.reviewId.count()
-//                )
-//                .from(user)
-//                .join(review).on(review.user.eq(user))
-//                .where(review.createdAt.between(startDate, endDate))
-//                .groupBy(user.userId)
-//                .orderBy(review.reviewId.count().desc())
-//                .fetch();
-//    }
-
-//    // 가장 인상 깊게 본 작품
-//    @Override
-//    public List<Tuple> findLongestReviewPerUser(LocalDateTime startDate, LocalDateTime endDate) {
-//        List<Tuple> raw = queryFactory
-//                .select(
-//                        review.user.userId,
-//                        review.artwork.artworkId,
-//                        artwork.originalTitle,
-//                        review.contentLength,
-//                        artwork.imageUrl,
-//                        artwork.artist.originalArtist
-//                )
-//                .from(review)
-//                .join(review.artwork, artwork)
-//                .join(artwork.artist, artist)
-//                .where(review.createdAt.between(startDate, endDate))
-//                .orderBy(review.user.userId.asc(), review.contentLength.desc())
-//                .fetch();
-//
-//        // 후처리: 유저별 가장 긴 리뷰 하나만 추출
-//        Map<Integer, Tuple> longestPerUser = new LinkedHashMap<>();
-//        for (Tuple tuple : raw) {
-//            Integer userId = tuple.get(review.user.userId);
-//            if (!longestPerUser.containsKey(userId)) {
-//                longestPerUser.put(userId, tuple);
-//            }
-//        }
-//        return new ArrayList<>(longestPerUser.values());
-//    }
 }
