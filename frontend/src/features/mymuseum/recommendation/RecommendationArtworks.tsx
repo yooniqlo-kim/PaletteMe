@@ -74,33 +74,31 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
       {/* 카드 */}
       <div className="flex justify-center items-center w-full">
         <div className="w-full max-w-[260px] aspect-[1/1] min-h-[260px]">
-          <ArtworkCard
-            key={currentArtwork?.artworkId || "loading"}
-            artwork={{
-              ...(currentArtwork ?? {
-                artworkId: "loading",
-                title: "작품 불러오는 중...",
-                imageUrl: placeholderLight300,
-                artistName: "",
-                year: "",
-              }),
-              isLiked: currentArtwork
-                ? likedArtworks.includes(currentArtwork.artworkId)
-                : false,
-            }}
-            size="large"
-            borderRadius="small"
-            theme="light"
-            disabled={isLoading}
-            onClickLike={() =>
-              currentArtwork && toggleLike(currentArtwork.artworkId)
+        <ArtworkCard
+          key={currentArtwork?.artworkId || "loading"}
+          artwork={{
+            artworkId: currentArtwork?.artworkId ?? "loading",
+            title: currentArtwork?.title ?? "작품 불러오는 중...",
+            artworkImageUrl: currentArtwork?.artworkImageUrl ?? placeholderLight300,
+            artist: currentArtwork?.artist ?? "",
+            year: currentArtwork?.year ?? "",
+            isLiked: currentArtwork
+              ? likedArtworks.includes(currentArtwork.artworkId)
+              : false,
+          }}
+          size="large"
+          borderRadius="small"
+          theme="light"
+          disabled={isLoading}
+          onClickLike={() =>
+            currentArtwork && toggleLike(currentArtwork.artworkId)
+          }
+          onClick={() => {
+            if (currentArtwork) {
+              navigate(`/artworks/${currentArtwork.artworkId}`);
             }
-            onClick={() => {
-              if (currentArtwork) {
-                navigate(`/artworks/${currentArtwork.artworkId}`);
-              }
-            }}
-          />
+          }}
+        />
         </div>
       </div>
 
