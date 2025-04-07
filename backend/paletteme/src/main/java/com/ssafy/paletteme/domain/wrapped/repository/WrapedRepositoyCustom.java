@@ -5,7 +5,7 @@ import com.querydsl.core.Tuple;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface WraapedRepositoyCustom {
+public interface WrapedRepositoyCustom {
     List<Tuple> findTopArtistByReviewCount(LocalDateTime startDate, LocalDateTime endDate);
 
     List<Tuple> rankUsersByReviewCount(LocalDateTime startDate, LocalDateTime endDate);
