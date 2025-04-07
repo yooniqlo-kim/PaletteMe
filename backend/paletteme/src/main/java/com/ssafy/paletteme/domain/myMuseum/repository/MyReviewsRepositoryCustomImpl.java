@@ -1,5 +1,6 @@
 package com.ssafy.paletteme.domain.myMuseum.repository;
 
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.paletteme.domain.artworks.entity.QArtists;
 import com.ssafy.paletteme.domain.artworks.entity.QArtworks;
@@ -35,10 +36,12 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                         reviews.content,
                         reviews.createdAt,
                         artworks.artworkId,
-                        artworks.originalTitle,
+                        artworks.korTitle.coalesce(artworks.originalTitle),
                         artists.originalArtist,
                         artworks.imageUrl,
-                        usersArtworksLike.isNotNull() // 좋아요 여부
+                        new CaseBuilder()
+                                .when(usersArtworksLike.isNotNull()).then(true)
+                                .otherwise(false)
                 ))
                 .from(reviews)
                 .join(reviews.artwork, artworks)
