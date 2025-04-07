@@ -66,7 +66,8 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                         reviews.artwork.artworkId,              // 작품 ID
                         reviews.artwork.originalTitle,               // 작품명
                         reviews.artwork.imageUrl,               // 작품 이미지
-                        reviews.artwork.artist.originalArtist        // 작가명
+                        reviews.artwork.artist.originalArtist,        // 작가명
+                        reviews.user.s3Url
                 ))
                 .from(reviews)
                 .join(usersReviewLike).on(usersReviewLike.review.eq(reviews)) // 유저가 좋아요 누른 리뷰

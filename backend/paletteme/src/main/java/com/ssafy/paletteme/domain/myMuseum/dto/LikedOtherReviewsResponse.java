@@ -23,7 +23,7 @@ public class LikedOtherReviewsResponse {
 
     @QueryProjection
     public LikedOtherReviewsResponse(String nickname, int reviewId, int likeCnt, String content, LocalDateTime createdAt, String artworkId,
-                                     String title, String artworkImageUrl, String artist) {
+                                     String title, String artworkImageUrl, String artist, String userImgUrl) {
         this.nickname = nickname;
         this.reviewId = reviewId;
         this.likeCnt = likeCnt;
@@ -33,9 +33,6 @@ public class LikedOtherReviewsResponse {
         this.title = title;
         this.artworkImageUrl = artworkImageUrl;
         this.artist = artist;
-    }
-
-    public void updateUserImgUrl(String userImgUrl) {
         this.userImgUrl = userImgUrl;
     }
 
