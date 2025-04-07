@@ -67,6 +67,7 @@ export interface LikedOtherReviewsResponse {
   content?: string;
   createdAt?: string;
   artworkId?: string;
+  artworkImageUrl?: string;
 }
 
 // 내가 작성한 감상문 리스트 조회

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import RecommendedFilterChips from "./RecommendedFilterChips";
 import RecommendationArtworks from "./RecommendationArtworks";
 
-// import { recommendationDummy } from "@/shared/dummy/recommendationDummy";
 import type {
   RecommendationFilter,
 } from "@/shared/api/recommendation";
@@ -10,17 +10,41 @@ import { mapRecommendedToArtwork } from "@/shared/utils/mapRecommendedToArtwork"
 import { fetchRecommendationsByFilter } from "@features/mymuseum/recommendation/api/fetchRecommendationsByFilter";
 import type { BaseArtwork } from "@/shared/types/artwork";
 
+const initialCache: Record<RecommendationFilter, BaseArtwork[]> = {
+  age: [],
+  favorite_artist: [],
+  similar_taste: [],
+  color: [],
+};
+
 export default function RecommendationContainer() {
   const [selectedFilter, setSelectedFilter] =
     useState<RecommendationFilter>("age");
+
   const [artworks, setArtworks] = useState<BaseArtwork[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const [cache, setCache] = useState(initialCache);
+
+  useEffect(() => {
+    return () => {
+      setCache(initialCache);
+    };
+  }, [location.pathname]);
+  
 
   useEffect(() => {
     const fetchData = async () => {
+      // ❗️ 캐시에 해당 키가 있어도 "값이 비어있으면" 새로 요청해야 하므로
+      const cached = cache[selectedFilter];
+      if (cached && cached.length > 0) {
+        setArtworks(cached);
+        return;
+      }
+  
       setIsLoading(true);
       try {
-        const size = 10; // 추천 받을 작품 개수
+        const size = 10;
         const rawData = await fetchRecommendationsByFilter(selectedFilter, size);
   
         const mapped = rawData.map(
@@ -28,6 +52,7 @@ export default function RecommendationContainer() {
         ) as (BaseArtwork & { isLiked?: boolean })[];
   
         setArtworks(mapped);
+        setCache((prev) => ({ ...prev, [selectedFilter]: mapped }));
       } catch (err) {
         console.error("추천 작품 로딩 실패:", err);
       } finally {
@@ -36,6 +61,7 @@ export default function RecommendationContainer() {
     };
   
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilter]);
   
 
@@ -46,7 +72,6 @@ export default function RecommendationContainer() {
         onSelect={(value) => setSelectedFilter(value as RecommendationFilter)}
       />
 
-      {/* 항상 렌더링되도록 수정 */}
       <RecommendationArtworks
         key={selectedFilter}
         artworks={artworks}
