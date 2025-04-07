@@ -114,8 +114,8 @@ export default function BookmarkCollectionPage() {
                     title,
                     artist,
                     artworkImageUrl: artwork.imgUrl ?? "", 
-                    isLiked: true,
                   }}
+                  isLiked={true}
                   size="small"
                   theme="light"
                   borderRadius="small"

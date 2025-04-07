@@ -68,9 +68,9 @@ export default function WrappedEnd({
                   artworkId: "fake-id",
                   artworkImageUrl: favoriteArtwork.imgUrl,
                   title: favoriteArtwork.title,
-                  isLiked: false,
                   artist: favoriteArtwork.artist,
                 }}
+                isLiked={false}
                 size="small"
                 theme="light"
                 hasBorder

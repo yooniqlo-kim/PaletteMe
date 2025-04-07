@@ -63,9 +63,9 @@ export default function RegisterArtworkPage() {
                   artworkId: artwork.artworkId,
                   artworkImageUrl: artwork.imageUrl,
                   title: "",
-                  isLiked: selectedImages.includes(artwork.artworkId),
                   artist: "",
                 }}
+                isLiked={selectedImages.includes(artwork.artworkId)}
                 size="small"
                 theme="light"
                 onClickLike={() => handleClick(artwork.artworkId)}

@@ -105,8 +105,8 @@ export default function LikedCollectionPage() {
                     title,
                     artist,
                     artworkImageUrl: artwork.imgUrl ?? "",
-                    isLiked: true,
                   }}
+                  isLiked={true}
                   size="small"
                   theme="light"
                   borderRadius="small"
