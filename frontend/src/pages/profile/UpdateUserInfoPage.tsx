@@ -5,7 +5,9 @@ import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 
 export default function UpdateUserInfoPage() {
-  function updateUserInfo(data: unknown) {}
+  function updateUserInfo(data: unknown) {
+    console.log(data);
+  }
   return (
     <div className="px-7">
       <Form onSave={updateUserInfo} className="flex flex-col gap-8 w-full">
