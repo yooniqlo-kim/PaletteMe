@@ -30,13 +30,14 @@ export default function UpdateProfilePage() {
     event.preventDefault();
   }
 
-  function updateUserInfo(data: unknown) {}
+  function updateUserInfo(data: unknown) {
+    console.log(data);
+  }
   return (
     <div className="px-7">
       <Form
         onSave={updateUserInfo}
-        className="flex flex-col items-center gap-8 w-full"
-      >
+        className="flex flex-col items-center gap-8 w-full">
         <h2 className="text-lg font-semibold">프로필 업데이트</h2>
         <Label htmlFor="fileInput">
           <span className="relative">
