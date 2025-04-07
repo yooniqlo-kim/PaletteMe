@@ -42,7 +42,7 @@ export default function WeeklyCalendar({
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/comment/${day.reviewId}`);
+                    navigate(`/comments/${day.reviewId}`);
                   }}
                   className="w-9 h-9 rounded-full border-4 overflow-hidden cursor-pointer"
                   style={{ borderColor: "#FF718E" }}
