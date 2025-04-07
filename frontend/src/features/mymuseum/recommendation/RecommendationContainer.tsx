@@ -35,21 +35,22 @@ export default function RecommendationContainer() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (cache[selectedFilter]) {
-        // 캐시에 있으면 API 호출 생략
-        setArtworks(cache[selectedFilter]);
+      // ❗️ 캐시에 해당 키가 있어도 "값이 비어있으면" 새로 요청해야 하므로
+      const cached = cache[selectedFilter];
+      if (cached && cached.length > 0) {
+        setArtworks(cached);
         return;
       }
-
+  
       setIsLoading(true);
       try {
         const size = 10;
         const rawData = await fetchRecommendationsByFilter(selectedFilter, size);
-
+  
         const mapped = rawData.map(
           mapRecommendedToArtwork
         ) as (BaseArtwork & { isLiked?: boolean })[];
-
+  
         setArtworks(mapped);
         setCache((prev) => ({ ...prev, [selectedFilter]: mapped }));
       } catch (err) {
@@ -58,9 +59,11 @@ export default function RecommendationContainer() {
         setIsLoading(false);
       }
     };
-
+  
     fetchData();
-  }, [selectedFilter, cache]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedFilter]);
+  
 
   return (
     <div>
