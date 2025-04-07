@@ -22,16 +22,21 @@ public class RedisService {
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    public boolean hasKey(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
 
     public void set(String key, String value, Duration timeout) {
         redisTemplate.opsForValue().set(key, value, timeout);
     }
 
-
     public String get(String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
 
     public List<ArtworkRecommendationResponse> getAllArtworkRecommendations() {
         Set<String> keys = redisTemplate.keys("recommend:artwork:*");
@@ -45,17 +50,6 @@ public class RedisService {
                 })
                 .collect(Collectors.toList());
     }
-
-
-    public void delete(String key) {
-        redisTemplate.delete(key);
-    }
-
-
-    public boolean hasKey(String key) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
-    }
-
 
     public void saveUserStats(UserStats userStats) {
         String key = "user:stats:" + userStats.getUserId();
