@@ -29,6 +29,16 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
     setLikedArtworks(initiallyLiked);
   }, [artworks]);
 
+  useEffect(() => {
+    artworks.forEach((artwork) => {
+      if (artwork.artworkImageUrl) {
+        const img = new Image();
+        img.src = artwork.artworkImageUrl;
+      }
+    });
+  }, [artworks]);
+  
+
   const currentArtwork = artworks[currentIndex];
 
   const showPrev = () => {

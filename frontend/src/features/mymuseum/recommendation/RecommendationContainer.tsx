@@ -16,9 +16,6 @@ export default function RecommendationContainer() {
   const [artworks, setArtworks] = useState<BaseArtwork[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log("받은 작품 개수:", artworks.length);
-  console.log("artworks 데이터:", artworks);
-
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
