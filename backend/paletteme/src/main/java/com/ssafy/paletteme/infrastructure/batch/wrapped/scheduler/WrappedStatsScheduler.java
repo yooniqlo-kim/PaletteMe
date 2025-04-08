@@ -1,7 +1,6 @@
-package com.ssafy.paletteme.infrastructure.batch.wrapped;
+package com.ssafy.paletteme.infrastructure.batch.wrapped.scheduler;
 
 import com.ssafy.paletteme.domain.wrapped.repository.WrappedRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
@@ -35,7 +34,8 @@ public class WrappedStatsScheduler {
     }
 
     // @Scheduled(cron = "*/10 * * * * *") // 15초마다 실행
-    @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 정각에 실행
+    // @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 정각에 실행
+    @Scheduled(cron = "0 0 16 * * *") // 매일 오후 4시에 실행
     public void runWrappedStatsJob() {
         wrappedRepository.deleteAllInBatch();
 

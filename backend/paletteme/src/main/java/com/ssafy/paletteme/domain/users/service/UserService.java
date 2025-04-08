@@ -214,8 +214,10 @@ public class UserService {
         user.updateNickname(request.getNickname());
 
         // 이미지 저장하기
-        String s3Url = handleProfileImageUpload(file);
-        user.updateS3Url(s3Url);
+        if (file != null && !file.isEmpty()) {
+            String s3Url = handleProfileImageUpload(file);
+            user.updateS3Url(s3Url);
+        }
 
         // UserRepository 이슈로 더티 체킹이 안될 수 도 있음.
         usersRepository.save(user);

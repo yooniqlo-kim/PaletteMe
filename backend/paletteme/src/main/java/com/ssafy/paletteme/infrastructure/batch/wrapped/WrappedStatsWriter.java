@@ -2,6 +2,7 @@ package com.ssafy.paletteme.infrastructure.batch.wrapped;
 
 import com.ssafy.paletteme.domain.wrapped.entity.Wrapped;
 import com.ssafy.paletteme.domain.wrapped.repository.WrappedRepository;
+import com.ssafy.paletteme.infrastructure.batch.wrapped.dto.WrappedStatsDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

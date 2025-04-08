@@ -1,7 +1,13 @@
 package com.ssafy.paletteme.infrastructure.batch.wrapped;
 
 import com.querydsl.core.Tuple;
+import com.ssafy.paletteme.domain.recommendation.dto.WrappedRecommendationDto;
+import com.ssafy.paletteme.infrastructure.batch.wrapped.dto.WrappedStatsDto;
+import com.ssafy.paletteme.infrastructure.batch.wrapped.provider.WrappedGptPromptProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ai.chat.ChatClient;
+import org.springframework.ai.chat.ChatResponse;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemProcessor;
@@ -17,6 +23,9 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
     private Map<Integer, Tuple> topArtistMap;
     private Map<Integer, Tuple> rankMap;
     private Map<Integer, Tuple> longestReviewMap;
+    private List<WrappedRecommendationDto> wrappedRecommendationDtoList;
+
+    private final ChatClient chatClient;
 
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
@@ -24,6 +33,7 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
         this.topArtistMap = (Map<Integer, Tuple>) context.get("topArtistMap");
         this.rankMap = (Map<Integer, Tuple>) context.get("rankMap");
         this.longestReviewMap = (Map<Integer, Tuple>) context.get("longestReviewMap");
+        this.wrappedRecommendationDtoList = (List<WrappedRecommendationDto>) context.get("wrappedRecommendationDtoList");
     }
 
     @Override
@@ -69,23 +79,54 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
             favoriteArtist = longest.get(5, String.class);      // originalArtist
         }
 
-        // --- 추천 작품 (기획에 따라 채우기. 일단 null로 초기화) ---
+        // 추천 작품
         String recommendedArtwork = null;
         String recommendedArtist = null;
         String recommendedImg = null;
 
-        return WrappedStatsDto.builder()
-                .userId(userId)
-                .artistName(topArtist != null ? topArtist.get(2, String.class) : null) // enArtist
-                .reviewRank(reviewRank)
-                .reviewPercentage(reviewPercentage)
-                .reviewCnt(reviewCnt)
-                .favoriteName(favoriteName)
-                .favoriteArtist(favoriteArtist)
-                .favoriteImg(favoriteImg)
-                .recommendedArtwork(recommendedArtwork)
-                .recommendedArtist(recommendedArtist)
-                .recommendedImg(recommendedImg)
-                .build();
+        // 사용자 선호 작품이 있을 경우, GPT에게 추천 요청
+        if (favoriteName != null && !favoriteName.isBlank()) {
+            Prompt prompt = WrappedGptPromptProvider.buildPromptForRecommendation(wrappedRecommendationDtoList, favoriteName);
+            ChatResponse chatResponse = chatClient.call(prompt);
+
+            if (chatResponse != null && chatResponse.getResult() != null && chatResponse.getResult().getOutput() != null) {
+                String gptRecommendArtwork = chatResponse.getResult().getOutput().getContent().trim();
+                System.out.println(gptRecommendArtwork);
+
+                for (WrappedRecommendationDto dto : wrappedRecommendationDtoList) {
+                    if (dto.getArtwork().equalsIgnoreCase(gptRecommendArtwork)) {
+                        recommendedArtwork = dto.getArtwork();
+                        recommendedArtist = dto.getArtist();
+                        recommendedImg = dto.getImageUrl();
+                        break;
+                    }
+                }
+            }
+        } else {
+            // 사용자 선호 작품이 없는 경우, 랜덤하게 추천
+            WrappedRecommendationDto randomPick = wrappedRecommendationDtoList.get(
+                    (int) (Math.random() * wrappedRecommendationDtoList.size())
+            );
+            recommendedArtwork = randomPick.getArtwork();
+            recommendedArtist = randomPick.getArtist();
+            recommendedImg = randomPick.getImageUrl();
+        }
+
+            return WrappedStatsDto.builder()
+                    .userId(userId)
+                    .artistName(topArtist != null ? topArtist.get(2, String.class) : null) // enArtist
+                    .reviewRank(reviewRank)
+                    .reviewPercentage(reviewPercentage)
+                    .reviewCnt(reviewCnt)
+                    .favoriteName(favoriteName)
+                    .favoriteArtist(favoriteArtist)
+                    .favoriteImg(favoriteImg)
+                    .recommendedArtwork(recommendedArtwork)
+                    .recommendedArtist(recommendedArtist)
+                    .recommendedImg(recommendedImg)
+                    .build();
     }
+
 }
+
+

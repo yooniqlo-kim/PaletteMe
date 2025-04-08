@@ -1,6 +1,7 @@
 package com.ssafy.paletteme.domain.artworks.repository;
 
 
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDetailResponse;
 import com.ssafy.paletteme.domain.artworks.dto.QArtworkDetailResponse;
@@ -25,7 +26,10 @@ public class ArtworksRepositoryCustomImpl implements ArtworksRepositoryCustom{
                         artwork.artworkId,
                         artwork.imageUrl,
                         museum.museumName,
-                        artwork.originalTitle,
+                        new CaseBuilder()
+                                .when(artwork.korTitle.isNotNull())
+                                .then(artwork.korTitle)
+                                .otherwise(artwork.originalTitle),
                         artist.originalArtist,
                         artwork.createdYear,
                         artwork.description
