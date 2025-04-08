@@ -1,6 +1,8 @@
 package com.ssafy.paletteme.infrastructure.batch.wrapped;
 
 import com.querydsl.core.Tuple;
+import com.ssafy.paletteme.domain.recommendation.dto.WrappedRecommendationDto;
+import com.ssafy.paletteme.domain.recommendation.repository.WrappedRecommendationRepository;
 import com.ssafy.paletteme.domain.wrapped.repository.WrappedRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,7 +23,9 @@ import static com.ssafy.paletteme.domain.users.entity.QUsers.users;
 @RequiredArgsConstructor
 public class WrappedStatsJobListener  implements JobExecutionListener {
     private final WrappedRepository wrappedRepository;
+    private final WrappedRecommendationRepository wrappedRecommendationRepository;
     private static final Logger log = LoggerFactory.getLogger(WrappedStatsJobListener.class);
+
 
     @Override
     public void beforeJob(JobExecution jobExecution) {
@@ -49,10 +54,14 @@ public class WrappedStatsJobListener  implements JobExecutionListener {
                         Function.identity()
                 ));
 
+        List<WrappedRecommendationDto> wrappedRecommendationDtoList =
+                WrappedRecommendationDto.fromEntityList(wrappedRecommendationRepository.findAll());
+
         // ExecutionContext를 통해 컴포넌트간 데이터 공유 가능
         jobExecution.getExecutionContext().put("topArtistMap", topArtistMap);
         jobExecution.getExecutionContext().put("rankMap", rankMap);
         jobExecution.getExecutionContext().put("longestReviewMap", longestReviewMap);
+        jobExecution.getExecutionContext().put("wrappedRecommendationDtoList", wrappedRecommendationDtoList);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.ssafy.paletteme.infrastructure.batch.wrapped;
+package com.ssafy.paletteme.infrastructure.batch.wrapped.dto;
 
 import com.ssafy.paletteme.domain.wrapped.entity.Wrapped;
 import lombok.*;
