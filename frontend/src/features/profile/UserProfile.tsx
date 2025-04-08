@@ -3,19 +3,47 @@ import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
 import { useNavigate } from "react-router";
 
+import level1Img from "@/assets/levels/level-icon-1.svg";
+import level2Img from "@/assets/levels/level-icon-2.svg";
+import level3Img from "@/assets/levels/level-icon-3.svg";
+import level4Img from "@/assets/levels/level-icon-4.svg";
+import level5Img from "@/assets/levels/level-icon-5.svg";
+import { Level } from "@/pages/profile/type";
+
 type UserProfileProps = {
   nickname: string;
   image?: string;
+  level: Level;
 };
 
-export default function UserProfile({ nickname, image }: UserProfileProps) {
+const levelIcons = [level1Img, level2Img, level3Img, level4Img, level5Img];
+const levelInfo = ["쇼킹핑크", "호크니", "모네", "플루이드 핑크", "반타 블랙"];
+
+function getLevelInfo(level: Level) {
+  return levelInfo[level - 1];
+}
+
+function getLevelIcon(level: Level) {
+  return levelIcons[level - 1];
+}
+
+export default function UserProfile({
+  nickname,
+  image,
+  level,
+}: UserProfileProps) {
   const navigate = useNavigate();
 
   return (
     <article className="flex justify-between items-center">
-      <span>
+      <span className="flex flex-col gap-8">
         <h2 className="text-lg font-bold">{nickname}</h2>
-        <p className="text-sm font-medium">어떤 작품을 디깅하고 계신가요?</p>
+        <div className="flex items-center gap-3">
+          <p className="text-sm font-medium">
+            현재 등급 : <strong>{getLevelInfo(level)}</strong>
+          </p>
+          <img src={getLevelIcon(level)} width={30} height={50} />
+        </div>
       </span>
       <span className="relative" onClick={() => navigate("update-profile")}>
         <UserImage userImg={image} />
