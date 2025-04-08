@@ -10,7 +10,6 @@ import UserImage from "@/shared/components/user/UserImage";
 import { useForm } from "react-hook-form";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
-import { useAuth } from "@/features/auth/useAuth";
 import useProfile from "./useProfile";
 import { useQuery } from "@tanstack/react-query";
 
@@ -20,8 +19,6 @@ type FormValues = {
 };
 
 export default function RegisterImagePage() {
-  const { getUserMeta } = useAuth();
-  const { s3Url, nickname: originalNickname } = getUserMeta();
   const { updateUserInfo, getProfile } = useProfile();
 
   const { data } = useQuery({
@@ -38,7 +35,9 @@ export default function RegisterImagePage() {
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({ mode: "onChange" });
 
-  const [imagePreview, setImagePreview] = useState<string>(s3Url);
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    data?.userImageUrl
+  );
   const [nicknameMsg, setNicknameMsg] = useState<string>();
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -134,7 +133,7 @@ export default function RegisterImagePage() {
                     message: "닉네임은 최대 20자까지 가능합니다.",
                   },
                   validate: (value) =>
-                    value === originalNickname
+                    value === data?.nickname
                       ? "새로운 닉네임을 입력해주세요"
                       : true,
                 })}
