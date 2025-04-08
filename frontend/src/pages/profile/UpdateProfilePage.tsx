@@ -10,7 +10,6 @@ import UserImage from "@/shared/components/user/UserImage";
 import { useForm } from "react-hook-form";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
-import { useAuth } from "@/features/auth/useAuth";
 import useProfile from "./useProfile";
 import { useQuery } from "@tanstack/react-query";
 
@@ -20,8 +19,6 @@ type FormValues = {
 };
 
 export default function RegisterImagePage() {
-  const { getUserMeta } = useAuth();
-  const { s3Url, nickname: originalNickname } = getUserMeta();
   const { updateUserInfo, getProfile } = useProfile();
 
   const { data } = useQuery({
@@ -38,9 +35,12 @@ export default function RegisterImagePage() {
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({ mode: "onChange" });
 
-  const [imagePreview, setImagePreview] = useState<string>(s3Url);
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    data?.userImageUrl
+  );
   const [nicknameMsg, setNicknameMsg] = useState<string>();
-  const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
+  const [isImageClicked, setIsImageClicked] = useState(false);
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const imageRegister = register("image", {
@@ -48,6 +48,7 @@ export default function RegisterImagePage() {
       const file = e.target.files?.[0];
       if (file) {
         const objectUrl = URL.createObjectURL(file);
+        setIsImageClicked(true);
         setImagePreview(objectUrl);
       }
     },
@@ -78,7 +79,7 @@ export default function RegisterImagePage() {
       const response = await checkNickname({ nickname: watchNickname });
       const { success, errorMsg } = response.data;
       setNicknameMsg(success ? "유효한 닉네임입니다." : errorMsg);
-      setIsNicknameValid(success ? true : false);
+      setIsNicknameValid(success);
     } catch (error) {
       showToast({
         message: "닉네임 중복 체크 중 오류가 발생했습니다.",
@@ -90,6 +91,14 @@ export default function RegisterImagePage() {
   function onSubmit(data: FormValues) {
     updateUserInfo(data);
   }
+
+  const isNicknameChanged = watchNickname !== data?.nickname;
+
+  const isSubmitDisabled =
+    (isNicknameChanged && !isNicknameValid) ||
+    !isValid ||
+    isSubmitting ||
+    (!isNicknameChanged && !isImageClicked);
 
   return (
     <section className="flex px-7">
@@ -133,10 +142,7 @@ export default function RegisterImagePage() {
                     value: 20,
                     message: "닉네임은 최대 20자까지 가능합니다.",
                   },
-                  validate: (value) =>
-                    value === originalNickname
-                      ? "새로운 닉네임을 입력해주세요"
-                      : true,
+                  validate: () => true,
                 })}
                 id="nickname"
                 type="text"
@@ -150,9 +156,7 @@ export default function RegisterImagePage() {
             </Button>
           </span>
         </InputContainer>
-        <Button
-          size="L"
-          disabled={!isNicknameValid || !isValid || isSubmitting}>
+        <Button size="L" disabled={isSubmitDisabled}>
           수정하기
         </Button>
       </form>
