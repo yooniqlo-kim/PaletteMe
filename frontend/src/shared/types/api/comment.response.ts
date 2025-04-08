@@ -58,16 +58,15 @@ export type LikedReviewsListResponse = LikedOtherReviewsResponse[];
 // 유저 프사, (좋아요여부), 작품명, 작가, 작품이미지 필요
 export interface LikedOtherReviewsResponse {
   nickname?: string;
-  userImg?: string; // 아직 없음
-  title?: string; // 아직 없음
-  artist?: string; // 아직 없음
-  imgUrl?: string; // 아직 없음
+  userImgUrl?: string;
+  title?: string;
+  artist?: string;
+  artworkImageUrl?: string;
   reviewId?: number;
   likeCnt?: number;
   content?: string;
   createdAt?: string;
   artworkId?: string;
-  artworkImageUrl?: string;
 }
 
 // 내가 작성한 감상문 리스트 조회
