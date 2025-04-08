@@ -1,6 +1,8 @@
 import { BASE_URL } from "@/shared/api/baseUrl";
 import { api } from "@/shared/api/core";
+import { updateUserInfoAPI } from "@/shared/api/user";
 import useToast from "@/shared/hooks/useToast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
 const USER_BASE_URL = `${BASE_URL}/users`;
@@ -14,14 +16,11 @@ type profileType = {
   grade: string;
 };
 
-type UpdatedUserType = {
-  nickname: string;
-  image: FileList;
-};
-
 export default function useProfile() {
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   async function getProfile(): Promise<profileType> {
     const response = await api.get(`${USER_BASE_URL}/profile`);
 
@@ -37,42 +36,30 @@ export default function useProfile() {
     return data;
   }
 
-  async function updateUserInfo(enteredData: UpdatedUserType) {
-    const formData = new FormData();
-    formData.append(
-      "data",
-      new Blob([JSON.stringify({ nickname: enteredData.nickname })], {
-        type: "application/json",
-      })
-    );
-
-    if (enteredData.image && enteredData.image.length > 0) {
-      formData.append("file", enteredData.image[0]);
-    }
-
-    const response = await api.post(`${USER_BASE_URL}/update-info`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    const { success, errorMsg, data } = response.data;
-
-    if (!success) {
+  const updateUserInfoMutation = useMutation({
+    mutationFn: updateUserInfoAPI,
+    onSuccess: (data) => {
+      const { success, errorMsg } = data;
+      if (!success) {
+        showToast({
+          message: errorMsg || "회원 정보 수정을 실패했습니다.",
+          type: "error",
+        });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ["profile"] });
+        showToast({
+          message: "회원 정보를 성공적으로 수정했습니다.",
+          type: "success",
+        });
+      }
+    },
+    onError: () => {
       showToast({
-        message: errorMsg || "회원 정보 수정을 실패했습니다.",
+        message: "회원 정보 수정 중 오류가 발생했습니다.",
         type: "error",
       });
-    } else {
-      showToast({
-        message: "회원 정보를 성공적으로 수정했습니다.",
-        type: "success",
-      });
-      navigate("/profile");
-    }
-
-    return data;
-  }
+    },
+  });
 
   async function verifyPassword(data: { password: string }) {
     const response = await api.post(`${USER_BASE_URL}/verfiy-password`, {
@@ -95,5 +82,9 @@ export default function useProfile() {
     }
   }
 
-  return { getProfile, updateUserInfo, verifyPassword };
+  return {
+    getProfile,
+    updateUserInfo: updateUserInfoMutation.mutate,
+    verifyPassword,
+  };
 }

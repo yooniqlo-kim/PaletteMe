@@ -3,7 +3,7 @@ import Input from "@/shared/components/form/Input";
 import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 import defaultImg from "@/assets/images/MainLogo.png";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import RoundedButton from "@/shared/components/buttons/RoundedButton";
 import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
@@ -12,6 +12,7 @@ import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import { useAuth } from "@/features/auth/useAuth";
 import useProfile from "./useProfile";
+import { useQuery } from "@tanstack/react-query";
 
 type FormValues = {
   image: FileList;
@@ -21,39 +22,56 @@ type FormValues = {
 export default function RegisterImagePage() {
   const { getUserMeta } = useAuth();
   const { s3Url, nickname: originalNickname } = getUserMeta();
-  const { updateUserInfo } = useProfile();
+  const { updateUserInfo, getProfile } = useProfile();
+
+  const { data } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     trigger,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({ mode: "onChange" });
+
   const [imagePreview, setImagePreview] = useState<string>(s3Url);
   const [nicknameMsg, setNicknameMsg] = useState<string>();
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const image = watch("image");
+  const imageRegister = register("image", {
+    onChange: (e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const objectUrl = URL.createObjectURL(file);
+        setImagePreview(objectUrl);
+      }
+    },
+  });
+
   const watchNickname = watch("nickname");
   const { showToast } = useToast();
 
   useEffect(() => {
-    if (image && image.length > 0) {
-      const file = image[0];
-      const objectUrl = URL.createObjectURL(file);
-      setImagePreview(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
+    if (data?.nickname) {
+      setValue("nickname", data.nickname);
     }
-  }, [image]);
+    if (data?.userImageUrl) {
+      setImagePreview(data.userImageUrl);
+    }
+  }, [data, setValue]);
 
   function handleButtonClick(event: FormEvent) {
     event.preventDefault();
+    fileInputRef.current?.click();
   }
 
   async function handleCheckNickname() {
-    const isValid = trigger("nickname");
-
+    const isValid = await trigger("nickname");
     if (!isValid) return;
 
     try {
@@ -72,6 +90,7 @@ export default function RegisterImagePage() {
   function onSubmit(data: FormValues) {
     updateUserInfo(data);
   }
+
   return (
     <section className="flex px-7">
       <form
@@ -88,12 +107,16 @@ export default function RegisterImagePage() {
             </span>
           </span>
         </Label>
-        <Input
-          {...register("image")}
+        <input
           id="image"
           type="file"
           accept="image/*"
           className="hidden"
+          {...imageRegister}
+          ref={(e) => {
+            imageRegister.ref(e);
+            fileInputRef.current = e;
+          }}
         />
         <InputContainer>
           <Label htmlFor="nickname">닉네임</Label>
