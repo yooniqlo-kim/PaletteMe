@@ -26,18 +26,17 @@ export default function SearchResultCard({
     img.onload = () => setImageLoaded(true);
   }, [artwork.imageUrl]);
 
-  const fakeArtwork: BaseArtwork & { isLiked?: boolean } = {
+  const fakeArtwork: BaseArtwork = {
     artworkId: artwork.artworkId,
     artworkImageUrl: artwork.imageUrl ?? "",
     title: artwork.enTitle ?? "",
     artist: artwork.enArtist ?? "",
-    isLiked: artwork.isLiked,
   };
 
   return imageLoaded ? (
     <ArtworkCard
       artwork={fakeArtwork}
-      isLiked={artwork.isLiked}
+      isLiked={!!artwork.isLiked}
       size="small"
       borderRadius="small"
       theme="light"
@@ -50,3 +49,4 @@ export default function SearchResultCard({
     <ArtworkCardSkeleton size="small" />
   );
 }
+
