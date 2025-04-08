@@ -4,6 +4,7 @@ import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 import { useForm } from "react-hook-form";
 import useProfile from "./useProfile";
+import { passwordValidation } from "@/shared/utils/verifyPassword";
 
 type FormValues = {
   password: string;
@@ -16,7 +17,7 @@ export default function UpdateUserInfoPage() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<FormValues>({ mode: "onChange" });
 
   const password = watch("password");
@@ -39,10 +40,7 @@ export default function UpdateUserInfoPage() {
               id="password"
               {...register("password", {
                 required: "비밀번호를 입력해주세요",
-                minLength: {
-                  value: 8,
-                  message: "8자 이상 입력해주세요",
-                },
+                validate: passwordValidation,
               })}
               type="password"
               placeholder="비밀번호를 입력해주세요 (8자 이상)"
@@ -67,7 +65,7 @@ export default function UpdateUserInfoPage() {
             />
           </InputContainer>
         </div>
-        <Button size="L" disabled={isSubmitting}>
+        <Button size="L" disabled={!isValid || isSubmitting}>
           확인
         </Button>
       </form>
