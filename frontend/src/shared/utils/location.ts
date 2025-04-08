@@ -3,6 +3,7 @@ const locationLinkMap: Record<string, string> = {
   MOMA: "https://www.moma.org",
   "The Metropolitan Museum of Art": "https://engage.metmuseum.org/",
   "Harvard Art Museum": "https://harvardartmuseums.org",
+  "National Gallery of Art": "https://www.nga.gov",
 };
 
 export function getLocationLink(location: string): string {

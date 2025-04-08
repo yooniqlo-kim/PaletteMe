@@ -12,7 +12,7 @@ import IconThumb from "@/shared/components/icons/IconThumb";
 
 export type CommentTicketProps = {
   comment: BaseComment;
-  artwork: BaseArtwork;
+  artwork?: BaseArtwork;
   onLikeChange?: (commentId: string, isLiked: boolean) => void;
 };
 
@@ -29,14 +29,19 @@ export function CommentTicket({
     likeCount: initialLikeCount,
     isLiked: initialIsLiked,
   } = comment;
+
   const [likeCount, setLikeCount] = useState<number>(initialLikeCount);
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const navigate = useNavigate();
 
+  if (!artwork) {
+    return null;
+  }
+
   const toggleLike = async () => {
     const next = !isLiked;
 
-    // 우선 UI 상태 업데이트
+    // 먼저 UI 상태 변경
     setIsLiked(next);
     setLikeCount((prev) => (next ? prev + 1 : prev - 1));
     onLikeChange?.(commentId, next);
@@ -58,14 +63,16 @@ export function CommentTicket({
   const handleClick = () => {
     navigate(`/comments/${commentId}`);
   };
+
   return (
     <div
-      className="w-full max-w-[17rem] h-[35rem] rounded-pm bg-white overflow-hidden flex flex-col cursor-pointer shadow-ticket"
+      className="w-full max-w-[17rem] h-[35rem] rounded-pm bg-white overflow-hidden flex flex-col cursor-pointer
+             shadow-md transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl"
       onClick={handleClick}
     >
       <div className="relative">
         <ArtworkImage artwork={artwork} />
-        <div className="absolute bottom-2 right-2 px-2 py-1 flex items-center gap-1 text-xs font-semibold">
+        <div className="absolute flex items-center gap-1 px-2 py-1 text-xs font-semibold bottom-2 right-2">
           <IconButton
             identifier="review_card"
             onClick={(e) => {
