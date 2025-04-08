@@ -1,7 +1,6 @@
-package com.ssafy.paletteme.infrastructure.batch.wrapped;
+package com.ssafy.paletteme.infrastructure.batch.wrapped.scheduler;
 
 import com.ssafy.paletteme.domain.wrapped.repository.WrappedRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
