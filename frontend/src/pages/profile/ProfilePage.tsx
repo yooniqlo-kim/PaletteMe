@@ -56,7 +56,7 @@ export default function ProfilePage() {
         <UserProfile
           nickname={data!.nickname}
           image={data!.userImageUrl}
-          level={data!.grade}
+          level={Number(data!.grade) as Level}
         />
         <UserMeta
           review={data!.reviewCount}
