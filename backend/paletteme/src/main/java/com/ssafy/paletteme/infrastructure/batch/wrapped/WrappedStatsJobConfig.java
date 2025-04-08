@@ -1,5 +1,6 @@
 package com.ssafy.paletteme.infrastructure.batch.wrapped;
 
+import com.ssafy.paletteme.infrastructure.batch.wrapped.dto.WrappedStatsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;

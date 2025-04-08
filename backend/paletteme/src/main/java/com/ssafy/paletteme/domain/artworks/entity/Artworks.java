@@ -27,7 +27,7 @@ public class Artworks {
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Eras era;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "artist_id",
             nullable = false,
             foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
