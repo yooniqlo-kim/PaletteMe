@@ -20,7 +20,7 @@ export default function DownloadButton({ onClick }: DownloadButtonProps) {
       <div className="flex items-center gap-1">
         <IconDownload />
         <span className="text-black text-sm font-medium whitespace-nowrap">
-          Share this wrapped
+          Download
         </span>
       </div>
     </IconButton>

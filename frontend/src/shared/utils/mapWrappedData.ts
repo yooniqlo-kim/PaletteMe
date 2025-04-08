@@ -23,6 +23,18 @@ export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedD
   const recommendations: Recommendation[] = [];
 
   if (
+    apiData.recommendedArtwork &&
+    apiData.recommendedArtist &&
+    apiData.recommendedImg
+  ) {
+    recommendations.push({
+      title: apiData.recommendedArtwork,
+      artist: apiData.recommendedArtist,
+      imgUrl: apiData.recommendedImg,
+    });
+  }
+
+  if (
     apiData.recommendedArtwork2 &&
     apiData.recommendedArtist2 &&
     apiData.recommendedImg2
@@ -53,3 +65,4 @@ export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedD
     review_based_recommendations: recommendations,
   };
 }
+

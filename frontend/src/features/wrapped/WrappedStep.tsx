@@ -120,7 +120,7 @@ export default function WrappedStep({
             <p className="font-bold text-lg">
               <span className="text-primary">{reviewCnt}개</span> 감상평을 남겨
             </p>
-            <p className=" font-bold text-lg">
+            <p className="py-2 font-bold text-lg">
               상위 <span className="text-primary">{reviewPercentage}%</span> 가 되셨네요!
             </p>
             <div className="px-2 mt-12">
