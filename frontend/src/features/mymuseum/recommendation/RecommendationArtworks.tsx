@@ -19,7 +19,7 @@ type Props = {
 export default function RecommendationArtworks({ artworks, isLoading }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
-  const [imageLoaded, setImageLoaded] = useState(false); // ✅ 추가
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const navigate = useNavigate();
 
@@ -49,10 +49,10 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
   useEffect(() => {
     if (!currentArtwork?.artworkImageUrl) return;
 
-    setImageLoaded(false); // ✅ 추가
+    setImageLoaded(false);
     const img = new Image();
     img.src = currentArtwork.artworkImageUrl;
-    img.onload = () => setImageLoaded(true); // ✅ 추가
+    img.onload = () => setImageLoaded(true);
   }, [currentArtwork]);
 
   const showPrev = () => {
