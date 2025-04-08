@@ -67,27 +67,26 @@ export default function Modal({
       ref={dialog}
       onClick={handleBackdropClick} // 모달 바깥 클릭 감지
       onClose={onClose}
-      className="rounded-ps bg-white p-[2.7rem] max-w-[320px] w-[40%] h-[45%] flex flex-col m-auto items-center justify-between backdrop:fixed backdrop:top-0 backdrop:max-w-[25.75rem] backdrop:left-0 backdrop:bg-[rgba(34,34,34,0.50)] backdrop-blur-sm backdrop:m-auto backdrop:h-dvh"
+      className="rounded-ps bg-white p-4 sm:p-6 w-[90%] sm:w-[80%] max-w-[320px] flex flex-col m-auto items-center justify-between backdrop:fixed backdrop:top-0 backdrop:left-0 backdrop:w-full backdrop:bg-[rgba(34,34,34,0.50)] backdrop:backdrop-blur-sm backdrop:m-auto backdrop:h-dvh"
     >
       <img
         src={modalImg}
         alt="modal img"
-        width={"80px"}
-        height={"80px"}
+        className="w-[60px] h-[60px] sm:w-[80px] sm:h-[80px]"
       />
-      <div className="flex flex-col items-center gap-2">
-        <p className="text-sm font-medium">{msg}</p>
-        <p className="text-sm font-medium">{confirmMsg}</p>
+      <div className="flex flex-col items-center gap-2 text-center mt-4 mb-6">
+        <p className="text-sm font-medium break-words">{msg}</p>
+        <p className="text-sm font-medium break-words">{confirmMsg}</p>
       </div>
 
-      <div className="whitespace-nowrap flex justify-between w-full">
-        <Button size="S" onClick={handleClick}>
+      <div className="flex justify-between w-full gap-2">
+        <Button size="S" onClick={handleClick} className="flex-1">
           {cancelText ?? "아니오"}
         </Button>
         <Button
           size="S"
           onClick={onConfirm ?? handleClick}
-          className="whitespace-nowrap bg-white border border-primary !text-primary hover:bg-white"
+          className="flex-1 bg-white border border-primary !text-primary hover:bg-white"
         >
           {confirmText ?? "네"}
         </Button>
