@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import IconLeftArrow from "@/shared/components/icons/IconLeftArrow";
 import IconRightArrow from "@/shared/components/icons/IconRightArrow";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
@@ -24,7 +24,7 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
   useEffect(() => {
     setCurrentIndex(0);
     const initiallyLiked = artworks
-      .filter((a) => a.isLiked)
+    .filter((a) => a.isLiked)
       .map((a) => a.artworkId);
     setLikedArtworks(initiallyLiked);
   }, [artworks]);
@@ -37,20 +37,20 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
       }
     });
   }, [artworks]);
-  
 
-  const currentArtwork = artworks[currentIndex];
+  const currentArtwork = useMemo(() => artworks[currentIndex], [artworks, currentIndex]);
+
+  const isLiked = useMemo(() => {
+    return currentArtwork ? likedArtworks.includes(currentArtwork.artworkId) : false;
+  }, [currentArtwork, likedArtworks]);
+
 
   const showPrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? artworks.length - 1 : prev - 1
-    );
+    setCurrentIndex((prev) => (prev === 0 ? artworks.length - 1 : prev - 1));
   };
 
   const showNext = () => {
-    setCurrentIndex((prev) =>
-      (prev + 1) % artworks.length
-    );
+    setCurrentIndex((prev) => (prev + 1) % artworks.length);
   };
 
   const toggleLike = async (id: string) => {
@@ -76,7 +76,7 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
       <button
         onClick={showPrev}
         disabled={artworks.length === 0}
-        className="w-10 h-10 flex items-center justify-center disabled:opacity-30"
+        className="w-10 h-10 flex items-center justify-center disabled:opacity-30 cursor-pointer"
       >
         <IconLeftArrow />
       </button>
@@ -84,33 +84,31 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
       {/* 카드 */}
       <div className="flex justify-center items-center w-full">
         <div className="w-full max-w-[260px] aspect-[1/1] min-h-[260px]">
-        <ArtworkCard
-          key={currentArtwork?.artworkId || "loading"}
-          artwork={{
-            artworkId: currentArtwork?.artworkId ?? "loading",
-            title: currentArtwork?.title ?? "작품 불러오는 중...",
-            artworkImageUrl: currentArtwork?.artworkImageUrl ?? placeholderLight300,
-            artist: currentArtwork?.artist ?? "",
-            year: currentArtwork?.year ?? "",
-          }}
-          isLiked={
-            currentArtwork
-              ? likedArtworks.includes(currentArtwork.artworkId)
-              : false
-          }
-          size="large"
-          borderRadius="small"
-          theme="light"
-          disabled={isLoading}
-          onClickLike={() =>
-            currentArtwork && toggleLike(currentArtwork.artworkId)
-          }
-          onClick={() => {
-            if (currentArtwork) {
-              navigate(`/artworks/${currentArtwork.artworkId}`);
-            }
-          }}
-        />
+          {currentArtwork && (
+            <ArtworkCard
+              key={`artwork-${currentArtwork?.artworkId}-${isLiked ? "liked" : "unliked"}`}
+              artwork={{
+                artworkId: currentArtwork?.artworkId ?? "loading",
+                title: currentArtwork?.title ?? "작품 불러오는 중...",
+                artworkImageUrl: currentArtwork?.artworkImageUrl ?? placeholderLight300,
+                artist: currentArtwork?.artist ?? "",
+                year: currentArtwork?.year ?? "",
+              }}
+              isLiked={isLiked}
+              size="large"
+              borderRadius="small"
+              theme="light"
+              disabled={isLoading}
+              onClickLike={() =>
+                currentArtwork && toggleLike(currentArtwork.artworkId)
+              }
+              onClick={() => {
+                if (currentArtwork) {
+                  navigate(`/artworks/${currentArtwork.artworkId}`);
+                }
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -118,7 +116,7 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
       <button
         onClick={showNext}
         disabled={artworks.length === 0}
-        className="w-10 h-10 flex items-center justify-center disabled:opacity-30"
+        className="w-10 h-10 flex items-center justify-center disabled:opacity-30 cursor-pointer"
       >
         <IconRightArrow />
       </button>
