@@ -8,8 +8,9 @@ export function mapRecommendedToArtwork(
   return {
     artworkId: item.artworkId,
     artworkImageUrl: item.imgUrl,
-    title: "", // 서버에 없는 값은 일단 빈 문자열 처리
+    title: "", // 서버에 없음
     artist: "",
-    isLiked: item.isLiked ?? false
+    isLiked: item.liked ?? false,
   };
 }
+
