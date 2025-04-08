@@ -34,6 +34,9 @@ export default function useProfile() {
       console.error(errorMsg);
     }
 
+    const userData = { nickname: data?.nickname, s3Url: data?.userImageUrl };
+    sessionStorage.setItem("user", JSON.stringify(userData));
+
     return data;
   }
 
@@ -52,6 +55,7 @@ export default function useProfile() {
           message: "회원 정보를 성공적으로 수정했습니다.",
           type: "success",
         });
+        navigate("/profile");
       }
     },
     onError: () => {
