@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import { ArtworkPreview } from "@/shared/types/artwork";
+import { getLocationLink } from "@/shared/utils/location";
 
 export type ArtworkMetaProps = {
   artwork: ArtworkPreview;
@@ -19,10 +20,15 @@ export function ArtworkMeta({
     navigate(`/artworks/${artworkId}`);
   };
 
+  const handleLocationClick = () => {
+    const url = getLocationLink(location!);
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="space-y-1">
       <h2
-        className="text-md font-semibold truncate cursor-pointer hover:opacity-70"
+        className="font-semibold truncate cursor-pointer text-md hover:opacity-70"
         onClick={handleClick}
       >
         {title}
@@ -33,7 +39,13 @@ export function ArtworkMeta({
       )}
       {showLocation && location && (
         <p className="text-xs font-semibold text-neutral-8">
-          소장처 {location}
+          소장처{" "}
+          <span
+            onClick={handleLocationClick}
+            className="cursor-pointer  hover:opacity-70"
+          >
+            {location}
+          </span>
         </p>
       )}
     </div>
