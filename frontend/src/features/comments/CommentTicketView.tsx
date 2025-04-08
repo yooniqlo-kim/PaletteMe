@@ -30,9 +30,9 @@ export function CommentTicketView({
   const comment = comments[currentIndex];
   const artwork = artworks[comment.artworkId];
   return (
-    <div className="relative w-full flex flex-col items-center">
+    <div className="relative flex flex-col items-center w-full">
       <button
-        className="absolute cursor-pointer left-3 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
+        className="absolute z-10 -translate-y-1/2 cursor-pointer left-3 top-1/2 disabled:opacity-30 disabled:cursor-default"
         onClick={goPrev}
         disabled={currentIndex === 0}
       >
@@ -40,13 +40,14 @@ export function CommentTicketView({
       </button>
 
       <CommentTicket
+        key={comment.commentId}
         comment={comment}
         artwork={artwork}
         onLikeChange={onLikeChange}
       />
 
       <button
-        className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2 z-10 disabled:opacity-30 disabled:cursor-default"
+        className="absolute z-10 -translate-y-1/2 cursor-pointer right-3 top-1/2 disabled:opacity-30 disabled:cursor-default"
         onClick={goNext}
         disabled={currentIndex === total - 1}
       >

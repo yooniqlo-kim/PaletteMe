@@ -15,18 +15,19 @@ export function CommentListView({
   onLikeChange,
 }: CommentListViewProps) {
   return (
-    <div className="flex flex-col gap-4 items-center w-full px-4">
+    <div className="flex flex-col items-center w-full gap-4 px-4">
       {comments.map((comment) => {
         const artwork = artworks[comment.artworkId];
         return (
           <div key={comment.commentId} className="w-full max-w-screen-md">
-          <CommentCard
-            comment={comment}
-            artworkImageUrl={artwork?.artworkImageUrl}
-            variant="list"
-            onLikeChange={onLikeChange}
-          />
-        </div>
+            <CommentCard
+              key={comment.commentId}
+              comment={comment}
+              artworkImageUrl={artwork?.artworkImageUrl}
+              variant="list"
+              onLikeChange={onLikeChange}
+            />
+          </div>
         );
       })}
     </div>
