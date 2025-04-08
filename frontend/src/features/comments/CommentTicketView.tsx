@@ -41,7 +41,7 @@ export function CommentTicketView({
   return (
     <div className="relative flex flex-col items-center w-full">
       <button
-        className="absolute z-10 -translate-y-1/2 cursor-pointer left-3 top-1/2 disabled:opacity-30 disabled:cursor-default"
+        className="absolute z-10 transition-transform duration-200 -translate-y-1/2 cursor-pointer left-3 top-1/2 disabled:opacity-30 disabled:cursor-default hover:scale-110 active:scale-95"
         onClick={goPrev}
         disabled={currentIndex === 0}
       >
@@ -56,7 +56,7 @@ export function CommentTicketView({
       />
 
       <button
-        className="absolute z-10 -translate-y-1/2 cursor-pointer right-3 top-1/2 disabled:opacity-30 disabled:cursor-default"
+        className="absolute z-10 transition-transform duration-200 -translate-y-1/2 cursor-pointer right-3 top-1/2 disabled:opacity-30 disabled:cursor-default hover:scale-110 active:scale-95"
         onClick={goNext}
         disabled={currentIndex === total - 1}
       >
