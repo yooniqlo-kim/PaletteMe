@@ -18,6 +18,7 @@ type UserProfileProps = {
 
 const levelIcons = [level1Img, level2Img, level3Img, level4Img, level5Img];
 const levelInfo = ["쇼킹핑크", "호크니", "모네", "플루이드 핑크", "반타 블랙"];
+const colorClasses = ["#FF385C", "#38CAFF", "#A9169B", "#FF7B84", "#000000"];
 
 function getLevelInfo(level: Level) {
   return levelInfo[level - 1];
@@ -38,9 +39,12 @@ export default function UserProfile({
     <article className="flex justify-between items-center">
       <span className="flex flex-col gap-8">
         <h2 className="text-lg font-bold">{nickname}</h2>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <p className="text-sm font-medium">
-            현재 등급 : <strong>{getLevelInfo(level)}</strong>
+            현재 등급 :{" "}
+            <strong style={{ color: colorClasses[level - 1] }}>
+              {getLevelInfo(level)}
+            </strong>
           </p>
           <img src={getLevelIcon(level)} width={30} height={50} />
         </div>
