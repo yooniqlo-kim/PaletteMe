@@ -12,7 +12,9 @@ public enum ArtworksError {
     ARTWORKLIKECNT_NOT_FOUND("500", "5006", "작품 좋아요 테이블에 해당 ARTWORK를 저장하고 있지 않음."),
     ARTWORK_ALREADY_BOOKMARKED("500", "5007", "이미 북마크에 추가됨(해당 API가 호출되면 안됨)"),
     ARTWORK_NOT_BOOKMARKED("500", "5008", "유저는 북마크 추가를 하지 않음(API가 호출되면 안됨)"),
-    USER_GRADE_NOT_FOUND("500", "5009", "해당 등급을 찾을 수 없음");;
+    USER_GRADE_NOT_FOUND("500", "5009", "해당 등급을 찾을 수 없음"),
+    DAILY_ART_NOT_FOUND("500","5010","데일리 아트 정보 없음");
+
     private final String httpStatusCode;
     private final String errorCode;
     private final String errorMsg;
