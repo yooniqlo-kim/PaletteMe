@@ -98,7 +98,7 @@ export const mapToCommentAndArtworkList = (
       isLiked: true,
       user: {
         nickname: item.nickname ?? "",
-        profileImageUrl: item.userImg ?? "",
+        profileImageUrl: item.userImgUrl ?? "",
       },
       visibility: "public",
     };
