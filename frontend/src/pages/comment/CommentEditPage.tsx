@@ -12,7 +12,6 @@ import { mapToCommentAndArtwork } from "@/shared/utils/mapToBaseComment";
 import { BaseComment } from "@/shared/types/comment";
 import { ArtworkPreview } from "@/shared/types/artwork";
 
-
 export default function CommentEditPage() {
   const { commentId } = useParams<{ commentId: string }>();
   const navigate = useNavigate();
@@ -46,7 +45,7 @@ export default function CommentEditPage() {
   }, [commentId]);
 
   if (!comment || !artwork) {
-    return <ArtworkDetailSkeleton/>;
+    return <ArtworkDetailSkeleton />;
   }
 
   const handleSubmit = async ({
@@ -62,8 +61,8 @@ export default function CommentEditPage() {
       flushSync(() => {
         setIsDirty(false);
       });
-  
-      navigate(`/comments/${commentId}`);
+
+      navigate(`/comments/${commentId}`, { replace: true });
     } catch (err) {
       console.error("수정 실패", err);
       alert("감상문 수정 중 오류가 발생했습니다.");
@@ -71,7 +70,7 @@ export default function CommentEditPage() {
   };
 
   return (
-    <div className="bg-neutral-100 min-h-screen">
+    <div className="min-h-screen bg-neutral-100">
       {state === "blocked" && (
         <Modal
           open
@@ -82,7 +81,7 @@ export default function CommentEditPage() {
         />
       )}
 
-      <div className="bg-neutral-200 pt-2">
+      <div className="pt-2 bg-neutral-200">
         <ArtworkImage artwork={artwork} />
       </div>
 
@@ -90,7 +89,7 @@ export default function CommentEditPage() {
         <WriteForm
           initialValues={comment}
           onDirtyChange={handleDirtyChange}
-          onSubmit={handleSubmit} 
+          onSubmit={handleSubmit}
           artwork={artwork}
         />
       </WhiteContainer>

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import wrapped06 from '@/assets/images/wrapped06.jpg';
 import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
-import { Recommendation } from '@/shared/api/wrapped';
+import { Recommendation } from '@/shared/types/api/wrapped';
 import DownloadButton from '@shared/components/buttons/DownloadButton';
 import { getWrappedMonthString } from "@/shared/utils/date";
 
@@ -68,9 +68,9 @@ export default function WrappedEnd({
                   artworkId: "fake-id",
                   artworkImageUrl: favoriteArtwork.imgUrl,
                   title: favoriteArtwork.title,
-                  isLiked: false,
                   artist: favoriteArtwork.artist,
                 }}
+                isLiked={false}
                 size="small"
                 theme="light"
                 hasBorder
@@ -81,10 +81,10 @@ export default function WrappedEnd({
 
         {/* 하단 카드 */}
         <div
-          className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left shadow-lg z-20"
+          className="flex-grow basis-[55%] bg-white px-6 py-4 flex flex-col justify-between text-left shadow-lg z-20 "
           style={{
-            borderTopLeftRadius: "var(--radius-ps)",
-            borderTopRightRadius: "var(--radius-ps)",
+            // borderTopLeftRadius: "var(--radius-ps)",
+            // borderTopRightRadius: "var(--radius-ps)",
             color: "#333333",
           }}
           onClick={handleClick}

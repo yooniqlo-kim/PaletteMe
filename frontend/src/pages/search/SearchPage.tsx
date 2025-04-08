@@ -9,7 +9,6 @@ import { searchDummy } from "@shared/dummy/seachThumbnailDummy";
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState("");
-  const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
   const [searchResult, setSearchResult] = useState<ArtworkSearchItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +66,12 @@ export default function SearchPage() {
         setError(null);
         setHasMore(true); // 새로운 검색마다 초기화
         const data = await getSearchArtworks(query, 10);
-        setSearchResult(data);
+        setSearchResult(
+          data.map((item) => ({
+            ...item, // 새 객체 생성
+            isLiked: item.isLiked ?? false,
+          }))
+        );
       } catch (err) {
         console.error("검색 실패:", err);
         setError("검색 중 문제가 발생했어요.");
@@ -94,10 +98,15 @@ export default function SearchPage() {
   };
 
   const toggleLike = (id: string) => {
-    setLikedArtworks((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    setSearchResult((prev) =>
+      prev.map((item) =>
+        item.artworkId === id
+          ? { ...item, isLiked: !item.isLiked }
+          : item
+      )
     );
   };
+  
 
   // 추천 검색 결과일 경우 별도 레이아웃
   if (isFromRecommendation && query) {
@@ -128,7 +137,6 @@ export default function SearchPage() {
             data={searchResult}
             onCardClick={handleCardClick}
             onCardLike={toggleLike}
-            likedArtworks={likedArtworks}
             query={query}
             isLoading={isLoading}
             error={error}

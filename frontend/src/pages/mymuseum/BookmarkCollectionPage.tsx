@@ -5,6 +5,8 @@ import { PageIntro } from "@shared/components/collection/PageIntro";
 import ArtworkListSection from "@shared/components/collection/ArtworkListSection";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
+import { BaseUser } from "@shared/types/user";
+
 import {
   fetchBookmarkedArtworks,
   BookmarkArtwork,
@@ -19,7 +21,13 @@ export default function BookmarkCollectionPage() {
   const [firstImageUrl, setFirstImageUrl] = useState("");
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  // 세션에서 유저 가져오기
+  const rawUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const user: BaseUser = {
+    userId: rawUser.id,
+    nickname: rawUser.nickname,
+    profileImageUrl: rawUser.s3Url,
+  };
 
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artworks/${artworkId}`);
@@ -31,7 +39,14 @@ export default function BookmarkCollectionPage() {
       if (res.success) {
         const newData = res.data ?? [];
 
-        setArtworks((prev) => [...prev, ...newData]);
+        setArtworks((prev) => {
+          // 썸네일로 설정
+          if (!prev.length && newData[0]?.imgUrl) {
+            setFirstImageUrl(newData[0].imgUrl);
+          }
+          return [...prev, ...newData];
+        });
+        
         setCursor(newData[newData.length - 1]?.userArtworkBookmarkId ?? null);
 
         // 초기 이미지 설정 시점
@@ -99,8 +114,8 @@ export default function BookmarkCollectionPage() {
                     title,
                     artist,
                     artworkImageUrl: artwork.imgUrl ?? "", 
-                    isLiked: true,
                   }}
+                  isLiked={true}
                   size="small"
                   theme="light"
                   borderRadius="small"

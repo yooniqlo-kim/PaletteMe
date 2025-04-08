@@ -1,39 +1,54 @@
 import Button from "@/shared/components/buttons/Button";
-import Form from "@/shared/components/form/Form";
 import Input from "@/shared/components/form/Input";
-import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
+import useProfile from "./useProfile";
+
+type FormData = {
+  password: string;
+};
 
 export default function ConfirmPasswordPage() {
-  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({ mode: "onChange" });
 
-  function checkPassword(data: unknown) {
-    const extractedData = data as { password: string };
-    console.log(extractedData);
+  const { verifyPassword } = useProfile();
 
-    navigate("/profile/update");
+  function checkPassword(data: FormData) {
+    verifyPassword(data);
   }
 
   return (
-    <div className="px-7">
+    <div className="px-10">
       <h2 className="text-lg font-semibold">회원 정보 수정</h2>
       <div
         className="flex justify-center items-center"
         style={{ minHeight: "calc(100vh - 180px)" }}
       >
-        <Form
-          onSave={checkPassword}
+        <form
+          onSubmit={handleSubmit(checkPassword)}
           className="flex flex-col gap-10 justify-center items-center w-full"
         >
           <h2 className="text-lg font-semibold">회원정보 확인</h2>
           <p className="text-sm font-normal">비밀번호를 입력해주세요</p>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="비밀번호"
-          />
-          <Button size="L">수정하기</Button>
-        </Form>
+          <div className="w-full">
+            <Input
+              {...register("password", {
+                required: "비밀번호는 필수값입니다.",
+              })}
+              id="password"
+              type="password"
+              placeholder="비밀번호"
+              fallback={errors.password?.message}
+            />
+          </div>
+
+          <Button size="L" disabled={isSubmitting}>
+            확인하기
+          </Button>
+        </form>
       </div>
     </div>
   );

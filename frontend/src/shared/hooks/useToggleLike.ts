@@ -30,5 +30,6 @@ export function useToggleLike(initialLiked: string[] = []) {
     likedArtworks,
     toggleLike,
     loadingArtworkId,
+    setLikedArtworks, // 선택 사용
   };
 }

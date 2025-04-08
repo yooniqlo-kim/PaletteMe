@@ -41,7 +41,7 @@ export default function WritePage() {
         content,
         isPublic: visibility === "public",
       });
-  
+
       const mappedComment = mapToBaseCommentFromWriteResponse(
         res,
         artwork.artworkId
@@ -55,9 +55,9 @@ export default function WritePage() {
       setTimeout(() => {
         navigate(`/comments/${mappedComment.commentId}`, {
           state: { comment: mappedComment, artwork },
+          replace: true,
         });
       }, 0);
-
     } catch (err) {
       console.error(err);
       alert("오류가 발생했습니다.");
@@ -65,7 +65,7 @@ export default function WritePage() {
   };
 
   return (
-    <div className="bg-neutral-100 min-h-screen">
+    <div className="min-h-screen bg-neutral-100">
       {state === "blocked" && (
         <Modal
           open
@@ -76,7 +76,7 @@ export default function WritePage() {
         />
       )}
 
-      <div className="bg-neutral-200 pt-2">
+      <div className="pt-2 bg-neutral-200">
         <ArtworkImage artwork={artwork} />
       </div>
 

@@ -74,5 +74,26 @@ export default function useProfile() {
     return data;
   }
 
-  return { getProfile, updateUserInfo };
+  async function verifyPassword(data: { password: string }) {
+    const response = await api.post(`${USER_BASE_URL}/verfiy-password`, {
+      data,
+    });
+
+    const { success, errorMsg } = response.data;
+
+    if (!success) {
+      showToast({
+        message: errorMsg || "비밀번호가 일치하지 않습니다.",
+        type: "error",
+      });
+    } else {
+      showToast({
+        message: "비밀번호가 일치합니다.",
+        type: "success",
+      });
+      navigate("/profile/update");
+    }
+  }
+
+  return { getProfile, updateUserInfo, verifyPassword };
 }

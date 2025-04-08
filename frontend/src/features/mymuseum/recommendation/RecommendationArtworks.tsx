@@ -92,10 +92,12 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
             artworkImageUrl: currentArtwork?.artworkImageUrl ?? placeholderLight300,
             artist: currentArtwork?.artist ?? "",
             year: currentArtwork?.year ?? "",
-            isLiked: currentArtwork
-              ? likedArtworks.includes(currentArtwork.artworkId)
-              : false,
           }}
+          isLiked={
+            currentArtwork
+              ? likedArtworks.includes(currentArtwork.artworkId)
+              : false
+          }
           size="large"
           borderRadius="small"
           theme="light"
