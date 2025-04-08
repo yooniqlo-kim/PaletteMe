@@ -15,8 +15,8 @@ export const mapToArtworkDetail = (
     description: data.description,
 
     likeCount: data.like ?? 0,
-    isLiked: data.isLiked,
-    isBookmarked: data.isBookMarked,
+    isLiked: data.isLiked ?? false,
+    isBookmarked: data.isBookMarked ?? false,
     hasWrittenComment: data.myReviewId != null ? String(data.myReviewId) : null,
   };
 };
