@@ -45,10 +45,10 @@ export function CommentCard({
   };
 
   const wrapperClassNames = `
-    relative max-w-[23.75rem] rounded-pm overflow-hidden
-    shadow-comment transition-all
-    ${!isDetailMode ? "cursor-pointer" : ""}
-  `;
+  relative max-w-[23.75rem] rounded-pm overflow-hidden
+  shadow-md transition-all duration-300 ease-in-out
+  ${!isDetailMode ? "hover:-translate-y-1 hover:shadow-xl cursor-pointer" : ""}
+`;
 
   const wrapperStyle = getBackgroundStyle(isDetailMode, artworkImageUrl);
 
