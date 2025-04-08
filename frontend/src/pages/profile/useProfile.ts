@@ -61,9 +61,9 @@ export default function useProfile() {
     },
   });
 
-  async function verifyPassword(data: { password: string }) {
-    const response = await api.post(`${USER_BASE_URL}/verfiy-password`, {
-      data,
+  async function verifyPassword(password: string) {
+    const response = await api.post(`${USER_BASE_URL}/verify-password`, {
+      password,
     });
 
     const { success, errorMsg } = response.data;
