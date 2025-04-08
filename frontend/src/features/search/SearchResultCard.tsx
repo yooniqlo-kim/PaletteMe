@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
-import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton"; // ✅ 추가
+import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton";
 import type { BaseArtwork } from "@/shared/types/artwork";
 import type { ArtworkSearchItem } from "@shared/api/search";
 
 interface Props {
-  artwork: ArtworkSearchItem;
-  onClick: () => void;
-  onClickLike?: () => void;
+  artwork: ArtworkSearchItem & { isLiked?: boolean };
+  onClick: () => void;                              
+  onClickLike?: () => void;                        
   disabled?: boolean;
 }
 
@@ -49,4 +49,3 @@ export default function SearchResultCard({
     <ArtworkCardSkeleton size="small" />
   );
 }
-
