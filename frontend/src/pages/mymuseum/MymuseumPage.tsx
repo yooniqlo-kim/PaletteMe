@@ -74,9 +74,9 @@ export default function MymuseumPage() {
   };
 
   return (
-    <div className="px-4 pb-[3.75rem]">
+    <div className="px-4 pb-[3rem]">
       <div className="max-w-[26.25rem] mx-auto w-full">
-        <div className="py-6 mb-6">
+        <div className="py-4 mb-6">
           <WeeklyCalendar
             data={calendarData}
             isLoading={isLoading}
@@ -84,7 +84,7 @@ export default function MymuseumPage() {
           />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 py-1">
           <div className="text-[20px] leading-[1.5] font-semibold mb-2 text-black">
             추천 작품
           </div>
@@ -95,17 +95,17 @@ export default function MymuseumPage() {
           <RecommendationContainer />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 py-2">
           <div className="text-[20px] leading-[1.5] font-semibold mb-3">Wrapped</div>
           <WrappedSummaryCard onClick={handleWrappedClick} />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 py-2">
           <div className="text-[20px] leading-[1.5] font-semibold mb-3">나의 컬렉션</div>
           <MyCollectionContainer images={myCollectionImages} />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 py-2">
           <div className="text-[20px] leading-[1.5] font-semibold mb-3">감상문</div>
           <MyCommentsContainer images={myCommentsImages} />
         </div>
