@@ -35,6 +35,10 @@ export default function RegisterInfoPage() {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
+  const [idCheckLoading, setIdCheckLoading] = useState(false);
+  const [sendCodeLoading, setSendCodeLoading] = useState(false);
+  const [verifyCodeLoading, setVerifyCodeLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -51,6 +55,7 @@ export default function RegisterInfoPage() {
     const isValid = await trigger("id");
     if (!isValid) return;
 
+    setIdCheckLoading(true);
     try {
       const response = await checkId({ id: watchId });
       const { success, errorMsg } = response.data;
@@ -61,6 +66,8 @@ export default function RegisterInfoPage() {
         message: "아이디 중복 체크 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
+    } finally {
+      setIdCheckLoading(false);
     }
   }
 
@@ -68,6 +75,7 @@ export default function RegisterInfoPage() {
     const isValid = await trigger("phoneNumber");
     if (!isValid) return;
 
+    setSendCodeLoading(true);
     try {
       const response = await sendVerificationCode({
         phoneNumber: watchPhoneNumber.toString(),
@@ -79,6 +87,8 @@ export default function RegisterInfoPage() {
         message: "인증번호 전송 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
+    } finally {
+      setSendCodeLoading(false);
     }
   }
 
@@ -86,6 +96,7 @@ export default function RegisterInfoPage() {
     const isValid = await trigger("verificationCode");
     if (!isValid) return;
 
+    setVerifyCodeLoading(true);
     try {
       const response = await verifyCode({
         phoneNumber: watchPhoneNumber.toString(),
@@ -99,6 +110,8 @@ export default function RegisterInfoPage() {
         message: "인증번호 인증 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
+    } finally {
+      setVerifyCodeLoading(false);
     }
   }
 
@@ -135,8 +148,12 @@ export default function RegisterInfoPage() {
                 />
                 {idMsg && <p className="text-primary">{idMsg}</p>}
               </div>
-              <Button size="XS" type="button" onClick={handleIdCheck}>
-                중복 확인
+              <Button
+                size="XS"
+                type="button"
+                onClick={handleIdCheck}
+                disabled={idCheckLoading}>
+                {idCheckLoading ? "확인 중..." : "중복 확인"}
               </Button>
             </span>
           </InputContainer>
@@ -211,8 +228,12 @@ export default function RegisterInfoPage() {
                 />
                 {phoneMsg && <p className="text-primary">{phoneMsg}</p>}
               </div>
-              <Button size="XS" type="button" onClick={handleSendCode}>
-                번호 전송
+              <Button
+                size="XS"
+                type="button"
+                onClick={handleSendCode}
+                disabled={sendCodeLoading}>
+                {sendCodeLoading ? "전송 중..." : "번호 전송"}
               </Button>
             </span>
           </InputContainer>
@@ -232,8 +253,12 @@ export default function RegisterInfoPage() {
                 />
                 {codeMsg && <p className="text-primary">{codeMsg}</p>}
               </div>
-              <Button size="XS" type="button" onClick={handleCheckCode}>
-                확인
+              <Button
+                size="XS"
+                type="button"
+                onClick={handleCheckCode}
+                disabled={verifyCodeLoading}>
+                {verifyCodeLoading ? "확인 중..." : "확인"}
               </Button>
             </span>
           </InputContainer>
