@@ -37,6 +37,12 @@ export default function ProfilePage() {
         로딩 중입니다....
       </p>
     );
+  } else if (!data) {
+    content = (
+      <p className="text-primary flex justify-center items-center">
+        회원 정보를 불러오는 중입니다....
+      </p>
+    );
   } else if (isError) {
     content = (
       <p className="text-primary flex justify-center items-center">
