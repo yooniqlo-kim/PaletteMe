@@ -66,7 +66,8 @@ export function CommentTicket({
 
   return (
     <div
-      className="w-full max-w-[17rem] h-[35rem] rounded-pm bg-white overflow-hidden flex flex-col cursor-pointer shadow-ticket"
+      className="w-full max-w-[17rem] h-[35rem] rounded-pm bg-white overflow-hidden flex flex-col cursor-pointer
+             shadow-md transition-all duration-300 ease-in-out hover:-translate-y-1 hover:shadow-xl"
       onClick={handleClick}
     >
       <div className="relative">
