@@ -1,4 +1,26 @@
 import { api } from "./core";
+import axios from "axios";
+import { BASE_URL } from "./baseUrl";
+
+// 오늘의 작품(로그인)
+export const getTodayArtworkIn = async () => {
+  const res = await api.get("/artworks/dailyart");
+  const { success, data, errorMsg } = res.data;
+  if (!success || !data) {
+    throw new Error(errorMsg ?? "오늘의 작품 불러오기 실패");
+  }
+  return data;
+};
+
+// 오늘의 작품(비로그인)
+export const getTodayArtworkOut = async () => {
+  const res = await axios.get(`${BASE_URL}/artworks/dailyart`);
+  const { success, data, errorMsg } = res.data;
+  if (!success || !data) {
+    throw new Error(errorMsg ?? "오늘의 작품 불러오기 실패");
+  }
+  return data;
+};
 
 // 작품 상세
 export const getArtworkDetail = async (artworkId: string) => {
@@ -19,7 +41,6 @@ export const getAIDescription = async (artworkId: string): Promise<string> => {
   }
   return data.description;
 };
-
 
 //작품 좋아요
 export const likeArtwork = async (artworkId: string) => {

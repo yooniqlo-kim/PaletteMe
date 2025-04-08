@@ -12,8 +12,17 @@ export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
   const [aiText, setAiText] = useState<string | null>(null);
   const [error, setError] = useState(false);
 
+  const isLoggedIn = Boolean(sessionStorage.getItem("user"));
+  const isInitial = !aiText;
+
   const handleClick = async () => {
-    if (loading || aiText) return; // 중복 방지
+    if (loading || aiText) return;
+
+    if (!isLoggedIn) {
+      setAiText("로그인 후에 물감이의 설명을 들어보세요");
+      return;
+    }
+
     setLoading(true);
     setError(false);
 
@@ -28,7 +37,6 @@ export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
       setLoading(false);
     }
   };
-  const isInitial = !aiText;
 
   const balloonBase = `
     px-4 py-3 rounded-ps
@@ -46,12 +54,9 @@ export function AIDocentBox({ onFetchExplanation }: AIDocentBoxProps) {
 
   return (
     <div className="space-y-4">
-      <p className="text-md font-semibold text-neutral-700">AI 도슨트</p>
-      <div className="flex justify-center pb-4 relative">
-        <div
-          className={`${balloonBase} ${balloonColor}`}
-          onClick={handleClick}
-        >
+      <p className="font-semibold text-md text-neutral-700">AI 도슨트</p>
+      <div className="relative flex justify-center pb-4">
+        <div className={`${balloonBase} ${balloonColor}`} onClick={handleClick}>
           {aiText ?? "물감이의 설명 듣기"}
           <img
             src={mainLogo}
