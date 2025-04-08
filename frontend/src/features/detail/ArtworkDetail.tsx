@@ -28,6 +28,8 @@ type Props = {
 };
 
 export function ArtworkDetail({ artwork }: Props) {
+  const isLoggedIn = Boolean(sessionStorage.getItem("user"));
+
   const navigate = useNavigate();
 
   // 작품 상태
@@ -148,29 +150,36 @@ export function ArtworkDetail({ artwork }: Props) {
   };
 
   return (
-    <div className="bg-neutral-100 min-h-screen">
-      <div className="relative mx-auto max-w-[412px]">
-        <FloatingButton
-          hasWrittenComment={artwork.hasWrittenComment}
-          onClick={handleFloatingClick}
-        />
-      </div>
+    <div className="min-h-screen bg-neutral-100">
+      {isLoggedIn && (
+        <div className="relative mx-auto max-w-[412px]">
+          <FloatingButton
+            hasWrittenComment={artwork.hasWrittenComment}
+            onClick={handleFloatingClick}
+          />
+        </div>
+      )}
 
-      <div className="bg-neutral-200 pt-2">
+      <div className="pt-2 bg-neutral-200">
         <ArtworkImage artwork={artwork} />
       </div>
       <div className="flex flex-col gap-2">
         <WhiteContainer withTopRound withMarginTop>
           <div className="relative">
-            <div className="absolute -top-9 right-1 flex gap-2 z-10">
-              <IconButton identifier="heart" onClick={handleToggleLike}>
-                <span className="inline-flex items-center">{likeCount}</span>
-                <IconBlackHeart isClicked={isLiked} />
-              </IconButton>
-              <IconButton identifier="bookmark" onClick={handleToggleBookmark}>
-                <IconBookmark isClicked={isBookmarked} />
-              </IconButton>
-            </div>
+            {isLoggedIn && (
+              <div className="absolute z-10 flex gap-2 -top-9 right-1">
+                <IconButton identifier="heart" onClick={handleToggleLike}>
+                  <span className="inline-flex items-center">{likeCount}</span>
+                  <IconBlackHeart isClicked={isLiked} />
+                </IconButton>
+                <IconButton
+                  identifier="bookmark"
+                  onClick={handleToggleBookmark}
+                >
+                  <IconBookmark isClicked={isBookmarked} />
+                </IconButton>
+              </div>
+            )}
             <ArtworkMeta artwork={artwork} showYear showLocation />
             <DescriptionBox description={artwork.description} />
           </div>
@@ -181,14 +190,21 @@ export function ArtworkDetail({ artwork }: Props) {
           />
         </WhiteContainer>
         <WhiteContainer>
-          <CommentBox
-            comments={comments}
-            onLikeChange={handleLikeChange}
-            observerRef={observerRef}
-            isLoading={loadingComments}
-          />
-          {loadingComments && (
-            <p className="text-center text-sm text-neutral-400 py-2">
+          {isLoggedIn ? (
+            <CommentBox
+              comments={comments}
+              onLikeChange={handleLikeChange}
+              observerRef={observerRef}
+              isLoading={loadingComments}
+            />
+          ) : (
+            <p className="py-8 text-sm font-semibold text-center text-neutral-500">
+              로그인 후 다른 이용자의 감상문을 확인해 보세요
+            </p>
+          )}
+
+          {isLoggedIn && loadingComments && (
+            <p className="py-2 text-sm text-center text-neutral-400">
               불러오는 중...
             </p>
           )}
