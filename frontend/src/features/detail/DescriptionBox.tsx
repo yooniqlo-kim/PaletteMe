@@ -11,8 +11,10 @@ export function DescriptionBox({
 
   return (
     <div className="mt-3">
-      {!hideLine && <hr className="border-t border-neutral-300 mb-3" />}
-      <p className="text-sm leading-relaxed text-left">{description}</p>
+      {!hideLine && <hr className="mb-3 border-t border-neutral-300" />}
+      <p className="text-sm leading-relaxed whitespace-pre-line">
+        {description}
+      </p>
     </div>
   );
 }
