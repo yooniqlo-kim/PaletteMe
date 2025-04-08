@@ -21,7 +21,7 @@ export default function UserMeta({ review, like, loggedIn }: UserMetaProps) {
       </span>
       <span
         className="flex flex-col gap-5 justify-center items-center"
-        onClick={() => navigate("/comments/liked")}>
+        onClick={() => navigate("/mymuseum/liked")}>
         <p>좋아요</p>
         <p>{like}</p>
       </span>
