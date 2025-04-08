@@ -44,11 +44,11 @@ export default function MonthlyCalendar({
       {/* 상단 네비게이션 */}
       <div className="flex justify-between items-center py-4">
         <button onClick={handlePrevMonth} className="text-xl px-2">
-          <IconLeftArrow className="w-5 h-5" />
+          <IconLeftArrow className="w-5 h-5 cursor-pointer" />
         </button>
         <h2 className="text-md font-bold">{formattedMonth}</h2>
         <button onClick={handleNextMonth} className="text-xl px-2">
-          <IconRightArrow className="w-5 h-5" />
+          <IconRightArrow className="w-5 h-5 cursor-pointer" />
         </button>
       </div>
 
