@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
+import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton"; // ✅ 추가
 import type { BaseArtwork } from "@/shared/types/artwork";
 import type { ArtworkSearchItem } from "@shared/api/search";
 
@@ -15,6 +17,15 @@ export default function SearchResultCard({
   onClickLike,
   disabled = false,
 }: Props) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setImageLoaded(false);
+    const img = new Image();
+    img.src = artwork.imageUrl ?? "";
+    img.onload = () => setImageLoaded(true);
+  }, [artwork.imageUrl]);
+
   const fakeArtwork: BaseArtwork & { isLiked?: boolean } = {
     artworkId: artwork.artworkId,
     artworkImageUrl: artwork.imageUrl ?? "",
@@ -23,7 +34,7 @@ export default function SearchResultCard({
     isLiked: artwork.isLiked,
   };
 
-  return (
+  return imageLoaded ? (
     <ArtworkCard
       artwork={fakeArtwork}
       isLiked={artwork.isLiked}
@@ -35,5 +46,7 @@ export default function SearchResultCard({
       clickAction="navigate"
       disabled={disabled}
     />
+  ) : (
+    <ArtworkCardSkeleton size="small" />
   );
 }
