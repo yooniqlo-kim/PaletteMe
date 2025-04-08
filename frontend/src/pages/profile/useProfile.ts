@@ -27,10 +27,11 @@ export default function useProfile() {
     const { success, errorMsg, data } = response.data;
 
     if (!success) {
-      showToast({
-        message: errorMsg || "회원 정보 등급 조회를 실패했습니다",
-        type: "error",
-      });
+      // showToast({
+      //   message: errorMsg || "회원 정보 등급 조회를 실패했습니다",
+      //   type: "error",
+      // });
+      console.error(errorMsg);
     }
 
     return data;
