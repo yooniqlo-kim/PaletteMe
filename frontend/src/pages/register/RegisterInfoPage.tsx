@@ -62,7 +62,7 @@ export default function RegisterInfoPage() {
       const { success, errorMsg } = response.data;
       setIsValidId(success ? true : false);
       setIdMsg(success ? "유효한 아이디입니다." : errorMsg);
-    } catch (error) {
+    } catch {
       showToast({
         message: "아이디 중복 체크 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
@@ -83,7 +83,7 @@ export default function RegisterInfoPage() {
       });
       const { success, errorMsg } = response.data;
       setPhoneMsg(success ? "인증번호가 전송되었습니다." : errorMsg);
-    } catch (error) {
+    } catch {
       showToast({
         message: "인증번호 전송 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
@@ -106,7 +106,7 @@ export default function RegisterInfoPage() {
       const { success, errorMsg } = response.data;
       SetIsValidPhoneNumber(success ? true : false);
       setCodeMsg(success ? "인증번호가 일치합니다." : errorMsg);
-    } catch (error) {
+    } catch {
       showToast({
         message: "인증번호 인증 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
@@ -273,7 +273,7 @@ export default function RegisterInfoPage() {
         </Button>
       </form>
       <div className="flex flex-col gap-1 items-center mt-4 text-neutral-6">
-        <p>이미 계정이 있으신가요?</p>
+        <p className="py-2">이미 계정이 있으신가요?</p>
         <Link to="/login">로그인하기</Link>
       </div>
     </FormWrapper>

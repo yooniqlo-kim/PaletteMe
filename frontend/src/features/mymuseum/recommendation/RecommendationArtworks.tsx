@@ -98,7 +98,7 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
             <ArtworkCardSkeleton size="large" />
           ) : currentArtwork ? (
             <ArtworkCard
-              key={`artwork-${currentArtwork?.artworkId}-${isLiked ? "liked" : "unliked"}`}
+              key={`artwork-${currentArtwork?.artworkId}`}
               artwork={{
                 artworkId: currentArtwork?.artworkId ?? "loading",
                 title: currentArtwork?.title ?? "작품 불러오는 중...",
