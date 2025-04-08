@@ -14,6 +14,7 @@ import {
 } from "@/shared/api/register";
 import { useState } from "react";
 import useToast from "@/shared/hooks/useToast";
+import { passwordValidation } from "@/shared/utils/verifyPassword";
 
 type FormValues = {
   id: string;
@@ -163,7 +164,7 @@ export default function RegisterInfoPage() {
             <Input
               {...register("password", {
                 required: "비밀번호는 필수값입니다.",
-                minLength: { value: 8, message: "8자 이상 입력해주세요." },
+                validate: passwordValidation,
               })}
               id="password"
               type="password"
