@@ -1,5 +1,7 @@
 package com.ssafy.paletteme.domain.users.utils;
 
+import com.ssafy.paletteme.domain.users.exception.UserError;
+import com.ssafy.paletteme.domain.users.exception.UserException;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,7 +36,7 @@ public class AESUtil {
             byte[] encrypted = cipher.doFinal(plainText.getBytes());
             return Base64.getEncoder().encodeToString(encrypted);
         } catch (Exception ex) {
-            throw new RuntimeException("Encryption error", ex);
+            throw new UserException(UserError.ENCRYPTION_ERROR);
         }
     }
 
@@ -45,7 +47,7 @@ public class AESUtil {
             byte[] original = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
             return new String(original);
         } catch (Exception ex) {
-            throw new RuntimeException("Decryption error", ex);
+            throw new UserException(UserError.DECRYPTION_ERROR);
         }
     }
 }
