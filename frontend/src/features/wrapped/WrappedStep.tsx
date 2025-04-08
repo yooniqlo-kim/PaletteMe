@@ -10,6 +10,8 @@ import { getWrappedMonthString } from '@/shared/utils/date';
 import html2canvas from 'html2canvas';
 import DownloadButton from '@/shared/components/buttons/DownloadButton';
 import { Recommendation } from '@/shared/types/api/wrapped';
+import MainLogo from '@/assets/logos/MainLogo_142x24.svg';
+
 
 interface Props {
   currentStep: number;
@@ -93,7 +95,7 @@ export default function WrappedStep({
         {currentStep === 0 && (
           <>
             <img
-              src="/src/assets/logos/MainLogo_142x24.svg"
+              src={MainLogo}
               alt="PaletteMe 로고"
               className="mb-4 h-[32px] mx-auto"
             />
