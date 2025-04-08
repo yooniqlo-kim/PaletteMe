@@ -9,6 +9,7 @@ import level2 from "@/assets/levels/level_2.svg";
 import level3 from "@/assets/levels/level_3.svg";
 import level4 from "@/assets/levels/level_4.svg";
 import level5 from "@/assets/levels/level_5.svg";
+
 import { Level } from "./type";
 import { useQuery } from "@tanstack/react-query";
 import useProfile from "./useProfile";
@@ -52,7 +53,11 @@ export default function ProfilePage() {
   } else {
     content = (
       <>
-        <UserProfile nickname={data!.nickname} image={data!.userImageUrl} />
+        <UserProfile
+          nickname={data!.nickname}
+          image={data!.userImageUrl}
+          level={Number(data!.grade) as Level}
+        />
         <UserMeta
           review={data!.reviewCount}
           like={data!.artworkLikeCount}
