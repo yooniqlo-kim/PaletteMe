@@ -208,6 +208,7 @@ export function ArtworkDetail({ artwork }: Props) {
               불러오는 중...
             </p>
           )}
+          <div className="h-6" />
         </WhiteContainer>
       </div>
     </div>
