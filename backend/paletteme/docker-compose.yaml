@@ -12,6 +12,8 @@ services:
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 9200:9200
       - 9300:9300
@@ -32,6 +34,8 @@ services:
       - ELASTICSEARCH_PASSWORD=${ELASTIC_KIBANA_PASSWORD}
       - SERVER_BASEPATH=/kibana
       - SERVER_REWRITEBASEPATH=true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 5601:5601
     depends_on:
@@ -49,6 +53,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/mysql-connector-j-8.3.0.jar:/usr/share/logstash/mysql-connector-j-8.3.0.jar
@@ -73,10 +78,13 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
       - /home/ubuntu/export:/data
+      - /etc/localtime:/etc/localtime:ro
 
   redis:
     image: redis:latest
     container_name: redis
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 6379:6379
     networks:
@@ -87,6 +95,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: backend
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
      - 8080:8080
     env_file: .env
@@ -110,6 +120,8 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - /etc/letsencrypt:/etc/letsencrypt:ro  # EC2의 인증서 폴더 공유
       - ../../frontend/dist:/usr/share/nginx/html:ro  # Vite 결과물
+#      - frontend-build:/usr/share/nginx/html:ro  # Vite 결과물
+      - /etc/localtime:/etc/localtime:ro
     depends_on:
       - kibana
       - es
@@ -122,10 +134,11 @@ services:
 #      context: ../../frontend
 #      dockerfile: Dockerfile
 #    container_name: frontend
-#    ports:
-#      - 80:80
 #    networks:
 #      - es-bridge
+#    volumes:
+#      - frontend-build:/app/dist
+#      - /etc/localtime:/etc/localtime:ro
 
 networks:
   es-bridge:
@@ -133,3 +146,4 @@ networks:
 
 volumes:
   mysql-data:
+#  frontend-build:
