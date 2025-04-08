@@ -37,6 +37,8 @@ export default function RegisterImagePage() {
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
   usePrefetchRecommendArtworks();
 
+  const [nnCheckLoading, setNnCheckLoading] = useState(false);
+
   const image = watch("image");
   const watchNickname = watch("nickname");
   const { showToast } = useToast();
@@ -59,6 +61,7 @@ export default function RegisterImagePage() {
 
     if (!isValid) return;
 
+    setNnCheckLoading(true);
     try {
       const response = await checkNickname({ nickname: watchNickname });
       const { success, errorMsg } = response.data;
@@ -69,6 +72,8 @@ export default function RegisterImagePage() {
         message: "닉네임 중복 체크 중 오류가 발생했습니다.",
         type: "error",
       });
+    } finally {
+      setNnCheckLoading(false);
     }
   }
 
@@ -128,8 +133,12 @@ export default function RegisterImagePage() {
               />
               {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
             </div>
-            <Button size="XS" onClick={handleCheckNickname} type="button">
-              중복 확인
+            <Button
+              size="XS"
+              onClick={handleCheckNickname}
+              type="button"
+              disabled={nnCheckLoading}>
+              {nnCheckLoading ? "확인 중..." : "중복 확인"}
             </Button>
           </span>
         </InputContainer>
