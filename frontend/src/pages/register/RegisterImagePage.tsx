@@ -3,7 +3,7 @@ import Input from "@/shared/components/form/Input";
 import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 import defaultImg from "@/assets/images/MainLogo.png";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import RoundedButton from "@/shared/components/buttons/RoundedButton";
 import IconCamera from "@/shared/components/icons/IconCamera";
 import UserImage from "@/shared/components/user/UserImage";
@@ -38,6 +38,17 @@ export default function RegisterImagePage() {
   usePrefetchRecommendArtworks();
 
   const [nnCheckLoading, setNnCheckLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const imageRegister = register("image", {
+    onChange: (e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const objectUrl = URL.createObjectURL(file);
+        setImagePreview(objectUrl);
+      }
+    },
+  });
 
   const image = watch("image");
   const watchNickname = watch("nickname");
@@ -54,6 +65,7 @@ export default function RegisterImagePage() {
 
   function handleButtonClick(event: FormEvent) {
     event.preventDefault();
+    fileInputRef.current?.click();
   }
 
   async function handleCheckNickname() {
@@ -103,12 +115,16 @@ export default function RegisterImagePage() {
             </span>
           </span>
         </Label>
-        <Input
-          {...register("image")}
+        <input
           id="image"
           type="file"
           accept="image/*"
           className="hidden"
+          {...imageRegister}
+          ref={(e) => {
+            imageRegister.ref(e);
+            fileInputRef.current = e;
+          }}
         />
         <InputContainer>
           <Label htmlFor="nickname">닉네임</Label>
