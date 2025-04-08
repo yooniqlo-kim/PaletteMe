@@ -19,6 +19,17 @@ export function CommentTicketView({
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = comments.length;
 
+  if (total === 0) {
+    return (
+      <div className="flex items-center justify-center w-full h-[20rem] text-sm text-gray-500">
+        아직 감상문이 없습니다.
+      </div>
+    );
+  }
+
+  const comment = comments[currentIndex];
+  const artwork = artworks[comment.artworkId];
+
   const goPrev = () => {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev));
   };
@@ -27,8 +38,6 @@ export function CommentTicketView({
     setCurrentIndex((prev) => (prev < total - 1 ? prev + 1 : prev));
   };
 
-  const comment = comments[currentIndex];
-  const artwork = artworks[comment.artworkId];
   return (
     <div className="relative flex flex-col items-center w-full">
       <button
