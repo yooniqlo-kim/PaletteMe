@@ -65,4 +65,12 @@ public class ArtworksController {
         artworkService.cancelBookmarkArtwork(userId, artworkId);
         return ApiResponse.success();
     }
+
+    @GetMapping("/dailyart")
+    @Operation(summary = "데일리아트", description = "데일리아트 조회")
+    public ApiResponse<ArtworkDetailResponse> getDailyArt(@Parameter(hidden = true) @UserId(optional = true) Integer userId) {
+        ArtworkDetailResponse response = artworkService.getDailyArt(userId);
+        return ApiResponse.success(response);
+    }
+
 }

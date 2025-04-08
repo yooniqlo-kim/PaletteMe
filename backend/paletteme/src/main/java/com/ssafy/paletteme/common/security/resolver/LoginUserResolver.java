@@ -22,10 +22,17 @@ public class LoginUserResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-        Object userId = request.getAttribute("userId");  // 필터에서 저장한 값 가져옴
+        Object userId = request.getAttribute("userId");
+
+        UserId annotation = parameter.getParameterAnnotation(UserId.class);
+        boolean optional = annotation.optional();
 
         if (userId == null) {
-            throw new IllegalArgumentException("userId를 찾을 수 없습니다.");
+            if (optional) {
+                return null; // 비로그인 허용
+            } else {
+                throw new IllegalArgumentException("로그인한 사용자만 접근할 수 있습니다.");
+            }
         }
 
         return Integer.parseInt(userId.toString());  // int 타입으로 변환해서 반환

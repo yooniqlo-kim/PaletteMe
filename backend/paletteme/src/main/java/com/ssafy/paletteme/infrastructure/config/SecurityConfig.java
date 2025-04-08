@@ -65,7 +65,7 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/users/sign-up", "/users/login", "users/phone/send", "/users/phone/send", "/users/phone/verify", "/users/check-id","/users/check-nickname","/users/recommend-artworks").permitAll()
 //                                .requestMatchers("/artworks/**").permitAll()
-                                .requestMatchers("/search/artworks").permitAll()
+                                .requestMatchers("/search/artworks","artworks/dailyart").permitAll()
                                 .anyRequest().authenticated());
 
         http.exceptionHandling( ex -> ex
