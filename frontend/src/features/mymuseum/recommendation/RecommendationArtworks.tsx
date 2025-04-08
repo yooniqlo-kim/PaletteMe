@@ -86,7 +86,7 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
       <button
         onClick={showPrev}
         disabled={artworks.length === 0}
-        className="w-10 h-10 flex items-center justify-center disabled:opacity-30 cursor-pointer"
+        className="w-10 h-10 flex items-center justify-center transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer disabled:opacity-30 disabled:cursor-default"
       >
         <IconLeftArrow />
       </button>
@@ -128,7 +128,7 @@ export default function RecommendationArtworks({ artworks, isLoading }: Props) {
       <button
         onClick={showNext}
         disabled={artworks.length === 0}
-        className="w-10 h-10 flex items-center justify-center disabled:opacity-30 cursor-pointer"
+        className="w-10 h-10 flex items-center justify-center transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer disabled:opacity-30 disabled:cursor-default"
       >
         <IconRightArrow />
       </button>
