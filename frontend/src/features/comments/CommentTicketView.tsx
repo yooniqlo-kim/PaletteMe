@@ -1,5 +1,5 @@
 import { CommentTicket } from "./CommentTicket";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BaseComment } from "@/shared/types/comment";
 import { BaseArtwork } from "@/shared/types/artwork";
 import IconLeftArrow from "@/shared/components/icons/IconLeftArrow";
@@ -9,15 +9,24 @@ type CommentTicketViewProps = {
   comments: BaseComment[];
   artworks: Record<string, BaseArtwork>;
   onLikeChange?: (commentId: string, isLiked: boolean) => void;
+  onLoadMore?: () => void;
 };
 
 export function CommentTicketView({
   comments,
   artworks,
   onLikeChange,
+  onLoadMore,
 }: CommentTicketViewProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const total = comments.length;
+
+  // 인덱스가 변경될 때 마지막 아이템에 가까워지면 추가 데이터 로드
+  useEffect(() => {
+    if (currentIndex >= total - 2 && onLoadMore) {
+      onLoadMore();
+    }
+  }, [currentIndex, total, onLoadMore]);
 
   if (total === 0) {
     return (
