@@ -10,6 +10,7 @@ type UpdatedUserType = {
 
 export async function updateUserInfoAPI(enteredData: UpdatedUserType) {
   const formData = new FormData();
+  console.log(enteredData);
   formData.append(
     "data",
     new Blob([JSON.stringify({ nickname: enteredData.nickname })], {
@@ -18,6 +19,7 @@ export async function updateUserInfoAPI(enteredData: UpdatedUserType) {
   );
 
   if (enteredData.image && enteredData.image.length > 0) {
+    console.log("!11111");
     formData.append("file", enteredData.image[0]);
   }
 

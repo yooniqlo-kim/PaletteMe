@@ -11,9 +11,16 @@ type CommentListViewProps = {
 export function CommentListView({
   comments,
   artworks,
-
   onLikeChange,
 }: CommentListViewProps) {
+  if (comments.length === 0) {
+    return (
+      <div className="flex items-center justify-center w-full h-[20rem] text-sm text-gray-500">
+        아직 감상문이 없습니다.
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center w-full gap-4 px-4">
       {comments.map((comment) => {
