@@ -25,6 +25,7 @@ export default function SearchRecommendationList({ data }: Props) {
             key={artwork.artworkId}
             imageUrl={artwork.imageUrl ?? ""}
             overlayText={title}
+            isLiked={artwork.isLiked}
             onClick={() => handleCardClick(title)}
           />
         );

@@ -2,28 +2,25 @@ import {
   WrappedData,
   RawWrappedApiResponse,
   Recommendation,
-} from '@shared/api/wrapped';
+} from '@shared/types/api/wrapped';
 
-interface ExtendedRawWrappedApiResponse extends RawWrappedApiResponse {
+interface ExtendedRawWrappedApiResponse extends Partial<RawWrappedApiResponse> {
   recommendedArtwork2?: string;
   recommendedArtist2?: string;
   recommendedImg2?: string;
+
+  favoriteName?: string;
+  favoriteArtist?: string;
+  favoriteImg?: string;
+
+  reviewRank?: number;
+  reviewPercentage?: number;
+  reviewCnt?: number;
 }
+
 
 export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedData {
   const recommendations: Recommendation[] = [];
-
-  if (
-    apiData.recommendedArtwork &&
-    apiData.recommendedArtist &&
-    apiData.recommendedImg
-  ) {
-    recommendations.push({
-      title: apiData.recommendedArtwork,
-      artist: apiData.recommendedArtist,
-      imgUrl: apiData.recommendedImg,
-    });
-  }
 
   if (
     apiData.recommendedArtwork2 &&
@@ -39,19 +36,19 @@ export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedD
 
   return {
     favoriteArtwork: {
-      title: apiData.favoriteName,
-      artist: apiData.favoriteArtist,
-      imgUrl: apiData.favoriteImg,
+      title: apiData.favoriteName ?? '',
+      artist: apiData.favoriteArtist ?? '',
+      imgUrl: apiData.favoriteImg ?? '',
     },
     reviewRank: {
-      myRank: apiData.reviewRank,
-      topPercentage: apiData.reviewPercentage,
-      reviewCount: apiData.reviewCnt,
+      myRank: apiData.reviewRank ?? 0,
+      topPercentage: apiData.reviewPercentage ?? 0,
+      reviewCount: apiData.reviewCnt ?? 0,
     },
     mostMemorableArtwork: {
-      title: apiData.favoriteName,
-      artist: apiData.favoriteArtist,
-      imgUrl: apiData.favoriteImg,
+      title: apiData.favoriteName ?? '',
+      artist: apiData.favoriteArtist ?? '',
+      imgUrl: apiData.favoriteImg ?? '',
     },
     review_based_recommendations: recommendations,
   };

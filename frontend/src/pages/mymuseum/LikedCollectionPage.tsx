@@ -6,6 +6,7 @@ import ArtworkListSection from "@shared/components/collection/ArtworkListSection
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
 import { fetchLikedArtworks, LikedArtwork } from "@/shared/api/collection";
+import { BaseUser } from "@/shared/types/user";
 
 export default function LikedCollectionPage() {
   const navigate = useNavigate();
@@ -16,7 +17,13 @@ export default function LikedCollectionPage() {
   const [firstImageUrl, setFirstImageUrl] = useState("");
   const observerRef = useRef<HTMLDivElement | null>(null);
 
-  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+  // 세션에서 유저 가져오기
+  const rawUser = JSON.parse(sessionStorage.getItem("user") || "{}");
+  const user: BaseUser = {
+    userId: rawUser.id,
+    nickname: rawUser.nickname,
+    profileImageUrl: rawUser.s3Url,
+  };
 
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artworks/${artworkId}`);
@@ -25,18 +32,18 @@ export default function LikedCollectionPage() {
   const loadMore = useCallback(async () => {
     try {
       const res = await fetchLikedArtworks(cursor);
-
+  
       if (res.success) {
         const newData = res.data ?? [];
-
+  
         setArtworks((prev) => [...prev, ...newData]);
         setCursor(newData[newData.length - 1]?.userArtworkLikeId ?? null);
-
-        // 초기 이미지 조건
-        if (!artworks.length && newData[0]?.imgUrl) {
-          setFirstImageUrl(newData[0].imgUrl);
+  
+        // artworks가 비어 있고, 새로운 데이터가 있을 경우 첫 이미지로 설정
+        if (!artworks.length && newData.length > 0) {
+          setFirstImageUrl(newData[0].imgUrl ?? "");
         }
-
+  
         if (!newData.length) {
           setHasMore(false);
         }
@@ -48,6 +55,7 @@ export default function LikedCollectionPage() {
       setHasMore(false);
     }
   }, [cursor, artworks.length]);
+  
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -97,8 +105,8 @@ export default function LikedCollectionPage() {
                     title,
                     artist,
                     artworkImageUrl: artwork.imgUrl ?? "",
-                    isLiked: true,
                   }}
+                  isLiked={true}
                   size="small"
                   theme="light"
                   borderRadius="small"

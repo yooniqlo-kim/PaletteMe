@@ -1,13 +1,11 @@
 import { useEffect, useRef } from "react";
 import SearchResultCard from "./SearchResultCard";
 import { ArtworkSearchItem } from "@shared/api/search";
-import { useToggleLike } from "@/shared/hooks/useToggleLike";
 
 interface Props {
   data: ArtworkSearchItem[];
   onCardClick: (id: string) => void;
   onCardLike: (id: string) => void;
-  likedArtworks: string[];
   query?: string;
   isLoading?: boolean;
   error?: string | null;
@@ -18,7 +16,7 @@ interface Props {
 export default function SearchResultList({
   data,
   onCardClick,
-  likedArtworks: initialLikedArtworks,
+  onCardLike,
   query,
   isLoading,
   error,
@@ -26,8 +24,6 @@ export default function SearchResultList({
   hasMore,
 }: Props) {
   const observerRef = useRef<HTMLDivElement | null>(null);
-
-  const { likedArtworks, toggleLike, loadingArtworkId } = useToggleLike(initialLikedArtworks);
 
   useEffect(() => {
     if (!onIntersect || !hasMore) return;
@@ -83,19 +79,14 @@ export default function SearchResultList({
       <div className="grid grid-cols-2 gap-4">
         {data.map((artwork, idx) => {
           const isLast = idx === data.length - 1;
-          const isLiked = likedArtworks.includes(artwork.artworkId);
+
           return (
-            <div
-              key={artwork.artworkId}
-              ref={isLast ? observerRef : null}
-            >
+            <div key={artwork.artworkId} ref={isLast ? observerRef : null}>
               <SearchResultCard
-                artworkId={artwork.artworkId}
-                imageUrl={artwork.imageUrl ?? ""}
+                artwork={artwork}
                 onClick={() => onCardClick(artwork.artworkId)}
-                isLiked={isLiked}
-                onClickLike={() => toggleLike(artwork.artworkId)} // ✅ 변경된 부분
-                disabled={loadingArtworkId === artwork.artworkId} // ✅ 클릭 방지
+                onClickLike={() => onCardLike(artwork.artworkId)}
+                disabled={false}
               />
             </div>
           );

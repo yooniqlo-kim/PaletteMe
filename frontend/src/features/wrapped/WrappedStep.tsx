@@ -9,7 +9,7 @@ import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
 import { getWrappedMonthString } from '@/shared/utils/date';
 import html2canvas from 'html2canvas';
 import DownloadButton from '@/shared/components/buttons/DownloadButton';
-import { Recommendation } from '@/shared/api/wrapped';
+import { Recommendation } from '@/shared/types/api/wrapped';
 
 interface Props {
   currentStep: number;
@@ -145,9 +145,9 @@ export default function WrappedStep({
                   artworkId: 'wrapped-favorite',
                   artworkImageUrl: favoriteArtwork.imgUrl,
                   title: favoriteArtwork.title,
-                  isLiked: false,
                   artist: favoriteArtwork.artist,
                 }}
+                isLiked={false}
                 size="large"
                 theme="light"
                 hasBorder
@@ -171,9 +171,9 @@ export default function WrappedStep({
                         artworkId: `wrapped-reco-${i}`,
                         artworkImageUrl: item.imgUrl,
                         title: item.title,
-                        isLiked: false,
                         artist: item.artist,
                       }}
+                      isLiked={false}
                       size="small"
                       theme="light"
                       hasBorder
