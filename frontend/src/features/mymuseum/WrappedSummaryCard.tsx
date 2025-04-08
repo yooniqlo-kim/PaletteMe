@@ -38,7 +38,13 @@ export default function WrappedSummaryCard({ onClick }: WrappedSummaryCardProps)
           지난 한 달 동안
         </span>
         <span className="mb-1 transition-all duration-300 group-hover:text-[1.3rem]">
-          {nickname || "사용자"}님은
+        <span
+            style={{ color: "var(--color-primary)" }}
+            className="font-semibold"
+          >
+            {nickname || "사용자"}
+          </span>
+          <span className="text-black">님은</span>
         </span>
         <span className="transition-all duration-300 group-hover:text-[1.3rem]">
           어떤 작품을 만났을까요?

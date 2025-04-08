@@ -11,22 +11,30 @@ type CommentListViewProps = {
 export function CommentListView({
   comments,
   artworks,
-
   onLikeChange,
 }: CommentListViewProps) {
+  if (comments.length === 0) {
+    return (
+      <div className="flex items-center justify-center w-full h-[20rem] text-sm text-gray-500">
+        아직 감상문이 없습니다.
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-4 items-center w-full px-4">
+    <div className="flex flex-col items-center w-full gap-4 px-4">
       {comments.map((comment) => {
         const artwork = artworks[comment.artworkId];
         return (
           <div key={comment.commentId} className="w-full max-w-screen-md">
-          <CommentCard
-            comment={comment}
-            artworkImageUrl={artwork?.artworkImageUrl}
-            variant="list"
-            onLikeChange={onLikeChange}
-          />
-        </div>
+            <CommentCard
+              key={comment.commentId}
+              comment={comment}
+              artworkImageUrl={artwork?.artworkImageUrl}
+              variant="list"
+              onLikeChange={onLikeChange}
+            />
+          </div>
         );
       })}
     </div>

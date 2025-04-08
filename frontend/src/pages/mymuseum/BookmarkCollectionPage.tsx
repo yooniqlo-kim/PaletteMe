@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { PageIntro } from "@shared/components/collection/PageIntro";
 import ArtworkListSection from "@shared/components/collection/ArtworkListSection";
 import { ArtworkCard } from "@shared/components/artworks/ArtworkCard";
+import ArtworkCardSkeleton from "@shared/components/artworks/ArtworkCardSkeleton";
 import { WriterMeta } from "@shared/components/comments/WriterMeta";
 import { BaseUser } from "@shared/types/user";
 
@@ -16,6 +17,7 @@ export default function BookmarkCollectionPage() {
   const navigate = useNavigate();
 
   const [artworks, setArtworks] = useState<BookmarkArtwork[]>([]);
+  const [isLoading, setIsLoading] = useState(true); // ✅ 로딩 상태 추가
   const [cursor, setCursor] = useState<number | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [firstImageUrl, setFirstImageUrl] = useState("");
@@ -40,50 +42,44 @@ export default function BookmarkCollectionPage() {
         const newData = res.data ?? [];
 
         setArtworks((prev) => {
-          // 썸네일로 설정
           if (!prev.length && newData[0]?.imgUrl) {
             setFirstImageUrl(newData[0].imgUrl);
           }
           return [...prev, ...newData];
         });
-        
+
         setCursor(newData[newData.length - 1]?.userArtworkBookmarkId ?? null);
-
-        // 초기 이미지 설정 시점
-        if (!artworks.length && newData[0]?.imgUrl) {
-          setFirstImageUrl(newData[0].imgUrl);
-        }
-
-        if (!newData.length) {
-          setHasMore(false);
-        }
+        if (!newData.length) setHasMore(false);
       } else {
         setHasMore(false);
       }
     } catch (error) {
       console.error("북마크 작품 불러오기 실패:", error);
       setHasMore(false);
+    } finally {
+      setIsLoading(false); // ✅ 로딩 끝
     }
-  }, [cursor, artworks.length]);
+  }, [cursor]);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [entry] = entries;
-      if (entry.isIntersecting && hasMore) {
+      if (entry.isIntersecting && hasMore && !isLoading) {
         loadMore();
       }
     },
-    [hasMore, loadMore]
+    [hasMore, isLoading, loadMore]
   );
 
   useEffect(() => {
-    if (!observerRef.current) return;
+    loadMore(); // ✅ 초기 로딩
+
     const observer = new IntersectionObserver(handleObserver, {
       threshold: 1.0,
     });
-    observer.observe(observerRef.current);
+    if (observerRef.current) observer.observe(observerRef.current);
     return () => observer.disconnect();
-  }, [handleObserver]);
+  }, [handleObserver, loadMore]);
 
   return (
     <div className="bg-neutral-1 min-h-screen">
@@ -103,28 +99,45 @@ export default function BookmarkCollectionPage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4">
-            {artworks.map((artwork) => {
-              const [title, artist] = artwork.artworkId.split("_");
+            {/* 초기 로딩 중일 때 스켈레톤 */}
+            {isLoading && artworks.length === 0
+              ? Array.from({ length: 4 }).map((_, idx) => (
+                  <div key={idx} className="w-[180px]">
+                    <ArtworkCardSkeleton size="small" />
+                  </div>
+                ))
+              : artworks.map((artwork) => {
+                  const [title, artist] = artwork.artworkId.split("_");
+                  return (
+                    <ArtworkCard
+                      key={artwork.artworkId}
+                      artwork={{
+                        artworkId: artwork.artworkId,
+                        title,
+                        artist,
+                        artworkImageUrl: artwork.imgUrl ?? "",
+                      }}
+                      isLiked={true}
+                      size="small"
+                      theme="light"
+                      borderRadius="small"
+                      onClick={() => handleClickArtwork(artwork.artworkId)}
+                    />
+                  );
+                })}
 
-              return (
-                <ArtworkCard
-                  key={artwork.artworkId}
-                  artwork={{
-                    artworkId: artwork.artworkId,
-                    title,
-                    artist,
-                    artworkImageUrl: artwork.imgUrl ?? "", 
-                  }}
-                  isLiked={true}
-                  size="small"
-                  theme="light"
-                  borderRadius="small"
-                  onClick={() => handleClickArtwork(artwork.artworkId)}
-                />
-              );
-            })}
+            {/* 추가 로딩 중일 때도 스켈레톤 렌더링 */}
+            {isLoading && artworks.length > 0 &&
+              Array.from({ length: 2 }).map((_, idx) => (
+                <div key={`skeleton-${idx}`} className="w-[180px]">
+                  <ArtworkCardSkeleton size="small" />
+                </div>
+              ))}
+
+            {/* 무한 스크롤 감지 요소 */}
             {hasMore && <div ref={observerRef} className="h-1" />}
           </div>
+
         )}
       </ArtworkListSection>
     </div>

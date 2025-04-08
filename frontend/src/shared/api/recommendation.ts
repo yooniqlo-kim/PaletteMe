@@ -7,7 +7,7 @@ export type RecommendationFilter =
 export interface RecommendedArtwork {
   artworkId: string;
   imgUrl: string;
-  isLiked: boolean;
+  liked: boolean;
 }
 
 export interface RecommendationResponse {

@@ -45,10 +45,10 @@ export function CommentCard({
   };
 
   const wrapperClassNames = `
-    relative max-w-[23.75rem] rounded-pm overflow-hidden
-    shadow-comment transition-all
-    ${!isDetailMode ? "cursor-pointer" : ""}
-  `;
+  relative max-w-[23.75rem] rounded-pm overflow-hidden
+  shadow-md transition-all duration-300 ease-in-out
+  ${!isDetailMode ? "hover:-translate-y-1 hover:shadow-xl cursor-pointer" : ""}
+`;
 
   const wrapperStyle = getBackgroundStyle(isDetailMode, artworkImageUrl);
 
@@ -82,11 +82,11 @@ export function CommentCard({
       }`}
       style={wrapperStyle}
     >
-      <div className="relative p-4 flex flex-col">
+      <div className="relative flex flex-col p-4">
         {/* 반투명 배경을 background에 설정 */}
-        {!isDetailMode && <div className="absolute inset-0 bg-black/45 z-0" />}
+        {!isDetailMode && <div className="absolute inset-0 z-0 bg-black/45" />}
         {/* 작성자 정보 및 좋아요 */}
-        <div className="relative z-10 flex justify-between items-center">
+        <div className="relative z-10 flex items-center justify-between">
           <WriterMeta user={user} date={date} />
           <div className="flex items-center gap-1 text-xs font-medium">
             <IconButton
@@ -125,7 +125,7 @@ export function CommentCard({
 // 리스트 모드에서 네 줄까지만
 function ListContent({ content }: { content: string }) {
   return (
-    <p className="relative z-10  text-xs font-normal leading-5 line-clamp-4">
+    <p className="relative z-10 text-xs font-normal leading-5 line-clamp-4">
       {content}
     </p>
   );
@@ -152,7 +152,7 @@ function DetailContent({ content, expanded, onToggle }: DetailContentProps) {
             e.stopPropagation();
             onToggle();
           }}
-          className="mt-1 underline text-neutral-500 cursor-pointer"
+          className="mt-1 underline cursor-pointer text-neutral-500"
         >
           {expanded ? "간략히" : "더보기"}
         </button>

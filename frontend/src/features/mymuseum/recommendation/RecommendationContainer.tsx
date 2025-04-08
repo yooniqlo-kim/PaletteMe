@@ -35,7 +35,6 @@ export default function RecommendationContainer() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // ❗️ 캐시에 해당 키가 있어도 "값이 비어있으면" 새로 요청해야 하므로
       const cached = cache[selectedFilter];
       if (cached && cached.length > 0) {
         setArtworks(cached);

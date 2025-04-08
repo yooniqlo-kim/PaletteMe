@@ -86,23 +86,23 @@ export default function MymuseumPage() {
         </div>
 
         <div className="mb-6">
-          <div className="text-base font-semibold mb-2">추천 작품</div>
+          <div className="text-[20px] leading-[1.5] font-semibold mb-2">추천 작품</div>
           <div>{nickname}님을 위한 추천 작품이에요.</div>
           <RecommendationContainer />
         </div>
 
         <div className="mb-6">
-          <div className="text-base font-semibold mb-2">Wrapped</div>
+          <div className="text-[20px] leading-[1.5] font-semibold mb-3">Wrapped</div>
           <WrappedSummaryCard onClick={handleWrappedClick} />
         </div>
 
         <div className="mb-6">
-          <div className="text-base font-semibold mb-2">나의 컬렉션</div>
+          <div className="text-[20px] leading-[1.5] font-semibold mb-3">나의 컬렉션</div>
           <MyCollectionContainer images={myCollectionImages} />
         </div>
 
         <div className="mb-6">
-          <div className="text-base font-semibold mb-2">감상문</div>
+          <div className="text-[20px] leading-[1.5] font-semibold mb-3">감상문</div>
           <MyCommentsContainer images={myCommentsImages} />
         </div>
       </div>
