@@ -73,7 +73,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className="px-3 py-3 flex flex-col gap-10 box-border">
+    <section className="px-4 py-3 flex flex-col gap-10 box-border">
       {content}
       <Menu />
       <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center">
