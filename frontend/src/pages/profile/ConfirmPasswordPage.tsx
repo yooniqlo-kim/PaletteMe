@@ -17,7 +17,8 @@ export default function ConfirmPasswordPage() {
   const { verifyPassword } = useProfile();
 
   function checkPassword(data: FormData) {
-    verifyPassword(data);
+    const { password } = data;
+    verifyPassword(password);
   }
 
   return (
@@ -25,12 +26,10 @@ export default function ConfirmPasswordPage() {
       <h2 className="text-lg font-semibold">회원 정보 수정</h2>
       <div
         className="flex justify-center items-center"
-        style={{ minHeight: "calc(100vh - 180px)" }}
-      >
+        style={{ minHeight: "calc(100vh - 180px)" }}>
         <form
           onSubmit={handleSubmit(checkPassword)}
-          className="flex flex-col gap-10 justify-center items-center w-full"
-        >
+          className="flex flex-col gap-10 justify-center items-center w-full">
           <h2 className="text-lg font-semibold">회원정보 확인</h2>
           <p className="text-sm font-normal">비밀번호를 입력해주세요</p>
           <div className="w-full">

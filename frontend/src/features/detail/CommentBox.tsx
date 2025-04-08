@@ -17,23 +17,23 @@ export function CommentBox({
 }: CommentBoxProps) {
   if (isLoading && comments.length === 0) {
     return (
-      <div className="text-sm text-neutral-500 text-center py-6">
+      <div className="py-6 text-sm text-center text-neutral-500">
         감상문을 불러오는 중입니다...
       </div>
     );
   }
   if (!isLoading && comments.length === 0) {
     return (
-      <div className="text-sm text-neutral-500 text-center py-6">
+      <div className="py-6 text-sm text-center text-neutral-500">
         아직 감상문이 없어요.
       </div>
     );
   }
   return (
     <div className="space-y-4">
-      <p className="text-md font-semibold text-neutral-700">
+      <p className="font-semibold text-md text-neutral-700">
         감상문
-        <span className="text-neutral-400 font-medium px-2">
+        <span className="px-2 font-medium text-neutral-400">
           {comments.length}
         </span>
       </p>

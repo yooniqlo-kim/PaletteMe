@@ -170,13 +170,19 @@ export function ArtworkDetail({ artwork }: Props) {
               <div className="absolute z-10 flex gap-2 -top-9 right-1">
                 <IconButton identifier="heart" onClick={handleToggleLike}>
                   <span className="inline-flex items-center">{likeCount}</span>
-                  <IconBlackHeart isClicked={isLiked} />
+                  <IconBlackHeart
+                    isClicked={isLiked}
+                    className="transition-transform duration-300 active:scale-150"
+                  />
                 </IconButton>
                 <IconButton
                   identifier="bookmark"
                   onClick={handleToggleBookmark}
                 >
-                  <IconBookmark isClicked={isBookmarked} />
+                  <IconBookmark
+                    isClicked={isBookmarked}
+                    className="transition-transform duration-300 active:scale-150"
+                  />
                 </IconButton>
               </div>
             )}
@@ -208,6 +214,7 @@ export function ArtworkDetail({ artwork }: Props) {
               불러오는 중...
             </p>
           )}
+          <div className="h-6" />
         </WhiteContainer>
       </div>
     </div>

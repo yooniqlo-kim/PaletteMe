@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
+import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton"; // ✅ 추가
 import type { BaseArtwork } from "@/shared/types/artwork";
 
 interface Props {
@@ -15,6 +17,15 @@ export default function SearchRecommendationCard({
   artistName = "",
   onClick,
 }: Props) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    setImageLoaded(false);
+    const img = new Image();
+    img.src = imageUrl;
+    img.onload = () => setImageLoaded(true);
+  }, [imageUrl]);
+
   const fakeArtwork: BaseArtwork & { isLiked: boolean } = {
     artworkId: "fake-id",
     artworkImageUrl: imageUrl,
@@ -23,7 +34,7 @@ export default function SearchRecommendationCard({
     isLiked: false,
   };
 
-  return (
+  return imageLoaded ? (
     <ArtworkCard
       artwork={fakeArtwork}
       isLiked={false}
@@ -34,5 +45,7 @@ export default function SearchRecommendationCard({
       theme="dark"
       onClick={onClick}
     />
+  ) : (
+    <ArtworkCardSkeleton size="small" />
   );
 }
