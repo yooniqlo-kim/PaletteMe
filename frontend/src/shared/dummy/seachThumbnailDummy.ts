@@ -3,7 +3,7 @@ import { ArtworkSearchItem } from "@shared/api/search";
 import recommended_search_thumbnail_monet from '@/assets/recommendations/recommended_search_thumbnail_monet.jpg';
 import recommended_search_thumbnail_picaso from '@/assets/recommendations/recommended_search_thumbnail_picaso.jpg';
 import recommended_search_thumbnail_manet from '@/assets/recommendations/recommended_search_thumbnail_manet.jpg';
-import recommended_search_thumbnail_cezanne from '@/assets/recommendations/recommended_search_thumbnail_cezanne.jpg';
+import recommended_search_thumbnail_dali from '@/assets/recommendations/recommended_search_thumbnail_dali.jpg';
 import recommended_search_thumbnail_goya from '@/assets/recommendations/recommended_search_thumbnail_goya.jpg';    
 import recommended_search_thumbnail_matisse from '@/assets/recommendations/recommended_search_thumbnail_matisse.jpg';
 import recommended_search_thumbnail_warhol from '@/assets/recommendations/recommended_search_thumbnail_warhol.jpg';
@@ -48,13 +48,13 @@ export const searchDummy: ArtworkSearchItem[] = [
   },
   {
     artworkId: "dummy_4",
-    korTitle: "폴 세잔",
-    originalTitle: "Paul Cézanne",
-    enTitle: "Paul Cézanne",
-    korArtist: "폴 세잔",
-    originalArtist: "Paul Cézanne",
-    enArtist: "Paul Cézanne",
-    imageUrl: recommended_search_thumbnail_cezanne,
+    korTitle: "살바도르 달리",
+    originalTitle: "살바도르 달리",
+    enTitle: "Salvador Dalí", 
+    korArtist: "살바도르 달리",
+    originalArtist: "살바도르 달리", 
+    enArtist: "Salvador Dalí",
+    imageUrl: recommended_search_thumbnail_dali,
     score: 0,
     isLiked: false,
   },
