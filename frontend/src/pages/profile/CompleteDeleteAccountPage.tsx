@@ -7,10 +7,10 @@ export default function CompleteDeleteAccountPage() {
 
   useEffect(() => {
     deleteAccount();
-  }, [deleteAccount]);
+  }, []);
 
   return (
-    <div>
+    <div className="px-4">
       {isDeleting ? (
         <div className="flex p-2">
           <CompletedForm msg="탈퇴 진행 중입니다" btnMsg="..." />
