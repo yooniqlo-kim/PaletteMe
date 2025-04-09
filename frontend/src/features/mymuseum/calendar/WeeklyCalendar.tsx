@@ -22,7 +22,7 @@ export default function WeeklyCalendar({
   return (
     <div
       onClick={onClick}
-      className="w-full max-w-[23.75rem] h-[10.75rem] rounded-xl px-4 py-3 cursor-pointer"
+      className="w-full max-w-[23.75rem] h-[10.75rem] rounded-xl px-4 py-3 cursor-pointer scale-[0.9] xs:scale-[0.95] sm:scale-100 origin-top transition-transform"
       style={{ backgroundColor: "#FDF7EB" }}
     >
       <h2 className="text-center text-base font-semibold mb-4 py-3">

@@ -24,6 +24,7 @@ export default function SearchResultList({
 }: Props) {
   const observerRef = useRef<HTMLDivElement | null>(null);
   const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
+  const likedArtworksRef = useRef<string[]>([]);
 
   // Intersection Observer
   useEffect(() => {
@@ -46,11 +47,24 @@ export default function SearchResultList({
     };
   }, [onIntersect, hasMore]);
 
-  // 초기 좋아요 상태 반영
+
   useEffect(() => {
-    const liked = data.filter((item) => item.isLiked).map((item) => item.artworkId);
-    setLikedArtworks(liked);
+    const newLiked = data
+      .filter(
+        (item) => item.isLiked && !likedArtworksRef.current.includes(item.artworkId)
+      )
+      .map((item) => item.artworkId);
+  
+    if (newLiked.length > 0) {
+      setLikedArtworks((prev) => {
+        const updated = [...prev, ...newLiked];
+        likedArtworksRef.current = updated;
+        return updated;
+      });
+    }
   }, [data]);
+  
+
 
   // 좋아요 토글 핸들러
   const handleCardLike = async (id: string) => {
@@ -100,23 +114,27 @@ export default function SearchResultList({
         </p>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
-        {data.map((artwork, idx) => {
-          const isLast = idx === data.length - 1;
-          const isLiked = likedArtworks.includes(artwork.artworkId);
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      {data.map((artwork, idx) => {
+        const isLast = idx === data.length - 1;
+        const isLiked = likedArtworks.includes(artwork.artworkId);
 
-          return (
-            <div key={artwork.artworkId} ref={isLast ? observerRef : null}>
-              <SearchResultCard
-                artwork={{ ...artwork, isLiked }}
-                onClick={() => onCardClick(artwork.artworkId)}
-                onClickLike={() => handleCardLike(artwork.artworkId)}
-                disabled={false}
-              />
-            </div>
-          );
-        })}
-      </div>
+        return (
+          <div
+            key={artwork.artworkId}
+            ref={isLast ? observerRef : null}
+            className="w-full max-w-[180px] mx-auto"
+          >
+            <SearchResultCard
+              artwork={{ ...artwork, isLiked }}
+              onClick={() => onCardClick(artwork.artworkId)}
+              onClickLike={() => handleCardLike(artwork.artworkId)}
+              disabled={false}
+            />
+          </div>
+        );
+      })}
+    </div>
     </>
   );
 }
