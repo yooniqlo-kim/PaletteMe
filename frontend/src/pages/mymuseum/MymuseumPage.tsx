@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 
@@ -22,7 +22,12 @@ export default function MymuseumPage() {
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   const weekStart = dayjs().startOf("week").add(1, "day").toDate();
-  const { data: reviews, isLoading } = useWeeklyCalendarReviews(weekStart);
+  const { data: reviews, isLoading, refetch } = useWeeklyCalendarReviews(weekStart);
+
+  // 페이지 진입할 때마다 refetch
+  useEffect(() => {
+    void refetch();
+  }, [refetch]);
 
   const shuffled = shuffle(masterpieces).slice(0, 4);
 
@@ -46,11 +51,6 @@ export default function MymuseumPage() {
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const nickname = user?.nickname || "사용자";
 
-  //  테스트용: 무조건 모달 열기
-  // const handleWrappedClick = async () => {
-  //   setIsModalOpened(true);
-  // };
-  
   const handleWrappedClick = async () => {
     try {
       const raw = await fetchWrapped();
@@ -74,10 +74,9 @@ export default function MymuseumPage() {
   };
 
   return (
-    <div className="px-4 pb-[3.75rem]">
+    <div className="px-4 pb-[3rem]">
       <div className="max-w-[26.25rem] mx-auto w-full">
-        {/* <div className="text-lg font-bold mb-4">마이뮤지엄</div> */}
-        <div className="py-6 mb-6">
+        <div className="py-4 mb-6">
           <WeeklyCalendar
             data={calendarData}
             isLoading={isLoading}
@@ -85,23 +84,28 @@ export default function MymuseumPage() {
           />
         </div>
 
-        <div className="mb-6">
-          <div className="text-[20px] leading-[1.5] font-semibold mb-2">추천 작품</div>
-          <div>{nickname}님을 위한 추천 작품이에요.</div>
+        <div className="mb-6 py-1">
+          <div className="text-[20px] leading-[1.5] font-semibold mb-2 text-black">
+            추천 작품
+          </div>
+          <div style={{ color: "var(--color-neutral-8)" }}>
+            <span className="font-semibold">{nickname}</span>
+            님을 위한 추천 작품이에요.
+          </div>
           <RecommendationContainer />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 py-2">
           <div className="text-[20px] leading-[1.5] font-semibold mb-3">Wrapped</div>
           <WrappedSummaryCard onClick={handleWrappedClick} />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 py-2">
           <div className="text-[20px] leading-[1.5] font-semibold mb-3">나의 컬렉션</div>
           <MyCollectionContainer images={myCollectionImages} />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 py-2">
           <div className="text-[20px] leading-[1.5] font-semibold mb-3">감상문</div>
           <MyCommentsContainer images={myCommentsImages} />
         </div>

@@ -20,8 +20,8 @@ export default function PopularKeywordsList({ onKeywordClick }: Props) {
   if (error) return <p>에러가 발생했어요</p>;
 
   return (
-    <div className="w-full max-w-[28rem] mx-auto px-4">
-      <h2 className="text-md font-semibold mb-4">인기 작품</h2>
+    <div className="w-full max-w-[28rem] mx-auto px-1">
+      <h2 className="text-md font-semibold mb-4 py-1">인기 작품</h2>
       <ul className="grid grid-cols-2 gap-y-2 text-sm text-gray-800">
         {data?.map((keyword, idx) => (
           <li

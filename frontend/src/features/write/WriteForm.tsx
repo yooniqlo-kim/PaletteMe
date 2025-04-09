@@ -27,7 +27,7 @@ export function WriteForm({
 }: WriteFormProps) {
   const [content, setContent] = useState(initialValues?.content ?? "");
   const [visibility, setVisibility] = useState<"public" | "private">(
-    initialValues?.visibility ?? "private"
+    initialValues?.visibility ?? "public"
   );
 
   // 감상문 입력 상태 변경 시 dirty 상태 부모에게 전달

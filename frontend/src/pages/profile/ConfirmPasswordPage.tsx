@@ -11,7 +11,7 @@ export default function ConfirmPasswordPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<FormData>({ mode: "onChange" });
 
   const { verifyPassword } = useProfile();
@@ -44,7 +44,7 @@ export default function ConfirmPasswordPage() {
             />
           </div>
 
-          <Button size="L" disabled={isSubmitting}>
+          <Button size="L" disabled={!isValid || isSubmitting}>
             확인하기
           </Button>
         </form>
