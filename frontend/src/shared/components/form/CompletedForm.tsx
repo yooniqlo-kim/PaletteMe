@@ -6,7 +6,7 @@ import mainLogo from "@/assets/images/MainLogo.png";
 type CompletedFormProps = {
   msg: string;
   btnMsg: ReactNode;
-  route: string;
+  route?: string;
 };
 export default function CompletedForm({
   msg,
@@ -16,7 +16,7 @@ export default function CompletedForm({
   const navigate = useNavigate();
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    navigate(route);
+    if (route) navigate(route);
   }
   return (
     <form

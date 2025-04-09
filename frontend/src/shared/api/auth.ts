@@ -1,6 +1,7 @@
 import { UserFormData } from "@/store/formSlice";
 import axios, { AxiosResponse } from "axios";
 import { BASE_URL } from "./baseUrl";
+import { api } from "./core";
 
 const AUTH_BASE_URL = `${BASE_URL}/users`;
 
@@ -35,6 +36,11 @@ export async function login(data: { id: string; password: string }) {
   return response;
 }
 
+export async function logoutAPI() {
+  const response = await api.post(`${AUTH_BASE_URL}/logout`);
+  return response.data;
+}
+
 export async function signup(data: UserFormData) {
   const formData = new FormData();
 
@@ -64,8 +70,6 @@ export async function signup(data: UserFormData) {
     formData.append("file", file);
   }
 
-  console.log("formData", formData);
-
   const response: AxiosResponse<ResponseType> = await axios.post(
     `${AUTH_BASE_URL}/sign-up`,
     formData,
@@ -76,4 +80,10 @@ export async function signup(data: UserFormData) {
     }
   );
   return response;
+}
+
+export async function inactiveAPI() {
+  const response = await api.post(`${AUTH_BASE_URL}/inactive`);
+
+  return response.data;
 }
