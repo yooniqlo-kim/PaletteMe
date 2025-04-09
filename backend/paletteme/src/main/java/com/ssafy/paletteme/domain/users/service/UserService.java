@@ -101,6 +101,11 @@ public class UserService {
 
 
     public void sendPhone(String phoneNumber){
+        String encodedPhoneNumber = aesUtil.encrypt(phoneNumber);
+        if(usersRepository.existsByPhoneNumber(encodedPhoneNumber)){
+            throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_PHONE_NUMBER);
+        }
+
         String verificationCode = generate6DigitCode();
         smsCertificationUtil.sendSMS(phoneNumber, verificationCode);
 
