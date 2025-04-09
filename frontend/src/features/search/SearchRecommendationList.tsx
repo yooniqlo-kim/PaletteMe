@@ -16,11 +16,11 @@ export default function SearchRecommendationList({ data }: Props) {
   };
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+    <div className="grid grid-cols-2 gap-4 justify-items-center">
       {data.map((artwork) => {
         const title = artwork.korTitle || artwork.originalTitle;
         return (
-          <div key={artwork.artworkId} className="w-full max-w-[180px] mx-auto">
+          <div key={artwork.artworkId} className="w-full max-w-[180px]">
             <SearchRecommendationCard
               imageUrl={artwork.imageUrl ?? ""}
               overlayText={title}
@@ -31,7 +31,7 @@ export default function SearchRecommendationList({ data }: Props) {
         );
       })}
     </div>
-
   );
 }
+
 
