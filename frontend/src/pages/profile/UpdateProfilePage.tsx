@@ -166,11 +166,11 @@ export default function RegisterImagePage() {
                   required: "닉네임은 필수값입니다.",
                   minLength: {
                     value: 2,
-                    message: "닉네임은 두 자 이상 입력해야 합니다.",
+                    message: "닉네임은 2자 이상 입력해야 합니다.",
                   },
                   maxLength: {
-                    value: 20,
-                    message: "닉네임은 최대 20자까지 가능합니다.",
+                    value: 8,
+                    message: "닉네임은 최대 8자까지 가능합니다.",
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9가-힣]+$/,
