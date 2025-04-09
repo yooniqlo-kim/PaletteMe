@@ -56,7 +56,7 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
                     .sorted(Comparator.reverseOrder())
                     .toList();
 
-            // 순서대로 등수 부여 (동점이어도 무조건 다음 등수)
+            // 순서대로 등수 부여
             reviewRank = 0;
             for (int i = 0; i < sortedReviewCounts.size(); i++) {
                 if (sortedReviewCounts.get(i) == reviewCnt) {
@@ -68,6 +68,8 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
             int total = sortedReviewCounts.size();
             reviewPercentage = (int) Math.round(((double) reviewRank / total) * 100);
         }
+
+
         // --- 최애 작품 ---
         String favoriteName = null;
         String favoriteArtist = null;
@@ -91,10 +93,10 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
 
             if (chatResponse != null && chatResponse.getResult() != null && chatResponse.getResult().getOutput() != null) {
                 String gptRecommendArtwork = chatResponse.getResult().getOutput().getContent().trim();
-                System.out.println(gptRecommendArtwork);
+                System.out.println("GPT 추천 작품명: " + gptRecommendArtwork);
 
                 for (WrappedRecommendationDto dto : wrappedRecommendationDtoList) {
-                    if (dto.getArtwork().equalsIgnoreCase(gptRecommendArtwork)) {
+                    if (gptRecommendArtwork != null && dto.getArtwork().equalsIgnoreCase(gptRecommendArtwork)) {
                         recommendedArtwork = dto.getArtwork();
                         recommendedArtist = dto.getArtist();
                         recommendedImg = dto.getImageUrl();
@@ -102,7 +104,10 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
                     }
                 }
             }
-        } else {
+        }
+
+        // 최애 작품이 없거나 동일 작품 추천 시.
+        if(recommendedArtwork == null|| recommendedArtwork.equals(favoriteName)){
             // 사용자 선호 작품이 없는 경우, 랜덤하게 추천
             WrappedRecommendationDto randomPick = wrappedRecommendationDtoList.get(
                     (int) (Math.random() * wrappedRecommendationDtoList.size())
