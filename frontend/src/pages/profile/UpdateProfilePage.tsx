@@ -173,7 +173,7 @@ export default function RegisterImagePage() {
                     message: "닉네임은 최대 20자까지 가능합니다.",
                   },
                   pattern: {
-                    value: /^[a-zA-Z0-9가-힣]+$/,
+                    value: /^[a-zA-Z0-9가-힣\s]+$/,
                     message: "닉네임은 영어, 숫자, 한글만 사용할 수 있습니다.",
                   },
                   validate: () => true,
