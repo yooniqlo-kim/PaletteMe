@@ -16,6 +16,7 @@ import WrappedEmptyModal from "@/features/wrapped/WrappedEmptyModal";
 import { fetchWrapped } from "@/features/wrapped/api/wrappedApi";
 import { mapWrappedData } from "@/shared/utils/mapWrappedData";
 import { WrappedDummy } from "@/shared/dummy/wrappedDummy";
+import Footer from "@/shared/components/footer/Footer";
 
 export default function MymuseumPage() {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ export default function MymuseumPage() {
   };
 
   return (
-    <div className="px-4 pb-[2rem]">
+    <div className="px-4 pb-[1rem]">
       <div className="max-w-screen-md mx-auto w-full">
         <div className="py-4 mb-6">
           <WeeklyCalendar
@@ -118,6 +119,7 @@ export default function MymuseumPage() {
           onUseSample={handleUseSample}
         />
       )}
+      <Footer />
     </div>
   );
 }
