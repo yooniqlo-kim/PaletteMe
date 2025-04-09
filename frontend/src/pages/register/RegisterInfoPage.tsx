@@ -141,7 +141,17 @@ export default function RegisterInfoPage() {
             <span className="flex justify-between w-full gap-4">
               <div className="flex flex-col grow">
                 <Input
-                  {...register("id", { required: "아이디는 필수값입니다." })}
+                  {...register("id", {
+                    required: "아이디는 필수값입니다.",
+                    pattern: {
+                      value: /^[A-Za-z]+$/,
+                      message: "아이디는 영문자만 입력 가능합니다.",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "ID는 20자 이하로 입력해주세요.",
+                    },
+                  })}
                   id="id"
                   type="text"
                   placeholder="아이디를 입력해주세요"
@@ -192,7 +202,13 @@ export default function RegisterInfoPage() {
           <InputContainer>
             <Label htmlFor="name">이름</Label>
             <Input
-              {...register("name", { required: "이름은 필수값입니다." })}
+              {...register("name", {
+                required: "이름은 필수값입니다.",
+                maxLength: {
+                  value: 20,
+                  message: "이름은 20자 이하로 입력해주세요.",
+                },
+              })}
               id="name"
               type="text"
               placeholder="홍길동"
@@ -246,6 +262,9 @@ export default function RegisterInfoPage() {
                 <Input
                   {...register("verificationCode", {
                     required: "인증번호를 입력해주세요.",
+                    validate: (value) =>
+                      value.toString().length === 6 ||
+                      "인증번호는 6자리입니다.",
                   })}
                   id="verificationCode"
                   type="number"
