@@ -8,6 +8,16 @@ import recommended_search_thumbnail_goya from '@/assets/recommendations/recommen
 import recommended_search_thumbnail_matisse from '@/assets/recommendations/recommended_search_thumbnail_matisse.jpg';
 import recommended_search_thumbnail_warhol from '@/assets/recommendations/recommended_search_thumbnail_warhol.jpg';
 import recommended_search_thumbnail_degas from '@/assets/recommendations/recommended_search_thumbnail_degas.jpg';
+import recommended_search_thumbnail_chagall from '@/assets/recommendations/recommended_search_thumbnail_chagall.jpg';
+import recommended_search_thumbnail_mondrian from '@/assets/recommendations/recommended_search_thumbnail_mondrian.jpg';
+import recommended_search_thumbnail_kahlo from '@/assets/recommendations/recommended_search_thumbnail_kahlo.jpg';
+import recommended_search_thumbnail_malevich from '@/assets/recommendations/recommended_search_thumbnail_malevich.jpg';
+import recommended_search_thumbnail_hockney from '@/assets/recommendations/recommended_search_thumbnail_hockney.jpg';
+import recommended_search_thumbnail_pissarro from '@/assets/recommendations/recommended_search_thumbnail_pissarro.jpg';
+import recommended_search_thumbnail_gauguin from '@/assets/recommendations/recommended_search_thumbnail_gauguin.jpg';
+import recommended_search_thumbnail_klimt from '@/assets/recommendations/recommended_search_thumbnail_klimt.jpg';
+
+
 
 export const searchDummy: ArtworkSearchItem[] = [
   {
@@ -103,6 +113,102 @@ export const searchDummy: ArtworkSearchItem[] = [
     originalArtist: "Edgar Degas",
     enArtist: "Edgar Degas",
     imageUrl: recommended_search_thumbnail_degas,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_9",
+    korTitle: "마르크 샤갈",
+    originalTitle: "Marc Chagall",
+    enTitle: "Marc Chagall",
+    korArtist: "마르크 샤갈",
+    originalArtist: "Marc Chagall",
+    enArtist: "Marc Chagall",
+    imageUrl: recommended_search_thumbnail_chagall,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_10",
+    korTitle: "피에트 몬드리안",
+    originalTitle: "Piet Mondrian",
+    enTitle: "Piet Mondrian",
+    korArtist: "피에트 몬드리안",
+    originalArtist: "Piet Mondrian",
+    enArtist: "Piet Mondrian",
+    imageUrl: recommended_search_thumbnail_mondrian,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_11",
+    korTitle: "프리다 칼로",
+    originalTitle: "Frida Kahlo",
+    enTitle: "Frida Kahlo",
+    korArtist: "프리다 칼로",
+    originalArtist: "Frida Kahlo",
+    enArtist: "Frida Kahlo",
+    imageUrl: recommended_search_thumbnail_kahlo,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_12",
+    korTitle: "카지미르 말레비치",
+    originalTitle: "Kazimir Malevich",
+    enTitle: "Kazimir Malevich",
+    korArtist: "카지미르 말레비치",
+    originalArtist: "Kazimir Malevich",
+    enArtist: "Kazimir Malevich",
+    imageUrl: recommended_search_thumbnail_malevich,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_13",
+    korTitle: "데이비드 호크니",
+    originalTitle: "David Hockney",
+    enTitle: "David Hockney",
+    korArtist: "데이비드 호크니",
+    originalArtist: "David Hockney",
+    enArtist: "David Hockney",
+    imageUrl: recommended_search_thumbnail_hockney,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_14",
+    korTitle: "카미유 피사로",
+    originalTitle: "Camille Pissarro",
+    enTitle: "Camille Pissarro",
+    korArtist: "카미유 피사로",
+    originalArtist: "Camille Pissarro",
+    enArtist: "Camille Pissarro",
+    imageUrl: recommended_search_thumbnail_pissarro,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_15",
+    korTitle: "폴 고갱",
+    originalTitle: "Paul Gauguin",
+    enTitle: "Paul Gauguin",
+    korArtist: "폴 고갱",
+    originalArtist: "Paul Gauguin",
+    enArtist: "Paul Gauguin",
+    imageUrl: recommended_search_thumbnail_gauguin,
+    score: 0,
+    isLiked: false,
+  },
+  {
+    artworkId: "dummy_16",
+    korTitle: "구스타브 클림트",
+    originalTitle: "Gustav Klimt",
+    enTitle: "Gustav Klimt",
+    korArtist: "구스타브 클림트",
+    originalArtist: "Gustav Klimt",
+    enArtist: "Gustav Klimt",
+    imageUrl: recommended_search_thumbnail_klimt,
     score: 0,
     isLiked: false,
   },

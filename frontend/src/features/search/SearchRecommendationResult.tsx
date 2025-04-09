@@ -25,14 +25,33 @@ export default function SearchRecommendationResult({
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   // 좋아요 상태 관리
-  const { likedArtworks, toggleLike, loadingArtworkId, setLikedArtworks, } = useToggleLike();
+  const {
+    likedArtworks,
+    toggleLike,
+    loadingArtworkId,
+    setLikedArtworks,
+  } = useToggleLike();
 
+  // likedArtworks 현재값 추적용 ref
+  const likedArtworksRef = useRef<string[]>([]);
+
+  // 새로 들어온 좋아요 상태 누적 반영
   useEffect(() => {
-    const likedIds = data.filter((art) => art.isLiked).map((a) => a.artworkId);
-    setLikedArtworks(likedIds);
+    const newLiked = data
+      .filter(
+        (art) => art.isLiked && !likedArtworksRef.current.includes(art.artworkId)
+      )
+      .map((art) => art.artworkId);
+
+    if (newLiked.length > 0) {
+      setLikedArtworks((prev) => {
+        const updated = [...prev, ...newLiked];
+        likedArtworksRef.current = updated;
+        return updated;
+      });
+    }
   }, [data, setLikedArtworks]);
-  
-  
+
   const handleClickArtwork = (artworkId: string): void => {
     navigate(`/artworks/${artworkId}`);
   };
@@ -57,9 +76,6 @@ export default function SearchRecommendationResult({
       if (el) observer.unobserve(el);
     };
   }, [onIntersect, hasMore]);
-
-  
-  
 
   return (
     <div className="min-h-screen">
@@ -89,7 +105,8 @@ export default function SearchRecommendationResult({
                     artwork={{
                       artworkId: artwork.artworkId,
                       title: artwork.korTitle || artwork.originalTitle,
-                      artist: artwork.korArtist || artwork.originalArtist || "작가 미상",
+                      artist:
+                        artwork.korArtist || artwork.originalArtist || "작가 미상",
                       artworkImageUrl: artwork.imageUrl ?? "",
                     }}
                     isLiked={isLiked}
