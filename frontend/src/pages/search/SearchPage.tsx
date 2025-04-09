@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SearchContainer from "@/features/search/SearchContainer";
 import SearchResultList from "@/features/search/SearchResultList";
@@ -6,6 +6,7 @@ import SearchRecommendationList from "@/features/search/SearchRecommendationList
 import SearchRecommendationResult from "@/features/search/SearchRecommendationResult";
 import { getSearchArtworks, ArtworkSearchItem } from "@shared/api/search";
 import { searchDummy } from "@shared/dummy/seachThumbnailDummy";
+import shuffle from "@/shared/utils/shuffle";
 
 export default function SearchPage() {
   const [searchValue, setSearchValue] = useState("");
@@ -23,6 +24,11 @@ export default function SearchPage() {
   const isFromRecommendation = from === "recommendation";
   const navigate = useNavigate();
 
+  // 추천 검색어 랜덤
+  const shuffledRecommendations = useMemo(() => {
+    return shuffle(searchDummy).slice(0, 8);
+  }, []);
+  
   // 마지막 아이템 정보 추출
   const getLastItemInfo = (list: ArtworkSearchItem[]) => {
     const last = list[list.length - 1];
@@ -143,7 +149,7 @@ export default function SearchPage() {
             hasMore={hasMore} 
           />
         ) : (
-          <SearchRecommendationList data={searchDummy} />
+          <SearchRecommendationList data={shuffledRecommendations} />
         )}
       </div>
     </div>

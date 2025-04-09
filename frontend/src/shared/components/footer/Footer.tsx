@@ -1,6 +1,6 @@
 export default function Footer() {
     return (
-      <footer className="text-[12px] text-neutral-6 text-center border-t border-neutral-3 mt-16 pt-4 pb-2">
+      <footer className="text-[12px] text-neutral-6 text-center border-t border-neutral-3 mt-16 pt-4 pb-1">
         <p className="mb-1">© 2025 PaletteMe. SSAFY 12기 특화 A505</p>
         <p className="mb-1">이미지 출처는 퍼블릭 도메인입니다.</p>
   
