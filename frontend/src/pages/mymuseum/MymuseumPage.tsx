@@ -74,7 +74,7 @@ export default function MymuseumPage() {
   };
 
   return (
-    <div className="px-4 pb-[3rem]">
+    <div className="px-4 pb-[2rem]">
       <div className="max-w-[26.25rem] mx-auto w-full">
         <div className="py-4 mb-6">
           <WeeklyCalendar
