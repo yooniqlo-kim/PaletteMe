@@ -24,7 +24,7 @@ export default function SearchResultList({
 }: Props) {
   const observerRef = useRef<HTMLDivElement | null>(null);
   const [likedArtworks, setLikedArtworks] = useState<string[]>([]);
-  const isInitializedRef = useRef(false); // ✅ 초기화 플래그 추가
+  const likedArtworksRef = useRef<string[]>([]);
 
   // Intersection Observer
   useEffect(() => {
@@ -47,14 +47,24 @@ export default function SearchResultList({
     };
   }, [onIntersect, hasMore]);
 
-  // ✅ 최초 1회만 좋아요 상태 초기화
+
   useEffect(() => {
-    if (!isInitializedRef.current && data.length > 0) {
-      const liked = data.filter((item) => item.isLiked).map((item) => item.artworkId);
-      setLikedArtworks(liked);
-      isInitializedRef.current = true;
+    const newLiked = data
+      .filter(
+        (item) => item.isLiked && !likedArtworksRef.current.includes(item.artworkId)
+      )
+      .map((item) => item.artworkId);
+  
+    if (newLiked.length > 0) {
+      setLikedArtworks((prev) => {
+        const updated = [...prev, ...newLiked];
+        likedArtworksRef.current = updated;
+        return updated;
+      });
     }
   }, [data]);
+  
+
 
   // 좋아요 토글 핸들러
   const handleCardLike = async (id: string) => {
