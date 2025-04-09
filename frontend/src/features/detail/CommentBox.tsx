@@ -30,13 +30,8 @@ export function CommentBox({
     );
   }
   return (
-    <div className="space-y-4">
-      <p className="font-semibold text-md text-neutral-700">
-        감상문
-        <span className="px-2 font-medium text-neutral-400">
-          {comments.length}
-        </span>
-      </p>
+    <div className="space-y-2">
+      <p className="font-semibold text-md text-neutral-700">감상문</p>
       {comments.map((comment, index) => {
         const isLast = index === comments.length - 1;
         return (
