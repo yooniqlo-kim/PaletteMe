@@ -41,7 +41,8 @@ export default function ConfirmDeleteAccountPage() {
           msg="지금까지 작성한 감상문이 사라져요"
           confirmMsg="정말 탈퇴하시겠습니까?"
           onClose={() => setIsDeleteBtnClicked(false)}
-          route="/profile/delete/complete" // 실제 경로 맞춰주기
+          route="/profile/delete/complete"
+          cancelRoute="/profile"
         />
       )}
       <section className="px-3 py-3 flex flex-col gap-6 box-border">
@@ -71,8 +72,7 @@ export default function ConfirmDeleteAccountPage() {
           <Button
             size="L"
             className="!bg-white border border-primary !text-primary"
-            onClick={() => navigate(-1)}
-          >
+            onClick={() => navigate("/profile")}>
             취소하기
           </Button>
           <Button size="L" onClick={handleDeleteButton}>
