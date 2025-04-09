@@ -1,4 +1,3 @@
-import Pallette from "@/shared/components/user/Pallette";
 import Button from "@/shared/components/buttons/Button";
 import MyCollectionContainer from "@/features/mymuseum/mycollection/MyCollectionContainer";
 import MyCommentsContainer from "@/features/mymuseum/mycomments/MyCommentsContainer";
@@ -7,8 +6,30 @@ import masterpieces from "@/assets/masterpieces";
 import { useState } from "react";
 import Modal from "@/shared/components/modal/Modal";
 import { useNavigate } from "react-router";
+import level0 from "@/assets/levels/level_0.svg";
+import level1 from "@/assets/levels/level_1.svg";
+import level2 from "@/assets/levels/level_2.svg";
+import level3 from "@/assets/levels/level_3.svg";
+import level4 from "@/assets/levels/level_4.svg";
+import level5 from "@/assets/levels/level_5.svg";
+import { Level } from "./type";
+import useProfile from "./useProfile";
+import { useQuery } from "@tanstack/react-query";
+
+const levelImages = [level0, level1, level2, level3, level4, level5];
+
+function getLevelImage(level: Level) {
+  return levelImages[level];
+}
 
 export default function ConfirmDeleteAccountPage() {
+  const { getProfile } = useProfile();
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  });
+
   const shuffled = shuffle(masterpieces).slice(0, 4);
 
   const myCollectionImages = shuffled.slice(0, 2).map((item) => ({
@@ -33,6 +54,38 @@ export default function ConfirmDeleteAccountPage() {
     setIsDeleteBtnClicked(true);
   }
 
+  let content;
+
+  if (isLoading) {
+    content = (
+      <p className="text-primary flex justify-center items-center">
+        로딩 중입니다....
+      </p>
+    );
+  } else if (!data) {
+    content = (
+      <p className="text-primary flex justify-center items-center">
+        회원 등급을 불러오는 중입니다....
+      </p>
+    );
+  } else if (isError) {
+    content = (
+      <p className="text-primary flex justify-center items-center">
+        회원 등급 조회 중 오류가 발생했습니다.
+      </p>
+    );
+  } else {
+    content = (
+      <>
+        <img
+          className="w-full h-full"
+          src={getLevelImage(Number(data!.grade) as Level)}
+          alt="level"
+        />
+      </>
+    );
+  }
+
   return (
     <>
       {isDeleteBtnClicked && (
@@ -55,7 +108,7 @@ export default function ConfirmDeleteAccountPage() {
 
         <div className="flex flex-col gap-3">
           <p className="text-sm font-normal">탈퇴하면 등급이 사라져요</p>
-          <Pallette />
+          {content}
         </div>
 
         <div className="flex flex-col gap-3">
