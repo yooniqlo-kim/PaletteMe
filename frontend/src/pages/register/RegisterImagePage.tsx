@@ -32,27 +32,58 @@ export default function RegisterImagePage() {
     trigger,
     formState: { errors, isSubmitting, isValid },
   } = useForm<FormValues>({ mode: "onChange" });
+
   const [imagePreview, setImagePreview] = useState<string | null>();
   const [nicknameMsg, setNicknameMsg] = useState<string>();
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
+  const [isImageValid, setIsImageValid] = useState<boolean>(true);
+  const [nnCheckLoading, setNnCheckLoading] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const image = watch("image");
+  const watchNickname = watch("nickname");
+
+  const { showToast } = useToast();
   usePrefetchRecommendArtworks();
 
-  const [nnCheckLoading, setNnCheckLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const MAX_IMAGE_SIZE_MB = 5;
 
   const imageRegister = register("image", {
     onChange: (e) => {
       const file = e.target.files?.[0];
+
       if (file) {
+        const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+        const maxSize = MAX_IMAGE_SIZE_MB * 1024 * 1024;
+
+        if (!allowedTypes.includes(file.type)) {
+          showToast({
+            message: "JPG 또는 PNG 파일만 업로드 가능합니다.",
+            type: "error",
+          });
+          setIsImageValid(false);
+          setImagePreview(defaultImg);
+          return;
+        }
+
+        if (file.size > maxSize) {
+          showToast({
+            message: `이미지 용량은 ${MAX_IMAGE_SIZE_MB}MB 이하로 업로드해주세요.`,
+            type: "error",
+          });
+          setIsImageValid(false);
+          setImagePreview(defaultImg);
+          return;
+        }
+
         const objectUrl = URL.createObjectURL(file);
         setImagePreview(objectUrl);
+        setIsImageValid(true);
+      } else {
+        setIsImageValid(true);
       }
     },
   });
-
-  const image = watch("image");
-  const watchNickname = watch("nickname");
-  const { showToast } = useToast();
 
   useEffect(() => {
     if (image && image.length > 0) {
@@ -69,7 +100,7 @@ export default function RegisterImagePage() {
   }
 
   async function handleCheckNickname() {
-    const isValid = trigger("nickname");
+    const isValid = await trigger("nickname");
 
     if (!isValid) return;
 
@@ -78,7 +109,7 @@ export default function RegisterImagePage() {
       const response = await checkNickname({ nickname: watchNickname });
       const { success, errorMsg } = response.data;
       setNicknameMsg(success ? "유효한 닉네임입니다." : errorMsg);
-      setIsNicknameValid(success ? true : false);
+      setIsNicknameValid(success);
     } catch (error) {
       showToast({
         message: "닉네임 중복 체크 중 오류가 발생했습니다.",
@@ -99,6 +130,7 @@ export default function RegisterImagePage() {
     );
     navigate("/signup/artwork");
   }
+
   return (
     <FormWrapper>
       <form
@@ -118,7 +150,7 @@ export default function RegisterImagePage() {
         <input
           id="image"
           type="file"
-          accept="image/*"
+          accept="image/jpeg, image/jpg, image/png"
           className="hidden"
           {...imageRegister}
           ref={(e) => {
@@ -160,7 +192,9 @@ export default function RegisterImagePage() {
         </InputContainer>
         <Button
           size="L"
-          disabled={!isNicknameValid || !isValid || isSubmitting}>
+          disabled={
+            !isNicknameValid || !isValid || isSubmitting || !isImageValid
+          }>
           다음으로
         </Button>
       </form>
