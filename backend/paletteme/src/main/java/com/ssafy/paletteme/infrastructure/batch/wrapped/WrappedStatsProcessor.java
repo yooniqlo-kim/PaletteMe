@@ -46,6 +46,7 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
         int reviewRank = 0;
         int reviewCnt = 0;
         int reviewPercentage = 0;
+
         if (rank != null) {
             reviewCnt = rank.get(1, Long.class).intValue();
 
@@ -55,19 +56,18 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
                     .sorted(Comparator.reverseOrder())
                     .toList();
 
-            reviewRank = sortedReviewCounts.indexOf(reviewCnt) + 1;
-
-            int max = sortedReviewCounts.get(0);
-            int min = sortedReviewCounts.get(sortedReviewCounts.size() - 1);
-
-            if (max == min) {
-                reviewPercentage = 100; // 모든 유저가 동일한 수의 리뷰를 썼다면 100%
-            } else {
-                // 적게 쓸수록 퍼센트 높고, 많이 쓸수록 퍼센트 낮게
-                reviewPercentage = (int) Math.round(((double) (max - reviewCnt) / (max - min)) * 99) + 1;
+            // 순서대로 등수 부여 (동점이어도 무조건 다음 등수)
+            reviewRank = 0;
+            for (int i = 0; i < sortedReviewCounts.size(); i++) {
+                if (sortedReviewCounts.get(i) == reviewCnt) {
+                    reviewRank = i + 1;
+                    break;
+                }
             }
-        }
 
+            int total = sortedReviewCounts.size();
+            reviewPercentage = (int) Math.round(((double) reviewRank / total) * 100);
+        }
         // --- 최애 작품 ---
         String favoriteName = null;
         String favoriteArtist = null;
