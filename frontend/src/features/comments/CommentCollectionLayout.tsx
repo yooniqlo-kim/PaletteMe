@@ -17,20 +17,20 @@ type Props = {
   isLoading?: boolean;
 };
 
-export function CommentCollectionLayout({ 
-  comments, 
-  artworks, 
-  title, 
-  view, 
+export function CommentCollectionLayout({
+  comments,
+  artworks,
+  title,
+  view,
   onViewChange,
   onLikeChange,
   onLoadMore,
-  isLoading = false
+  isLoading = false,
 }: Props) {
   return (
-    <div className="min-h-screen pb-28">
-      <header className="px-4 py-4 flex justify-between items-center">
-        <h1 className="text-lg font-bold px-3">{title}</h1>
+    <div className="min-h-screen pb-4">
+      <header className="flex items-center justify-between px-4 py-4">
+        <h1 className="px-3 text-lg font-bold">{title}</h1>
         <ViewToggleTab value={view} onChange={onViewChange} />
       </header>
 
@@ -40,17 +40,19 @@ export function CommentCollectionLayout({
         ) : (
           <CommentTicketSkeleton />
         )
+      ) : view === "list" ? (
+        <CommentListView
+          comments={comments}
+          artworks={artworks}
+          onLikeChange={onLikeChange}
+        />
       ) : (
-        view === "list" ? (
-          <CommentListView comments={comments} artworks={artworks} onLikeChange={onLikeChange} />
-        ) : (
-          <CommentTicketView 
-            comments={comments} 
-            artworks={artworks} 
-            onLikeChange={onLikeChange} 
-            onLoadMore={onLoadMore}
-          />
-        )
+        <CommentTicketView
+          comments={comments}
+          artworks={artworks}
+          onLikeChange={onLikeChange}
+          onLoadMore={onLoadMore}
+        />
       )}
     </div>
   );
