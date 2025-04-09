@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import useToast from "@/shared/hooks/useToast";
-import { inactiveAPI, login } from "@/shared/api/auth";
+import { inactiveAPI, login, logoutAPI } from "@/shared/api/auth";
 import { UserType } from "./type";
 import { useMutation } from "@tanstack/react-query";
 
@@ -41,10 +41,16 @@ export function useAuth() {
     return user && token;
   }
 
-  function logout() {
-    sessionStorage.clear();
-    navigate("/login");
-    showToast({ message: "로그아웃되었습니다.", type: "success" });
+  async function logout() {
+    const data = await logoutAPI();
+    const { success, errorMsg } = data;
+    if (success) {
+      sessionStorage.clear();
+      navigate("/login");
+      showToast({ message: "로그아웃되었습니다.", type: "success" });
+    } else {
+      showToast({ message: errorMsg || "로그아웃 실패", type: "error" });
+    }
   }
 
   function getUserMeta(): UserType {
@@ -64,7 +70,6 @@ export function useAuth() {
         });
       } else {
         sessionStorage.clear();
-        navigate("/login");
         showToast({ message: "회원 탈퇴가 완료되었습니다.", type: "success" });
       }
     },

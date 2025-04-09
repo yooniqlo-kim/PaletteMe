@@ -1,6 +1,7 @@
 import { UserFormData } from "@/store/formSlice";
 import axios, { AxiosResponse } from "axios";
 import { BASE_URL } from "./baseUrl";
+import { api } from "./core";
 
 const AUTH_BASE_URL = `${BASE_URL}/users`;
 
@@ -33,6 +34,11 @@ export async function login(data: { id: string; password: string }) {
     }
   );
   return response;
+}
+
+export async function logoutAPI() {
+  const response = await api.post(`${AUTH_BASE_URL}/logout`);
+  return response.data;
 }
 
 export async function signup(data: UserFormData) {
@@ -77,7 +83,7 @@ export async function signup(data: UserFormData) {
 }
 
 export async function inactiveAPI() {
-  const response = await axios.post(`${AUTH_BASE_URL}/inactive`);
+  const response = await api.post(`${AUTH_BASE_URL}/inactive`);
 
   return response.data;
 }
