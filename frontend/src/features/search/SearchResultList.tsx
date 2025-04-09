@@ -114,23 +114,27 @@ export default function SearchResultList({
         </p>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
-        {data.map((artwork, idx) => {
-          const isLast = idx === data.length - 1;
-          const isLiked = likedArtworks.includes(artwork.artworkId);
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      {data.map((artwork, idx) => {
+        const isLast = idx === data.length - 1;
+        const isLiked = likedArtworks.includes(artwork.artworkId);
 
-          return (
-            <div key={artwork.artworkId} ref={isLast ? observerRef : null}>
-              <SearchResultCard
-                artwork={{ ...artwork, isLiked }}
-                onClick={() => onCardClick(artwork.artworkId)}
-                onClickLike={() => handleCardLike(artwork.artworkId)}
-                disabled={false}
-              />
-            </div>
-          );
-        })}
-      </div>
+        return (
+          <div
+            key={artwork.artworkId}
+            ref={isLast ? observerRef : null}
+            className="w-full max-w-[180px] mx-auto"
+          >
+            <SearchResultCard
+              artwork={{ ...artwork, isLiked }}
+              onClick={() => onCardClick(artwork.artworkId)}
+              onClickLike={() => handleCardLike(artwork.artworkId)}
+              disabled={false}
+            />
+          </div>
+        );
+      })}
+    </div>
     </>
   );
 }

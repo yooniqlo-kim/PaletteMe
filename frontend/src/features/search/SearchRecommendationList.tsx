@@ -16,22 +16,22 @@ export default function SearchRecommendationList({ data }: Props) {
   };
 
   return (
-<div className="grid grid-cols-2 gap-4">
-  {data.map((artwork) => {
-    const title = artwork.korTitle || artwork.originalTitle;
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      {data.map((artwork) => {
+        const title = artwork.korTitle || artwork.originalTitle;
+        return (
+          <div key={artwork.artworkId} className="w-full max-w-[180px] mx-auto">
+            <SearchRecommendationCard
+              imageUrl={artwork.imageUrl ?? ""}
+              overlayText={title}
+              isLiked={artwork.isLiked}
+              onClick={() => handleCardClick(title)}
+            />
+          </div>
+        );
+      })}
+    </div>
 
-    return (
-        <div key={artwork.artworkId} className="w-[180px]">
-          <SearchRecommendationCard
-            imageUrl={artwork.imageUrl ?? ""}
-            overlayText={title}
-            isLiked={artwork.isLiked}
-            onClick={() => handleCardClick(title)}
-          />
-        </div>
-      );
-    })}
-  </div>
   );
 }
 

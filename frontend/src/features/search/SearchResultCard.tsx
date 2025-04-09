@@ -37,13 +37,13 @@ export default function SearchResultCard({
   };
 
   return (
-    <div className="relative w-[180px] h-[180px]">
+    <div className="relative w-full aspect-[1/1]">
       {!imageLoaded && (
         <div className="absolute inset-0 z-0">
           <ArtworkCardSkeleton size="small" />
         </div>
       )}
-
+  
       <div
         className={`absolute inset-0 transition-opacity duration-300 ${
           imageLoaded ? "opacity-100" : "opacity-0"
@@ -63,4 +63,5 @@ export default function SearchResultCard({
       </div>
     </div>
   );
+  
 }
