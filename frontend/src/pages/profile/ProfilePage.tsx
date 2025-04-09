@@ -73,11 +73,13 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className="px-3 py-3 flex flex-col gap-10 box-border">
+    <section className="px-4 py-3 flex flex-col gap-10 box-border">
       {content}
       <Menu />
-      <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center">
-        <button onClick={logout}>로그아웃</button>
+      <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center ">
+      <button onClick={logout} className="cursor-pointer">
+        로그아웃
+      </button>
         <span>|</span>
         <Link to="delete">회원 탈퇴</Link>
       </div>

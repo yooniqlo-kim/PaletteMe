@@ -12,6 +12,7 @@ export default function CommentMyPage() {
   const [cursor, setCursor] = useState<number | undefined>(undefined);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [view, setView] = useState<"list" | "ticket">("list");
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const fetch = useCallback(async () => {
@@ -43,8 +44,10 @@ export default function CommentMyPage() {
   }, [cursor, loading, hasMore]);
 
   useEffect(() => {
-    fetch();
-  }, []);
+    if (comments.length === 0 && hasMore) {
+      fetch();
+    }
+  }, [fetch, comments.length, hasMore, view]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -64,15 +67,38 @@ export default function CommentMyPage() {
     };
   }, [fetch]);
   
+  const handleViewChange = (newView: "list" | "ticket") => {
+    setView(newView);
+    setComments([]);
+    setArtworks({});
+    setCursor(undefined);
+    setHasMore(true);
+  };
+
+  const handleLikeChange = (commentId: string, isLiked: boolean) => {
+    setComments(prev => 
+      prev.map(comment => 
+        comment.commentId === commentId 
+          ? { ...comment, isLiked, likeCount: isLiked ? comment.likeCount + 1 : comment.likeCount - 1 } 
+          : comment
+      )
+    );
+  };
+  
   return (
     <>
       <CommentCollectionLayout
         comments={comments}
         artworks={artworks}
         title="나의 감상문"
+        view={view}
+        onViewChange={handleViewChange}
+        onLikeChange={handleLikeChange}
+        onLoadMore={fetch}
+        isLoading={loading && comments.length === 0}
       />
-      <div ref={observerRef} className="w-full h-10" />
-      {loading && (
+      {view === "list" && <div ref={observerRef} className="w-full h-10" />}
+      {loading && comments.length > 0 && (
         <p className="text-sm text-neutral-500 text-center py-2">
           불러오는 중...
         </p>

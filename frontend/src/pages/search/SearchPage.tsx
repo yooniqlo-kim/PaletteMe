@@ -123,7 +123,7 @@ export default function SearchPage() {
 
   // 일반 검색 페이지 (검색창 포함)
   return (
-    <div className="px-4 py-6 pb-[5rem]">
+    <div className="px-4 py-4 pb-[3rem]">
       <SearchContainer
         value={searchValue}
         onChange={handleSearchChange}
@@ -136,7 +136,6 @@ export default function SearchPage() {
           <SearchResultList
             data={searchResult}
             onCardClick={handleCardClick}
-            onCardLike={toggleLike}
             query={query}
             isLoading={isLoading}
             error={error}

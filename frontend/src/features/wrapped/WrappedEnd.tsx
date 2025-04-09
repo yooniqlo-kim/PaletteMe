@@ -5,6 +5,7 @@ import { ArtworkCard } from '@/shared/components/artworks/ArtworkCard';
 import { Recommendation } from '@/shared/types/api/wrapped';
 import DownloadButton from '@shared/components/buttons/DownloadButton';
 import { getWrappedMonthString } from "@/shared/utils/date";
+import MainLogo from '@/assets/logos/MainLogo_142x24.svg';
 
 interface WrappedEndProps {
   reviewCount: number;
@@ -146,11 +147,11 @@ export default function WrappedEnd({
               className="pt-4 border-t flex justify-between items-center text-sm"
               style={{ borderTop: "1px solid #d3d3d3", color: "#5e5e5e" }}
             >
-              <img
-                src="/src/assets/logos/MainLogo_142x24.svg"
-                alt="PaletteMe"
-                style={{ width: "142px", height: "20px" }}
-              />
+            <img
+              src={MainLogo}
+              alt="PaletteMe"
+              style={{ width: "142px", height: "20px" }}
+            />
               <span>{getWrappedMonthString()} Wrapped</span>
             </div>
 
