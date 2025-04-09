@@ -1,4 +1,5 @@
-# Dockerfile
-ARG VERSION
-FROM docker.elastic.co/elasticsearch/elasticsearch:${VERSION}
-RUN elasticsearch-plugin install analysis-nori
+# backend/paletteme/Dockerfile
+FROM openjdk:17
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+CMD ["java", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
