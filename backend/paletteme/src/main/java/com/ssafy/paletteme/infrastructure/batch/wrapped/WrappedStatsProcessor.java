@@ -46,6 +46,7 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
         int reviewRank = 0;
         int reviewCnt = 0;
         int reviewPercentage = 0;
+
         if (rank != null) {
             reviewCnt = rank.get(1, Long.class).intValue();
 
@@ -55,18 +56,19 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
                     .sorted(Comparator.reverseOrder())
                     .toList();
 
-            reviewRank = sortedReviewCounts.indexOf(reviewCnt) + 1;
-
-            int max = sortedReviewCounts.get(0);
-            int min = sortedReviewCounts.get(sortedReviewCounts.size() - 1);
-
-            if (max == min) {
-                reviewPercentage = 100; // 모든 유저가 동일한 수의 리뷰를 썼다면 100%
-            } else {
-                // 적게 쓸수록 퍼센트 높고, 많이 쓸수록 퍼센트 낮게
-                reviewPercentage = (int) Math.round(((double) (max - reviewCnt) / (max - min)) * 99) + 1;
+            // 순서대로 등수 부여
+            reviewRank = 0;
+            for (int i = 0; i < sortedReviewCounts.size(); i++) {
+                if (sortedReviewCounts.get(i) == reviewCnt) {
+                    reviewRank = i + 1;
+                    break;
+                }
             }
+
+            int total = sortedReviewCounts.size();
+            reviewPercentage = (int) Math.round(((double) reviewRank / total) * 100);
         }
+
 
         // --- 최애 작품 ---
         String favoriteName = null;
@@ -91,10 +93,10 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
 
             if (chatResponse != null && chatResponse.getResult() != null && chatResponse.getResult().getOutput() != null) {
                 String gptRecommendArtwork = chatResponse.getResult().getOutput().getContent().trim();
-                System.out.println(gptRecommendArtwork);
+                System.out.println("GPT 추천 작품명: " + gptRecommendArtwork);
 
                 for (WrappedRecommendationDto dto : wrappedRecommendationDtoList) {
-                    if (dto.getArtwork().equalsIgnoreCase(gptRecommendArtwork)) {
+                    if (gptRecommendArtwork != null && dto.getArtwork().equalsIgnoreCase(gptRecommendArtwork)) {
                         recommendedArtwork = dto.getArtwork();
                         recommendedArtist = dto.getArtist();
                         recommendedImg = dto.getImageUrl();
@@ -102,7 +104,10 @@ public class WrappedStatsProcessor implements ItemProcessor<Integer, WrappedStat
                     }
                 }
             }
-        } else {
+        }
+
+        // 최애 작품이 없거나 동일 작품 추천 시.
+        if(recommendedArtwork == null|| recommendedArtwork.equals(favoriteName)){
             // 사용자 선호 작품이 없는 경우, 랜덤하게 추천
             WrappedRecommendationDto randomPick = wrappedRecommendationDtoList.get(
                     (int) (Math.random() * wrappedRecommendationDtoList.size())
