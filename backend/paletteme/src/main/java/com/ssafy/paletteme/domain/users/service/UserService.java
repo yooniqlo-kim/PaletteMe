@@ -1,6 +1,5 @@
 package com.ssafy.paletteme.domain.users.service;
 
-import co.elastic.clients.elasticsearch.security.User;
 import com.ssafy.paletteme.common.redis.RedisService;
 import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeRepository;
 import com.ssafy.paletteme.domain.artworks.service.command.ArtworkLikeCommandService;
@@ -10,6 +9,7 @@ import com.ssafy.paletteme.domain.users.entity.*;
 import com.ssafy.paletteme.domain.users.exception.UserError;
 import com.ssafy.paletteme.domain.users.exception.UserException;
 import com.ssafy.paletteme.domain.users.repository.*;
+import com.ssafy.paletteme.domain.users.utils.AESUtil;
 import com.ssafy.paletteme.domain.users.utils.S3Util;
 import com.ssafy.paletteme.domain.users.utils.SmsCertificationUtil;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
+    private final AESUtil aesUtil;
     private final SmsCertificationUtil smsCertificationUtil;
     private final RedisService redisService;
 
@@ -52,7 +53,6 @@ public class UserService {
     @Transactional
     public void signUp(UserSignupRequest userSignupRequest, MultipartFile file) {
         // 아이디 UNIQUE 확인
-
         if (usersRepository.existsByLoginId(userSignupRequest.getId())) {
             throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_ID);
         }
@@ -63,12 +63,15 @@ public class UserService {
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(userSignupRequest.getPassword());
 
+        // 휴대폰 번호 암호화
+        String encodedPhoneNumber = aesUtil.encrypt(userSignupRequest.getPhoneNumber());
+
         // UsersGrade에서 회원 가입 시 사용할 디폴트 값 가져오기
         UsersGrade initialGrade = usersGradeRepository.findById(1)
                 .orElseThrow(() -> new UserException(UserError.SIGNUP_USERS_GRADE));
 
         // User 저장하기
-        Users users = usersRepository.save(userSignupRequest.toEntity(s3Url, encodedPassword, initialGrade));
+        Users users = usersRepository.save(userSignupRequest.toEntity(s3Url, encodedPassword, initialGrade, encodedPhoneNumber));
 
         // 색상 정보 users_favorite_color에 저장하기
         List<UsersFavoriteColor> favoriteColorList = userSignupRequest.getColor().stream()
@@ -236,4 +239,3 @@ public class UserService {
         return list;
     }
 }
-// TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기
