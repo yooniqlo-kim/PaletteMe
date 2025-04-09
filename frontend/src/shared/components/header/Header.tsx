@@ -19,7 +19,7 @@ export default function Header() {
       ) : (
         <button
           onClick={() => navigate(-1)}
-          className="w-[2.625rem] h-[2.625rem] flex items-center justify-center"
+          className="w-[2.625rem] h-[2.625rem] flex items-center justify-center cursor-pointer"
         >
           <IconBack />
         </button>
