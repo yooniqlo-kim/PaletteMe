@@ -178,7 +178,7 @@ export default function RegisterInfoPage() {
               })}
               id="password"
               type="password"
-              placeholder="비밀번호를 입력해주세요 (8자 이상)"
+              placeholder="비밀번호를 입력해주세요 (8자 이상 16자 이하)"
               fallback={errors.password?.message}
             />
           </InputContainer>
