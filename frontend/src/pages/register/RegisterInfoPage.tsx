@@ -148,8 +148,8 @@ export default function RegisterInfoPage() {
                       message: "아이디는 영문자만 입력 가능합니다.",
                     },
                     maxLength: {
-                      value: 20,
-                      message: "ID는 20자 이하로 입력해주세요.",
+                      value: 10,
+                      message: "ID는 10자 이하로 입력해주세요.",
                     },
                   })}
                   id="id"
