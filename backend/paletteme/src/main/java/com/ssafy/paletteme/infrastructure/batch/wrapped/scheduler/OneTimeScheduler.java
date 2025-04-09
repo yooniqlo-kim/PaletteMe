@@ -40,7 +40,7 @@ public class OneTimeScheduler {
     @EventListener(ApplicationReadyEvent.class)
     public void scheduleOneTimeTask() {
         taskScheduler.schedule(this::runTaskOnce,
-                new Date(System.currentTimeMillis() + 3 * 60 * 1000)); // 1분 후
+                new Date(System.currentTimeMillis() + 60 * 1000)); // 1분 후
     }
 
     private void runTaskOnce() {
