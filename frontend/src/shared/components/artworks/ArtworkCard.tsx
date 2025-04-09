@@ -121,7 +121,7 @@ export const ArtworkCard = ({
             onClickLike();
           }}
           disabled={disabled}
-          className="absolute bottom-2 right-2 z-10"
+          className="absolute bottom-2 right-2 z-10 cursor-pointer"
         >
           {size === "small" ? (
             <IconRedHeart isClicked={isLiked} />
