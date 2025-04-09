@@ -18,9 +18,10 @@ type FormValues = {
   nickname: string;
 };
 
+const MAX_IMAGE_SIZE_MB = 5;
+
 export default function RegisterImagePage() {
   const { updateUserInfo, getProfile } = useProfile();
-
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
@@ -39,23 +40,51 @@ export default function RegisterImagePage() {
     data?.userImageUrl
   );
   const [nicknameMsg, setNicknameMsg] = useState<string>();
-  const [isImageClicked, setIsImageClicked] = useState(false);
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isImageValid, setIsImageValid] = useState<boolean>(true);
+
+  const { showToast } = useToast();
 
   const imageRegister = register("image", {
     onChange: (e) => {
       const file = e.target.files?.[0];
       if (file) {
+        const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+        const maxSize = MAX_IMAGE_SIZE_MB * 1024 * 1024;
+
+        if (!allowedTypes.includes(file.type)) {
+          showToast({
+            message: "JPG 또는 PNG 파일만 업로드 가능합니다.",
+            type: "error",
+          });
+          setIsImageValid(false);
+          setImagePreview(undefined);
+          return;
+        }
+
+        if (file.size > maxSize) {
+          showToast({
+            message: `이미지 용량은 ${MAX_IMAGE_SIZE_MB}MB 이하로 업로드해주세요.`,
+            type: "error",
+          });
+          setIsImageValid(false);
+          setImagePreview(defaultImg);
+          return;
+        }
+
         const objectUrl = URL.createObjectURL(file);
-        setIsImageClicked(true);
         setImagePreview(objectUrl);
+        setIsImageValid(true);
+      } else {
+        setIsImageValid(true);
       }
     },
   });
 
   const watchNickname = watch("nickname");
-  const { showToast } = useToast();
+  const watchImage = watch("image");
+  const isImageSelected = watchImage && watchImage.length > 0;
 
   useEffect(() => {
     if (data?.nickname) {
@@ -95,10 +124,11 @@ export default function RegisterImagePage() {
   const isNicknameChanged = watchNickname !== data?.nickname;
 
   const isSubmitDisabled =
+    !isImageValid ||
     (isNicknameChanged && !isNicknameValid) ||
     !isValid ||
     isSubmitting ||
-    (!isNicknameChanged && !isImageClicked);
+    (!isNicknameChanged && !isImageSelected);
 
   return (
     <section className="flex px-7">
