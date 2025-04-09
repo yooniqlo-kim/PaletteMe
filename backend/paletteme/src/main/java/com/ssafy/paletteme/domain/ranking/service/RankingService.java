@@ -23,7 +23,7 @@ public class RankingService {
     @Scheduled(cron = "0 0 * * * *")
     public void updateRankingCache() {
         List<String> topRanking = rankingRepository.findTop10Ranking();
-        redisService.setObject(RANKING_CACHE_KEY, topRanking, Duration.ofHours(1));
+        redisService.setObject(RANKING_CACHE_KEY, topRanking, Duration.ofHours(2));
     }
 
     // ✅ 서버 실행 시 1회 자동 실행
