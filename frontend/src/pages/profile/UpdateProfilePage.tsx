@@ -181,7 +181,7 @@ export default function RegisterImagePage() {
                 })}
                 id="nickname"
                 type="text"
-                placeholder="2자 이상 20자 이하로 입력해주세요"
+                placeholder="2자 이상 8자 이하로 입력해주세요"
                 fallback={errors.nickname && errors.nickname.message}
               />
               {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
