@@ -1,0 +1,118 @@
+version: "3.8"
+
+services:
+  airflow-webserver:
+    build:
+      context: ./airflow
+      dockerfile: Dockerfile
+    container_name: airflow-webserver
+    restart: always
+    ports:
+      - "8081:8080"
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__FERNET_KEY: ${FERNET_KEY}
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+      TZ: Asia/Seoul
+      AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Seoul
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+      - ./airflow/config/hadoop:/opt/hadoop/etc/hadoop
+    depends_on:
+      - airflow-db
+    networks:
+      - hadoopnet
+
+  airflow-scheduler:
+    build:
+      context: ./airflow
+      dockerfile: Dockerfile
+    container_name: airflow-scheduler
+    restart: always
+    command: scheduler
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-db:5432/airflow
+      AIRFLOW__CORE__FERNET_KEY: ${FERNET_KEY}
+      TZ: Asia/Seoul
+      AIRFLOW__CORE__DEFAULT_TIMEZONE: Asia/Seoul
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./airflow/plugins:/opt/airflow/plugins
+    depends_on:
+      - airflow-webserver
+    networks:
+      - hadoopnet
+
+  airflow-db:
+    image: postgres:13
+    container_name: airflow-db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_USER}
+      - POSTGRES_DB=airflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - hadoopnet
+
+  hadoop-master:
+    image: hadoop-spark:3.4.1
+    container_name: hadoop-master
+    hostname: hadoop-master
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+      - "8088:8088"
+      - "7077:7077"
+      - "6066:6066"
+      - "8080:8080"
+      - "18080:18080"
+      - "8888:8888"
+      - "4040:4040"
+    volumes:
+      - ./spark-events:/tmp/spark-events
+      - ./notebooks:/root/notebooks
+    networks:
+      - hadoopnet
+    tty: true
+    stdin_open: true
+
+  worker1:
+    image: hadoop-spark:3.4.1
+    container_name: worker1
+    hostname: worker1
+    depends_on:
+      - hadoop-master
+    networks:
+      - hadoopnet
+
+  worker2:
+    image: hadoop-spark:3.4.1
+    container_name: worker2
+    hostname: worker2
+    depends_on:
+      - hadoop-master
+    networks:
+      - hadoopnet
+
+  worker3:
+    image: hadoop-spark:3.4.1
+    container_name: worker3
+    hostname: worker3
+    depends_on:
+      - hadoop-master
+    networks:
+      - hadoopnet
+
+volumes:
+  postgres_data:
+
+networks:
+  hadoopnet:
+    driver: bridge

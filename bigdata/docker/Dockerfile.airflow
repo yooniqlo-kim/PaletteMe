@@ -1,0 +1,57 @@
+FROM apache/airflow:2.8.1-python3.10
+
+USER root
+
+# 1. 필수 패키지 설치
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    curl wget net-tools vim iputils-ping software-properties-common gnupg && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# 2. Java 8 설치 (Spark, Hadoop 실행용)
+RUN curl -L -o /tmp/openjdk8.tar.gz https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u392-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u392b08.tar.gz && \
+    mkdir -p /opt/java && \
+    tar -xvzf /tmp/openjdk8.tar.gz -C /opt/java --strip-components=1 && \
+    rm /tmp/openjdk8.tar.gz
+
+ENV JAVA_HOME=/opt/java
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# 3. Hadoop 클라이언트 설치
+ENV HADOOP_VERSION=3.3.6
+RUN wget https://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz && \
+    tar -xvzf hadoop-${HADOOP_VERSION}.tar.gz -C /opt && \
+    mv /opt/hadoop-${HADOOP_VERSION} /opt/hadoop && \
+    rm hadoop-${HADOOP_VERSION}.tar.gz
+
+ENV HADOOP_HOME=/opt/hadoop
+ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+ENV PATH=$PATH:$HADOOP_HOME/bin
+
+# 4. Spark 클라이언트 설치
+ENV SPARK_VERSION=3.4.1
+ENV HADOOP_FOR_SPARK=3
+RUN wget https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_FOR_SPARK}.tgz && \
+    tar -xvzf spark-${SPARK_VERSION}-bin-hadoop${HADOOP_FOR_SPARK}.tgz -C /opt && \
+    mv /opt/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_FOR_SPARK} /opt/spark && \
+    rm spark-${SPARK_VERSION}-bin-hadoop${HADOOP_FOR_SPARK}.tgz
+
+ENV SPARK_HOME=/opt/spark
+ENV PATH=$PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
+ENV PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-*-src.zip
+
+# 5. requirements.txt 설치 (findspark, pyspark 등)
+COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
+
+# 6. DAG 및 Hadoop 설정 파일 복사
+COPY dags /opt/airflow/dags
+COPY config/hadoop /opt/hadoop/etc/hadoop
+
+# 7. 권한 정리 후 airflow 사용자로 전환
+RUN chown -R airflow:airflow /opt/hadoop /opt/java /opt/spark /opt/airflow
+USER airflow
+
+# 8. 기본 entrypoint 유지
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["webserver"]
