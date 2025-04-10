@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import useToast from "@/shared/hooks/useToast";
 import { inactiveAPI, login, logoutAPI } from "@/shared/api/auth";
-import { UserType } from "./type";
+import { UserType } from "../type/type";
 import { useMutation } from "@tanstack/react-query";
 
 export function useAuth() {

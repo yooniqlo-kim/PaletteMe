@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import Button from "@/shared/components/buttons/Button";
 import Input from "@/shared/components/form/Input";
 import { useForm } from "react-hook-form";

@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import CompletedForm from "@/shared/components/form/CompletedForm";
 import { useEffect } from "react";
 
