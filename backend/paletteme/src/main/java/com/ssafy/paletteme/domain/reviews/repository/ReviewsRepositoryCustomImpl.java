@@ -1,6 +1,7 @@
 package com.ssafy.paletteme.domain.reviews.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.paletteme.domain.artworks.entity.QArtists;
 import com.ssafy.paletteme.domain.artworks.entity.QArtworks;
@@ -65,7 +66,8 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                         reviews.createdAt.stringValue(),
                         reviews.content,
                         reviews.likeCnt,
-                        usersReviewLike.isNotNull() // 좋아요 여부
+                        usersReviewLike.isNotNull(), // 좋아요 여부
+                        reviews.isPublic
                 ))
                 .from(reviews)
                 .join(reviews.user, users)
@@ -74,10 +76,15 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                         .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
                 .where(
                         reviews.artwork.artworkId.eq(artworkId),
-                        reviews.isPublic.eq(true),
+                        reviews.isPublic.eq(true).or(reviews.user.userId.eq(userId)),
                         cursor != null ? reviews.reviewId.lt(cursor.longValue()) : null
                 )
-                .orderBy(reviews.reviewId.desc())
+                .orderBy(
+                        new CaseBuilder()
+                                .when(reviews.user.userId.eq(userId)).then(1)
+                                .otherwise(0).desc(),
+                                reviews.reviewId.desc()
+                )
                 .limit(size)
                 .fetch();
     }
