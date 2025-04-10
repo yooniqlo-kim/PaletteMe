@@ -65,12 +65,12 @@ export default function RecommendationContainer() {
   
 
   return (
-    <div>
+    <div className="w-full max-w-[23.75rem] mx-auto px-4 max-[412px]:px-2">
       <RecommendedFilterChips
         selected={selectedFilter}
         onSelect={(value) => setSelectedFilter(value as RecommendationFilter)}
       />
-
+  
       <RecommendationArtworks
         key={selectedFilter}
         artworks={artworks}
