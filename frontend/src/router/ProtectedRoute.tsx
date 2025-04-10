@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import useToast from "@/shared/hooks/useToast";
 import { useEffect, useRef, useState } from "react";
 import { Navigate, Outlet } from "react-router";

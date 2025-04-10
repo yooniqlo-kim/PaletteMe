@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import Menu from "@/features/profile/Menu";
 import UserMeta from "@/features/profile/UserMeta";
 import UserProfile from "@/features/profile/UserProfile";
@@ -10,9 +10,9 @@ import level3 from "@/assets/levels/level_3.svg";
 import level4 from "@/assets/levels/level_4.svg";
 import level5 from "@/assets/levels/level_5.svg";
 
-import { Level } from "./type";
+import { Level } from "../../features/register/type/type";
 import { useQuery } from "@tanstack/react-query";
-import useProfile from "./useProfile";
+import useProfile from "../../features/profile/hooks/useProfile";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
 
@@ -77,9 +77,9 @@ export default function ProfilePage() {
       {content}
       <Menu />
       <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center ">
-      <button onClick={logout} className="cursor-pointer">
-        로그아웃
-      </button>
+        <button onClick={logout} className="cursor-pointer">
+          로그아웃
+        </button>
         <span>|</span>
         <Link to="delete">회원 탈퇴</Link>
       </div>
