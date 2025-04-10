@@ -75,43 +75,56 @@ export default function MymuseumPage() {
   };
 
   return (
-    <div className="px-4 pb-[1rem]">
-      <div className="max-w-screen-md mx-auto w-full">
-        <div className="py-4 mb-6">
+    <div className="w-full max-w-screen-md mx-auto px-4 max-[412px]:px-2 max-[412px]:max-w-[380px]">
+      <div className="max-w-screen-md mx-auto w-full scale-100 max-[412px]:scale-[0.95] transition-transform">
+  
+        {/* 주간 캘린더 */}
+        <div className="py-4 max-[412px]:py-3 mb-5 max-[412px]:mb-4">
           <WeeklyCalendar
             data={calendarData}
             isLoading={isLoading}
-            onClick={() => navigate("/mymuseum/calendar", { state: { reviews } })}
+            onClick={() =>
+              navigate("/mymuseum/calendar", { state: { reviews } })
+            }
           />
         </div>
-
-        <div className="mb-6 py-1">
-          <div className="text-[20px] leading-[1.5] font-semibold mb-2 text-black">
+  
+        {/* 추천 작품 */}
+        <div className="mb-6 max-[412px]:mb-3 py-1 max-[412px]:py-[0.3rem]">
+          <div className="text-[20px] max-[412px]:text-[17px] leading-[1.5] font-semibold mb-2 text-black">
             추천 작품
           </div>
-          <div style={{ color: "var(--color-neutral-8)" }}>
-            <span className="font-semibold">{nickname}</span>
-            님을 위한 추천 작품이에요.
+          <div className="text-[var(--color-neutral-8)] text-sm max-[412px]:text-xs">
+            <span className="font-semibold">{nickname}</span> 님을 위한 추천 작품이에요.
           </div>
           <RecommendationContainer />
         </div>
-
-        <div className="mb-6 py-2">
-          <div className="text-[20px] leading-[1.5] font-semibold mb-3">Wrapped</div>
+  
+        {/* Wrapped */}
+        <div className="mb-6 max-[412px]:mb-3 py-2 max-[412px]:py-[0.3rem]">
+          <div className="text-[20px] max-[412px]:text-[17px] leading-[1.5] font-semibold mb-3">
+            Wrapped
+          </div>
           <WrappedSummaryCard onClick={handleWrappedClick} />
         </div>
-
-        <div className="mb-6 py-2">
-          <div className="text-[20px] leading-[1.5] font-semibold mb-3">나의 컬렉션</div>
+  
+        {/* 나의 컬렉션 */}
+        <div className="mb-6 max-[412px]:mb-3 py-2 max-[412px]:py-[0.3rem]">
+          <div className="text-[20px] max-[412px]:text-[17px] leading-[1.5] font-semibold mb-3">
+            나의 컬렉션
+          </div>
           <MyCollectionContainer images={myCollectionImages} />
         </div>
-
-        <div className="mb-6 py-2">
-          <div className="text-[20px] leading-[1.5] font-semibold mb-3">감상문</div>
+  
+        {/* 감상문 */}
+        <div className="mb-6 max-[412px]:mb-3 py-2 max-[412px]:py-[0.3rem]">
+          <div className="text-[20px] max-[412px]:text-[17px] leading-[1.5] font-semibold mb-3">
+            감상문
+          </div>
           <MyCommentsContainer images={myCommentsImages} />
         </div>
       </div>
-
+  
       {isModalOpened && (
         <WrappedEmptyModal
           open={isModalOpened}
@@ -122,4 +135,5 @@ export default function MymuseumPage() {
       <Footer />
     </div>
   );
+  
 }
