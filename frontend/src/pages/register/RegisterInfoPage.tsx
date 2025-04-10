@@ -144,8 +144,9 @@ export default function RegisterInfoPage() {
                   {...register("id", {
                     required: "아이디는 필수값입니다.",
                     pattern: {
-                      value: /^[A-Za-z]+$/,
-                      message: "아이디는 영문자만 입력 가능합니다.",
+                      value: /^(?!\d+$)[A-Za-z0-9]+$/,
+                      message:
+                        "영문자 또는 영문자+숫자 조합만 사용할 수 있습니다.",
                     },
                     maxLength: {
                       value: 10,
@@ -227,6 +228,7 @@ export default function RegisterInfoPage() {
               min="1900"
               max={new Date().getFullYear()}
               fallback={errors.birthday?.message}
+              placeholder="2000"
             />
           </InputContainer>
 
