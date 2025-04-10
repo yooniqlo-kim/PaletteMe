@@ -53,20 +53,27 @@ public class UsersArtworksLikeRepositoryCustomImpl implements UsersArtworksLikeR
 
     @Override
     public List<String> findArtworksLikedByUsersWhoLiked(List<String> likedArtworkIds, int userId, List<String> excludedArtworkIds) {
+        // 유사 사용자의 ID를 조회 (내가 좋아한 작품을 좋아한 사용자, 현재 사용자 제외)
+        List<Integer> similarUserIds = queryFactory
+                .select(usersArtworksLike.user.userId)
+                .from(usersArtworksLike)
+                .where(
+                        usersArtworksLike.artwork.artworkId.in(likedArtworkIds)
+                                .and(usersArtworksLike.user.userId.ne(userId))
+                )
+                .distinct()
+                .fetch();
+
+        // 유사 사용자가 좋아한 작품 중, 내가 좋아한 작품을 제외한 목록을 조회
         return queryFactory
                 .select(usersArtworksLike.artwork.artworkId)
                 .from(usersArtworksLike)
                 .where(
-                        usersArtworksLike.artwork.artworkId.in(likedArtworkIds),
-                        usersArtworksLike.user.userId.ne(userId),
-                        excludedArtworkIds != null && !excludedArtworkIds.isEmpty()
-                                ? usersArtworksLike.artwork.artworkId.notIn(excludedArtworkIds)
-                                : null
+                        usersArtworksLike.user.userId.in(similarUserIds),
+                        usersArtworksLike.artwork.artworkId.notIn(likedArtworkIds)
                 )
                 .distinct()
                 .fetch();
     }
-
-
 
 }
