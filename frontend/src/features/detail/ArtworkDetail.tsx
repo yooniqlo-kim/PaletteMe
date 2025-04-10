@@ -50,17 +50,24 @@ export function ArtworkDetail({ artwork }: Props) {
     setLoadingComments(true);
 
     try {
-      const next = await getComments({
-        artworkId: artwork.artworkId,
-        cursor: cursor ?? undefined,
-        size: 5,
-      });
+      // 세션 스토리지에 닉네임 없으면 호출하지 않기
+      if (sessionStorage.getItem("user")) {
+        const userData: string = sessionStorage.getItem("user")!;
+        const { nickname } = JSON.parse(userData);
+        if (nickname) {
+          const next = await getComments({
+            artworkId: artwork.artworkId,
+            cursor: cursor ?? undefined,
+            size: 5,
+          });
 
-      if (next.length === 0) {
-        setHasMore(false); // 다음 요청 막기
-      } else {
-        setComments((prev) => [...prev, ...next]);
-        setCursor(Number(next[next.length - 1].commentId)); // 마지막 커서 갱신
+          if (next.length === 0) {
+            setHasMore(false); // 다음 요청 막기
+          } else {
+            setComments((prev) => [...prev, ...next]);
+            setCursor(Number(next[next.length - 1].commentId)); // 마지막 커서 갱신
+          }
+        }
       }
     } catch (error) {
       console.error("감상문 불러오기 실패:", error);
@@ -177,8 +184,7 @@ export function ArtworkDetail({ artwork }: Props) {
                 </IconButton>
                 <IconButton
                   identifier="bookmark"
-                  onClick={handleToggleBookmark}
-                >
+                  onClick={handleToggleBookmark}>
                   <IconBookmark
                     isClicked={isBookmarked}
                     className="transition-transform duration-300 active:scale-150"
