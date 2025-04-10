@@ -7,7 +7,10 @@ import { mapToArtworkDetail } from "@/shared/utils/mapToArtworkDetail";
 import { ArtworkDetailSkeleton } from "@/features/detail/ArtworkDetailSkeleton";
 
 export default function TodayArtsPage() {
-  const isLoggedIn = Boolean(sessionStorage.getItem("user"));
+  const isLoggedIn = JSON.parse(
+    sessionStorage.getItem("user") as string
+  ).nickname;
+  console.log("isLoggedIn?", isLoggedIn);
   const [artwork, setArtwork] = useState<ArtworkDetailData | null>(null);
   const [hasError, setHasError] = useState(false);
   const navigate = useNavigate();
