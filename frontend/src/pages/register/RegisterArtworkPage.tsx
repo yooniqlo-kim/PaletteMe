@@ -1,4 +1,4 @@
-import { useRecommendArtworks } from "@/features/register/useRecommendArtworks";
+import { useRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton";
 import Button from "@/shared/components/buttons/Button";
