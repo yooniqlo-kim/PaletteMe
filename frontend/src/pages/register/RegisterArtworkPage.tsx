@@ -1,5 +1,6 @@
-import { useRecommendArtworks } from "@/features/register/useRecommendArtworks";
+import { useRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
+import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton";
 import Button from "@/shared/components/buttons/Button";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import { updateField } from "@/store/formSlice";
@@ -51,9 +52,11 @@ export default function RegisterArtworkPage() {
           좋아하는 작품을 3개 선택해주세요
         </h2>
         {isFetching ? (
-          <div className="w-full flex justify-center items-center py-10">
-            <p className="text-primary">작품을 불러오는 중입니다.</p>
-          </div>
+          <ul className="grid grid-cols-2 gap-x-2 gap-y-4 w-full">
+            {Array.from({ length: 10 }).map((_, idx) => (
+              <ArtworkCardSkeleton key={idx} />
+            ))}
+          </ul>
         ) : (
           <ul className="grid grid-cols-2 gap-x-2 gap-y-4 w-full">
             {data.map((artwork: { artworkId: string; imageUrl: string }) => (

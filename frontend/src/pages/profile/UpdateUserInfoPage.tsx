@@ -3,7 +3,7 @@ import Input from "@/shared/components/form/Input";
 import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 import { useForm } from "react-hook-form";
-import useProfile from "./useProfile";
+import useProfile from "../../features/profile/hooks/useProfile";
 import { passwordValidation } from "@/shared/utils/verifyPassword";
 
 type FormValues = {
