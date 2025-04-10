@@ -5,6 +5,7 @@ export interface Recommendation {
 }
 
 export interface WrappedData {
+  artistName: string;
   favoriteArtwork: {
     title: string;   // favoriteName
     artist: string;  // favoriteArtist

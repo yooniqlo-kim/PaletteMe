@@ -61,9 +61,10 @@ export default function WrappedPage() {
   
 
   const {
-    favoriteArtwork,
+    artistName,
+    favoriteArtwork: favoriteArtworkData,
+    mostMemorableArtwork: mostMemorableArtworkData,
     reviewRank,
-    mostMemorableArtwork,
     review_based_recommendations = [],
   } = wrappedData;
 
@@ -74,19 +75,20 @@ export default function WrappedPage() {
           <WrappedStep
             currentStep={currentStep}
             onNext={handleNext}
-            artistName={favoriteArtwork.artist}
+            artistName={artistName}
             reviewCnt={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
             reviewRank={reviewRank.myRank}
-            favoriteArtwork={mostMemorableArtwork}
+            favoriteArtwork={favoriteArtworkData}
+            mostMemorableArtwork={mostMemorableArtworkData}
             recommendations={review_based_recommendations}
           />
         ) : (
           <WrappedEnd
             reviewCount={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
-            artistName={favoriteArtwork.artist}
-            favoriteArtwork={mostMemorableArtwork}
+            artistName={artistName}
+            favoriteArtwork={favoriteArtworkData} 
             recommendations={review_based_recommendations}
           />
         )}

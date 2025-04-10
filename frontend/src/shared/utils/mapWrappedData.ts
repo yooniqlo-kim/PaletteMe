@@ -47,6 +47,7 @@ export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedD
   }
 
   return {
+    artistName: apiData.artistName ?? '',
     favoriteArtwork: {
       title: apiData.favoriteName ?? '',
       artist: apiData.favoriteArtist ?? '',
@@ -58,11 +59,12 @@ export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedD
       reviewCount: apiData.reviewCnt ?? 0,
     },
     mostMemorableArtwork: {
-      title: apiData.favoriteName ?? '',
-      artist: apiData.favoriteArtist ?? '',
-      imgUrl: apiData.favoriteImg ?? '',
+      title: apiData.recommendedArtwork ?? '',  // ✅ 수정됨
+      artist: apiData.recommendedArtist ?? '',
+      imgUrl: apiData.recommendedImg ?? '',
     },
     review_based_recommendations: recommendations,
   };
 }
+
 
