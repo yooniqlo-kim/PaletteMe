@@ -12,8 +12,8 @@ import level2 from "@/assets/levels/level_2.svg";
 import level3 from "@/assets/levels/level_3.svg";
 import level4 from "@/assets/levels/level_4.svg";
 import level5 from "@/assets/levels/level_5.svg";
-import { Level } from "./type";
-import useProfile from "./useProfile";
+import { Level } from "../../features/register/type/type";
+import useProfile from "../../features/profile/hooks/useProfile";
 import { useQuery } from "@tanstack/react-query";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];

@@ -14,7 +14,7 @@ import { useNavigate } from "react-router";
 import { useFormDispatch } from "@/store/hooks";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
-import { usePrefetchRecommendArtworks } from "@/features/register/useRecommendArtworks";
+import { usePrefetchRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
 
 type FormValues = {
   image: FileList;

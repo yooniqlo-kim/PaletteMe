@@ -1,18 +1,19 @@
-import { useAuth } from "@/features/auth/useAuth";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import Menu from "@/features/profile/Menu";
 import UserMeta from "@/features/profile/UserMeta";
 import UserProfile from "@/features/profile/UserProfile";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import level0 from "@/assets/levels/level_0.svg";
 import level1 from "@/assets/levels/level_1.svg";
 import level2 from "@/assets/levels/level_2.svg";
 import level3 from "@/assets/levels/level_3.svg";
 import level4 from "@/assets/levels/level_4.svg";
 import level5 from "@/assets/levels/level_5.svg";
+import defaultImg from "@/assets/images/defaultProfile.png";
 
-import { Level } from "./type";
+import { Level } from "../../features/register/type/type";
 import { useQuery } from "@tanstack/react-query";
-import useProfile from "./useProfile";
+import useProfile from "../../features/profile/hooks/useProfile";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
 
@@ -54,18 +55,18 @@ export default function ProfilePage() {
     content = (
       <>
         <UserProfile
-          nickname={data!.nickname}
-          image={data!.userImageUrl}
-          level={Number(data!.grade) as Level}
+          nickname={data.nickname ?? "알 수 없음"}
+          image={data.userImageUrl ?? defaultImg}
+          level={Number(data.grade) as Level}
         />
         <UserMeta
-          review={data!.reviewCount}
-          like={data!.artworkLikeCount}
-          loggedIn={data!.attendance}
+          review={data.reviewCount ?? 0}
+          like={data.artworkLikeCount ?? 0}
+          loggedIn={data.attendance ?? 0}
         />
         <img
           className="w-full h-full"
-          src={getLevelImage(Number(data!.grade) as Level)}
+          src={getLevelImage(Number(data.grade) as Level) ?? 0}
           alt="level"
         />
       </>
@@ -77,9 +78,9 @@ export default function ProfilePage() {
       {content}
       <Menu />
       <div className="text-inactive font-[0.75rem] flex justify-center gap-1 items-center ">
-      <button onClick={logout} className="cursor-pointer">
-        로그아웃
-      </button>
+        <button onClick={logout} className="cursor-pointer">
+          로그아웃
+        </button>
         <span>|</span>
         <Link to="delete">회원 탈퇴</Link>
       </div>
