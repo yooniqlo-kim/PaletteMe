@@ -75,7 +75,7 @@ export default function MymuseumPage() {
   };
 
   return (
-    <div className="px-4 max-[412px]:px-2 pb-[1rem]">
+    <div className="w-full max-w-screen-md mx-auto px-4 max-[412px]:px-2 max-[412px]:max-w-[380px]">
       <div className="max-w-screen-md mx-auto w-full scale-100 max-[412px]:scale-[0.95] transition-transform">
   
         {/* 주간 캘린더 */}
