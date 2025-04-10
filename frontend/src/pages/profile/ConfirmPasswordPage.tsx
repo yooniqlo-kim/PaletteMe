@@ -1,7 +1,7 @@
 import Button from "@/shared/components/buttons/Button";
 import Input from "@/shared/components/form/Input";
 import { useForm } from "react-hook-form";
-import useProfile from "./useProfile";
+import useProfile from "../../features/profile/hooks/useProfile";
 
 type FormData = {
   password: string;

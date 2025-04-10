@@ -10,7 +10,7 @@ import UserImage from "@/shared/components/user/UserImage";
 import { useForm } from "react-hook-form";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
-import useProfile from "./useProfile";
+import useProfile from "../../features/profile/hooks/useProfile";
 import { useQuery } from "@tanstack/react-query";
 
 type FormValues = {

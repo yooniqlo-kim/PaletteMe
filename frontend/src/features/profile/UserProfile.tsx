@@ -8,7 +8,7 @@ import level2Img from "@/assets/levels/level-icon-2.svg";
 import level3Img from "@/assets/levels/level-icon-3.svg";
 import level4Img from "@/assets/levels/level-icon-4.svg";
 import level5Img from "@/assets/levels/level-icon-5.svg";
-import { Level } from "@/pages/profile/type";
+import { Level } from "@/features/register/type/type";
 
 type UserProfileProps = {
   nickname: string;
