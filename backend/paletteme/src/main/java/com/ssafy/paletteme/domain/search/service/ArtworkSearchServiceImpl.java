@@ -12,12 +12,14 @@ import com.ssafy.paletteme.domain.search.dto.ArtworkSearchResponse;
 import com.ssafy.paletteme.domain.search.exception.SearchError;
 import com.ssafy.paletteme.domain.search.exception.SearchException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtworkSearchServiceImpl implements ArtworkSearchService {
@@ -52,8 +54,9 @@ public class ArtworkSearchServiceImpl implements ArtworkSearchService {
         // 언어 상관 없이 original에서 검색
         shouldQueries.add(Query.of(q -> q.match(m -> m.field("original_title").query(keyword))));
         shouldQueries.add(Query.of(q -> q.match(m -> m.field("original_artist").query(keyword))));
-        
+
         try {
+            log.info("elasticsearch 조회 시작");
             SearchResponse<ArtworkDocument> response = elasticsearchClient.search(builder -> {
                 builder.index("artworks_index")
                         .size(size)
@@ -76,20 +79,25 @@ public class ArtworkSearchServiceImpl implements ArtworkSearchService {
                 return builder;
             }, ArtworkDocument.class);
 
+            log.info("elasticsearch 조회 성공");
+            log.info("artworkId 수집");
             // 1. artworkId 수집
             List<Hit<ArtworkDocument>> hits = response.hits().hits();
             List<String> artworkIds = hits.stream()
                     .map(hit -> hit.source().getArtwork_id())
                     .collect(Collectors.toList());
 
+            log.info("QueryDSL로 좋아요한 artworkId만 조회 시작");
             // 2. QueryDSL로 좋아요한 artworkId만 조회
             Set<String> likedArtworkIds = new HashSet<>(usersArtworksLikeRepository
                     .findLikedArtworkIdsByUserIdAndArtworkIds(userId, artworkIds));
 
             if (artworkIds.isEmpty()) {
+                log.info("더 이상 조회되는 것이 없습니다.");
                 throw new SearchException(SearchError.NO_RESULT_FOUND);
             }
 
+            log.info("리턴할 오브젝트 생성");
             return hits.stream()
                     .map(hit -> {
                         ArtworkDocument doc = hit.source();
@@ -99,6 +107,7 @@ public class ArtworkSearchServiceImpl implements ArtworkSearchService {
                     .toList();
 
         } catch (IOException e) {
+            log.info("검색 시 오류 발생!");
             System.out.println(e.getMessage());
             throw new SearchException(SearchError.ELASTICSEARCH_ERROR);
         }

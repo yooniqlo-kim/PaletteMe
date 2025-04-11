@@ -11,7 +11,7 @@ import java.io.IOException;
 @Component
 public class DeleteElasticsearchIndex {
 
-    @Scheduled(cron = "0 0 0 * * ?") // 매일 0시 0분 0초
+    //@Scheduled(cron = "0 0 0 * * ?") // 매일 0시 0분 0초
     //@Scheduled(cron = "0 * * * * ?") // 매 1분마다
     public void clearElasticsearchIndex() throws IOException {
         WebClient client = WebClient.create("http://localhost:9200");

@@ -1,7 +1,7 @@
 services:
   es:
     build:
-      context: .
+      context: elasticsearch
       args:
         VERSION: 8.13.4
     container_name: es
@@ -9,20 +9,33 @@ services:
       - node.name=single-node
       - cluster.name=backtony
       - discovery.type=single-node
-      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 9200:9200
       - 9300:9300
     networks:
       - es-bridge
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
 
   kibana:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:8.13.4
     environment:
-      SERVER_NAME: kibana
-      ELASTICSEARCH_HOSTS: http://es:9200
-      ELASTICSEARCH_SSL_VERIFICATIONMODE: none
+      - SERVER_NAME=kibana
+      - ELASTICSEARCH_HOSTS=http://es:9200
+      - ELASTICSEARCH_USERNAME=${ELASTIC_KIBANA_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_KIBANA_PASSWORD}
+      - SERVER_BASEPATH=/kibana
+      - SERVER_REWRITEBASEPATH=true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 5601:5601
     depends_on:
@@ -35,9 +48,12 @@ services:
     container_name: logstash
     environment:
       - ELASTICSEARCH_HOSTS=http://es:9200
+      - ELASTICSEARCH_USERNAME=${ELASTIC_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./logstash/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/mysql-connector-j-8.3.0.jar:/usr/share/logstash/mysql-connector-j-8.3.0.jar
@@ -61,14 +77,68 @@ services:
       - es-bridge
     volumes:
       - mysql-data:/var/lib/mysql
+      - /home/ubuntu/export:/data
+      - /etc/localtime:/etc/localtime:ro
 
   redis:
     image: redis:latest
     container_name: redis
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 6379:6379
     networks:
       - es-bridge
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+     - 8080:8080
+    env_file: .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - es-bridge
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - /etc/letsencrypt:/etc/letsencrypt:ro  # EC2의 인증서 폴더 공유
+      - ../../frontend/dist:/usr/share/nginx/html:ro  # Vite 결과물
+#      - frontend-build:/usr/share/nginx/html:ro  # Vite 결과물
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - kibana
+      - es
+      - backend
+    networks:
+      - es-bridge
+
+#  frontend:
+#    build:
+#      context: ../../frontend
+#      dockerfile: Dockerfile
+#    container_name: frontend
+#    networks:
+#      - es-bridge
+#    volumes:
+#      - frontend-build:/app/dist
+#      - /etc/localtime:/etc/localtime:ro
 
 networks:
   es-bridge:
@@ -76,3 +146,4 @@ networks:
 
 volumes:
   mysql-data:
+#  frontend-build:
