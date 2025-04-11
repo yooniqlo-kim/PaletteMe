@@ -131,7 +131,7 @@ export default function RegisterImagePage() {
     (!isNicknameChanged && !isImageSelected);
 
   return (
-    <section className="flex px-7">
+    <section className="flex px-6">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-8 w-full">

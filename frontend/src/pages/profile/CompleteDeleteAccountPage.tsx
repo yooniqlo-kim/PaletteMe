@@ -31,5 +31,5 @@ export default function CompleteDeleteAccountPage() {
     );
   }
 
-  return <div className="px-4 flex p-2">{content}</div>;
+  return <div className="px-6 flex p-2">{content}</div>;
 }

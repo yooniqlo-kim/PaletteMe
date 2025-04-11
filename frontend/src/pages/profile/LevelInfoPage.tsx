@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 export default function LevelInfoPage() {
   const navigate = useNavigate();
   return (
-    <section className="flex flex-col px-3 gap-7">
+    <section className="flex flex-col px-6 gap-7">
       <div>
         <h2 className="text-lg font-semibold py-1">회원등급</h2>
         <p className="text-neutral-8 font-semibold text-sm py-1">
