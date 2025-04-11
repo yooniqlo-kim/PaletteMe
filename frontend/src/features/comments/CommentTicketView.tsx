@@ -23,7 +23,7 @@ export function CommentTicketView({
 
   // 인덱스가 변경될 때 마지막 아이템에 가까워지면 추가 데이터 로드
   useEffect(() => {
-    if (currentIndex >= total - 2 && onLoadMore) {
+    if (total > 0 && currentIndex >= total - 2 && onLoadMore) {
       onLoadMore();
     }
   }, [currentIndex, total, onLoadMore]);
