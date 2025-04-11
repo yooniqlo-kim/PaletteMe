@@ -17,7 +17,7 @@ export default function FormWrapper({ children }: FormWrapperProps) {
 
   return (
     <div className={`flex flex-col w-full ${step === 3 ? "p-5" : "p-8"}`}>
-      <RedirectOnRefresh />
+      {step !== 1 && <RedirectOnRefresh />}
       {step < 5 && <SignupProgressBar currentStep={step} />}
       {children}
     </div>
