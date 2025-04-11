@@ -52,6 +52,11 @@ export default function MymuseumPage() {
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const nickname = user?.nickname || "사용자";
 
+  // 샘플 데이터 테스트용
+  // const handleWrappedClick = async () => {
+  //   setIsModalOpened(true);
+  //   return;};
+
   const handleWrappedClick = async () => {
     try {
       const raw = await fetchWrapped();
