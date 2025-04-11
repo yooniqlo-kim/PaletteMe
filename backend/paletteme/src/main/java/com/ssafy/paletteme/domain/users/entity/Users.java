@@ -3,18 +3,21 @@ package com.ssafy.paletteme.domain.users.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
+@Getter
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    // 지연 로딩 시, Security에서 사용 불가.. 추후 개선하기
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "grade_id",
             nullable = false,
@@ -25,7 +28,7 @@ public class Users {
     @Column(name = "s3_url", nullable = false, length = 255)
     private String s3Url;
 
-    @Column(name = "id", nullable = false, length = 255)
+    @Column(name = "id", nullable = false, length = 255, unique = true)
     private String loginId;
 
     @Column(name = "password", length = 500)
@@ -35,7 +38,7 @@ public class Users {
     private String name;
 
     @Column(name = "birthday", nullable = false)
-    private LocalDate birthday;
+    private int birthday;
 
     @Column(name = "phone_number", nullable = false, length = 500)
     private String phoneNumber;
@@ -43,6 +46,7 @@ public class Users {
     @Column(name = "nickname", nullable = false, length = 50)
     private String nickname;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "active", nullable = false)
     private AccountStatus isActive;
 
@@ -53,7 +57,7 @@ public class Users {
     private LocalDate loginedAt;
 
     @Builder
-    public Users(String loginId, String password, String name, LocalDate birthday, String phoneNumber, String nickname, String s3Url, UsersGrade usersGrade){
+    public Users(String loginId, String password, String name, int birthday, String phoneNumber, String nickname, String s3Url, UsersGrade usersGrade){
         this.loginId = loginId;
         this.password = password;
         this.name = name;
