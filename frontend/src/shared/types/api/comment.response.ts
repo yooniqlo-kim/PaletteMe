@@ -84,4 +84,5 @@ export interface MyReviewsResponse {
   originalArtist?: string;
   imageUrl?: string;
   isLiked?: boolean;
+  isPublic?: boolean;
 }
