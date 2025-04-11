@@ -13,6 +13,9 @@ import defaultImg from "@/assets/images/defaultProfile.png";
 
 import { Level } from "../../features/register/type/type";
 import useProfile from "../../features/profile/hooks/useProfile";
+import UserProfileSkeleton from "@/features/profile/UserProfileSkeleton";
+import UserMetaSkeleton from "@/features/profile/UserMetaSkeleton";
+import LevelSkeleton from "@/features/profile/LevelSkeleton";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
 
@@ -29,9 +32,11 @@ export default function ProfilePage() {
 
   if (isLoading) {
     content = (
-      <p className="text-primary flex justify-center items-center">
-        로딩 중입니다....
-      </p>
+      <>
+        <UserProfileSkeleton />
+        <UserMetaSkeleton />
+        <LevelSkeleton />
+      </>
     );
   } else if (!data) {
     content = (
