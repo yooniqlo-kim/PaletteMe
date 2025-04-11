@@ -184,7 +184,8 @@ export function ArtworkDetail({ artwork }: Props) {
                 </IconButton>
                 <IconButton
                   identifier="bookmark"
-                  onClick={handleToggleBookmark}>
+                  onClick={handleToggleBookmark}
+                >
                   <IconBookmark
                     isClicked={isBookmarked}
                     className="transition-transform duration-300 active:scale-150"
@@ -212,6 +213,13 @@ export function ArtworkDetail({ artwork }: Props) {
           ) : (
             <p className="py-8 text-sm font-semibold text-center text-neutral-500">
               로그인 후 다른 이용자의 감상문을 확인해 보세요
+              <br />
+              <a
+                href="/login"
+                className="inline-block mt-2 underline text-primary"
+              >
+                로그인하기
+              </a>
             </p>
           )}
 

@@ -25,8 +25,14 @@ interface Props {
     artist: string;
     imgUrl: string;
   };
+  mostMemorableArtwork: {
+    title: string;
+    artist: string;
+    imgUrl: string;
+  };
   recommendations: Recommendation[];
 }
+
 
 export default function WrappedStep({
   currentStep,
@@ -93,13 +99,13 @@ export default function WrappedStep({
         }}
       >
         {currentStep === 0 && (
-        <div className="px-4 py-6 text-center max-w-md mx-auto space-y-2 sm:space-y-4">
+        <div className="px-4 py-6 text-center max-w-md mx-auto space-y-1 sm:space-y-4">
           <img
             src={MainLogo}
             alt="PaletteMe 로고"
             className="mb-4 h-8 mx-auto"
           />
-          <h2 className="text-base font-semibold">{getWrappedMonthString()}</h2>
+          <h2 className="text-lg font-semibold">{getWrappedMonthString()}</h2>
           <p className="text-lg font-semibold">Wrapped 결산</p>
           <p className="mt-4 text-sm sm:text-base">
             지난 한 달간 <span className="font-semibold">{nickname}</span> 님의 활동 기록입니다.
@@ -137,13 +143,12 @@ export default function WrappedStep({
             </div>
           </div>
         )}
-
         {currentStep === 3 && favoriteArtwork?.imgUrl && (
           <div className="px-4 py-6 text-center max-w-md mx-auto space-y-2 sm:space-y-4">
-            <h2 className="w-full max-w-[300px] mx-auto mb-2 font-semibold text-base sm:text-lg">
+            <h2 className="w-full max-w-[300px] mx-auto mb-3 font-semibold text-base sm:text-lg">
               가장 인상깊게 본 작품은
             </h2>
-            <p className="mt-2 font-bold text-sm sm:text-base text-primary">
+            <p className="mt-1 font-bold text-sm sm:text-base text-primary">
               {favoriteArtwork.title}
             </p>
             <p className="mt-1 mb-4 text-xs sm:text-sm text-neutral-7">
@@ -158,7 +163,7 @@ export default function WrappedStep({
                   title: favoriteArtwork.title,
                   artist: favoriteArtwork.artist,
                 }}
-                isLiked={false}
+                isLiked={true}
                 size="large"
                 theme="light"
                 hasBorder
@@ -166,7 +171,6 @@ export default function WrappedStep({
             </div>
           </div>
         )}
-
         {currentStep === 4 && recommendations.length >= 1 && (
           <div className="px-4 py-6 text-center max-w-2xl mx-auto space-y-4 sm:space-y-6">
             <h2 className="text-base sm:text-lg font-semibold mb-2">

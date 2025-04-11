@@ -39,7 +39,9 @@ export default function UserProfile({
     <article className="flex justify-between items-center">
       <span className="flex flex-col gap-8">
         <h2 className="text-lg font-bold">{nickname}</h2>
-        <div className="flex items-center gap-2">
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => navigate("/profile/level")}>
           <p className="text-sm font-medium">
             현재 등급 :{" "}
             <strong style={{ color: colorClasses[level - 1] }}>
