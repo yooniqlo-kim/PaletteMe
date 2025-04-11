@@ -1,21 +1,26 @@
-# <img src="./img/mainLogo.png" alt="PalleteMe 이미지" width="24"/> PaletteMe
+# <img src="./img/PaletteMe_logo2.png" alt="PaletteMe"/> 
 
-### 🔖 [미술 감상 기반 큐레이션] 서비스
-
-**[감상 기반 큐레이션] 서비스**  
-: 미술 작품에 대한 감상평을 작성하고 공유하며, 작품에 대해 배우고 스스로의 **취향을 발견할 수 있는 서비스**
-
-
+## <img src="./img/mainLogo.png" alt="PaletteMe 이미지" width="24"/> 취향으로 채우는 나만의 팔레트, PaletteMe
+미술에 대한 진입 장벽을 낮추고, 다양한 작품을 자유롭게 감상하며 나만의 미술 취향을 찾아가는 서비스
 
 
 ### 🧭 서비스 목적
 
-- 누구나 **부담 없이 미술 작품을 감상**할 수 있는 환경 제공  
-- 감상문 작성과 기록을 통해 **개인의 취향을 발견하고 확장하며, 다른 사용자와 감상을 공유**  
-- **AI와 사용자 데이터를 활용한 큐레이션**으로 보다 정교한 작품 추천 경험 제공  
-- **100만 건 이상의 미술 작품 데이터**를 자유롭게 탐색하고 감상  
-- **한 달간의 감상 활동을 요약**해주는 Wrapped 콘텐츠로 나만의 미술 여정을 돌아볼 수 있음
-<br>
+🎨 **누구나 쉽게, 부담 없이 미술 감상**  
+> 미술에 대한 배경 지식 없이도 편하게 작품을 감상할 수 있는 환경을 제공합니다.
+
+📝 **감상문 작성으로 나만의 취향 발견**  
+> 감상 기록을 통해 자신의 취향을 발견하고, 다른 사용자와 감상을 공유할 수 있습니다.
+
+🤖 **사용자 맞춤형 추천**  
+> 사용자 데이터 기반 분석을 통해, 개인 맞춤형 작품 추천 경험을 제공합니다.
+
+🖼 **100만 건 이상의 작품 데이터 탐색**  
+> 방대한 미술 작품 데이터 속에서 원하는 작품을 자유롭게 찾아볼 수 있습니다.
+
+📅 **Wrapped로 돌아보는 감상 여정**  
+> 한 달간의 감상 활동을 정리해 보여주는 Wrapped 콘텐츠로, 나의 미술 여정을 시각화합니다.
+
 
 ## 🔔 SSAFY 12기 특화 PJT
 
@@ -23,13 +28,16 @@
 
 ## 🎬 서비스 영상
 
-영상 업로드 하기
+👉🏻[PaletteMe](https://youtu.be/VFEmw9XV95g)
 
 ## ✨ 주요 기능
 
-### 1. 오늘의 작품
+### 🏛️ 1. 오늘의 작품
+> 하루에 한 작품씩, 엄선된 명화와 함께 작품의 배경, 작가의 의도, 감상 포인트까지 소개해 드립니다.
 
-> 하루에 한 작품씩 감상하며 미술을 공부할 수 있고, 이해가 부족한 부분은 AI를 통해 더 깊이 있는 설명을 들을 수 있습니다.
+
+> "아는 만큼 보인다" – **AI 도슨트 물감이**가 모든 작품의 이야기를 쉽고 친절하게 안내합니다.
+미술이 처음인 분들도 작품을 자연스럽게 이해하고 감상할 수 있도록 도와드립니다.
 
 <div style="display: flex; justify-content: space-between;">
   <img alt='' src="./img/today1.gif" style="width: 100%; height: 500;">
@@ -37,16 +45,20 @@
 </div>
 <br>
 
-### 2. 감상문
-> 작품에 대한 감상문을 자유롭게 작성할 수 있으며, 이를 다른 사용자와 공유하거나 비공개로 나만의 기록으로 남길 수도 있습니다.
+### ✍️ 2. 감상문
+> 작품 감상 후 자유롭게 감상문을 작성하고,
+이를 공유하거나 비공개로 저장해 나만의 기록을 쌓을 수 있습니다.
 <div style="display: flex; justify-content: space-between;">
   <img alt='' src="./img/review1.gif" style="width: 100%; height: 500;">
   <img alt='' src="./img/review2.gif" style="width: 100%; height: 500;">
 </div>
 <br>
 
-### 3. 검색
-> 100만 건 이상의 작품을 화가명이나 작품명으로 한글과 영어 모두 자유롭게 검색할 수 있으며, 인기 검색어를 통해 최신 트렌드도 확인할 수 있습니다.
+### 🔎 3. 검색
+> 작품명 또는 화가명으로 쉽게 검색할 수 있으며, 영어와 한글 모두 지원합니다.
+
+> 인기 작품 랭킹을 통해 최근 미술 감상 트렌드도 확인해보세요.
+
 <div style="display: flex; justify-content: space-between;">
   <img alt='' src="./img/search1.gif" style="width: 100%; height: 500;">
   <img alt='' src="./img/search2.gif" style="width: 100%; height: 500;">
@@ -54,8 +66,18 @@
 
 <br>
 
-### 4. 마이 뮤지엄
-> 자신이 쓴 감상문과 좋아한 작품들을 한눈에 볼 수 있고, 이를 바탕으로 사용자에게 맞춤형 작품을 추천해줍니다.
+### 🎨 4. 마이 뮤지엄
+> **1. 감상문 기록 일지**<br>
+> 매일 작성하는 감상문이 나만의 팔레트를 채워줍니다.
+
+> **2. 개인 맞춤형 추천 컬렉션**<br>
+> 사용자의 감상 활동을 분석하여 개인 취향에 맞는 컬렉션을 추천합니다.
+> - 연령대 기반 추천
+> - 선호 작가 기반 추천
+> - 유사한 취향의 다른 사용자들의 감상 경향
+> - 선호 색상 기반 추천
+
+
 <div style="display: flex; justify-content: space-between;">
   <img alt='' src="./img/mymuseum1.gif" style="width: 100%; height: 500;">
   <img alt='' src="./img/mymuseum2.gif" style="width: 100%; height: 500;">
@@ -63,7 +85,14 @@
 
 <br>
 
-> 한 달간의 활동을 시각적으로 요약해주는 Wrapped 기능과, 날짜별로 사용자가 작성한 감상문을 한눈에 확인할 수 있는 감상 기록 보기 기능을 제공합니다.
+> **3. 월말 결산, Wrapped**<br>
+> 한 달 동안의 감상 활동을 분석해 가장 많이 감상한 작가와 작품, 감상문 작성 순위 등을 한눈에 정리해 보여줍니다.<br>
+나의 미술 여정을 돌아보며, 취향의 흐름과 변화를 확인해보세요.
+
+> **4. 좋아요, 북마크, 감상문 컬렉션**<br>
+> 마음에 드는 작품은 좋아요로,<br>
+다시 보고 싶은 작품은 북마크로,<br>
+감동적인 감상문은 컬렉션에 담아보세요.
 <div style="display: flex; justify-content: space-between;">
   <img alt='' src="./img/mymuseum4.gif" style="width: 100%; height: 500;">
   <img alt='' src="./img/mymuseum3.gif" style="width: 100%; height: 500;">
@@ -191,20 +220,26 @@
 
 <table>
     <tr>
-      <th scope="col" colspan="4"> Backend </th>
-      <th scope="col" colspan="2"> Frontend </th>
+      <th scope="col" colspan="3"> Backend </th>
+      <th scope="col" colspan="3"> Frontend </th>
     </tr>
     <tr>
       <td>김윤</td>
+      <td>노영단</td>
+      <td>이학준</td>
       <td>강명주</td>
       <td>김지윤</td>
       <td>김현희</td>
-      <td>노영단</td>
-      <td>이학준</td>
     </tr>
     <tr>
       <td>
         <a href="https://github.com/yooniqlo-kim"><img src="https://avatars.githubusercontent.com/yooniqlo-kim" width=160/></a>
+      </td>
+      <td>
+        <a href="https://github.com/YoungdanNoh"><img src="https://avatars.githubusercontent.com/YoungdanNoh" width=160/></a>
+      </td>
+      <td>
+         <a href="https://github.com/lhj4499"><img src="https://avatars.githubusercontent.com/lhj4499" width=160/></a> 
       </td>
       <td>
         <a href="https://github.com/notrealsilk"><img src="https://avatars.githubusercontent.com/notrealsilk" width=160/></a>
@@ -214,25 +249,18 @@
       </td>
       <td>
        <a href="https://github.com/hyuun13"><img src="https://avatars.githubusercontent.com/hyuun13" width=160/></a> 
-      </td>
-      <td>
-        <a href="https://github.com/YoungdanNoh"><img src="https://avatars.githubusercontent.com/YoungdanNoh" width=160/></a>
-      </td>
-      <td>
-         <a href="https://github.com/lhj4499"><img src="https://avatars.githubusercontent.com/lhj4499" width=160/></a> 
-      </td>
+      </td> 
     </tr>
 </table>
 
 <br/>
 
-| Contributors | Role                  | Position                                                                                                                                                              |
-| ------------ | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 김윤       | 팀장, <br /> Backend  | - **API 설계 및 구현:** 사용자 및 인증 API 구현 <br> - **DB 설계:** MySQL 기반 ERD 설계 및 데이터 마이그레이션 <br> - **배포 환경 구성:** AWS 기반 EC2, RDS 환경 설정 |
-| 강명주         | 팀원, <br /> Frontend | - **프론트 구현:** Vue 3 + Vite 기반 SPA 개발 <br> - **디자인 시스템:** Vuetify 기반 컴포넌트 커스터마이징                                                            |
-| 김지윤       | 팀원, <br /> Frontend  | - **API 개발:** 게시판 및 알림 시스템 API 개발 <br> - **테스트 작성:** JUnit5 기반 테스트 코드 작성                                                                   |
-| 김현희       | 팀원, <br /> Frontend | - **상태 관리:** Pinia를 통한 전역 상태 관리 구현 <br> - **UI 최적화:** Lighthouse 기반 퍼포먼스 개선                                                                 |
-| 노영단       | 팀원, <br /> Backend  | - **파일 업로드:** S3 연동 파일 업로드 기능 구현 <br> - **Swagger:** API 문서 자동화 구성                                                                             |
-| 이학준       | 팀원, <br /> Backend | - **라우팅 설계:** Vue Router 활용한 페이지 구성 <br> - **반응형 UI:** 다양한 디바이스에 대응한 UI 구성                                                               |
+| Contributors | Role                   | Position |
+|--------------|------------------------|----------|
+| **김윤**     | 팀장, <br /> Backend   | - **추천 및 랭킹 API 개발** <br> - **DB 설계** <br> - **빅데이터 분산 처리** <br> - **데이터 파이프라인 구축** |
+| **노영단**   | 팀원, <br /> Backend   | - **Elasticsearch를 활용한 검색 최적화** <br> - **Docker를 활용한 배포** <br> - **DB 설계** <br> - **마이뮤지엄 API 개발** |
+| **이학준**   | 팀원, <br /> Backend   | - **인증 / 인가 기능 구현** <br> - **DB 설계** <br> - **감상문 API 개발** <br> - **배치 처리** |
+| **강명주**   | 팀원, <br /> Frontend  | - **검색 페이지** <br> - **마이뮤지엄 페이지** <br> - **디자인 컨셉 정의** <br> - **UI/UX 디자인** |
+| **김지윤**   | 팀원, <br /> Frontend  | - **로그인 / 회원가입 페이지** <br> - **프로필 페이지** <br> - **UI/UX 디자인** <br> - **JIRA 관리** |
+| **김현희**   | 팀원, <br /> Frontend  | - **아이디어 기획 및 UserFlow 설계** <br> - **와이어프레임 및 UI/UX 디자인** <br> - **작품 / 감상문 페이지** <br> - **발표 자료 제작** |
 
----
