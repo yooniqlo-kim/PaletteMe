@@ -17,8 +17,7 @@ public class UserSignupRequest {
     private String id;
     private String password;
     private String name;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthday;
+    private int birthday;
     private String phoneNumber;
     private String nickname;
     private List<String> artworkId;

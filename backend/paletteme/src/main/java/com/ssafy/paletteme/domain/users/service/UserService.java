@@ -1,20 +1,23 @@
 package com.ssafy.paletteme.domain.users.service;
 
-import com.ssafy.paletteme.domain.users.dto.S3UploadResponse;
-import com.ssafy.paletteme.domain.users.dto.UserSignupRequest;
+import com.ssafy.paletteme.common.redis.RedisService;
+import com.ssafy.paletteme.domain.artworks.service.command.ArtworkLikeCommandService;
+import com.ssafy.paletteme.domain.users.dto.*;
 import com.ssafy.paletteme.domain.users.entity.*;
 import com.ssafy.paletteme.domain.users.exception.UserError;
 import com.ssafy.paletteme.domain.users.exception.UserException;
 import com.ssafy.paletteme.domain.users.repository.*;
 import com.ssafy.paletteme.domain.users.utils.S3Util;
+import com.ssafy.paletteme.domain.users.utils.SmsCertificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -26,13 +29,28 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
+    private final SmsCertificationUtil smsCertificationUtil;
+    private final RedisService redisService;
+
     private final UsersFavoriteColorRepository usersFavoriteColorRepository;
+
+    private final ArtworkLikeCommandService artworkLikeCommandService;
 
     // 최대 허용 크기(이미지 저장) (예: 10MB)
     private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
+    // 휴대폰 인증 시간
+    private static final String PHONE_VERIFICATION_PREFIX = "auth:phone:";
+    private final Duration REDIS_EXPIRATION = Duration.ofMinutes(5);
+
     @Transactional
     public void signUp(UserSignupRequest userSignupRequest, MultipartFile file) {
+        // 아이디 UNIQUE 확인
+
+        if (usersRepository.existsByLoginId(userSignupRequest.getId())) {
+            throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_ID);
+        }
+
         // 이미지 저장하기
         String s3Url = handleProfileImageUpload(file);
 
@@ -57,10 +75,47 @@ public class UserService {
         usersFavoriteColorRepository.saveAll(favoriteColorList);
 
         // 작품 좋아요 추가하기
+        List<String> artworkIdList = userSignupRequest.getArtworkId();
+        for(String artworkId : artworkIdList) {
+            artworkLikeCommandService.likeArtwork(users, artworkId);
+        }
+
 
     }
 
-    private String handleProfileImageUpload(MultipartFile file) {
+    @Transactional(readOnly = true)
+    public void checkId(CheckIdRequest checkIdRequest){
+         if(usersRepository.existsByLoginId(checkIdRequest.getId())){
+             throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_ID);
+         }
+    }
+
+
+    public void sendPhone(String phoneNumber){
+        String verificationCode = generate6DigitCode();
+        smsCertificationUtil.sendSMS(phoneNumber, verificationCode);
+
+        String key = PHONE_VERIFICATION_PREFIX + phoneNumber;
+        String value = verificationCode;
+        redisService.set(key, value, REDIS_EXPIRATION);
+    }
+
+
+    public void verifyPhone(VerificationRequest verificationRequest){
+        String key = PHONE_VERIFICATION_PREFIX + verificationRequest.getPhoneNumber();
+        String value = verificationRequest.getVerificationCode();
+
+        String savedCode = redisService.get(key);
+
+        if( savedCode == null || !value.equals(savedCode)) {
+            throw new UserException(UserError.AUTH_PHONE_CERTIFICATION_CODE_MISMATCH);
+        }
+
+        redisService.delete(key);
+    }
+
+    @Transactional
+    public String handleProfileImageUpload(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             return s3Util.getDefaultProfileImageUrl();
         }
@@ -81,7 +136,24 @@ public class UserService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public void checkNickname(CheckNicknameRequest checkNicknameRequest) {
+        String nickname = checkNicknameRequest.getNickname();
+        if(usersRepository.existsByNickname(nickname)){
+            throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_NICKNAME);
+        }
+    }
 
+    private String generate6DigitCode() {
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000); // 100000 ~ 999999
+        return String.valueOf(code);
+    }
+
+
+    public List<ArtworkRecommendationResponse> getRecommendedArtworks() {
+        List<ArtworkRecommendationResponse> list= redisService.getAllArtworkRecommendations();
+        return list;
+    }
 }
-// TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기.
-// TODO: 작품 좋아요 추가하기
+// TODO: 휴대폰 번호 암호화 및 복호화 알고리즘 만들기
