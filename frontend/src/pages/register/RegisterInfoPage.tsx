@@ -23,7 +23,7 @@ type FormValues = {
   name: string;
   birthday: number;
   phoneNumber: string;
-  verificationCode: number;
+  verificationCode: string;
 };
 
 export default function RegisterInfoPage() {
@@ -100,8 +100,8 @@ export default function RegisterInfoPage() {
     setVerifyCodeLoading(true);
     try {
       const response = await verifyCode({
-        phoneNumber: watchPhoneNumber.toString(),
-        verificationCode: watchVerificationCode.toString(),
+        phoneNumber: watchPhoneNumber,
+        verificationCode: watchVerificationCode,
       });
       const { success, errorMsg } = response.data;
       SetIsValidPhoneNumber(success ? true : false);
@@ -133,7 +133,8 @@ export default function RegisterInfoPage() {
     <FormWrapper>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-8 w-full">
+        className="flex flex-col items-center gap-8 w-full"
+      >
         <h2 className="text-lg font-semibold">회원가입</h2>
         <div className="flex flex-col w-full gap-[33px]">
           <InputContainer>
@@ -163,7 +164,8 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleIdCheck}
-                disabled={idCheckLoading}>
+                disabled={idCheckLoading}
+              >
                 {idCheckLoading ? "확인 중..." : "중복 확인"}
               </Button>
             </span>
@@ -255,7 +257,8 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleSendCode}
-                disabled={sendCodeLoading}>
+                disabled={sendCodeLoading}
+              >
                 {sendCodeLoading ? "전송 중..." : "번호 전송"}
               </Button>
             </span>
@@ -269,11 +272,10 @@ export default function RegisterInfoPage() {
                   {...register("verificationCode", {
                     required: "인증번호를 입력해주세요.",
                     validate: (value) =>
-                      value.toString().length === 6 ||
-                      "인증번호는 6자리입니다.",
+                      value.length === 6 || "인증번호는 6자리입니다.",
                   })}
                   id="verificationCode"
-                  type="number"
+                  type="text"
                   placeholder="인증번호 6자리 입력"
                   fallback={errors.verificationCode?.message}
                 />
@@ -283,7 +285,8 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleCheckCode}
-                disabled={verifyCodeLoading}>
+                disabled={verifyCodeLoading}
+              >
                 {verifyCodeLoading ? "확인 중..." : "확인"}
               </Button>
             </span>
@@ -293,7 +296,8 @@ export default function RegisterInfoPage() {
           size="L"
           disabled={
             !isValidId || !isValidPhoneNumber || isSubmitting || !isValid
-          }>
+          }
+        >
           다음으로
         </Button>
       </form>
