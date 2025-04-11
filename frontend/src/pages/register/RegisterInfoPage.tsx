@@ -149,8 +149,8 @@ export default function RegisterInfoPage() {
                         "영문자 또는 영문자+숫자 조합만 사용할 수 있습니다.",
                     },
                     maxLength: {
-                      value: 10,
-                      message: "ID는 10자 이하로 입력해주세요.",
+                      value: 20,
+                      message: "ID는 20자 이하로 입력해주세요.",
                     },
                   })}
                   id="id"

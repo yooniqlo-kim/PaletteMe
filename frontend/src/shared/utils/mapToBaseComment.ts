@@ -23,7 +23,7 @@ export const mapToBaseComment = (
     nickname: res.nickname ?? "",
     profileImageUrl: res.userImg ?? "",
   },
-  visibility: "public",
+  visibility: res.isPublic ? "public" : "private",
 });
 
 export const mapToCommentAndArtwork = (
@@ -144,7 +144,7 @@ export const mapToMyCommentsAndArtworks = (
         nickname: parsedUser?.nickname ?? "",
         profileImageUrl: parsedUser?.s3Url ?? "",
       },
-      visibility: "public",
+      visibility: item.isPublic ? "public" : "private",
     };
 
     const artwork: ArtworkPreview = {

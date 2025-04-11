@@ -9,8 +9,8 @@ export default function Footer() {
           팀원:{" "}
           <a href="https://github.com/yooniqlo-kim" target="_blank" rel="noopener noreferrer">김윤</a> ·{" "}
           <a href="https://github.com/notrealsilk" target="_blank" rel="noopener noreferrer">강명주</a> ·{" "}
-          <a href="https://github.com/hyuun13" target="_blank" rel="noopener noreferrer">김지윤</a> ·{" "}
-          <a href="https://github.com/hyunhee-dev" target="_blank" rel="noopener noreferrer">김현희</a> ·{" "}
+          <a href="https://github.com/ImJiyun/" target="_blank" rel="noopener noreferrer">김지윤</a> ·{" "}
+          <a href="https://github.com/hyuun13" target="_blank" rel="noopener noreferrer">김현희</a> ·{" "}
           <a href="https://github.com/YoungdanNoh" target="_blank" rel="noopener noreferrer">노영단</a> ·{" "}
           <a href="https://github.com/lhj4499" target="_blank" rel="noopener noreferrer">이학준</a>
         </p>

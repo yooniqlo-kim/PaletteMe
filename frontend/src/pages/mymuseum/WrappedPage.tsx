@@ -5,6 +5,7 @@ import WrappedEnd from '@/features/wrapped/WrappedEnd';
 import { fetchWrapped } from '@features/wrapped/api/wrappedApi';
 import type { WrappedData } from "@/shared/types/api/wrapped";
 import { mapWrappedData } from '@/shared/utils/mapWrappedData';
+import { WrappedDummy } from "@/shared/dummy/wrappedDummy";
 
 export default function WrappedPage() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -44,6 +45,7 @@ export default function WrappedPage() {
         setWrappedData(mapped);                   
       } catch (e) {
         console.error("랩트 API 호출 실패:", e);
+        setWrappedData(WrappedDummy);
       } finally {
         setLoading(false);
       }
@@ -58,14 +60,15 @@ export default function WrappedPage() {
 
   if (loading || !wrappedData) return <div>로딩 중...</div>;
 
-  
+  const finalData = wrappedData ?? WrappedDummy;
 
   const {
-    favoriteArtwork,
+    artistName,
+    favoriteArtwork: favoriteArtworkData,
+    mostMemorableArtwork: mostMemorableArtworkData,
     reviewRank,
-    mostMemorableArtwork,
     review_based_recommendations = [],
-  } = wrappedData;
+  } = finalData;
 
   return (
     <div className="fixed inset-0 h-screen w-screen overflow-hidden z-50 flex justify-center items-center">
@@ -74,19 +77,20 @@ export default function WrappedPage() {
           <WrappedStep
             currentStep={currentStep}
             onNext={handleNext}
-            artistName={favoriteArtwork.artist}
+            artistName={artistName}
             reviewCnt={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
             reviewRank={reviewRank.myRank}
-            favoriteArtwork={mostMemorableArtwork}
+            favoriteArtwork={favoriteArtworkData}
+            mostMemorableArtwork={mostMemorableArtworkData}
             recommendations={review_based_recommendations}
           />
         ) : (
           <WrappedEnd
             reviewCount={reviewRank.reviewCount}
             reviewPercentage={reviewRank.topPercentage}
-            artistName={favoriteArtwork.artist}
-            favoriteArtwork={mostMemorableArtwork}
+            artistName={artistName}
+            favoriteArtwork={favoriteArtworkData} 
             recommendations={review_based_recommendations}
           />
         )}

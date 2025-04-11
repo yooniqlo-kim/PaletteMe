@@ -31,6 +31,7 @@ export interface ReviewSummaryResponse {
   content?: string;
   reviewLike?: number;
   isLiked?: boolean;
+  isPublic?: boolean;
 }
 
 // 감상문 등록 확인
@@ -83,4 +84,5 @@ export interface MyReviewsResponse {
   originalArtist?: string;
   imageUrl?: string;
   isLiked?: boolean;
+  isPublic?: boolean;
 }

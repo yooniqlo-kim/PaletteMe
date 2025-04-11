@@ -170,8 +170,8 @@ export default function RegisterImagePage() {
                     message: "닉네임은 2자 이상 입력해야 합니다.",
                   },
                   maxLength: {
-                    value: 8,
-                    message: "닉네임은 최대 8자까지 가능합니다.",
+                    value: 7,
+                    message: "닉네임은 최대 7자까지 가능합니다.",
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9가-힣]+$/,
@@ -181,7 +181,7 @@ export default function RegisterImagePage() {
                 })}
                 id="nickname"
                 type="text"
-                placeholder="2자 이상 8자 이하로 입력해주세요"
+                placeholder="2자 이상 7자 이하로 입력해주세요"
                 fallback={errors.nickname && errors.nickname.message}
               />
               {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
