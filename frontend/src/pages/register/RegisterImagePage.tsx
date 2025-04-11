@@ -170,8 +170,8 @@ export default function RegisterImagePage() {
                     message: "닉네임은 2자 이상 입력해야 합니다.",
                   },
                   maxLength: {
-                    value: 8,
-                    message: "닉네임은 최대 8자까지 가능합니다.",
+                    value: 7,
+                    message: "닉네임은 최대 7자까지 가능합니다.",
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9가-힣]+$/,
