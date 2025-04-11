@@ -45,7 +45,8 @@ export function useAuth() {
     const data = await logoutAPI();
     const { success, errorMsg } = data;
     if (success) {
-      sessionStorage.clear();
+      sessionStorage.removeItem("user");
+      sessionStorage.removeItem("token");
       navigate("/login");
       showToast({ message: "로그아웃되었습니다.", type: "success" });
     } else {
