@@ -76,17 +76,39 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                         .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
                 .where(
                         reviews.artwork.artworkId.eq(artworkId),
-                        reviews.isPublic.eq(true).or(reviews.user.userId.eq(userId)),
+                        reviews.isPublic.eq(true),
+                        reviews.user.userId.ne(userId),
                         cursor != null ? reviews.reviewId.lt(cursor.longValue()) : null
                 )
-                .orderBy(
-                        new CaseBuilder()
-                                .when(reviews.user.userId.eq(userId)).then(1)
-                                .otherwise(0).desc(),
-                                reviews.reviewId.desc()
-                )
+                .orderBy(reviews.reviewId.desc()) // 여기만 심플하게 바꿈
                 .limit(size)
                 .fetch();
+    }
+
+    @Override
+    public ReviewSummaryResponse findMyReview(int userId, String artworkId) {
+        return queryFactory
+                .select(new QReviewSummaryResponse(
+                        reviews.reviewId,
+                        users.nickname,
+                        users.s3Url,
+                        reviews.createdAt.stringValue(),
+                        reviews.content,
+                        reviews.likeCnt,
+                        usersReviewLike.isNotNull(),
+                        reviews.isPublic
+                ))
+                .from(reviews)
+                .join(reviews.user, users)
+                .leftJoin(usersReviewLike)
+                .on(usersReviewLike.user.userId.eq(userId)
+                        .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
+                .where(
+                        reviews.artwork.artworkId.eq(artworkId),
+                        reviews.user.userId.eq(userId)
+                )
+                .orderBy(reviews.reviewId.desc())
+                .fetchOne();
     }
 
     private BooleanExpression gtCursor(Integer cursor) {

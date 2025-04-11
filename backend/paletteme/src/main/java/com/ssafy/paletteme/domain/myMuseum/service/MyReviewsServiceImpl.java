@@ -6,6 +6,7 @@ import com.ssafy.paletteme.domain.myMuseum.exception.MyReviewException;
 import com.ssafy.paletteme.domain.myMuseum.repository.MyReviewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class MyReviewsServiceImpl implements MyReviewsService {
     private final MyReviewsRepository myReviewsRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<MyReviewsResponse> getMyReviews(int userId, Integer cursor, int size) {
 
         List<MyReviewsResponse> responses = myReviewsRepository.getMyReviews(userId, cursor, size);
