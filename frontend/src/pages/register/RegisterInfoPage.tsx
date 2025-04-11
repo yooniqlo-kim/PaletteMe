@@ -145,8 +145,7 @@ export default function RegisterInfoPage() {
                     required: "아이디는 필수값입니다.",
                     pattern: {
                       value: /^(?!\d+$)[A-Za-z0-9]+$/,
-                      message:
-                        "영문자 또는 영문자+숫자 조합만 사용할 수 있습니다.",
+                      message: "영문자 또는 영문자+숫자 조합만 가능합니다.",
                     },
                     maxLength: {
                       value: 20,

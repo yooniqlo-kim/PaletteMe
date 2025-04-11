@@ -12,7 +12,7 @@ export default function Input({ fallback, ...props }: InputProps) {
       }`}
         {...props}
       />
-      {fallback && <p className="text-red-500 text-sm">{fallback}</p>}
+      {fallback && <p className="text-red-500 text-xs">{fallback}</p>}
     </div>
   );
 }
