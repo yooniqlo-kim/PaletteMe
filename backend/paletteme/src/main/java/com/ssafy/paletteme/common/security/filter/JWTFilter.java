@@ -29,10 +29,13 @@ public class JWTFilter extends OncePerRequestFilter {
 
         // 로그인,회원 가입 요청은 다음 필터로
         String requestURI = request.getRequestURI();
-        if (requestURI.contains("/api/users/login") || requestURI.contains("/api/users/sign-up")) {
+        // 로그인, 회원가입, 데일리아트는 필터 패스
+        if (requestURI.contains("/api/users/login") ||
+                requestURI.contains("/api/users/sign-up")   ) {
             filterChain.doFilter(request, response);
             return;
         }
+
 
         // 헤더에서 access키에 담긴 토큰을 꺼냄
         String token = request.getHeader("Authorization");

@@ -1,14 +1,16 @@
 package com.ssafy.paletteme.infrastructure.config;
 
+import com.ssafy.paletteme.common.redis.RedisService;
 import com.ssafy.paletteme.common.security.exception.CustomDeniedHandler;
 import com.ssafy.paletteme.common.security.exception.CustomEntryPoint;
 import com.ssafy.paletteme.common.security.filter.JWTFilter;
 import com.ssafy.paletteme.common.security.filter.LoginFilter;
 import com.ssafy.paletteme.common.security.jwt.JwtUtil;
+import com.ssafy.paletteme.domain.users.service.UserStatsService;
+import com.ssafy.paletteme.domain.users.utils.UsersGradeUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,6 +37,11 @@ public class SecurityConfig {
     private final CustomDeniedHandler customDeniedHandler;
     private final CustomEntryPoint  customEntryPoint;
 
+    // 필요한 Service들
+    private final UserStatsService userStatsService;
+    private final RedisService redisService;
+    private final UsersGradeUpdater usersGradeUpdater;
+
     // 비밀번호 암호화
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -58,7 +65,7 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/users/sign-up", "/users/login", "users/phone/send", "/users/phone/send", "/users/phone/verify", "/users/check-id","/users/check-nickname","/users/recommend-artworks").permitAll()
 //                                .requestMatchers("/artworks/**").permitAll()
-                                .requestMatchers("/search/artworks").permitAll()
+                                .requestMatchers("/search/artworks","artworks/dailyart").permitAll()
                                 .anyRequest().authenticated());
 
         http.exceptionHandling( ex -> ex
@@ -67,7 +74,7 @@ public class SecurityConfig {
         );
 
         /* 인증 필터 추가, /api/users/login에서만 해당 필터 작동 */
-        LoginFilter loginFilter = new LoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil);
+        LoginFilter loginFilter = new LoginFilter(authenticationConfiguration.getAuthenticationManager(), jwtUtil, redisService, userStatsService, usersGradeUpdater);
         loginFilter.setFilterProcessesUrl("/users/login");
         http.addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
 

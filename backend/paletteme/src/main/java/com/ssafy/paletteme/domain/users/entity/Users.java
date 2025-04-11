@@ -50,7 +50,7 @@ public class Users {
     @Column(name = "active", nullable = false)
     private AccountStatus isActive;
 
-    @Column(name = "attendance")
+    @Column(name = "attendance", nullable = false)
     private Integer attendance = 0;
 
     @Column(name = "logined_at")
@@ -73,6 +73,10 @@ public class Users {
         if(isActive == null){
             isActive = AccountStatus.ACTIVE;
         }
+
+        if(attendance == null){
+            attendance = 0;
+        }
     }
 
     public enum AccountStatus {
@@ -80,6 +84,34 @@ public class Users {
         ACTIVE,    // 인증 완료 및 활성화
         INACTIVE,  // 비활성화된 계정
         LOCKED     // 잠긴 계정
+    }
+
+    public void updateLoginedAt(LocalDate loginedAt) {
+        this.loginedAt = loginedAt;
+    }
+
+    public void increaseAttendance() {
+        this.attendance++;
+    }
+
+    public void updateGrade(UsersGrade grade) {
+        this.grade = grade;
+    }
+
+    public void inactivate() {
+        this.isActive = AccountStatus.INACTIVE;
+    }
+
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updateS3Url(String s3Url) {
+        this.s3Url = s3Url;
     }
 }
 

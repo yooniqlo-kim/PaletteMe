@@ -2,17 +2,11 @@ package com.ssafy.paletteme.domain.artworks.service;
 
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDescriptionResponse;
 import com.ssafy.paletteme.domain.artworks.dto.ArtworkDetailResponse;
-import com.ssafy.paletteme.domain.artworks.entity.Artworks;
-import com.ssafy.paletteme.domain.artworks.entity.UsersArtworksBookmark;
-import com.ssafy.paletteme.domain.artworks.entity.UsersArtworksLike;
-import com.ssafy.paletteme.domain.artworks.entity.UsersArtworksLikeCnt;
+import com.ssafy.paletteme.domain.artworks.entity.*;
 import com.ssafy.paletteme.domain.artworks.exception.ArtworksError;
 import com.ssafy.paletteme.domain.artworks.exception.ArtworksException;
 import com.ssafy.paletteme.domain.artworks.provider.GptPromptProvider;
-import com.ssafy.paletteme.domain.artworks.repository.ArtworksRepository;
-import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksBookmarkRepository;
-import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeCntRepository;
-import com.ssafy.paletteme.domain.artworks.repository.UsersArtworksLikeRepository;
+import com.ssafy.paletteme.domain.artworks.repository.*;
 import com.ssafy.paletteme.domain.artworks.service.command.ArtworkLikeCommandService;
 import com.ssafy.paletteme.domain.reviews.entity.Reviews;
 import com.ssafy.paletteme.domain.reviews.repository.ReviewsRepository;
@@ -27,6 +21,8 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class ArtworksService {
@@ -40,17 +36,14 @@ public class ArtworksService {
     private final UsersArtworksLikeRepository  usersArtworksLikeRepository;
     private final UsersArtworksBookmarkRepository  usersArtworksBookmarkRepository;
     private final ReviewsRepository reviewsRepository;
+    private final DailyArtRepository dailyArtRepository;
 
     private final ArtworkLikeCommandService artworkLikeCommandService;
 
-    public ArtworkDetailResponse getArtworkDetail(int userId, String artworkId) {
-        // 유효성 검사
-        Users user = usersRepository.findById((long) userId)
-                .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
+    public ArtworkDetailResponse getArtworkDetail(Integer userId, String artworkId) {
         Artworks artwork = artworksRepository.findById(artworkId)
                 .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_FOUND));
 
-        // 작품 정보 불러오기
         ArtworkDetailResponse artworkDetailResponse = artworksRepository.findArtworkDetail(artworkId);
 
         // 작품 좋아요 수 불러오기
@@ -61,23 +54,26 @@ public class ArtworksService {
                 });
         artworkDetailResponse.updateLike(usersArtworksLikeCnt.getLikeCnt());
 
-        // 작품 좋아요 눌렀는지 확인하기
-        Boolean isLiked = usersArtworksLikeRepository.existsByUserAndArtwork(user, artwork);
-        artworkDetailResponse.isLiked(isLiked);
+        if(userId != null) {
+            Users user = usersRepository.findById((long) userId)
+                    .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
 
-        // 작품 북마크 눌렀는지 확인하기
-        Boolean isBookMarked = usersArtworksBookmarkRepository.existsByUserAndArtwork(user, artwork);
-        artworkDetailResponse.isBookMarked(isBookMarked);
+            // 작품 좋아요 눌렀는지 확인하기
+            Boolean isLiked = usersArtworksLikeRepository.existsByUserAndArtwork(user, artwork);
+            artworkDetailResponse.isLiked(isLiked);
 
-        // 내 리뷰 중 가장 최신 리뷰 한 건만 가져오기
-        Reviews myReview = reviewsRepository.findTopByUserAndArtworkOrderByCreatedAtDesc(user, artwork).orElse(null);
-        Integer myReviewId = (myReview == null) ? null : myReview.getReviewId();
-        artworkDetailResponse.updateMyReviewId(myReviewId);
+            // 작품 북마크 눌렀는지 확인하기
+            Boolean isBookMarked = usersArtworksBookmarkRepository.existsByUserAndArtwork(user, artwork);
+            artworkDetailResponse.isBookMarked(isBookMarked);
+
+            // 내 리뷰 중 가장 최신 리뷰 한 건만 가져오기
+            Reviews myReview = reviewsRepository.findTopByUserAndArtworkOrderByCreatedAtDesc(user, artwork).orElse(null);
+            Integer myReviewId = (myReview == null) ? null : myReview.getReviewId();
+            artworkDetailResponse.updateMyReviewId(myReviewId);
+        }
 
         return artworkDetailResponse;
     }
-
-
 
     public ArtworkDescriptionResponse getArtworkDescription(String artworkId) {
         ArtworkDetailResponse artworkDetailResponse = artworksRepository.findArtworkDetail(artworkId);
@@ -165,6 +161,19 @@ public class ArtworksService {
                 .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_BOOKMARKED));
 
         usersArtworksBookmarkRepository.delete(bookmark);
+    }
+
+
+    public ArtworkDetailResponse getDailyArt(Integer userId) {
+
+        LocalDate today = LocalDate.now();
+
+        // 오늘의 추천 작품 조회
+        String artworkId = dailyArtRepository.findByDate(today)
+                .orElseThrow(() -> new ArtworksException(ArtworksError.DAILY_ART_NOT_FOUND))
+                .getArtworkId();
+
+        return getArtworkDetail(userId, artworkId);
     }
 
 }

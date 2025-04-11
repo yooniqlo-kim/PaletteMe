@@ -1,8 +1,6 @@
 package com.ssafy.paletteme.common.security.provider;
 
 import com.ssafy.paletteme.domain.users.entity.Users;
-import com.ssafy.paletteme.domain.users.exception.UserError;
-import com.ssafy.paletteme.domain.users.exception.UserException;
 import com.ssafy.paletteme.domain.users.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +26,13 @@ public class CustomUserDetailService implements UserDetailsService {
         if(users.getIsActive() != Users.AccountStatus.ACTIVE){
             throw new BadCredentialsException("사용할 수 없는 계정입니다.");
         }
+
+        if(users.getLoginedAt()==null || !users.getLoginedAt().isEqual(LocalDate.now())){
+            users.increaseAttendance();
+        }
+        users.updateLoginedAt(LocalDate.now());
+        usersRepository.save(users);
+
         return CustomUserDetails.fromEntity(users);
     }
 }

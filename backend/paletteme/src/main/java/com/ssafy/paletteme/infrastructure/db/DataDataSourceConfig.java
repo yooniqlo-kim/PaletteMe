@@ -16,15 +16,16 @@ import java.util.HashMap;
 
 @Configuration
 @EnableJpaRepositories(
-        // 단일 DataSource일 땐 Spring Boot가 자동으로 처리해주지만, 다중 DataSource일 땐 네가 직접 repository 경로를 명시
-        // @EnableJpaRepositories를 통해 Repository들이 어떤 EntityManagerFactory와 TransactionManager를 써야 할지 기억함.
+        // 단일 DataSource일 땐 Spring Boot가 자동으로 처리해주지만, 다중 DataSource일 땐 내가 직접 repository 경로를 명시
+        // @EnableJpaRepositories를 통해 Repository들이 어떤 EntityManagerFactory와 TransactionManager를 쓸지 명시하기.
         basePackages = {
                 "com.ssafy.paletteme.domain.artworks.repository",
                 "com.ssafy.paletteme.domain.reviews.repository",
                 "com.ssafy.paletteme.domain.users.repository",
                 "com.ssafy.paletteme.domain.myMuseum.repository",
                 "com.ssafy.paletteme.domain.wrapped.repository",
-                "com.ssafy.paletteme.domain.search.repository"
+                "com.ssafy.paletteme.domain.ranking.repository",
+                "com.ssafy.paletteme.domain.recommendation.repository"
 ,
         },
         entityManagerFactoryRef = "dataEntityManager",
@@ -48,7 +49,7 @@ public class DataDataSourceConfig {
     public LocalContainerEntityManagerFactoryBean dataEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 
-        // 다중 DataSource 환경에서는 어떤 Entity가 어떤 DB랑 연결되어야 하는지 명확하게 알려줘야 해
+        // 다중 DataSource 환경에서는 어떤 Entity가 어떤 DB랑 연결되어야 할지 명시해주기
         em.setDataSource(dataDBSource());                                         // 위에서 만든 DataSource 주입
         em.setPackagesToScan(new String[]{
                 "com.ssafy.paletteme.domain.artworks.entity",
@@ -56,7 +57,8 @@ public class DataDataSourceConfig {
                 "com.ssafy.paletteme.domain.search.entity",
                 "com.ssafy.paletteme.domain.users.entity",
                 "com.ssafy.paletteme.domain.myMuseum.entity",
-                "com.ssafy.paletteme.domain.wrapped.entity"
+                "com.ssafy.paletteme.domain.wrapped.entity",
+                "com.ssafy.paletteme.domain.recommendation.entity"
         });
         em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
