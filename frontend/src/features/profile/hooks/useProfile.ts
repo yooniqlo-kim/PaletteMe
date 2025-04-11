@@ -32,11 +32,10 @@ export default function useProfile() {
       //   type: "error",
       // });
       console.error(errorMsg);
+    } else {
+      const userData = { nickname: data?.nickname, s3Url: data?.userImageUrl };
+      sessionStorage.setItem("user", JSON.stringify(userData));
     }
-
-    const userData = { nickname: data?.nickname, s3Url: data?.userImageUrl };
-    sessionStorage.setItem("user", JSON.stringify(userData));
-
     return data;
   }
 
