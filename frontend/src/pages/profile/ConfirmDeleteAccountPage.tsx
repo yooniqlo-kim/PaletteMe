@@ -14,6 +14,7 @@ import level4 from "@/assets/levels/level_4.svg";
 import level5 from "@/assets/levels/level_5.svg";
 import { Level } from "../../features/register/type/type";
 import useProfile from "../../features/profile/hooks/useProfile";
+import LevelSkeleton from "@/features/profile/LevelSkeleton";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
 
@@ -51,11 +52,7 @@ export default function ConfirmDeleteAccountPage() {
   let content;
 
   if (isLoading) {
-    content = (
-      <p className="text-primary flex justify-center items-center">
-        로딩 중입니다....
-      </p>
-    );
+    content = <LevelSkeleton />;
   } else if (!data) {
     content = (
       <p className="text-primary flex justify-center items-center">
