@@ -31,6 +31,7 @@ export interface ReviewSummaryResponse {
   content?: string;
   reviewLike?: number;
   isLiked?: boolean;
+  isPublic?: boolean;
 }
 
 // 감상문 등록 확인

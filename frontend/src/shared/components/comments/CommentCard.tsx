@@ -87,7 +87,7 @@ export function CommentCard({
         {!isDetailMode && <div className="absolute inset-0 z-0 bg-black/45" />}
         {/* 작성자 정보 및 좋아요 */}
         <div className="relative z-10 flex items-center justify-between">
-          <WriterMeta user={user} date={date} />
+          <WriterMeta user={user} date={date} visibility={comment.visibility} />
           <div className="flex items-center gap-1 text-xs font-medium">
             <IconButton
               identifier="review_list"
