@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import useProfile from "../../features/profile/hooks/useProfile";
-import { useQuery } from "@tanstack/react-query";
+import useUpdateUserInfo from "@/features/profile/hooks/useUpdateUserInfo";
 
 type FormValues = {
   image: FileList;
@@ -21,11 +21,8 @@ type FormValues = {
 const MAX_IMAGE_SIZE_MB = 5;
 
 export default function RegisterImagePage() {
-  const { updateUserInfo, getProfile } = useProfile();
-  const { data } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { profileData: data } = useProfile();
+  const { updateUserInfo } = useUpdateUserInfo();
 
   const {
     register,
@@ -134,7 +131,8 @@ export default function RegisterImagePage() {
     <section className="flex px-6">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-8 w-full">
+        className="flex flex-col items-center gap-8 w-full"
+      >
         <h2 className="text-lg font-semibold">프로필</h2>
         <Label htmlFor="image">
           <span className="relative">
@@ -169,8 +167,8 @@ export default function RegisterImagePage() {
                     message: "닉네임은 2자 이상 입력해야 합니다.",
                   },
                   maxLength: {
-                    value: 8,
-                    message: "닉네임은 최대 8자까지 가능합니다.",
+                    value: 7,
+                    message: "닉네임은 최대 7자까지 가능합니다.",
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9가-힣]+$/,
@@ -181,7 +179,7 @@ export default function RegisterImagePage() {
                 })}
                 id="nickname"
                 type="text"
-                placeholder="2자 이상 8자 이하로 입력해주세요"
+                placeholder="2자 이상 7자 이하로 입력해주세요"
                 fallback={errors.nickname && errors.nickname.message}
               />
               {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}

@@ -3,8 +3,8 @@ import Input from "@/shared/components/form/Input";
 import InputContainer from "@/shared/components/form/InputContainer";
 import Label from "@/shared/components/form/Label";
 import { useForm } from "react-hook-form";
-import useProfile from "../../features/profile/hooks/useProfile";
 import { passwordValidation } from "@/shared/utils/verifyPassword";
+import useChangePassword from "@/features/profile/hooks/useChangePassword";
 
 type FormValues = {
   password: string;
@@ -12,7 +12,7 @@ type FormValues = {
 };
 
 export default function UpdateUserInfoPage() {
-  const { changePassword } = useProfile();
+  const { changePassword } = useChangePassword();
   const {
     register,
     handleSubmit,
@@ -31,7 +31,8 @@ export default function UpdateUserInfoPage() {
     <div className="px-7">
       <form
         onSubmit={handleSubmit(updateUserInfo)}
-        className="flex flex-col gap-8 w-full">
+        className="flex flex-col gap-8 w-full"
+      >
         <h2 className="text-lg font-semibold">비밀번호 수정</h2>
         <div className="flex flex-col w-full gap-[33px]">
           <InputContainer>
