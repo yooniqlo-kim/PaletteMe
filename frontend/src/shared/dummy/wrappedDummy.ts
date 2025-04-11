@@ -1,6 +1,7 @@
 import { WrappedData } from "@/shared/types/api/wrapped";
 
 export const WrappedDummy: WrappedData = {
+  artistName: "René Magritte",
   favoriteArtwork: {
     title: "Woman with a Parasol",
     artist: "Claude Monet",
@@ -27,4 +28,3 @@ export const WrappedDummy: WrappedData = {
     },
   ],
 };
-
