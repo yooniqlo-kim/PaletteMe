@@ -16,4 +16,7 @@ public class Color {
 
     @Column(name = "color", length = 20, nullable = false)
     private String color;
+
+    @Column(name = "artwork_count",nullable = false)
+    private int artworkCount;
 }

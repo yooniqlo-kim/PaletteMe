@@ -1,6 +1,7 @@
 package com.ssafy.paletteme.domain.reviews.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.paletteme.domain.artworks.entity.QArtists;
 import com.ssafy.paletteme.domain.artworks.entity.QArtworks;
@@ -35,12 +36,15 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                 .select(new QReviewsWithArtworkResponses(
                         artworks.imageUrl,
                         museums.museumName,
-                        artworks.enTitle,
-                        artists.enArtist,
+                        artworks.originalTitle,
+                        artists.originalArtist,
                         users.s3Url,
+                        users.nickname,
                         reviews.createdAt.stringValue(),
                         reviews.content,
-                        reviews.likeCnt
+                        reviews.likeCnt,
+                        reviews.isPublic,
+                        artworks.artworkId
                 ))
                 .from(reviews)
                 .join(reviews.artwork, artworks)
@@ -62,7 +66,8 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                         reviews.createdAt.stringValue(),
                         reviews.content,
                         reviews.likeCnt,
-                        usersReviewLike.isNotNull() // 좋아요 여부
+                        usersReviewLike.isNotNull(), // 좋아요 여부
+                        reviews.isPublic
                 ))
                 .from(reviews)
                 .join(reviews.user, users)
@@ -71,11 +76,39 @@ public class ReviewsRepositoryCustomImpl implements ReviewsRepositoryCustom {
                         .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
                 .where(
                         reviews.artwork.artworkId.eq(artworkId),
+                        reviews.isPublic.eq(true),
+                        reviews.user.userId.ne(userId),
                         cursor != null ? reviews.reviewId.lt(cursor.longValue()) : null
                 )
-                .orderBy(reviews.reviewId.desc())
+                .orderBy(reviews.reviewId.desc()) // 여기만 심플하게 바꿈
                 .limit(size)
                 .fetch();
+    }
+
+    @Override
+    public ReviewSummaryResponse findMyReview(int userId, String artworkId) {
+        return queryFactory
+                .select(new QReviewSummaryResponse(
+                        reviews.reviewId,
+                        users.nickname,
+                        users.s3Url,
+                        reviews.createdAt.stringValue(),
+                        reviews.content,
+                        reviews.likeCnt,
+                        usersReviewLike.isNotNull(),
+                        reviews.isPublic
+                ))
+                .from(reviews)
+                .join(reviews.user, users)
+                .leftJoin(usersReviewLike)
+                .on(usersReviewLike.user.userId.eq(userId)
+                        .and(usersReviewLike.review.reviewId.eq(reviews.reviewId)))
+                .where(
+                        reviews.artwork.artworkId.eq(artworkId),
+                        reviews.user.userId.eq(userId)
+                )
+                .orderBy(reviews.reviewId.desc())
+                .fetchOne();
     }
 
     private BooleanExpression gtCursor(Integer cursor) {

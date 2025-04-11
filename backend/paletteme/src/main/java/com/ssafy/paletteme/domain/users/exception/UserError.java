@@ -20,7 +20,10 @@ public enum UserError {
     SECURITY_USERS_UNAUTHENTICATED("500","1013","하 Security 인증쪽 에러" ),
     SIGNUP_USERS_DUPLICATE_ID("400", "1014", "이미 사용 중인 아이디입니다. 다른 아이디를 입력해주세요."),
     AUTH_PHONE_CERTIFICATION_CODE_MISMATCH("400", "1015", "인증번호가 올바르지 않습니다."),
-    SIGNUP_USERS_DUPLICATE_NICKNAME("400", "1016", "사용중인 닉네임 입니다");
+    SIGNUP_USERS_DUPLICATE_NICKNAME("400", "1016", "사용중인 닉네임 입니다"),
+    ENCRYPTION_ERROR("500", "1017", "휴대폰 번호 암호화에 실패했어요"),
+    DECRYPTION_ERROR("500", "1018", "휴대폰 번호 복호화에 실패했어요"),
+    SIGNUP_USERS_DUPLICATE_PHONE_NUMBER("400", "1019", "이미 등록된 휴대전화번호입니다.")
     ;
 
 
