@@ -41,7 +41,7 @@ export default function CommentMyPage() {
     } finally {
       setLoading(false);
     }
-  }, [cursor, loading, hasMore]);
+  }, [cursor, hasMore, loading]);
 
   useEffect(() => {
     if (comments.length === 0 && hasMore) {
@@ -66,7 +66,7 @@ export default function CommentMyPage() {
       if (el) observer.unobserve(el);
     };
   }, [fetch]);
-  
+
   const handleViewChange = (newView: "list" | "ticket") => {
     setView(newView);
     setComments([]);
@@ -76,15 +76,21 @@ export default function CommentMyPage() {
   };
 
   const handleLikeChange = (commentId: string, isLiked: boolean) => {
-    setComments(prev => 
-      prev.map(comment => 
-        comment.commentId === commentId 
-          ? { ...comment, isLiked, likeCount: isLiked ? comment.likeCount + 1 : comment.likeCount - 1 } 
+    setComments((prev) =>
+      prev.map((comment) =>
+        comment.commentId === commentId
+          ? {
+              ...comment,
+              isLiked,
+              likeCount: isLiked
+                ? comment.likeCount + 1
+                : comment.likeCount - 1,
+            }
           : comment
       )
     );
   };
-  
+
   return (
     <>
       <CommentCollectionLayout
@@ -99,7 +105,7 @@ export default function CommentMyPage() {
       />
       {view === "list" && <div ref={observerRef} className="w-full h-10" />}
       {loading && comments.length > 0 && (
-        <p className="text-sm text-neutral-500 text-center py-2">
+        <p className="py-2 text-sm text-center text-neutral-500">
           불러오는 중...
         </p>
       )}
