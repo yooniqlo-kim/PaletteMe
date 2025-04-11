@@ -22,7 +22,7 @@ type FormValues = {
   confirmPassword: string;
   name: string;
   birthday: number;
-  phoneNumber: number;
+  phoneNumber: string;
   verificationCode: number;
 };
 
@@ -79,7 +79,7 @@ export default function RegisterInfoPage() {
     setSendCodeLoading(true);
     try {
       const response = await sendVerificationCode({
-        phoneNumber: watchPhoneNumber.toString(),
+        phoneNumber: watchPhoneNumber,
       });
       const { success, errorMsg } = response.data;
       setPhoneMsg(success ? "인증번호가 전송되었습니다." : errorMsg);
@@ -123,7 +123,7 @@ export default function RegisterInfoPage() {
         password: data.password,
         name: data.name,
         birthday: data.birthday,
-        phoneNumber: data.phoneNumber.toString(),
+        phoneNumber: data.phoneNumber,
       })
     );
     navigate("/signup/profile");
@@ -145,8 +145,7 @@ export default function RegisterInfoPage() {
                     required: "아이디는 필수값입니다.",
                     pattern: {
                       value: /^(?!\d+$)[A-Za-z0-9]+$/,
-                      message:
-                        "영문자 또는 영문자+숫자 조합만 사용할 수 있습니다.",
+                      message: "영문자 또는 영문자+숫자 조합만 가능합니다.",
                     },
                     maxLength: {
                       value: 20,
@@ -239,10 +238,15 @@ export default function RegisterInfoPage() {
                 <Input
                   {...register("phoneNumber", {
                     required: "전화번호는 필수값입니다.",
+                    pattern: {
+                      value: /^\d{10,11}$/,
+                      message: "숫자만 입력하세요 (10~11자리).",
+                    },
                   })}
                   id="phoneNumber"
-                  type="number"
+                  type="text"
                   placeholder="전화번호 입력 ( - 제외)"
+                  inputMode="numeric"
                   fallback={errors.phoneNumber?.message}
                 />
                 {phoneMsg && <p className="text-primary">{phoneMsg}</p>}
