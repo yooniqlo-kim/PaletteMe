@@ -15,6 +15,7 @@ import { useFormDispatch } from "@/store/hooks";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import { usePrefetchRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
+import { useMutation } from "@tanstack/react-query";
 
 type FormValues = {
   image: FileList;
@@ -37,7 +38,6 @@ export default function RegisterImagePage() {
   const [nicknameMsg, setNicknameMsg] = useState<string>();
   const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
   const [isImageValid, setIsImageValid] = useState<boolean>(true);
-  const [nnCheckLoading, setNnCheckLoading] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const image = watch("image");
@@ -99,25 +99,26 @@ export default function RegisterImagePage() {
     fileInputRef.current?.click();
   }
 
+  const { mutate: checkNicknameMutate, isPending: isCheckingNickname } =
+    useMutation({
+      mutationFn: (nickname: string) => checkNickname({ nickname }),
+      onSuccess: (response) => {
+        const { success, errorMsg } = response.data;
+        setNicknameMsg(success ? "유효한 닉네임입니다." : errorMsg);
+        setIsNicknameValid(success);
+      },
+      onError: () => {
+        showToast({
+          message: "닉네임 중복 체크 중 오류가 발생했습니다.",
+          type: "error",
+        });
+      },
+    });
+
   async function handleCheckNickname() {
     const isValid = await trigger("nickname");
-
     if (!isValid) return;
-
-    setNnCheckLoading(true);
-    try {
-      const response = await checkNickname({ nickname: watchNickname });
-      const { success, errorMsg } = response.data;
-      setNicknameMsg(success ? "유효한 닉네임입니다." : errorMsg);
-      setIsNicknameValid(success);
-    } catch (error) {
-      showToast({
-        message: "닉네임 중복 체크 중 오류가 발생했습니다.",
-        type: "error",
-      });
-    } finally {
-      setNnCheckLoading(false);
-    }
+    checkNicknameMutate(watchNickname);
   }
 
   function onSubmit(data: FormValues) {
@@ -135,7 +136,8 @@ export default function RegisterImagePage() {
     <FormWrapper>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-8 w-full">
+        className="flex flex-col items-center gap-8 w-full"
+      >
         <h2 className="text-lg font-semibold">프로필 설정</h2>
         <Label htmlFor="image">
           <span className="relative">
@@ -190,8 +192,9 @@ export default function RegisterImagePage() {
               size="XS"
               onClick={handleCheckNickname}
               type="button"
-              disabled={nnCheckLoading}>
-              {nnCheckLoading ? "확인 중..." : "중복 확인"}
+              disabled={isCheckingNickname}
+            >
+              {isCheckingNickname ? "확인 중..." : "중복 확인"}
             </Button>
           </span>
         </InputContainer>
@@ -199,7 +202,8 @@ export default function RegisterImagePage() {
           size="L"
           disabled={
             !isNicknameValid || !isValid || isSubmitting || !isImageValid
-          }>
+          }
+        >
           다음으로
         </Button>
       </form>
