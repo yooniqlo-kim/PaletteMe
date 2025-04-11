@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import useToast from "@/shared/hooks/useToast";
 import { passwordValidation } from "@/shared/utils/verifyPassword";
+import { useMutation } from "@tanstack/react-query";
 
 type FormValues = {
   id: string;
@@ -27,18 +28,15 @@ type FormValues = {
 };
 
 export default function RegisterInfoPage() {
-  const [isValidId, setIsValidId] = useState<boolean>(false);
-  const [isValidPhoneNumber, SetIsValidPhoneNumber] = useState<boolean>(false);
+  const [isValidId, setIsValidId] = useState(false);
+  const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
   const [idMsg, setIdMsg] = useState<string>();
   const [phoneMsg, setPhoneMsg] = useState<string>();
   const [codeMsg, setCodeMsg] = useState<string>();
+
   const dispatch = useFormDispatch();
   const navigate = useNavigate();
   const { showToast } = useToast();
-
-  const [idCheckLoading, setIdCheckLoading] = useState(false);
-  const [sendCodeLoading, setSendCodeLoading] = useState(false);
-  const [verifyCodeLoading, setVerifyCodeLoading] = useState(false);
 
   const {
     register,
@@ -52,71 +50,72 @@ export default function RegisterInfoPage() {
   const watchPhoneNumber = watch("phoneNumber");
   const watchVerificationCode = watch("verificationCode");
 
-  async function handleIdCheck() {
-    const isValid = await trigger("id");
-    if (!isValid) return;
-
-    setIdCheckLoading(true);
-    try {
-      const response = await checkId({ id: watchId });
+  const idCheckMutation = useMutation({
+    mutationFn: checkId,
+    onSuccess: (response) => {
       const { success, errorMsg } = response.data;
-      setIsValidId(success ? true : false);
+      setIsValidId(success);
       setIdMsg(success ? "유효한 아이디입니다." : errorMsg);
-    } catch {
+    },
+    onError: () => {
       showToast({
         message: "아이디 중복 체크 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
-    } finally {
-      setIdCheckLoading(false);
-    }
-  }
+    },
+  });
 
-  async function handleSendCode() {
-    const isValid = await trigger("phoneNumber");
-    if (!isValid) return;
-
-    setSendCodeLoading(true);
-    try {
-      const response = await sendVerificationCode({
-        phoneNumber: watchPhoneNumber,
-      });
+  const sendCodeMutation = useMutation({
+    mutationFn: sendVerificationCode,
+    onSuccess: (response) => {
       const { success, errorMsg } = response.data;
       setPhoneMsg(success ? "인증번호가 전송되었습니다." : errorMsg);
-    } catch {
+    },
+    onError: () => {
       showToast({
         message: "인증번호 전송 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
-    } finally {
-      setSendCodeLoading(false);
-    }
-  }
+    },
+  });
 
-  async function handleCheckCode() {
-    const isValid = await trigger("verificationCode");
-    if (!isValid) return;
-
-    setVerifyCodeLoading(true);
-    try {
-      const response = await verifyCode({
-        phoneNumber: watchPhoneNumber,
-        verificationCode: watchVerificationCode,
-      });
+  const verifyCodeMutation = useMutation({
+    mutationFn: verifyCode,
+    onSuccess: (response) => {
       const { success, errorMsg } = response.data;
-      SetIsValidPhoneNumber(success ? true : false);
+      setIsValidPhoneNumber(success);
       setCodeMsg(success ? "인증번호가 일치합니다." : errorMsg);
-    } catch {
+    },
+    onError: () => {
       showToast({
         message: "인증번호 인증 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
-    } finally {
-      setVerifyCodeLoading(false);
-    }
-  }
+    },
+  });
 
-  function onSubmit(data: FormValues) {
+  const handleIdCheck = async () => {
+    const isValidField = await trigger("id");
+    if (!isValidField) return;
+    idCheckMutation.mutate({ id: watchId });
+  };
+
+  const handleSendCode = async () => {
+    const isValidField = await trigger("phoneNumber");
+    if (!isValidField) return;
+    sendCodeMutation.mutate({ phoneNumber: watchPhoneNumber });
+  };
+
+  const handleCheckCode = async () => {
+    const isValidField = await trigger("verificationCode");
+    if (!isValidField) return;
+    verifyCodeMutation.mutate({
+      phoneNumber: watchPhoneNumber,
+      verificationCode: watchVerificationCode,
+    });
+  };
+
+  const onSubmit = (data: FormValues) => {
     dispatch(
       updateField({
         id: data.id,
@@ -127,7 +126,7 @@ export default function RegisterInfoPage() {
       })
     );
     navigate("/signup/profile");
-  }
+  };
 
   return (
     <FormWrapper>
@@ -164,9 +163,9 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleIdCheck}
-                disabled={idCheckLoading}
+                disabled={idCheckMutation.isPending}
               >
-                {idCheckLoading ? "확인 중..." : "중복 확인"}
+                {idCheckMutation.isPending ? "확인 중..." : "중복 확인"}
               </Button>
             </span>
           </InputContainer>
@@ -257,9 +256,9 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleSendCode}
-                disabled={sendCodeLoading}
+                disabled={sendCodeMutation.isPending}
               >
-                {sendCodeLoading ? "전송 중..." : "번호 전송"}
+                {sendCodeMutation.isPending ? "전송 중..." : "번호 전송"}
               </Button>
             </span>
           </InputContainer>
@@ -285,9 +284,9 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleCheckCode}
-                disabled={verifyCodeLoading}
+                disabled={verifyCodeMutation.isPending}
               >
-                {verifyCodeLoading ? "확인 중..." : "확인"}
+                {verifyCodeMutation.isPending ? "확인 중..." : "확인"}
               </Button>
             </span>
           </InputContainer>
