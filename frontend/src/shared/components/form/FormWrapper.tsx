@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import SignupProgressBar from "../progressbar/SignupProgressBar";
-import FormPrompt from "@/features/register/FormPrompt";
+import RedirectOnRefresh from "@/features/register/FormPrompt";
 
 type FormWrapperProps = {
   children: ReactNode;
@@ -17,7 +17,7 @@ export default function FormWrapper({ children }: FormWrapperProps) {
 
   return (
     <div className={`flex flex-col w-full ${step === 3 ? "p-5" : "p-8"}`}>
-      <FormPrompt />
+      <RedirectOnRefresh />
       {step < 5 && <SignupProgressBar currentStep={step} />}
       {children}
     </div>
