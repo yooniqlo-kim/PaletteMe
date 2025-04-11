@@ -3,10 +3,12 @@ import useToast from "@/shared/hooks/useToast";
 import { inactiveAPI, login, logoutAPI } from "@/shared/api/auth";
 import { UserType } from "../type/type";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
 
 export function useAuth() {
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const [isDeleteSuccess, setIsDeleteSuccess] = useState<boolean | null>(null);
 
   async function handleLogin(enteredData: { id: string; password: string }) {
     try {
@@ -37,7 +39,6 @@ export function useAuth() {
   function isLoggedIn() {
     const user = sessionStorage.getItem("user");
     const token = sessionStorage.getItem("token");
-
     return user && token;
   }
 
@@ -60,18 +61,20 @@ export function useAuth() {
     return { id, nickname, s3Url };
   }
 
-  const mutation = useMutation<boolean, Error, void>({
+  const mutation = useMutation({
     mutationFn: inactiveAPI,
-    onSuccess: (data) => {
-      const { success, errorMsg } = data as any;
+    onSuccess: (data: any) => {
+      const { success, errorMsg } = data;
       if (!success) {
         showToast({
           message: errorMsg || "회원 탈퇴를 실패했습니다.",
           type: "error",
         });
+        setIsDeleteSuccess(false);
       } else {
         sessionStorage.clear();
         showToast({ message: "회원 탈퇴가 완료되었습니다.", type: "success" });
+        setIsDeleteSuccess(true);
       }
     },
     onError: () => {
@@ -79,10 +82,14 @@ export function useAuth() {
         message: "회원 탈퇴 중 오류가 발생했습니다.",
         type: "error",
       });
+      setIsDeleteSuccess(false);
     },
   });
 
-  const deleteAccount = () => mutation.mutate();
+  const deleteAccount = () => {
+    setIsDeleteSuccess(null); // 상태 초기화
+    mutation.mutate();
+  };
 
   return {
     handleLogin,
@@ -91,5 +98,6 @@ export function useAuth() {
     getUserMeta,
     deleteAccount,
     isDeleting: mutation.isPending,
+    isDeleteSuccess,
   };
 }
