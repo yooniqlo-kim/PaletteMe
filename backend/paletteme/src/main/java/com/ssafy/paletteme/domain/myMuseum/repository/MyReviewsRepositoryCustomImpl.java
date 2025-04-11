@@ -42,7 +42,8 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                         artworks.imageUrl,
                         new CaseBuilder()
                                 .when(usersReviewLike.isNotNull()).then(true)
-                                .otherwise(false)
+                                .otherwise(false),
+                        reviews.isPublic
                 ))
                 .from(reviews)
                 .join(reviews.artwork, artworks)
