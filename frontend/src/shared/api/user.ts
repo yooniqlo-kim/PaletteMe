@@ -38,3 +38,10 @@ export async function changePasswordAPI(newPassword: string) {
   });
   return response.data;
 }
+
+export async function verifyPasswordAPI(password: string) {
+  const response = await api.post(`${USER_BASE_URL}/verify-password`, {
+    password,
+  });
+  return response.data;
+}

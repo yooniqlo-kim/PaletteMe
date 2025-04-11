@@ -1,6 +1,10 @@
 import { BASE_URL } from "@/shared/api/baseUrl";
 import { api } from "@/shared/api/core";
-import { changePasswordAPI, updateUserInfoAPI } from "@/shared/api/user";
+import {
+  changePasswordAPI,
+  updateUserInfoAPI,
+  verifyPasswordAPI,
+} from "@/shared/api/user";
 import useToast from "@/shared/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
@@ -90,31 +94,55 @@ export default function useProfile() {
     },
   });
 
-  async function verifyPassword(password: string) {
-    const response = await api.post(`${USER_BASE_URL}/verify-password`, {
-      password,
-    });
+  const verifyPasswordMutation = useMutation({
+    mutationFn: verifyPasswordAPI,
+    onSuccess: (data) => {
+      const { success, errorMsg } = data;
 
-    const { success, errorMsg } = response.data;
-
-    if (!success) {
+      if (!success) {
+        showToast({
+          message: errorMsg || "비밀번호가 일치하지 않습니다.",
+          type: "error",
+        });
+      } else {
+        showToast({
+          message: "비밀번호가 일치합니다.",
+          type: "success",
+        });
+        navigate("/profile/update");
+      }
+    },
+    onError: () => {
       showToast({
-        message: errorMsg || "비밀번호가 일치하지 않습니다.",
+        message: "비밀번호 확인 중 오류가 발생했습니다.",
         type: "error",
       });
-    } else {
-      showToast({
-        message: "비밀번호가 일치합니다.",
-        type: "success",
-      });
-      navigate("/profile/update");
-    }
-  }
+    },
+  });
+
+  // async function verifyPassword(password: string) {
+  //   const response = await verifyPassword(password);
+
+  //   const { success, errorMsg } = response.data;
+
+  //   if (!success) {
+  //     showToast({
+  //       message: errorMsg || "비밀번호가 일치하지 않습니다.",
+  //       type: "error",
+  //     });
+  //   } else {
+  //     showToast({
+  //       message: "비밀번호가 일치합니다.",
+  //       type: "success",
+  //     });
+  //     navigate("/profile/update");
+  //   }
+  // }
 
   return {
     getProfile,
     updateUserInfo: updateUserInfoMutation.mutate,
-    verifyPassword,
+    verifyPassword: verifyPasswordMutation.mutate,
     changePassword: changePasswordMutation.mutate,
   };
 }
