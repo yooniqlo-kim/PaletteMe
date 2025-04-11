@@ -42,7 +42,8 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                         artworks.imageUrl,
                         new CaseBuilder()
                                 .when(usersReviewLike.isNotNull()).then(true)
-                                .otherwise(false)
+                                .otherwise(false),
+                        reviews.isPublic
                 ))
                 .from(reviews)
                 .join(reviews.artwork, artworks)
@@ -80,6 +81,7 @@ public class MyReviewsRepositoryCustomImpl implements MyReviewsRepositoryCustom 
                 .join(artworks.artist, artists)                               // 작품의 작가
                 .where(
                         usersReviewLike.user.userId.eq(userId),               // 해당 유저의 좋아요
+                        reviews.isPublic.eq(true),
                         cursor != null ? reviews.reviewId.lt(cursor) : null  // 커서 기반 페이징
                 )
                 .orderBy(reviews.createdAt.desc(), reviews.reviewId.desc())  // 최신순 정렬

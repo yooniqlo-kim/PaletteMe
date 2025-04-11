@@ -19,10 +19,11 @@ public class MyReviewsResponse {
     String originalArtist;
     String imageUrl;
     Boolean isLiked;
+    Boolean isPublic;
 
     @QueryProjection
     public MyReviewsResponse(int reviewId, int likeCnt, String content, LocalDateTime createdAt,
-                             String artworkId,String originalTitle, String originalArtist, String imageUrl, Boolean isLiked) {
+                             String artworkId,String originalTitle, String originalArtist, String imageUrl, Boolean isLiked, Boolean isPublic) {
         this.reviewId = reviewId;
         this.likeCnt = likeCnt;
         this.content = content;
@@ -32,5 +33,6 @@ public class MyReviewsResponse {
         this.originalArtist = originalArtist;
         this.imageUrl = imageUrl;
         this.isLiked = isLiked;
+        this.isPublic = isPublic;
     }
 }

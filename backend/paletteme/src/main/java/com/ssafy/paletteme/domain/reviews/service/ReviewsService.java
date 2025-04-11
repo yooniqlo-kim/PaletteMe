@@ -114,6 +114,14 @@ public class ReviewsService {
     public ReviewListResponse getReviewsCursorPaging(int userId, String artworkId, Integer cursor, int size) {
         List<ReviewSummaryResponse> reviewSummaryResponseList = reviewsRepository.findReviewsWithPaging(artworkId, cursor, size, userId);
 
+        // 처음 호출 시, 사용자의 데이터 반환하기
+        if (cursor == null || cursor == 0) {
+            ReviewSummaryResponse myReview = reviewsRepository.findMyReview(userId, artworkId);
+            if (myReview != null) {
+                reviewSummaryResponseList.add(0, myReview);
+            }
+        }
+
         return ReviewListResponse.of(reviewSummaryResponseList);
     }
 
