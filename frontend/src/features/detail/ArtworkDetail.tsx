@@ -216,7 +216,7 @@ export function ArtworkDetail({ artwork }: Props) {
               <br />
               <a
                 href="/login"
-                className="inline-block mt-2 underline text-primary" // Use inline-block or block to apply margin
+                className="inline-block mt-2 underline text-primary"
               >
                 로그인하기
               </a>

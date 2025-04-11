@@ -87,7 +87,7 @@ export function CommentTicket({
       </div>
       <div className="p-4 space-y-2">
         <ArtworkMeta artwork={artwork} showYear={false} showLocation={false} />
-        <WriterMeta user={user} date={date} />
+        <WriterMeta user={user} date={date} visibility={comment.visibility} />
         <p className="text-xs leading-relaxed line-clamp-6">{content}</p>
       </div>
     </div>

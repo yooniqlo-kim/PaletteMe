@@ -144,7 +144,7 @@ export const mapToMyCommentsAndArtworks = (
         nickname: parsedUser?.nickname ?? "",
         profileImageUrl: parsedUser?.s3Url ?? "",
       },
-      visibility: "public",
+      visibility: item.isPublic ? "public" : "private",
     };
 
     const artwork: ArtworkPreview = {
