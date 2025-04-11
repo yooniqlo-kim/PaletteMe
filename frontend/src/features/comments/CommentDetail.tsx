@@ -73,7 +73,7 @@ export function CommentDetail({ comment, artwork }: Props) {
   };
 
   return (
-    <div className="bg-neutral-100 min-h-screen">
+    <div className="min-h-screen bg-neutral-100">
       {isModalOpened && (
         <Modal
           open={isModalOpened}
@@ -83,20 +83,24 @@ export function CommentDetail({ comment, artwork }: Props) {
           onConfirm={confirmDelete}
         />
       )}
-      <div className="bg-neutral-200 pt-2">
+      <div className="pt-2 bg-neutral-200">
         <ArtworkImage artwork={artwork} />
       </div>
       <div className="flex flex-col gap-2">
         <WhiteContainer withTopRound withMarginTop>
           <div className="relative">
-            <div className="absolute -top-9 right-1 flex gap-2 z-10"></div>
+            <div className="absolute z-10 flex gap-2 -top-9 right-1"></div>
             <ArtworkMeta artwork={artwork} />
             <span className="flex items-center justify-between">
-              <WriterMeta user={comment.user} date={comment.date} />
+              <WriterMeta
+                user={comment.user}
+                date={comment.date}
+                visibility={comment.visibility}
+              />
               {comment.user.nickname === currentNickname && (
                 <DropdownMenu
                   button={
-                    <button className="cursor-pointer flex justify-center items-center">
+                    <button className="flex items-center justify-center cursor-pointer">
                       <IconThreeDots />
                     </button>
                   }
@@ -109,7 +113,7 @@ export function CommentDetail({ comment, artwork }: Props) {
             </span>
             <DescriptionBox description={comment.content} hideLine />
           </div>
-          <div className="flex justify-end py-3 px-2">
+          <div className="flex justify-end px-2 py-3">
             <IconButton identifier="review_detail" onClick={toggleLike}>
               <span className="inline-flex items-center relative top-[2px] ">
                 {likeCount}
