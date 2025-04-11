@@ -59,7 +59,7 @@ export function mapWrappedData(apiData: ExtendedRawWrappedApiResponse): WrappedD
       reviewCount: apiData.reviewCnt ?? 0,
     },
     mostMemorableArtwork: {
-      title: apiData.recommendedArtwork ?? '',  // ✅ 수정됨
+      title: apiData.recommendedArtwork ?? '',
       artist: apiData.recommendedArtist ?? '',
       imgUrl: apiData.recommendedImg ?? '',
     },
