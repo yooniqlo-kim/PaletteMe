@@ -8,9 +8,32 @@ type UpdatedUserType = {
   image: FileList;
 };
 
+type profileType = {
+  nickname: string;
+  userImageUrl: string;
+  reviewCount: number;
+  artworkLikeCount: number;
+  attendance: number;
+  grade: string;
+};
+
+export async function getProfileAPI(): Promise<profileType> {
+  const response = await api.get(`${BASE_URL}/users/profile`);
+  const { success, errorMsg, data } = response.data;
+
+  if (!success) {
+    console.error(errorMsg);
+    throw new Error(errorMsg || "회원 정보 등급 조회를 실패했습니다.");
+  } else {
+    const userData = { nickname: data?.nickname, s3Url: data?.userImageUrl };
+    sessionStorage.setItem("user", JSON.stringify(userData));
+  }
+
+  return data;
+}
+
 export async function updateUserInfoAPI(enteredData: UpdatedUserType) {
   const formData = new FormData();
-  console.log(enteredData);
   formData.append(
     "data",
     new Blob([JSON.stringify({ nickname: enteredData.nickname })], {
@@ -19,7 +42,6 @@ export async function updateUserInfoAPI(enteredData: UpdatedUserType) {
   );
 
   if (enteredData.image && enteredData.image.length > 0) {
-    console.log("!11111");
     formData.append("file", enteredData.image[0]);
   }
 

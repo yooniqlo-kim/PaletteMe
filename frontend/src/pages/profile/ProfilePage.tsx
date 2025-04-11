@@ -12,7 +12,7 @@ import level5 from "@/assets/levels/level_5.svg";
 import defaultImg from "@/assets/images/defaultProfile.png";
 
 import { Level } from "../../features/register/type/type";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import useProfile from "../../features/profile/hooks/useProfile";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
@@ -24,12 +24,12 @@ function getLevelImage(level: Level) {
 export default function ProfilePage() {
   const { logout } = useAuth();
 
-  const { getProfile } = useProfile();
+  const { profileData: data, isLoading, isError } = useProfile();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  // const { data, isLoading, isError } = useQuery({
+  //   queryKey: ["profile"],
+  //   queryFn: getProfile,
+  // });
 
   let content;
 

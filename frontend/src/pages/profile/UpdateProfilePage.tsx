@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form";
 import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import useProfile from "../../features/profile/hooks/useProfile";
-import { useQuery } from "@tanstack/react-query";
 
 type FormValues = {
   image: FileList;
@@ -21,11 +20,7 @@ type FormValues = {
 const MAX_IMAGE_SIZE_MB = 5;
 
 export default function RegisterImagePage() {
-  const { updateUserInfo, getProfile } = useProfile();
-  const { data } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { updateUserInfo, profileData: data } = useProfile();
 
   const {
     register,
@@ -134,7 +129,8 @@ export default function RegisterImagePage() {
     <section className="flex px-6">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-8 w-full">
+        className="flex flex-col items-center gap-8 w-full"
+      >
         <h2 className="text-lg font-semibold">프로필</h2>
         <Label htmlFor="image">
           <span className="relative">
