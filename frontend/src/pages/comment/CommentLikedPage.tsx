@@ -21,7 +21,7 @@ export default function CommentLikedPage() {
     try {
       const res = await getLikedReviews({ size: 10, cursor });
       const { comments: newComments, artworks: newArtworks } =
-      mapToCommentAndArtworkList(res);
+        mapToCommentAndArtworkList(res);
 
       setComments((prev) => [...prev, ...newComments]);
       setArtworks((prev) => ({
@@ -36,7 +36,7 @@ export default function CommentLikedPage() {
         setCursor(lastId);
       }
     } catch (err) {
-      console.error("좋아요요 감상문 조회 실패", err);
+      console.error("좋아요 감상문 조회 실패", err);
       setHasMore(false);
     } finally {
       setLoading(false);
@@ -76,10 +76,16 @@ export default function CommentLikedPage() {
   };
 
   const handleLikeChange = (commentId: string, isLiked: boolean) => {
-    setComments(prev => 
-      prev.map(comment => 
-        comment.commentId === commentId 
-          ? { ...comment, isLiked, likeCount: isLiked ? comment.likeCount + 1 : comment.likeCount - 1 } 
+    setComments((prev) =>
+      prev.map((comment) =>
+        comment.commentId === commentId
+          ? {
+              ...comment,
+              isLiked,
+              likeCount: isLiked
+                ? comment.likeCount + 1
+                : comment.likeCount - 1,
+            }
           : comment
       )
     );
@@ -99,7 +105,7 @@ export default function CommentLikedPage() {
       />
       {view === "list" && <div ref={observerRef} className="w-full h-10" />}
       {loading && comments.length > 0 && (
-        <p className="text-sm text-neutral-500 text-center py-2">
+        <p className="py-2 text-sm text-center text-neutral-500">
           불러오는 중...
         </p>
       )}

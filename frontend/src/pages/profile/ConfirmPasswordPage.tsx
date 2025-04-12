@@ -1,7 +1,7 @@
 import Button from "@/shared/components/buttons/Button";
 import Input from "@/shared/components/form/Input";
 import { useForm } from "react-hook-form";
-import useProfile from "../../features/profile/hooks/useProfile";
+import useVerifyPassword from "@/features/profile/hooks/useVerifyPassword";
 
 type FormData = {
   password: string;
@@ -14,7 +14,7 @@ export default function ConfirmPasswordPage() {
     formState: { errors, isValid, isSubmitting },
   } = useForm<FormData>({ mode: "onChange" });
 
-  const { verifyPassword } = useProfile();
+  const { verifyPassword } = useVerifyPassword();
 
   function checkPassword(data: FormData) {
     const { password } = data;
@@ -25,10 +25,12 @@ export default function ConfirmPasswordPage() {
     <div className="px-10">
       <div
         className="flex justify-center items-center"
-        style={{ minHeight: "calc(100vh - 180px)" }}>
+        style={{ minHeight: "calc(100vh - 180px)" }}
+      >
         <form
           onSubmit={handleSubmit(checkPassword)}
-          className="flex flex-col gap-10 justify-center items-center w-full">
+          className="flex flex-col gap-10 justify-center items-center w-full"
+        >
           <h2 className="text-lg font-semibold">회원정보 확인</h2>
           <p className="text-sm font-normal">비밀번호를 입력해주세요</p>
           <div className="w-full">

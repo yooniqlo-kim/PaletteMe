@@ -12,8 +12,10 @@ import level5 from "@/assets/levels/level_5.svg";
 import defaultImg from "@/assets/images/defaultProfile.png";
 
 import { Level } from "../../features/register/type/type";
-import { useQuery } from "@tanstack/react-query";
 import useProfile from "../../features/profile/hooks/useProfile";
+import UserProfileSkeleton from "@/features/profile/UserProfileSkeleton";
+import UserMetaSkeleton from "@/features/profile/UserMetaSkeleton";
+import LevelSkeleton from "@/features/profile/LevelSkeleton";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
 
@@ -24,20 +26,17 @@ function getLevelImage(level: Level) {
 export default function ProfilePage() {
   const { logout } = useAuth();
 
-  const { getProfile } = useProfile();
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { profileData: data, isLoading, isError } = useProfile();
 
   let content;
 
   if (isLoading) {
     content = (
-      <p className="text-primary flex justify-center items-center">
-        로딩 중입니다....
-      </p>
+      <>
+        <UserProfileSkeleton />
+        <UserMetaSkeleton />
+        <LevelSkeleton />
+      </>
     );
   } else if (!data) {
     content = (
