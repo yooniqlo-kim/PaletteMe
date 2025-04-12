@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import useToast from "@/shared/hooks/useToast";
 import { passwordValidation } from "@/shared/utils/verifyPassword";
+import { useMutation } from "@tanstack/react-query";
 
 type FormValues = {
   id: string;
@@ -22,23 +23,20 @@ type FormValues = {
   confirmPassword: string;
   name: string;
   birthday: number;
-  phoneNumber: number;
-  verificationCode: number;
+  phoneNumber: string;
+  verificationCode: string;
 };
 
 export default function RegisterInfoPage() {
-  const [isValidId, setIsValidId] = useState<boolean>(false);
-  const [isValidPhoneNumber, SetIsValidPhoneNumber] = useState<boolean>(false);
+  const [isValidId, setIsValidId] = useState(false);
+  const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(false);
   const [idMsg, setIdMsg] = useState<string>();
   const [phoneMsg, setPhoneMsg] = useState<string>();
   const [codeMsg, setCodeMsg] = useState<string>();
+
   const dispatch = useFormDispatch();
   const navigate = useNavigate();
   const { showToast } = useToast();
-
-  const [idCheckLoading, setIdCheckLoading] = useState(false);
-  const [sendCodeLoading, setSendCodeLoading] = useState(false);
-  const [verifyCodeLoading, setVerifyCodeLoading] = useState(false);
 
   const {
     register,
@@ -52,88 +50,90 @@ export default function RegisterInfoPage() {
   const watchPhoneNumber = watch("phoneNumber");
   const watchVerificationCode = watch("verificationCode");
 
-  async function handleIdCheck() {
-    const isValid = await trigger("id");
-    if (!isValid) return;
-
-    setIdCheckLoading(true);
-    try {
-      const response = await checkId({ id: watchId });
+  const idCheckMutation = useMutation({
+    mutationFn: checkId,
+    onSuccess: (response) => {
       const { success, errorMsg } = response.data;
-      setIsValidId(success ? true : false);
+      setIsValidId(success);
       setIdMsg(success ? "유효한 아이디입니다." : errorMsg);
-    } catch {
+    },
+    onError: () => {
       showToast({
         message: "아이디 중복 체크 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
-    } finally {
-      setIdCheckLoading(false);
-    }
-  }
+    },
+  });
 
-  async function handleSendCode() {
-    const isValid = await trigger("phoneNumber");
-    if (!isValid) return;
-
-    setSendCodeLoading(true);
-    try {
-      const response = await sendVerificationCode({
-        phoneNumber: watchPhoneNumber.toString(),
-      });
+  const sendCodeMutation = useMutation({
+    mutationFn: sendVerificationCode,
+    onSuccess: (response) => {
       const { success, errorMsg } = response.data;
       setPhoneMsg(success ? "인증번호가 전송되었습니다." : errorMsg);
-    } catch {
+    },
+    onError: () => {
       showToast({
         message: "인증번호 전송 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
-    } finally {
-      setSendCodeLoading(false);
-    }
-  }
+    },
+  });
 
-  async function handleCheckCode() {
-    const isValid = await trigger("verificationCode");
-    if (!isValid) return;
-
-    setVerifyCodeLoading(true);
-    try {
-      const response = await verifyCode({
-        phoneNumber: watchPhoneNumber.toString(),
-        verificationCode: watchVerificationCode.toString(),
-      });
+  const verifyCodeMutation = useMutation({
+    mutationFn: verifyCode,
+    onSuccess: (response) => {
       const { success, errorMsg } = response.data;
-      SetIsValidPhoneNumber(success ? true : false);
+      setIsValidPhoneNumber(success);
       setCodeMsg(success ? "인증번호가 일치합니다." : errorMsg);
-    } catch {
+    },
+    onError: () => {
       showToast({
         message: "인증번호 인증 중 문제가 발생했습니다. 다시 시도해주세요",
         type: "error",
       });
-    } finally {
-      setVerifyCodeLoading(false);
-    }
-  }
+    },
+  });
 
-  function onSubmit(data: FormValues) {
+  const handleIdCheck = async () => {
+    const isValidField = await trigger("id");
+    if (!isValidField) return;
+    idCheckMutation.mutate({ id: watchId });
+  };
+
+  const handleSendCode = async () => {
+    const isValidField = await trigger("phoneNumber");
+    if (!isValidField) return;
+    sendCodeMutation.mutate({ phoneNumber: watchPhoneNumber });
+  };
+
+  const handleCheckCode = async () => {
+    const isValidField = await trigger("verificationCode");
+    if (!isValidField) return;
+    verifyCodeMutation.mutate({
+      phoneNumber: watchPhoneNumber,
+      verificationCode: watchVerificationCode,
+    });
+  };
+
+  const onSubmit = (data: FormValues) => {
     dispatch(
       updateField({
         id: data.id,
         password: data.password,
         name: data.name,
         birthday: data.birthday,
-        phoneNumber: data.phoneNumber.toString(),
+        phoneNumber: data.phoneNumber,
       })
     );
     navigate("/signup/profile");
-  }
+  };
 
   return (
     <FormWrapper>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-8 w-full">
+        className="flex flex-col items-center gap-8 w-full"
+      >
         <h2 className="text-lg font-semibold">회원가입</h2>
         <div className="flex flex-col w-full gap-[33px]">
           <InputContainer>
@@ -145,8 +145,7 @@ export default function RegisterInfoPage() {
                     required: "아이디는 필수값입니다.",
                     pattern: {
                       value: /^(?!\d+$)[A-Za-z0-9]+$/,
-                      message:
-                        "영문자 또는 영문자+숫자 조합만 사용할 수 있습니다.",
+                      message: "영문자 또는 영문자+숫자 조합만 가능합니다.",
                     },
                     maxLength: {
                       value: 20,
@@ -164,8 +163,9 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleIdCheck}
-                disabled={idCheckLoading}>
-                {idCheckLoading ? "확인 중..." : "중복 확인"}
+                disabled={idCheckMutation.isPending}
+              >
+                {idCheckMutation.isPending ? "확인 중..." : "중복 확인"}
               </Button>
             </span>
           </InputContainer>
@@ -239,10 +239,15 @@ export default function RegisterInfoPage() {
                 <Input
                   {...register("phoneNumber", {
                     required: "전화번호는 필수값입니다.",
+                    pattern: {
+                      value: /^\d{10,11}$/,
+                      message: "숫자만 입력하세요 (10~11자리).",
+                    },
                   })}
                   id="phoneNumber"
-                  type="number"
+                  type="text"
                   placeholder="전화번호 입력 ( - 제외)"
+                  inputMode="numeric"
                   fallback={errors.phoneNumber?.message}
                 />
                 {phoneMsg && <p className="text-primary">{phoneMsg}</p>}
@@ -251,8 +256,9 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleSendCode}
-                disabled={sendCodeLoading}>
-                {sendCodeLoading ? "전송 중..." : "번호 전송"}
+                disabled={sendCodeMutation.isPending}
+              >
+                {sendCodeMutation.isPending ? "전송 중..." : "번호 전송"}
               </Button>
             </span>
           </InputContainer>
@@ -265,11 +271,10 @@ export default function RegisterInfoPage() {
                   {...register("verificationCode", {
                     required: "인증번호를 입력해주세요.",
                     validate: (value) =>
-                      value.toString().length === 6 ||
-                      "인증번호는 6자리입니다.",
+                      value.length === 6 || "인증번호는 6자리입니다.",
                   })}
                   id="verificationCode"
-                  type="number"
+                  type="text"
                   placeholder="인증번호 6자리 입력"
                   fallback={errors.verificationCode?.message}
                 />
@@ -279,8 +284,9 @@ export default function RegisterInfoPage() {
                 size="XS"
                 type="button"
                 onClick={handleCheckCode}
-                disabled={verifyCodeLoading}>
-                {verifyCodeLoading ? "확인 중..." : "확인"}
+                disabled={verifyCodeMutation.isPending}
+              >
+                {verifyCodeMutation.isPending ? "확인 중..." : "확인"}
               </Button>
             </span>
           </InputContainer>
@@ -289,7 +295,8 @@ export default function RegisterInfoPage() {
           size="L"
           disabled={
             !isValidId || !isValidPhoneNumber || isSubmitting || !isValid
-          }>
+          }
+        >
           다음으로
         </Button>
       </form>

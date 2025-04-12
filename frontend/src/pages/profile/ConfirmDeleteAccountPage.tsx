@@ -14,7 +14,7 @@ import level4 from "@/assets/levels/level_4.svg";
 import level5 from "@/assets/levels/level_5.svg";
 import { Level } from "../../features/register/type/type";
 import useProfile from "../../features/profile/hooks/useProfile";
-import { useQuery } from "@tanstack/react-query";
+import LevelSkeleton from "@/features/profile/LevelSkeleton";
 
 const levelImages = [level0, level1, level2, level3, level4, level5];
 
@@ -23,12 +23,7 @@ function getLevelImage(level: Level) {
 }
 
 export default function ConfirmDeleteAccountPage() {
-  const { getProfile } = useProfile();
-
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["profile"],
-    queryFn: getProfile,
-  });
+  const { profileData: data, isLoading, isError } = useProfile();
 
   const shuffled = shuffle(masterpieces).slice(0, 4);
 
@@ -57,11 +52,7 @@ export default function ConfirmDeleteAccountPage() {
   let content;
 
   if (isLoading) {
-    content = (
-      <p className="text-primary flex justify-center items-center">
-        로딩 중입니다....
-      </p>
-    );
+    content = <LevelSkeleton />;
   } else if (!data) {
     content = (
       <p className="text-primary flex justify-center items-center">
@@ -125,7 +116,8 @@ export default function ConfirmDeleteAccountPage() {
           <Button
             size="L"
             className="!bg-white border border-primary !text-primary"
-            onClick={() => navigate("/profile")}>
+            onClick={() => navigate("/profile")}
+          >
             취소하기
           </Button>
           <Button size="L" onClick={handleDeleteButton}>

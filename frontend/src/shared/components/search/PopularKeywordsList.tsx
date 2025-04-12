@@ -26,13 +26,13 @@ export default function PopularKeywordsList({ onKeywordClick }: Props) {
         {data?.map((keyword, idx) => (
           <li
             key={keyword}
-            className="cursor-pointer hover:underline flex items-center"
+            className="cursor-pointer flex items-center w-full"
             onClick={() => onKeywordClick(keyword)}
           >
             <span className="text-red-500 font-semibold mr-1 min-w-[1.5rem]">
               {String(idx + 1).padStart(2, '0')}
             </span>
-            <span className="truncate">{keyword}</span>
+            <span className="truncate hover:underline">{keyword}</span>
           </li>
         ))}
       </ul>
