@@ -2,6 +2,7 @@ import Button from "@/shared/components/buttons/Button";
 import Input from "@/shared/components/form/Input";
 import { useForm } from "react-hook-form";
 import useVerifyPassword from "@/features/profile/hooks/useVerifyPassword";
+import LoadingDots from "@/shared/components/loading/LoadingDots";
 
 type FormData = {
   password: string;
@@ -14,7 +15,7 @@ export default function ConfirmPasswordPage() {
     formState: { errors, isValid, isSubmitting },
   } = useForm<FormData>({ mode: "onChange" });
 
-  const { verifyPassword } = useVerifyPassword();
+  const { verifyPassword, isPending } = useVerifyPassword();
 
   function checkPassword(data: FormData) {
     const { password } = data;
@@ -46,7 +47,7 @@ export default function ConfirmPasswordPage() {
           </div>
 
           <Button size="L" disabled={!isValid || isSubmitting}>
-            확인하기
+            {isPending ? <LoadingDots /> : "확인하기"}
           </Button>
         </form>
       </div>
