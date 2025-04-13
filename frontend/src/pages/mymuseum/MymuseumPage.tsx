@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 
 import MyCollectionContainer from "@/features/mymuseum/mycollection/MyCollectionContainer";
 import MyCommentsContainer from "@/features/mymuseum/mycomments/MyCommentsContainer";
@@ -10,7 +9,7 @@ import RecommendationContainer from "@/features/mymuseum/recommendation/Recommen
 
 import masterpieces from "@/assets/masterpieces";
 import shuffle from "@/shared/utils/shuffle";
-import { mapReviewsToWeeklyCalendar } from "@/shared/utils/date";
+import { mapReviewsToWeeklyCalendar, getStartOfWeek } from "@/shared/utils/date";
 import { useWeeklyCalendarReviews } from "@/shared/hooks/useCalendarReviews";
 import WrappedEmptyModal from "@/features/wrapped/WrappedEmptyModal";
 import { fetchWrapped } from "@/features/wrapped/api/wrappedApi";
@@ -22,7 +21,7 @@ export default function MymuseumPage() {
   const navigate = useNavigate();
   const [isModalOpened, setIsModalOpened] = useState(false);
 
-  const weekStart = dayjs().startOf("week").add(1, "day").toDate();
+  const weekStart = getStartOfWeek(new Date());
   const { data: reviews, isLoading, refetch } = useWeeklyCalendarReviews(weekStart);
 
   // 페이지 진입할 때마다 refetch
@@ -57,6 +56,7 @@ export default function MymuseumPage() {
   //   setIsModalOpened(true);
   //   return;};
 
+  //  api - Wrapped 데이터가 있을 경우
   const handleWrappedClick = async () => {
     try {
       const raw = await fetchWrapped();
@@ -73,6 +73,7 @@ export default function MymuseumPage() {
     }
   };
 
+  //  api - Wrapped가 없을 경우, 샘플 데이터 사용
   const handleUseSample = () => {
     sessionStorage.setItem("wrapped-sample", JSON.stringify(WrappedDummy));
     setIsModalOpened(false);
