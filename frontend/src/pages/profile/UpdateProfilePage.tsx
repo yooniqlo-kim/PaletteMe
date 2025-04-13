@@ -18,7 +18,7 @@ type FormValues = {
   nickname: string;
 };
 
-const MAX_IMAGE_SIZE_MB = 5;
+const MAX_IMAGE_SIZE_MB = 10;
 
 export default function RegisterImagePage() {
   const { profileData: data } = useProfile();
