@@ -46,7 +46,7 @@ export default function RegisterImagePage() {
   const { showToast } = useToast();
   usePrefetchRecommendArtworks();
 
-  const MAX_IMAGE_SIZE_MB = 10;
+  const MAX_IMAGE_SIZE_MB = 5;
 
   const imageRegister = register("image", {
     onChange: (e) => {
@@ -84,6 +84,11 @@ export default function RegisterImagePage() {
       }
     },
   });
+
+  useEffect(() => {
+    setNicknameMsg(undefined);
+    setIsNicknameValid(undefined);
+  }, [watchNickname]);
 
   useEffect(() => {
     if (image && image.length > 0) {
@@ -149,6 +154,10 @@ export default function RegisterImagePage() {
             </span>
           </span>
         </Label>
+        <div className="w-full flex flex-col justify-center items-center text-neutral-7 text-xs">
+          <p>사진 크기는 5MB 이내로 업로드해주시기 바랍니다.</p>
+          <p>(jpg, png만 가능)</p>
+        </div>
         <input
           id="image"
           type="file"
@@ -184,9 +193,10 @@ export default function RegisterImagePage() {
                 id="nickname"
                 type="text"
                 placeholder="2자 이상 7자 이하로 입력해주세요"
-                fallback={errors.nickname && errors.nickname.message}
+                fallback={
+                  (errors.nickname && errors.nickname.message) || nicknameMsg
+                }
               />
-              {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
             </div>
             <Button
               size="XS"

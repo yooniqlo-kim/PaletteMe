@@ -12,17 +12,18 @@ import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import useProfile from "../../features/profile/hooks/useProfile";
 import useUpdateUserInfo from "@/features/profile/hooks/useUpdateUserInfo";
+import LoadingDots from "@/shared/components/loading/LoadingDots";
 
 type FormValues = {
   image: FileList;
   nickname: string;
 };
 
-const MAX_IMAGE_SIZE_MB = 10;
+const MAX_IMAGE_SIZE_MB = 5;
 
 export default function RegisterImagePage() {
   const { profileData: data } = useProfile();
-  const { updateUserInfo } = useUpdateUserInfo();
+  const { updateUserInfo, isPending } = useUpdateUserInfo();
 
   const {
     register,
@@ -37,7 +38,7 @@ export default function RegisterImagePage() {
     data?.userImageUrl
   );
   const [nicknameMsg, setNicknameMsg] = useState<string>();
-  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isImageValid, setIsImageValid] = useState<boolean>(true);
 
@@ -92,6 +93,11 @@ export default function RegisterImagePage() {
     }
   }, [data, setValue]);
 
+  useEffect(() => {
+    setNicknameMsg(undefined);
+    setIsNicknameValid(undefined);
+  }, [watchNickname]);
+
   function handleButtonClick(event: FormEvent) {
     event.preventDefault();
     fileInputRef.current?.click();
@@ -144,6 +150,10 @@ export default function RegisterImagePage() {
             </span>
           </span>
         </Label>
+        <div className="w-full flex flex-col justify-center items-center text-neutral-7 text-xs">
+          <p>사진 크기는 5MB이내로 업로드해주시기 바랍니다.</p>
+          <p>(jpg, png만 가능)</p>
+        </div>
         <input
           id="image"
           type="file"
@@ -180,9 +190,10 @@ export default function RegisterImagePage() {
                 id="nickname"
                 type="text"
                 placeholder="2자 이상 7자 이하로 입력해주세요"
-                fallback={errors.nickname && errors.nickname.message}
+                fallback={
+                  (errors.nickname && errors.nickname.message) || nicknameMsg
+                }
               />
-              {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
             </div>
             <Button size="XS" onClick={handleCheckNickname} type="button">
               중복 확인
@@ -190,7 +201,7 @@ export default function RegisterImagePage() {
           </span>
         </InputContainer>
         <Button size="L" disabled={isSubmitDisabled}>
-          수정하기
+          {isPending ? <LoadingDots /> : "수정하기"}
         </Button>
       </form>
     </section>
