@@ -42,7 +42,7 @@ export default function MyCollections({ images }: Props) {
           const isLoaded = loadedImages[idx];
 
           return (
-            <div key={item.artworkId} className="w-[180px]">
+            <div key={item.artworkId}>
               {isLoaded ? (
                 <ArtworkCard
                   artwork={{
