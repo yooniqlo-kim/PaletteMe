@@ -46,7 +46,7 @@ export default function RegisterImagePage() {
   const { showToast } = useToast();
   usePrefetchRecommendArtworks();
 
-  const MAX_IMAGE_SIZE_MB = 5;
+  const MAX_IMAGE_SIZE_MB = 10;
 
   const imageRegister = register("image", {
     onChange: (e) => {

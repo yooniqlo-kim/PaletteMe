@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useFormSelector } from "@/store/hooks";
 import CompletedForm from "@/shared/components/form/CompletedForm";
 import { signup } from "@/shared/api/auth";
+import LoadingDots from "@/shared/components/loading/LoadingDots";
 
 function RegisterCompletePage() {
   const formState = useFormSelector((state) => state.form);
@@ -30,8 +31,13 @@ function RegisterCompletePage() {
   let content;
 
   if (isFetching) {
+    const loadingDots = <LoadingDots />;
     content = (
-      <CompletedForm msg="회원 가입 중입니다" btnMsg="....." route="/login" />
+      <CompletedForm
+        msg="회원 가입 중입니다"
+        btnMsg={loadingDots}
+        route="/login"
+      />
     );
   } else if (success) {
     content = (
