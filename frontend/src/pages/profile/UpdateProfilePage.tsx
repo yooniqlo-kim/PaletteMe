@@ -38,7 +38,7 @@ export default function RegisterImagePage() {
     data?.userImageUrl
   );
   const [nicknameMsg, setNicknameMsg] = useState<string>();
-  const [isNicknameValid, setIsNicknameValid] = useState<boolean>(false);
+  const [isNicknameValid, setIsNicknameValid] = useState<boolean>();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isImageValid, setIsImageValid] = useState<boolean>(true);
 
@@ -92,6 +92,11 @@ export default function RegisterImagePage() {
       setImagePreview(data.userImageUrl);
     }
   }, [data, setValue]);
+
+  useEffect(() => {
+    setNicknameMsg(undefined);
+    setIsNicknameValid(undefined);
+  }, [watchNickname]);
 
   function handleButtonClick(event: FormEvent) {
     event.preventDefault();
@@ -181,9 +186,10 @@ export default function RegisterImagePage() {
                 id="nickname"
                 type="text"
                 placeholder="2자 이상 7자 이하로 입력해주세요"
-                fallback={errors.nickname && errors.nickname.message}
+                fallback={
+                  (errors.nickname && errors.nickname.message) || nicknameMsg
+                }
               />
-              {nicknameMsg && <p className="text-primary">{nicknameMsg}</p>}
             </div>
             <Button size="XS" onClick={handleCheckNickname} type="button">
               중복 확인
