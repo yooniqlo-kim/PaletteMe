@@ -46,7 +46,7 @@ export default function RegisterImagePage() {
   const { showToast } = useToast();
   usePrefetchRecommendArtworks();
 
-  const MAX_IMAGE_SIZE_MB = 10;
+  const MAX_IMAGE_SIZE_MB = 5;
 
   const imageRegister = register("image", {
     onChange: (e) => {
@@ -154,6 +154,10 @@ export default function RegisterImagePage() {
             </span>
           </span>
         </Label>
+        <div className="w-full flex flex-col justify-center items-center text-neutral-7 text-xs">
+          <p>사진 크기는 5MB 이내로 업로드해주시기 바랍니다.</p>
+          <p>(jpg, png만 가능)</p>
+        </div>
         <input
           id="image"
           type="file"
