@@ -12,6 +12,7 @@ import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import useProfile from "../../features/profile/hooks/useProfile";
 import useUpdateUserInfo from "@/features/profile/hooks/useUpdateUserInfo";
+import LoadingDots from "@/shared/components/loading/LoadingDots";
 
 type FormValues = {
   image: FileList;
@@ -22,7 +23,7 @@ const MAX_IMAGE_SIZE_MB = 10;
 
 export default function RegisterImagePage() {
   const { profileData: data } = useProfile();
-  const { updateUserInfo } = useUpdateUserInfo();
+  const { updateUserInfo, isPending } = useUpdateUserInfo();
 
   const {
     register,
@@ -190,7 +191,7 @@ export default function RegisterImagePage() {
           </span>
         </InputContainer>
         <Button size="L" disabled={isSubmitDisabled}>
-          수정하기
+          {isPending ? <LoadingDots /> : "수정하기"}
         </Button>
       </form>
     </section>
