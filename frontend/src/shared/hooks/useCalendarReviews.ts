@@ -4,10 +4,11 @@ import {
   getWeeklyCalendarReviews,
 } from "@shared/api/calendar";
 import { WeeklyReview } from "@shared/types/calendar";
+import { getStartOfWeek, getEndOfWeek } from "@/shared/utils/date";
 import dayjs from "dayjs";
 
 /**
- * ✅ 주간 달력에서 한 주가 두 달에 걸칠 수 있기 때문에,
+ * 주간 달력에서 한 주가 두 달에 걸칠 수 있기 때문에,
  * 포함된 모든 (year, month) 조합에 대해 월간 API 요청
  */
 export const useMonthlyCalendarReviewsForWeek = (weekStartDate: Date) => {
@@ -55,7 +56,7 @@ export const useMonthlyCalendarReviewsForWeek = (weekStartDate: Date) => {
 };
 
 /**
- * ✅ 월간 달력에서 특정 월의 감상문을 가져오는 훅
+ * 월간 달력에서 특정 월의 감상문을 가져오는 훅
  */
 export const useMonthlyCalendarReviews = (
   year: number,
@@ -78,11 +79,11 @@ export const useMonthlyCalendarReviews = (
 };
 
 /**
- * ✅ 주간 감상문 조회 API 전용 훅
+ * 주간 감상문 조회 API 전용 훅
  */
 export const useWeeklyCalendarReviews = (weekStartDate: Date) => {
-  const start = dayjs(weekStartDate).format("YYYY-MM-DD");
-  const end = dayjs(weekStartDate).add(6, "day").format("YYYY-MM-DD");
+  const start = dayjs(getStartOfWeek(weekStartDate)).format("YYYY-MM-DD");
+  const end = dayjs(getEndOfWeek(weekStartDate)).format("YYYY-MM-DD");
 
   return useQuery<WeeklyReview[]>({
     queryKey: ["calendar-reviews-weekly", start, end],
