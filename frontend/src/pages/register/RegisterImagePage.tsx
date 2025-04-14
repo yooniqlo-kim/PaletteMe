@@ -16,7 +16,7 @@ import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import { usePrefetchRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
 import { useMutation } from "@tanstack/react-query";
-import RedirectOnRefresh from "@/features/register/FormPrompt";
+// import RedirectOnRefresh from "@/features/register/FormPrompt";
 
 type FormValues = {
   image: FileList;
@@ -140,7 +140,7 @@ export default function RegisterImagePage() {
 
   return (
     <FormWrapper>
-      <RedirectOnRefresh />
+      {/* <RedirectOnRefresh /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center gap-8 w-full">

@@ -1,4 +1,4 @@
-import RedirectOnRefresh from "@/features/register/FormPrompt";
+// import RedirectOnRefresh from "@/features/register/FormPrompt";
 import { useRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton";
@@ -45,7 +45,7 @@ export default function RegisterArtworkPage() {
 
   return (
     <FormWrapper>
-      <RedirectOnRefresh />
+      {/* <RedirectOnRefresh /> */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center gap-8 w-full">
