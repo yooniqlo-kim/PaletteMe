@@ -67,3 +67,9 @@ export async function verifyPasswordAPI(password: string) {
   });
   return response.data;
 }
+
+export async function inactiveAPI() {
+  const response = await api.post(`${USER_BASE_URL}/inactive`);
+
+  return response.data;
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { BaseComment } from "@/shared/types/comment";
 import { WriterMeta } from "./WriterMeta";
 import IconButton from "@/shared/components/buttons/IconButton";
@@ -139,14 +139,37 @@ type DetailContentProps = {
 
 // 상세모드 더보기 및 간략히 토글
 function DetailContent({ content, expanded, onToggle }: DetailContentProps) {
-  const MAX_LENGTH = 120;
-  const isLong = content.length > MAX_LENGTH;
+  const [isOverflowing, setIsOverflowing] = useState(false);
+  const contentRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (contentRef.current) {
+        const element = contentRef.current;
+        // 실제 높이와 스크롤 높이를 비교하여 오버플로우 여부 확인
+        setIsOverflowing(element.scrollHeight > element.clientHeight);
+      }
+    };
+
+    checkOverflow();
+    // 창 크기가 변경될 때도 확인
+    window.addEventListener('resize', checkOverflow);
+    
+    return () => {
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [content]);
 
   return (
     <div className="text-xs font-normal leading-5 text-black">
-      <p className={expanded ? "" : "line-clamp-3"}>{content}</p>
+      <p 
+        ref={contentRef}
+        className={expanded ? "" : "line-clamp-3"}
+      >
+        {content}
+      </p>
 
-      {isLong && (
+      {isOverflowing && (
         <button
           onClick={(e) => {
             e.stopPropagation();

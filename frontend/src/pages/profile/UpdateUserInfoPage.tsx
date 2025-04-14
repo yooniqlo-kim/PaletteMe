@@ -5,6 +5,7 @@ import Label from "@/shared/components/form/Label";
 import { useForm } from "react-hook-form";
 import { passwordValidation } from "@/shared/utils/verifyPassword";
 import useChangePassword from "@/features/profile/hooks/useChangePassword";
+import LoadingDots from "@/shared/components/loading/LoadingDots";
 
 type FormValues = {
   password: string;
@@ -12,7 +13,7 @@ type FormValues = {
 };
 
 export default function UpdateUserInfoPage() {
-  const { changePassword } = useChangePassword();
+  const { changePassword, isPending } = useChangePassword();
   const {
     register,
     handleSubmit,
@@ -67,7 +68,7 @@ export default function UpdateUserInfoPage() {
           </InputContainer>
         </div>
         <Button size="L" disabled={!isValid || isSubmitting}>
-          확인
+          {isPending ? <LoadingDots /> : "확인"}
         </Button>
       </form>
     </div>

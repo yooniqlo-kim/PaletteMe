@@ -12,7 +12,7 @@ import {
   sendVerificationCode,
   verifyCode,
 } from "@/shared/api/register";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useToast from "@/shared/hooks/useToast";
 import { passwordValidation } from "@/shared/utils/verifyPassword";
 import { useMutation } from "@tanstack/react-query";
@@ -49,6 +49,21 @@ export default function RegisterInfoPage() {
   const watchId = watch("id");
   const watchPhoneNumber = watch("phoneNumber");
   const watchVerificationCode = watch("verificationCode");
+
+  useEffect(() => {
+    setIsValidId(false);
+    setIdMsg(undefined);
+  }, [watchId]);
+
+  useEffect(() => {
+    setIsValidPhoneNumber(false);
+    setPhoneMsg(undefined);
+    setCodeMsg(undefined);
+  }, [watchPhoneNumber]);
+
+  useEffect(() => {
+    setCodeMsg(undefined);
+  }, [watchVerificationCode]);
 
   const idCheckMutation = useMutation({
     mutationFn: checkId,
@@ -155,9 +170,8 @@ export default function RegisterInfoPage() {
                   id="id"
                   type="text"
                   placeholder="아이디를 입력해주세요"
-                  fallback={errors.id?.message}
+                  fallback={errors.id?.message || idMsg}
                 />
-                {idMsg && <p className="text-primary">{idMsg}</p>}
               </div>
               <Button
                 size="XS"
@@ -248,9 +262,8 @@ export default function RegisterInfoPage() {
                   type="text"
                   placeholder="전화번호 입력 ( - 제외)"
                   inputMode="numeric"
-                  fallback={errors.phoneNumber?.message}
+                  fallback={errors.phoneNumber?.message || phoneMsg}
                 />
-                {phoneMsg && <p className="text-primary">{phoneMsg}</p>}
               </div>
               <Button
                 size="XS"
@@ -276,9 +289,8 @@ export default function RegisterInfoPage() {
                   id="verificationCode"
                   type="text"
                   placeholder="인증번호 6자리 입력"
-                  fallback={errors.verificationCode?.message}
+                  fallback={errors.verificationCode?.message || codeMsg}
                 />
-                {codeMsg && <p className="text-primary">{codeMsg}</p>}
               </div>
               <Button
                 size="XS"

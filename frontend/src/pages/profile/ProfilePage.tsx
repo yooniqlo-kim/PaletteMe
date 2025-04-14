@@ -41,13 +41,14 @@ export default function ProfilePage() {
   } else if (!data) {
     content = (
       <p className="text-primary flex justify-center items-center">
-        회원 정보를 불러오는 중입니다....
+        프로필 정보를 불러오지 못했어요. <br />
+        네트워크 상태를 확인하거나, 잠시 후 다시 시도해 주세요.
       </p>
     );
   } else if (isError) {
     content = (
       <p className="text-primary flex justify-center items-center">
-        회원 정보 조회 중 오류가 발생했습니다.
+        회원 정보 조회 중 문제가 발생했어요.
       </p>
     );
   } else {

@@ -81,9 +81,3 @@ export async function signup(data: UserFormData) {
   );
   return response;
 }
-
-export async function inactiveAPI() {
-  const response = await api.post(`${AUTH_BASE_URL}/inactive`);
-
-  return response.data;
-}
