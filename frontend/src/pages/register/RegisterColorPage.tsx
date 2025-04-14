@@ -4,7 +4,8 @@ import { updateField } from "@/store/formSlice";
 import ColorCard from "@/features/register/ColorCard";
 import FormWrapper from "@/shared/components/form/FormWrapper";
 import { useNavigate } from "react-router";
-import { useFormDispatch, useFormSelector } from "@/store/hooks";
+import { useFormDispatch } from "@/store/hooks";
+// import RedirectOnRefresh from "@/features/register/FormPrompt";
 
 const COLOR = [
   { name: "RED", color: "#FF0000" },
@@ -25,7 +26,6 @@ export default function RegisterColorPage() {
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
   const [msg, setMsg] = useState<string>();
   const navigate = useNavigate();
-  const formState = useFormSelector((state) => state.form);
 
   useEffect(() => {
     if (selectedColor.length > 3) {
@@ -50,13 +50,13 @@ export default function RegisterColorPage() {
         color: [...selectedColor],
       })
     );
-    console.log(formState);
 
     navigate("/signup/complete");
   }
 
   return (
     <FormWrapper>
+      {/* <RedirectOnRefresh /> */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col items-center gap-8 w-full">
