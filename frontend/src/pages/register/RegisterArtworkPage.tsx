@@ -34,7 +34,6 @@ export default function RegisterArtworkPage() {
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    console.log(selectedImages);
     dispatch(
       updateField({
         artworkId: [...selectedImages],
@@ -47,7 +46,8 @@ export default function RegisterArtworkPage() {
     <FormWrapper>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center gap-8 w-full">
+        className="flex flex-col items-center gap-8 w-full"
+      >
         <h2 className="text-lg font-semibold">
           좋아하는 작품을 3개 선택해주세요
         </h2>

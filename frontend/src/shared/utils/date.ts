@@ -4,29 +4,23 @@ import { WeeklyReview, CalendarDay } from "@/shared/types/calendar.ts";
 
 dayjs.locale("ko");
 
-// 오늘 날짜 (ex. "3월 31일 월요일")
+// 주간 Calendar용: 오늘 날짜 (ex. "3월 31일 월요일")
 export const getTodayString = () => {
   return dayjs().format("M월 D일 dddd");
 };
 
-// 이번 달 달력용 날짜 리스트 (일 ~ 토)
-export const getMonthCalendarDays = (date: Date): Date[] => {
-  const startOfMonth = dayjs(date).startOf("month");
-  const endOfMonth = dayjs(date).endOf("month");
-
-  const startDay = startOfMonth.startOf("week"); // 일요일 시작
-  const endDay = endOfMonth.endOf("week");
-
-  const days: Date[] = [];
-  let current = startDay;
-
-  while (current.isBefore(endDay) || current.isSame(endDay, "day")) {
-    days.push(current.toDate());
-    current = current.add(1, "day");
-  }
-
-  return days;
+// 주간 Calendar용: 이번 주 월요일 반환 (한국시간)
+export const getStartOfWeek = (date: Date): Date => {
+  const day = dayjs(date);
+  return (day.day() === 0 ? day.subtract(6, "day") : day.startOf("week").add(1, "day")).toDate();
 };
+
+// 주간 Calendar용: 이번 주 일요일 반환 (한국시간)
+export const getEndOfWeek = (date: Date): Date => {
+  const day = dayjs(date);
+  return (day.day() === 0 ? day : day.startOf("week").add(7, "day")).toDate();
+};
+
 
 // 주간 Calendar용: 감상문 데이터를 요일 순서로 변환
 export const mapReviewsToWeeklyCalendar = (
@@ -51,6 +45,25 @@ export const mapReviewsToWeeklyCalendar = (
     } else {
       days.push({ date: dateStr });
     }
+  }
+
+  return days;
+};
+
+// 월간 Calendar용 : 이번 달 달력용 날짜 리스트 (일 ~ 토)
+export const getMonthCalendarDays = (date: Date): Date[] => {
+  const startOfMonth = dayjs(date).startOf("month");
+  const endOfMonth = dayjs(date).endOf("month");
+
+  const startDay = startOfMonth.startOf("week"); // 일요일 시작
+  const endDay = endOfMonth.endOf("week");
+
+  const days: Date[] = [];
+  let current = startDay;
+
+  while (current.isBefore(endDay) || current.isSame(endDay, "day")) {
+    days.push(current.toDate());
+    current = current.add(1, "day");
   }
 
   return days;
