@@ -95,6 +95,13 @@ public class ArtworksService {
     public void likeArtwork(int userId, String artworkId){
         Users user = usersRepository.findById((long)userId)
                 .orElseThrow(() -> new ArtworksException(ArtworksError.USER_NOT_FOUND));
+        Artworks artwork = artworksRepository.findById(artworkId)
+                        .orElseThrow(() -> new ArtworksException(ArtworksError.ARTWORK_NOT_FOUND));
+
+        usersArtworksLikeRepository.findByUserAndArtwork(user, artwork)
+                .ifPresent(like -> {
+                    throw new ArtworksException(ArtworksError.ARTWORK_ALREADY_LIKED);
+                });
 
         artworkLikeCommandService.likeArtwork(user, artworkId);
     }
