@@ -16,6 +16,7 @@ import useToast from "@/shared/hooks/useToast";
 import { checkNickname } from "@/shared/api/register";
 import { usePrefetchRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
 import { useMutation } from "@tanstack/react-query";
+// import RedirectOnRefresh from "@/features/register/FormPrompt";
 
 type FormValues = {
   image: FileList;
@@ -139,10 +140,10 @@ export default function RegisterImagePage() {
 
   return (
     <FormWrapper>
+      {/* <RedirectOnRefresh /> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col items-center gap-8 w-full"
-      >
+        className="flex flex-col items-center gap-8 w-full">
         <h2 className="text-lg font-semibold">프로필 설정</h2>
         <Label htmlFor="image">
           <span className="relative">
@@ -202,8 +203,7 @@ export default function RegisterImagePage() {
               size="XS"
               onClick={handleCheckNickname}
               type="button"
-              disabled={isCheckingNickname}
-            >
+              disabled={isCheckingNickname}>
               {isCheckingNickname ? "확인 중..." : "중복 확인"}
             </Button>
           </span>
@@ -212,8 +212,7 @@ export default function RegisterImagePage() {
           size="L"
           disabled={
             !isNicknameValid || !isValid || isSubmitting || !isImageValid
-          }
-        >
+          }>
           다음으로
         </Button>
       </form>
