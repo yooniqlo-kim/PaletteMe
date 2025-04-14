@@ -23,7 +23,8 @@ public enum UserError {
     SIGNUP_USERS_DUPLICATE_NICKNAME("400", "1016", "사용중인 닉네임 입니다"),
     ENCRYPTION_ERROR("500", "1017", "휴대폰 번호 암호화에 실패했어요"),
     DECRYPTION_ERROR("500", "1018", "휴대폰 번호 복호화에 실패했어요"),
-    SIGNUP_USERS_DUPLICATE_PHONE_NUMBER("400", "1019", "이미 등록된 휴대전화번호입니다.")
+    SIGNUP_USERS_DUPLICATE_PHONE_NUMBER("400", "1019", "이미 등록된 휴대전화번호입니다."),
+    INVALID_SIGNUP_FLOW("500", "1020", "정식 회원가입 절차를 거쳐야 해요!"),
     ;
 
 
