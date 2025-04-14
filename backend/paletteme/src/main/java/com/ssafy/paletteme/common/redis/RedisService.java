@@ -57,6 +57,21 @@ public class RedisService {
         }
     }
 
+    public void saveSignupPrecheck(String id) {
+        String key = "signup:temp:" + id;
+        redisTemplate.opsForValue().set(key, "verified", Duration.ofMinutes(5));
+    }
+
+    public boolean hasSignupPrecheck(String id) {
+        String key = "signup:temp:" + id;
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
+    }
+
+    public void deleteSignupPrecheck(String userId) {
+        String key = "signup:temp:" + userId;
+        redisTemplate.delete(key);
+    }
+
     public List<ArtworkRecommendationResponse> getAllArtworkRecommendations() {
         Set<String> keys = redisTemplate.keys("recommend:artwork:*");
         if (keys == null || keys.isEmpty()) return Collections.emptyList();

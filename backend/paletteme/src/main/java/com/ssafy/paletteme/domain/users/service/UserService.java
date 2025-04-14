@@ -62,6 +62,10 @@ public class UserService {
             throw new UserException(UserError.INVALID_SIGNUP_FLOW);
         }
 
+        if(!redisService.hasSignupPrecheck(userSignupRequest.getId())) {
+            throw new UserException(UserError.INVALID_SIGNUP_FLOW);
+        }
+
         // 아이디 UNIQUE 확인
         if (usersRepository.existsByLoginId(userSignupRequest.getId())) {
             throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_ID);
@@ -99,7 +103,7 @@ public class UserService {
             artworkLikeCommandService.likeArtwork(users, artworkId);
         }
 
-
+        redisService.deleteSignupPrecheck(userSignupRequest.getId());
     }
 
     @Transactional(readOnly = true)
@@ -241,6 +245,9 @@ public class UserService {
         usersRepository.save(user);
     }
 
+    public void preCheck(PreCheckRequest request) {
+        redisService.saveSignupPrecheck(request.getId());
+    }
 
     private String generate6DigitCode() {
         Random random = new Random();
@@ -253,4 +260,5 @@ public class UserService {
         List<ArtworkRecommendationResponse> list= redisService.getAllArtworkRecommendations();
         return list;
     }
+
 }
