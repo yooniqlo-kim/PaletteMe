@@ -34,8 +34,8 @@ public class WrappedStatsScheduler {
     }
 
     // @Scheduled(cron = "*/10 * * * * *") // 15초마다 실행
-    // @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 정각에 실행
-    @Scheduled(cron = "0 0 16 * * *") // 매일 오후 4시에 실행
+    @Scheduled(cron = "0 0 0 1 * *") // 매달 1일 정각에 실행
+    // @Scheduled(cron = "0 0 16 * * *") // 매일 오후 4시에 실행
     public void runWrappedStatsJob() {
         wrappedRepository.deleteAllInBatch();
 
