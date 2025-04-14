@@ -1,3 +1,4 @@
+// import RedirectOnRefresh from "@/features/register/FormPrompt";
 import { useRecommendArtworks } from "@/features/register/hooks/useRecommendArtworks";
 import { ArtworkCard } from "@/shared/components/artworks/ArtworkCard";
 import ArtworkCardSkeleton from "@/shared/components/artworks/ArtworkCardSkeleton";
@@ -44,10 +45,10 @@ export default function RegisterArtworkPage() {
 
   return (
     <FormWrapper>
+      {/* <RedirectOnRefresh /> */}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col items-center gap-8 w-full"
-      >
+        className="flex flex-col items-center gap-8 w-full">
         <h2 className="text-lg font-semibold">
           좋아하는 작품을 3개 선택해주세요
         </h2>

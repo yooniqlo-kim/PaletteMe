@@ -13,6 +13,22 @@ function RegisterCompletePage() {
   useEffect(() => {
     const fetchSignup = async () => {
       try {
+        if (
+          !formState.formData.id ||
+          !formState.formData.name ||
+          !formState.formData.password ||
+          !formState.formData.birthday ||
+          !formState.formData.nickname ||
+          !formState.formData.phoneNumber ||
+          formState.formData.artworkId.length === 0 ||
+          formState.formData.color.length === 0
+        ) {
+          setSuccess(false);
+          setErrorMsg(
+            "회원가입에 실패했습니다. 입력하지 않은 항목이 있습니다."
+          );
+          return;
+        }
         const response = await signup(formState.formData);
         const { success, errorMsg } = response.data;
         setSuccess(success);
@@ -49,7 +65,6 @@ function RegisterCompletePage() {
     );
   } else {
     content = (
-      // <p className="text-red-500">{errorMsg || "회원가입에 실패했습니다."}</p>
       <CompletedForm
         msg={errorMsg || "회원가입에 실패했습니다."}
         btnMsg="다시 회원가입하기"
