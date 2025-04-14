@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
@@ -52,6 +53,15 @@ public class UserService {
 
     @Transactional
     public void signUp(UserSignupRequest userSignupRequest, MultipartFile file) {
+        if (userSignupRequest.getId() == null || !StringUtils.hasText(userSignupRequest.getId()) ||
+                userSignupRequest.getName() == null || !StringUtils.hasText(userSignupRequest.getName()) ||
+                userSignupRequest.getNickname() == null || !StringUtils.hasText(userSignupRequest.getNickname()) ||
+                userSignupRequest.getPassword() == null || !StringUtils.hasText(userSignupRequest.getPassword()) ||
+                userSignupRequest.getPhoneNumber() == null || !StringUtils.hasText(userSignupRequest.getPhoneNumber()) ||
+                userSignupRequest.getBirthday() == 0) {
+            throw new UserException(UserError.INVALID_SIGNUP_FLOW);
+        }
+
         // 아이디 UNIQUE 확인
         if (usersRepository.existsByLoginId(userSignupRequest.getId())) {
             throw new UserException(UserError.SIGNUP_USERS_DUPLICATE_ID);
