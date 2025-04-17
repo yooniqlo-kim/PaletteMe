@@ -131,4 +131,14 @@ public class UserController {
         return ApiResponse.success();
     }
 
+    @Operation(
+            summary = "회원가입 사전 인증",
+            description = "무분별한 회원가입을 방지하기 위해 다음으로 버튼 클릭 시, 한번 호출해주세요."
+    )
+    @PostMapping("/signup/precheck")
+    public ApiResponse<Void> preCheck(@RequestBody PreCheckRequest request){
+        userService.preCheck(request);
+        return ApiResponse.success();
+    }
+
 }
