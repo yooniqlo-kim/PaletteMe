@@ -195,7 +195,7 @@
 ### 📌 Architecture Diagram
 <img src="img/System_Architecture.png">
 <img src="img/System_Architecture2.png">
-
+<img src="img/pipeline.png">
 
 #### 🛠️ 데이터 파이프라인 및 아키텍처
 
